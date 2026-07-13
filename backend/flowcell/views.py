@@ -238,17 +238,19 @@ class FlowcellViewSet(MultiEditMixin, viewsets.ReadOnlyModelViewSet):
             pk=pk,
         )
 
-        flowcell_pool_ids = flowcell.lanes.exclude(pool_id=None).values_list(
-            "pool_id", flat=True
+        flowcell_pool_ids = list(
+            flowcell.lanes.exclude(pool_id=None)
+            .values_list("pool_id", flat=True)
+            .distinct()
         )
         has_delivered_records = (
             Library.objects.filter(
                 status=DELIVERED_STATUS,
-                pool_id__in=flowcell_pool_ids,
+                pool__id__in=flowcell_pool_ids,
             ).exists()
             or Sample.objects.filter(
                 status=DELIVERED_STATUS,
-                pool_id__in=flowcell_pool_ids,
+                pool__id__in=flowcell_pool_ids,
             ).exists()
         )
         if has_delivered_records:

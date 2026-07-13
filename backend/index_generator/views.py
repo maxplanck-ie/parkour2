@@ -153,10 +153,49 @@ class IndexGeneratorViewSet(viewsets.ViewSet, LibrarySampleMultiEditMixin):
             Prefetch("samples", queryset=samples_qs),
         )
 
-        serializer = IndexGeneratorSerializer(queryset, many=True)
+        serializer = IndexGeneratorSerializer(
+            queryset,
+            many=True,
+            context={
+                "coordinates": self._get_coordinates_map(libraries_qs, samples_qs)
+            },
+        )
         data = list(itertools.chain(*serializer.data))
         data = sorted(data, key=lambda x: x["barcode"][3:])
         return Response(data)
+
+    def _get_coordinates_map(self, libraries_qs, samples_qs):
+        index_type_ids = set(
+            libraries_qs.exclude(index_type__isnull=True).values_list(
+                "index_type_id", flat=True
+            )
+        )
+        index_type_ids.update(
+            samples_qs.exclude(index_type__isnull=True).values_list(
+                "index_type_id", flat=True
+            )
+        )
+
+        if not index_type_ids:
+            return {}
+
+        index_pairs = (
+            IndexPair.objects.filter(
+                archived=False,
+                index_type__pk__in=index_type_ids,
+            )
+            .select_related("index_type", "index1", "index2")
+            .distinct()
+        )
+        return {
+            (
+                ip.index_type.pk,
+                ip.index1.index_id,
+                ip.index2.index_id if ip.index2 else "",
+            ): ip.coordinate
+            for ip in index_pairs
+            if ip.index_type and ip.index1
+        }
 
     @action(methods=["post"], detail=False)
     def start_coordinates(self, request):

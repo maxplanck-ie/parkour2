@@ -576,8 +576,9 @@
                         used, or do not match the current lane assignment rules.
                       </li>
                       <li>
-                        Use Return to Pooling to move an available pool back to
-                        Pooling when it should not remain ready for loading.
+                        Use Return to Index Generator to move an available pool
+                        back to the Index Generator when it should not remain
+                        ready for loading.
                       </li>
                       <li>
                         Clicking a pool name in the main table opens a detail
@@ -600,8 +601,9 @@
                       <li>
                         Destroying a flowcell unloads its pools, removes the
                         flowcell from the Load Flowcells view, and makes the
-                        pools available again in Pooling. Flowcells containing
-                        delivered libraries or samples cannot be destroyed.
+                        pools available again in Load Flowcell. Flowcells
+                        containing delivered libraries or samples cannot be
+                        destroyed.
                       </li>
                       <li>
                         When the destroyed flowcell was the last active
@@ -716,12 +718,12 @@
                           :disabled="!pool.ready"
                           :title="
                             pool.ready
-                              ? 'Return pool to Pooling'
+                              ? 'Return pool to Index Generator'
                               : 'Only ready pools can be returned'
                           "
                           @click.stop="confirmReturnPoolToPooling(pool)"
                         >
-                          Return to Pooling
+                          Return to Index Generator
                         </button>
                       </div>
                     </div>
@@ -1343,7 +1345,7 @@ export default {
 
       this.confirmPopup = {
         title: "Destroy Flowcell",
-        description: `Are you sure you want to destroy the flowcell <span style="font-weight: bold">'${flowcellId}'</span>? Pools on this flowcell will become available again in Pooling.`,
+        description: `Are you sure you want to destroy the flowcell <span style="font-weight: bold">'${flowcellId}'</span>? Pools on this flowcell will become available again in Load Flowcell.`,
         onConfirm: async () => {
           try {
             await axiosRef.post(
@@ -1740,8 +1742,8 @@ export default {
       }
 
       this.confirmPopup = {
-        title: "Return Pool to Pooling",
-        description: `Are you sure you want to return the pool <span style="font-weight: bold">'${pool.name}'</span> to Pooling? This destroys the pool and sets its records back to Pooling state.`,
+        title: "Return Pool to Index Generator",
+        description: `Are you sure you want to return the pool <span style="font-weight: bold">'${pool.name}'</span> to Index Generator? This destroys the pool and makes its records available in the Index Generator.`,
         onConfirm: async () => {
           await this.returnPoolToPooling(pool);
         }
@@ -1765,7 +1767,7 @@ export default {
         this.removePoolAssignments(pool.pk);
         this.closeConfirmPopup();
         showNotification(
-          `Pool '${pool.name}' was returned to Pooling.`,
+          `Pool '${pool.name}' was returned to Index Generator.`,
           "success"
         );
         await this.fetchLoadModalData();

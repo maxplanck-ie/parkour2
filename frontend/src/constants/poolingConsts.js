@@ -46,8 +46,8 @@ export function poolingGroupHeader(
       <div title="Edit Comment" class="group-action-button" onclick="handleGroupButtonClick(event, '${value}', 'editComment')">
         <img src="${iconEditComment}" alt="Edit Comment" width="24" height="24" />
       </div>
-      <div title="Return Pool to Pooling" class="group-action-button" onclick="handleGroupButtonClick(event, '${value}', 'returnPoolToPooling')">
-        <img src="${iconDestroyPool}" alt="Return Pool to Pooling" width="24" height="24" />
+      <div title="Return Pool to Index Generator" class="group-action-button" onclick="handleGroupButtonClick(event, '${value}', 'returnPoolToPooling')">
+        <img src="${iconDestroyPool}" alt="Return Pool to Index Generator" width="24" height="24" />
       </div>
     </div>
   </div>

@@ -666,6 +666,24 @@ class TestFlowcell(BaseTestCase):
         self.assertFalse(request.sequenced)
         self.assertIsNone(request.flowcell_loaded_at)
 
+    def test_destroy_flowcell_allows_sequencing_libraries(self):
+        """Ensure status 5 libraries can be returned from a destroyed flowcell."""
+        self.client.login(email="test@test.io", password="foo-bar")
+
+        library = create_library(get_random_name(), 5)
+        flowcell = self.create_flowcell_with_pool_records(libraries=[library])
+
+        response = self.client.post(
+            reverse("flowcells-destroy-flowcell", kwargs={"pk": flowcell.pk})
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(response.json()["success"])
+        self.assertFalse(Flowcell.objects.filter(pk=flowcell.pk).exists())
+
+        library.refresh_from_db()
+        self.assertEqual(library.status, 4)
+
     def test_destroy_flowcell_rejects_delivered_records(self):
         """Ensure delivered records cannot be returned to Pooling by destroy."""
         self.client.login(email="test@test.io", password="foo-bar")

@@ -49,6 +49,7 @@ class IndexGeneratorBaseSerializer(ModelSerializer):
     pk = IntegerField()
     record_type = SerializerMethodField()
     library_protocol_name = SerializerMethodField()
+    coordinate = SerializerMethodField()
 
     class Meta:
         list_serializer_class = IndexGeneratorListSerializer
@@ -65,6 +66,7 @@ class IndexGeneratorBaseSerializer(ModelSerializer):
             "index_i7",
             "index_i5_id",
             "index_i5",
+            "coordinate",
         )
         extra_kwargs = {
             "name": {"required": False},
@@ -78,6 +80,16 @@ class IndexGeneratorBaseSerializer(ModelSerializer):
 
     def get_library_protocol_name(self, obj):
         return obj.library_protocol.name
+
+    def get_coordinate(self, obj):
+        coordinates = self.context.get("coordinates", {})
+        index_type = obj.index_type.pk if obj.index_type else ""
+        key = (
+            index_type,
+            obj.index_i7_id,
+            obj.index_i5_id,
+        )
+        return coordinates.get(key, "")
 
     def get_index_type_format(self, obj):
         return obj.index_type.format if obj.index_type else None

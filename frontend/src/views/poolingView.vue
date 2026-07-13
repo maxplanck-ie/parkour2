@@ -1034,8 +1034,8 @@ export default {
       }
 
       this.createPopupWindow(
-        "Return Pool to Pooling",
-        `Are you sure you want to return the pool <span style="font-weight: bold">'${poolName}'</span> to Pooling? This removes the pool and sets its records back to Pooling state.`,
+        "Return Pool to Index Generator",
+        `Are you sure you want to return the pool <span style="font-weight: bold">'${poolName}'</span> to Index Generator? This removes the pool and makes its records available in the Index Generator.`,
         [],
         async () => {
           try {
@@ -1044,7 +1044,7 @@ export default {
             );
 
             showNotification(
-              "Pool returned to Pooling successfully.",
+              "Pool returned to Index Generator successfully.",
               "success"
             );
             this.showPopupWindow = false;
