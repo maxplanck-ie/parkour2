@@ -1294,7 +1294,7 @@ export default {
           value: this.displayValue(value),
           wide: this.isWideValue(key, value)
         }));
-      return [
+      const rows = [
         ...directRows,
         ...(options.omitPropertyRows
           ? []
@@ -1302,8 +1302,22 @@ export default {
         ...this.relationRows(entity, options)
       ]
         .filter((row) => !this.isHiddenRow(row))
-        .filter((row) => !this.isLowValuePreviewRow(row))
-        .filter((row) => this.matchesSearch([row.key, row.value]));
+        .filter((row) => !this.isLowValuePreviewRow(row));
+      // A linked term entity (e.g. an organism) may carry only a name, which is
+      // otherwise consumed by the section title. Surface it as a Name row so the
+      // section still renders deterministically instead of being dropped as empty
+      // by callers that filter on `rows.length`.
+      if (!rows.length) {
+        const name = entity?.[fieldKeys.name] || entity?.[fieldKeys.identifier];
+        if (!this.isEmpty(name)) {
+          rows.push({
+            key: "Name",
+            value: this.displayValue(name),
+            wide: false
+          });
+        }
+      }
+      return rows.filter((row) => this.matchesSearch([row.key, row.value]));
     },
     shouldSkipNestedEntity(label, entity) {
       const normalizedLabel = this.normalizedDisplayKey(label);
