@@ -1812,10 +1812,17 @@ export default {
           const existing = this.poolRows.find(
             (poolRow) => poolRow[fields.rowKey] === normalized[fields.rowKey]
           );
-          return {
+          const merged = {
             ...(existing || {}),
             ...normalized
           };
+          // Libraries keep their pre-assigned plate coordinate. The generator
+          // returns an empty coordinate for them, so don't let it clear the
+          // one already loaded on the pool row.
+          if (!normalized[fields.coordinate] && existing?.[fields.coordinate]) {
+            merged[fields.coordinate] = existing[fields.coordinate];
+          }
+          return merged;
         });
         const previouslyGeneratedRowKeys = [...this.generatedIndexRowKeys];
         const generatedByKey = new Map(
