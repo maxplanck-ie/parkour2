@@ -38,7 +38,7 @@ django-linear-migrations==2.19.0
     # via -r backend/requirements/base.in
 django-monthfield==0.1.4
     # via -r backend/requirements/base.in
-django-simple-history==3.11.0
+django-simple-history==3.12.0
     # via -r backend/requirements/base.in
 djangorestframework==3.17.1
     # via
@@ -66,7 +66,7 @@ numpy==1.25.2 ; python_full_version < '3.12'
     # via
     #   -r backend/requirements/base.in
     #   pandas
-numpy==2.5.0 ; python_full_version >= '3.12'
+numpy==2.5.1 ; python_full_version >= '3.12'
     # via
     #   -r backend/requirements/base.in
     #   pandas
@@ -78,7 +78,7 @@ pandas==2.3.3 ; python_full_version < '3.12'
     # via -r backend/requirements/base.in
 pandas==3.0.3 ; python_full_version >= '3.12'
     # via -r backend/requirements/base.in
-pillow==12.2.0
+pillow==12.3.0
     # via fpdf2
 psycopg2==2.9.12
     # via -r backend/requirements/base.in
@@ -100,7 +100,7 @@ rpds-py==0.30.0 ; python_full_version < '3.11'
     # via
     #   jsonschema
     #   referencing
-rpds-py==2026.5.1 ; python_full_version >= '3.11'
+rpds-py==2026.6.3 ; python_full_version >= '3.11'
     # via
     #   jsonschema
     #   referencing
@@ -112,7 +112,7 @@ tablib==3.9.0
     # via django-import-export
 tblib==3.2.2
     # via -r backend/requirements/base.in
-typing-extensions==4.15.0
+typing-extensions==4.16.0
     # via
     #   asgiref
     #   python-docx
