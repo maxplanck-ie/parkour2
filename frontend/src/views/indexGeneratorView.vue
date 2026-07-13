@@ -20,112 +20,116 @@
       <div class="header-title" style="display: inline">Index Generator</div>
 
       <div class="sticky-actions">
-        <div class="header-pool-size-controls">
-          <select
-            id="index-generator-pool-multiplier"
-            class="pool-size-select"
-            :value="selectedPoolMultiplier"
-            :disabled="!hasPoolRows"
-            :data-tooltip-original="poolMultiplierDisabledReason"
-            @change="onPoolMultiplierChange($event.target.value)"
-          >
-            <option :value="''">Multiplier</option>
-            <option
-              v-for="multiplier in poolMultiplierOptions"
-              :key="`multiplier-${multiplier}`"
-              :value="multiplier"
+        <div class="header-control-group">
+          <div class="header-generate-controls">
+            <select
+              v-if="requiresStrictStartCoordinate"
+              id="index-generator-start-coordinate"
+              class="pool-size-select"
+              :value="selectedStartCoordinate"
+              :disabled="
+                isGenerateControlDisabled ||
+                startCoordinatesLoading ||
+                !startCoordinateOptions.length
+              "
+              :data-tooltip-original="generateControlDisabledReason"
+              @change="onStartCoordinateSelect($event.target.value)"
             >
-              {{ multiplier }}
-            </option>
-          </select>
-
-          <select
-            id="index-generator-pool-size"
-            class="pool-size-select"
-            :value="selectedPoolActualSize"
-            :disabled="isPoolSizeDisabled"
-            :data-tooltip-original="poolSizeDisabledReason"
-            @change="onPoolActualSizeChange($event.target.value)"
-          >
-            <option :value="''">Size</option>
-            <option
-              v-for="size in filteredPoolSizeOptions"
-              :key="`size-${size}`"
-              :value="size"
+              <option :value="''">Start Coordinate</option>
+              <option
+                v-for="coordinate in startCoordinateOptions"
+                :key="`start-coord-${coordinate}`"
+                :value="coordinate"
+              >
+                {{ coordinate }}
+              </option>
+            </select>
+            <input
+              v-else
+              id="index-generator-start-coordinate"
+              class="pool-size-select"
+              :value="selectedStartCoordinate"
+              :disabled="isGenerateControlDisabled"
+              :data-tooltip-original="generateControlDisabledReason"
+              placeholder="Start (e.g. A1)"
+              @change="onStartCoordinateChange($event.target.value)"
+            />
+            <select
+              id="index-generator-direction"
+              class="pool-size-select direction-select"
+              :value="selectedDirection"
+              :disabled="isGenerateControlDisabled"
+              :data-tooltip-original="generateControlDisabledReason"
+              @change="onDirectionChange($event.target.value)"
             >
-              {{ size }}
-            </option>
-          </select>
+              <option
+                v-for="directionOption in directionOptions"
+                :key="`direction-${directionOption.value}`"
+                :value="directionOption.value"
+              >
+                {{ directionOption.label }}
+              </option>
+            </select>
+          </div>
+          <button
+            class="header-button"
+            :disabled="!canGenerate"
+            :data-tooltip-original="generateIndicesDisabledReason"
+            @click="generateIndices"
+          >
+            <font-awesome-icon icon="fa-solid fa-wand-magic-sparkles" />
+            <span>Generate Indices</span>
+          </button>
         </div>
 
-        <div class="header-generate-controls">
-          <select
-            v-if="requiresStrictStartCoordinate"
-            id="index-generator-start-coordinate"
-            class="pool-size-select"
-            :value="selectedStartCoordinate"
-            :disabled="
-              isGenerateControlDisabled ||
-              startCoordinatesLoading ||
-              !startCoordinateOptions.length
-            "
-            :data-tooltip-original="generateControlDisabledReason"
-            @change="onStartCoordinateSelect($event.target.value)"
-          >
-            <option :value="''">Start Coordinate</option>
-            <option
-              v-for="coordinate in startCoordinateOptions"
-              :key="`start-coord-${coordinate}`"
-              :value="coordinate"
+        <div class="header-control-group">
+          <div class="header-pool-size-controls">
+            <select
+              id="index-generator-pool-multiplier"
+              class="pool-size-select"
+              :value="selectedPoolMultiplier"
+              :disabled="!hasPoolRows"
+              :data-tooltip-original="poolMultiplierDisabledReason"
+              @change="onPoolMultiplierChange($event.target.value)"
             >
-              {{ coordinate }}
-            </option>
-          </select>
-          <input
-            v-else
-            id="index-generator-start-coordinate"
-            class="pool-size-select"
-            :value="selectedStartCoordinate"
-            :disabled="isGenerateControlDisabled"
-            :data-tooltip-original="generateControlDisabledReason"
-            placeholder="Start (e.g. A1)"
-            @change="onStartCoordinateChange($event.target.value)"
-          />
-          <select
-            id="index-generator-direction"
-            class="pool-size-select direction-select"
-            :value="selectedDirection"
-            :disabled="isGenerateControlDisabled"
-            :data-tooltip-original="generateControlDisabledReason"
-            @change="onDirectionChange($event.target.value)"
-          >
-            <option
-              v-for="directionOption in directionOptions"
-              :key="`direction-${directionOption.value}`"
-              :value="directionOption.value"
+              <option :value="''">Multiplier</option>
+              <option
+                v-for="multiplier in poolMultiplierOptions"
+                :key="`multiplier-${multiplier}`"
+                :value="multiplier"
+              >
+                {{ multiplier }}
+              </option>
+            </select>
+
+            <select
+              id="index-generator-pool-size"
+              class="pool-size-select"
+              :value="selectedPoolActualSize"
+              :disabled="isPoolSizeDisabled"
+              :data-tooltip-original="poolSizeDisabledReason"
+              @change="onPoolActualSizeChange($event.target.value)"
             >
-              {{ directionOption.label }}
-            </option>
-          </select>
+              <option :value="''">Size</option>
+              <option
+                v-for="size in filteredPoolSizeOptions"
+                :key="`size-${size}`"
+                :value="size"
+              >
+                {{ size }}
+              </option>
+            </select>
+          </div>
+          <button
+            class="header-button save-pool-button"
+            :disabled="!canSave"
+            :data-tooltip-original="savePoolDisabledReason"
+            @click="savePool"
+          >
+            <font-awesome-icon icon="fa-solid fa-floppy-disk" />
+            <span>Save Pool</span>
+          </button>
         </div>
-        <button
-          class="header-button"
-          :disabled="!canGenerate"
-          :data-tooltip-original="generateIndicesDisabledReason"
-          @click="generateIndices"
-        >
-          <font-awesome-icon icon="fa-solid fa-wand-magic-sparkles" />
-          <span>Generate Indices</span>
-        </button>
-        <button
-          class="header-button save-pool-button"
-          :disabled="!canSave"
-          :data-tooltip-original="savePoolDisabledReason"
-          @click="savePool"
-        >
-          <font-awesome-icon icon="fa-solid fa-floppy-disk" />
-          <span>Save Pool</span>
-        </button>
       </div>
     </div>
 
@@ -899,6 +903,14 @@ export default {
         )
       };
     },
+    captureGroupStateWithSourceRowsVisible(groupRows) {
+      const groupState = this.captureTabulatorGroupState();
+      const requestName = groupRows?.[0]?.[fields.requestName];
+      if (requestName) {
+        groupState.sourceVisibleGroupKeys.add(requestName);
+      }
+      return groupState;
+    },
     getVisibleGroupKeys(table) {
       return new Set(
         (table?.getGroups?.() || [])
@@ -1363,13 +1375,17 @@ export default {
       (groupRows || []).forEach((row) => {
         row.selected = true;
       });
-      this.refreshTabulatorTables();
+      this.refreshTabulatorData(
+        this.captureGroupStateWithSourceRowsVisible(groupRows)
+      );
     },
     deselectAllInGroup(groupRows) {
       (groupRows || []).forEach((row) => {
         row.selected = false;
       });
-      this.refreshTabulatorTables();
+      this.refreshTabulatorData(
+        this.captureGroupStateWithSourceRowsVisible(groupRows)
+      );
     },
     addSelectedRowsToPool() {
       const selectedRows = this.records.filter((row) => row[fields.selected]);
@@ -1996,6 +2012,29 @@ export default {
   max-width: 100%;
 }
 
+.header-control-group {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  flex: 0 0 auto;
+  min-width: 0;
+  flex-wrap: nowrap;
+  padding: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.06);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.16);
+}
+
+.header-control-group .header-button {
+  max-width: none;
+}
+
+.header-control-group .header-button span {
+  overflow: visible;
+  text-overflow: clip;
+}
+
 :is(.header-pool-size-controls, .header-generate-controls) {
   display: flex;
   align-items: center;
@@ -2454,16 +2493,23 @@ export default {
     display: contents;
   }
 
+  .header-control-group {
+    flex: 0 1 auto;
+    justify-content: flex-start;
+  }
+
   :is(.pool-size-select, .header-generate-controls .pool-size-select) {
-    flex: 0 1 112px;
+    flex: 0 1 118px;
     width: auto;
     min-width: 90px;
     height: 34px;
   }
 
-  .header-button {
-    flex: 0 1 120px;
-    min-width: 96px;
+  .header-control-group .header-button {
+    flex: 0 0 auto;
+    min-width: max-content;
+    padding-left: 12px;
+    padding-right: 12px;
   }
 
   .panel-heading {
@@ -2487,11 +2533,12 @@ export default {
   }
 
   :is(.pool-size-select, .header-generate-controls .pool-size-select) {
-    flex-basis: 106px;
+    flex: 1 1 112px;
+    min-width: 104px;
   }
 
-  .header-button {
-    flex-basis: 116px;
+  .header-control-group .header-button {
+    flex: 0 0 auto;
   }
 
   .apply-all-controls,

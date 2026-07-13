@@ -1314,6 +1314,16 @@ export default {
       if (table && updates.length) {
         await table.updateData(updates);
       }
+      this.expandFlowcellGroup(flowcellId);
+    },
+    expandFlowcellGroup(flowcellId) {
+      const group = this.tabulatorInstance
+        ?.getTable?.()
+        ?.getGroups?.()
+        ?.find((item) => item.getKey?.() === flowcellId);
+      if (group && !group?._group?.visible) {
+        group.show?.();
+      }
     },
     async handleGroupButtonClick(event, groupValue, action) {
       event?.stopPropagation?.();
