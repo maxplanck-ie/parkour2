@@ -2,7 +2,7 @@
 #    uv pip compile --universal --python-version 3.12 backend/requirements/dev.in -c backend/requirements/3.12/base.txt -o backend/requirements/3.12/dev.txt
 annotated-types==0.7.0
     # via pydantic
-anyio==4.14.1
+anyio==4.14.2
     # via
     #   httpx
     #   openai
@@ -13,16 +13,16 @@ asgiref==3.11.1
     #   -c backend/requirements/3.12/base.txt
     #   django
     #   django-cors-headers
-asttokens==3.0.1
+asttokens==3.0.2
     # via stack-data
 attrs==26.1.0
     # via
     #   -c backend/requirements/3.12/base.txt
     #   jsonschema
     #   referencing
-boto3==1.43.40
+boto3==1.43.46
     # via -r backend/requirements/dev.in
-botocore==1.43.40
+botocore==1.43.46
     # via
     #   boto3
     #   s3transfer
@@ -31,9 +31,9 @@ certifi==2026.6.17
     #   httpcore
     #   httpx
     #   requests
-cffi==2.0.0 ; platform_python_implementation != 'PyPy'
+cffi==2.1.0 ; platform_python_implementation != 'PyPy'
     # via cryptography
-charset-normalizer==3.4.7
+charset-normalizer==3.4.9
     # via requests
 colorama==0.4.6 ; sys_platform == 'win32'
     # via
@@ -65,7 +65,7 @@ dj-database-url==3.1.2
     # via
     #   -c backend/requirements/3.12/base.txt
     #   -r backend/requirements/base.in
-django==5.2.15
+django==5.2.16
     # via
     #   -c backend/requirements/3.12/base.txt
     #   -r backend/requirements/base.in
@@ -136,7 +136,7 @@ djangorestframework==3.17.1
     #   -c backend/requirements/3.12/base.txt
     #   -r backend/requirements/base.in
     #   drf-spectacular
-drf-spectacular==0.29.0
+drf-spectacular==0.30.0
     # via
     #   -c backend/requirements/3.12/base.txt
     #   -r backend/requirements/base.in
@@ -219,7 +219,7 @@ numpy==2.5.1
     #   contourpy
     #   matplotlib
     #   pandas
-openai==2.44.0
+openai==2.45.0
     # via -r backend/requirements/dev.in
 openpyxl==3.1.5
     # via
@@ -292,7 +292,7 @@ referencing==0.37.0
     #   -c backend/requirements/3.12/base.txt
     #   jsonschema
     #   jsonschema-specifications
-regex==2026.6.28
+regex==2026.7.10
     # via tiktoken
 requests==2.34.2
     # via
@@ -305,7 +305,7 @@ rpds-py==2026.6.3
     #   -c backend/requirements/3.12/base.txt
     #   jsonschema
     #   referencing
-s3transfer==0.19.0
+s3transfer==0.19.1
     # via boto3
 six==1.17.0
     # via
@@ -337,7 +337,7 @@ tiktoken==0.13.0
     # via -r backend/requirements/dev.in
 toml==0.10.2
     # via django-migration-linter
-tqdm==4.68.3
+tqdm==4.68.4
     # via openai
 traitlets==5.15.1
     # via
@@ -355,7 +355,7 @@ typing-extensions==4.16.0
     #   typing-inspection
 typing-inspection==0.4.2
     # via pydantic
-tzdata==2026.2 ; sys_platform == 'emscripten' or sys_platform == 'win32'
+tzdata==2026.3 ; sys_platform == 'emscripten' or sys_platform == 'win32'
     # via
     #   -c backend/requirements/3.12/base.txt
     #   django
