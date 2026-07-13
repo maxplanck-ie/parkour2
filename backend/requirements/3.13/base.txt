@@ -12,7 +12,7 @@ diff-match-patch==20241021
     # via django-import-export
 dj-database-url==3.1.2
     # via -r backend/requirements/base.in
-django==5.2.15
+django==5.2.16
     # via
     #   -r backend/requirements/base.in
     #   dj-database-url
@@ -44,7 +44,7 @@ djangorestframework==3.17.1
     # via
     #   -r backend/requirements/base.in
     #   drf-spectacular
-drf-spectacular==0.29.0
+drf-spectacular==0.30.0
     # via -r backend/requirements/base.in
 et-xmlfile==2.0.0
     # via openpyxl
@@ -102,7 +102,7 @@ tblib==3.2.2
     # via -r backend/requirements/base.in
 typing-extensions==4.16.0
     # via python-docx
-tzdata==2026.2 ; sys_platform == 'emscripten' or sys_platform == 'win32'
+tzdata==2026.3 ; sys_platform == 'emscripten' or sys_platform == 'win32'
     # via
     #   django
     #   pandas
