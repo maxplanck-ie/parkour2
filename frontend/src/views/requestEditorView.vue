@@ -789,7 +789,7 @@
                   </div>
                   <button
                     v-if="canEditRequest"
-                    class="header-button ghost"
+                    class="header-button ghost request-file-add-button"
                     type="button"
                     :disabled="!canEditRequest"
                     @click="triggerRequestFileUpload"
@@ -5735,10 +5735,34 @@ export default {
   gap: 12px;
 }
 
+.files-header > div {
+  min-width: 0;
+}
+
 .files-header small {
   display: block;
   font-size: 11px;
   color: #6b7280;
+}
+
+.request-file-add-button {
+  display: inline-flex;
+  flex: 0 0 auto;
+  width: auto;
+  min-width: 104px;
+  max-width: none;
+  height: 28px;
+  min-height: 28px;
+  gap: 7px;
+  padding: 0 12px;
+  border-radius: 8px;
+  line-height: 1;
+}
+
+.request-file-add-button span {
+  overflow: visible;
+  text-overflow: clip;
+  line-height: 1;
 }
 
 .files-table-wrapper {
