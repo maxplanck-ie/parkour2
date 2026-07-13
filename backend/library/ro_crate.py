@@ -2687,11 +2687,21 @@ class ROCratePdfRenderer:
             entity, omit_relation_keys=omit_relation_keys
         )
         property_rows = [] if omit_property_rows else self.property_rows(entity, True)
-        return [
+        rows = [
             row
             for row in [*direct_rows, *property_rows, *relation_rows]
             if not self.is_hidden_row(row) and not self.is_low_value_preview_row(row)
         ]
+        # A linked term entity (e.g. an organism) may carry only a name, which is
+        # otherwise consumed by the section title. Surface it as a Name row so the
+        # section still renders instead of being dropped as empty by callers that
+        # skip sections without rows (matches the preview fix for #300).
+        if not rows:
+            name = entity.get(PDF_FIELD_NAME) or entity.get(PDF_FIELD_IDENTIFIER)
+            value = self.display_value(name)
+            if value not in (None, "", [], {}):
+                rows.append({"key": "Name", "value": value})
+        return rows
 
     def sequencing_sections(self, entity):
         sections = []

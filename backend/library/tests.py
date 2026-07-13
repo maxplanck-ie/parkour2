@@ -1260,6 +1260,38 @@ class TestGenerateROCrateAPI(BaseAPITestCase):
         self.assertNotIn("Data Object Selected I7 Index", row_keys)
         self.assertNotIn("Data Object Selected I5 Index", row_keys)
 
+    def test_pdf_renders_name_only_linked_organism_section(self):
+        # Regression test for #300: a linked term entity that carries only a
+        # name (e.g. an organism) must still render its own section instead of
+        # being dropped as empty from a record's grouping.
+        renderer = self._pdf_renderer_for_graph(
+            [
+                {
+                    "@id": "#library-material-501",
+                    "@type": "Thing",
+                    "name": "Delivered library",
+                    "identifier": "26L000501",
+                    "organism": {"@id": "#organism-1"},
+                },
+                {"@id": "#organism-1", "@type": "Thing", "name": "Arabidopsis"},
+            ]
+        )
+
+        sections = renderer.related_model_sections(
+            renderer.entity_by_id("#library-material-501")
+        )
+
+        organism_sections = [
+            section
+            for section in sections
+            if section["title"] == "Organism: Arabidopsis"
+        ]
+        self.assertEqual(len(organism_sections), 1)
+        self.assertEqual(
+            organism_sections[0]["rows"],
+            [{"key": "Name", "value": "Arabidopsis"}],
+        )
+
     def test_pdf_model_display_rules_match_longest_prefix_first(self):
         renderer = self._pdf_renderer_for_graph([])
 
