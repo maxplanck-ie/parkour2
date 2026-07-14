@@ -498,7 +498,11 @@ export default {
           .replace(",", ".")
           .match(/\d+(?:\.\d+)?/)?.[0] || ""
       );
-      return Number.isFinite(parsed) ? parsed : 0;
+      if (!Number.isFinite(parsed)) {
+        return 0;
+      }
+      const multiplier = Number.parseFloat(this.selectedPoolMultiplier);
+      return parsed * (Number.isFinite(multiplier) ? multiplier : 1);
     },
     poolFillPercentage() {
       if (!this.selectedPoolCapacityM) {
