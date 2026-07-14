@@ -30,7 +30,7 @@ jobs:
           python-version: ${{ matrix.python-version }}
 
       - name: Set up UV for py ${{ matrix.python-version }}
-        uses: astral-sh/setup-uv@v8
+        uses: astral-sh/setup-uv@v8.3.2
         with:
           enable-cache: true
           cache-dependency-glob: "backend/requirements/**/*.txt"
@@ -135,14 +135,18 @@ jobs:
       - name: Bump GitHub Action majors in workflow files
         run: |
           touch pr-note-actions.md
-          grep -hoE 'uses: [A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+@v[0-9]+' .github/workflows/*.yml | sort -u \
+          grep -hoE 'uses: [A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+@v[0-9.]+' .github/workflows/*.yml | sort -u \
           | while read -r _ ref; do
-              repo=${ref%@*}; cur=${ref##*@v}
-              latest=$(gh api "repos/$repo/releases/latest" --jq .tag_name 2>/dev/null | grep -oE '[0-9]+' | head -1 || true)
-              if [ -n "$latest" ] && [ "$latest" -gt "$cur" ]; then
-                sed -i "s|uses: $repo@v$cur|uses: $repo@v$latest|g" .github/workflows/*.yml
-                echo "- CI: bumped \`$repo\` v$cur -> v$latest" >> pr-note-actions.md
-              fi
+              repo=${ref%@*}; cur=${ref##*@}
+              cur_major=$(echo "$cur" | grep -oE '[0-9]+' | head -1)
+              latest_tag=$(gh api "repos/$repo/releases/latest" --jq .tag_name 2>/dev/null) || continue
+              latest_major=$(echo "$latest_tag" | grep -oE '[0-9]+' | head -1)
+              [ -n "$latest_major" ] && [ "$latest_major" -gt "$cur_major" ] || continue
+              # prefer the floating major tag; not all actions publish one (e.g. setup-uv)
+              target="v$latest_major"
+              gh api "repos/$repo/git/ref/tags/$target" >/dev/null 2>&1 || target="$latest_tag"
+              sed -i "s|uses: $repo@$cur|uses: $repo@$target|g" .github/workflows/*.yml
+              echo "- CI: bumped \`$repo\` $cur -> $target" >> pr-note-actions.md
             done
           cat pr-note-actions.md
 
