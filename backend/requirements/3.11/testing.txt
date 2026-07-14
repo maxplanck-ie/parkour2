@@ -13,7 +13,7 @@ appdirs==1.4.4
     # via
     #   -c backend/requirements/3.11/dev.txt
     #   django-migration-linter
-asgiref==3.11.1
+asgiref==3.12.1
     # via
     #   -c backend/requirements/3.11/dev.txt
     #   django
@@ -27,11 +27,11 @@ attrs==26.1.0
     #   -c backend/requirements/3.11/dev.txt
     #   jsonschema
     #   referencing
-boto3==1.43.46
+boto3==1.43.47
     # via
     #   -c backend/requirements/3.11/dev.txt
     #   -r backend/requirements/dev.in
-botocore==1.43.46
+botocore==1.43.47
     # via
     #   -c backend/requirements/3.11/dev.txt
     #   boto3
