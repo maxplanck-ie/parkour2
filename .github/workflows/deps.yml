@@ -22,15 +22,15 @@ jobs:
         python-version: ['3.10', 3.11, 3.12, 3.13]
     
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       
       - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: ${{ matrix.python-version }}
 
       - name: Set up UV for py ${{ matrix.python-version }}
-        uses: astral-sh/setup-uv@v3
+        uses: astral-sh/setup-uv@v8
         with:
           enable-cache: true
           cache-dependency-glob: "backend/requirements/**/*.txt"
@@ -50,7 +50,7 @@ jobs:
         run: uv pip install -r backend/requirements/${{ matrix.python-version }}/testing.txt
 
       - name: Upload Python requirements
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: python-requirements-${{ matrix.python-version }}
           path: backend/requirements/${{ matrix.python-version }}
@@ -60,10 +60,10 @@ jobs:
     if: github.repository == 'maxplanck-ie/parkour2'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Frontend Update
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7
         with:
           node-version-file: 'frontend/package.json'
 
@@ -71,7 +71,7 @@ jobs:
       - run: cd frontend && ncu \!ag-grid-* -u
 
       - name: Upload VueJS package.json
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: package-json
           path: frontend/package.json
@@ -81,7 +81,7 @@ jobs:
     if: github.repository == 'maxplanck-ie/parkour2'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Bump pinned uv version in backend.Dockerfile
         run: |
@@ -114,7 +114,7 @@ jobs:
           cat pr-note.md
 
       - name: Upload docker pins
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: docker-pins
           path: |
@@ -124,22 +124,59 @@ jobs:
             pr-note.md
           retention-days: 5
 
+  gh-action-pins:
+    if: github.repository == 'maxplanck-ie/parkour2'
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Bump GitHub Action majors in workflow files
+        run: |
+          touch pr-note-actions.md
+          grep -hoE 'uses: [A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+@v[0-9]+' .github/workflows/*.yml | sort -u \
+          | while read -r _ ref; do
+              repo=${ref%@*}; cur=${ref##*@v}
+              latest=$(gh api "repos/$repo/releases/latest" --jq .tag_name 2>/dev/null | grep -oE '[0-9]+' | head -1 || true)
+              if [ -n "$latest" ] && [ "$latest" -gt "$cur" ]; then
+                sed -i "s|uses: $repo@v$cur|uses: $repo@v$latest|g" .github/workflows/*.yml
+                echo "- CI: bumped \`$repo\` v$cur -> v$latest" >> pr-note-actions.md
+              fi
+            done
+          cat pr-note-actions.md
+
+      - name: Upload workflow files
+        uses: actions/upload-artifact@v7
+        with:
+          name: gh-action-pins
+          path: |
+            .github/workflows
+            pr-note-actions.md
+          retention-days: 5
+
   create-pr:
-    needs: [python, vuejs, docker-pins]
+    needs: [python, vuejs, docker-pins, gh-action-pins]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         
       - name: Download VueJS package.json
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: package-json
           path: frontend/
       
       - name: Download docker pins
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: docker-pins
+          path: .
+
+      - name: Download workflow files
+        uses: actions/download-artifact@v8
+        with:
+          name: gh-action-pins
           path: .
 
       - name: Compose PR body
@@ -151,11 +188,11 @@ jobs:
           - Frontend: Updated Node.js dependencies
           - Docker: Bumped pinned uv version in backend.Dockerfile
           EOF
-          cat pr-note.md >> "$RUNNER_TEMP/pr-body.md"
-          rm pr-note.md
+          cat pr-note.md pr-note-actions.md >> "$RUNNER_TEMP/pr-body.md"
+          rm pr-note.md pr-note-actions.md
 
       - name: Download Python requirements
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           pattern: python-requirements-*
           path: temp/
@@ -168,7 +205,7 @@ jobs:
           done
 
       - name: Create Combined PR
-        uses: peter-evans/create-pull-request@v6
+        uses: peter-evans/create-pull-request@v8
         with:
           token: ${{ secrets.PAT_TOKEN }}
           branch: update/dependencies

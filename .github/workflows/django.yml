@@ -24,7 +24,7 @@ jobs:
     if: github.repository == 'maxplanck-ie/parkour2'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Build and see that DEBUG is respected
         run: |
           make prod-ci
@@ -33,7 +33,7 @@ jobs:
     if: github.repository == 'maxplanck-ie/parkour2'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Follow instructions
         run: |
           make
@@ -63,7 +63,7 @@ jobs:
 
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Setup debug session
         uses: mxschmitt/action-tmate@v3
@@ -74,12 +74,12 @@ jobs:
           limit-access-to-actor: true
 
       - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: ${{ matrix.python-version }}
 
       - name: Set up UV for py ${{ matrix.python-version }}
-        uses: astral-sh/setup-uv@v3
+        uses: astral-sh/setup-uv@v8
         with:
           enable-cache: true
           cache-dependency-glob: "backend/requirements/${{ matrix.python-version }}/*.txt"
