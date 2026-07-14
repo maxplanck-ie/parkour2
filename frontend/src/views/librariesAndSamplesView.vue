@@ -305,6 +305,7 @@
         </button>
 
         <button
+          v-if="isStaffUser"
           class="header-button"
           id="openROCratePopupButton"
           type="button"

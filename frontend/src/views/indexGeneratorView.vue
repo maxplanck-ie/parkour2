@@ -340,7 +340,8 @@ const fields = INDEX_GENERATOR_FIELDS;
 const ADD_RECORDS_TO_POOL_MESSAGE = "Add records to the pool first.";
 const GENERATE_SAMPLES_ONLY_MESSAGE =
   "Generate indices applies to samples only.";
-const SELECT_MULTIPLIER_MESSAGE = "Select a multiplier first.";
+const SELECT_MULTIPLIER_MESSAGE =
+  "Select a multiplier first to see the available pool sizes.";
 const SAVE_POOL_ADD_RECORDS_MESSAGE =
   "To save the pool add records to the pool first.";
 
