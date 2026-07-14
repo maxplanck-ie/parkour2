@@ -1,7 +1,7 @@
 services:
   parkour2-convert-backup:
     container_name: parkour2-convert-backup
-    image: postgres:latest
+    image: postgres:18
     env_file:
       - ./parkour.env
     restart: always

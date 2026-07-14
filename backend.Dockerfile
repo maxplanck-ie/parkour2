@@ -1,7 +1,6 @@
 ARG PyVersion=3.12  # to be repeated after FROM, docker syntax is at fault.
 FROM python:${PyVersion}-bullseye AS pk2_base
 ARG PyVersion=3.12
-COPY --from=ghcr.io/astral-sh/uv:latest /uv /bin/uv
 
 ENV \
     DEBIAN_FRONTEND=noninteractive \
@@ -19,13 +18,15 @@ ENV \
     PYTHONUTF8=1
 
 RUN apt-get update --fix-missing \
-    && apt-get -y upgrade \
-    && apt-get install -y software-properties-common \
     && apt-get install -y --no-install-recommends less locales \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
 RUN localedef -i en_US -f UTF-8 en_US.UTF-8
+
+## Pinned so uv releases don't invalidate the apt layers above;
+## kept up-to-date by the weekly deps.yml workflow
+COPY --from=ghcr.io/astral-sh/uv:0.11.28 /uv /bin/uv
 
 WORKDIR /usr/src/app
 

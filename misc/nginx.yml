@@ -1,7 +1,7 @@
 services:
   parkour2-nginx:
     container_name: parkour2-nginx
-    image: nginx:latest
+    image: nginx:1
     ports:
       - "80:80"
       - "443:443"

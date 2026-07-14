@@ -77,8 +77,55 @@ jobs:
           path: frontend/package.json
           retention-days: 5
 
+  docker-pins:
+    if: github.repository == 'maxplanck-ie/parkour2'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Bump pinned uv version in backend.Dockerfile
+        run: |
+          latest=$(curl -fsSL https://api.github.com/repos/astral-sh/uv/releases/latest | jq -r .tag_name)
+          sed -i -E "s|(ghcr\.io/astral-sh/uv:)[0-9.]+|\1${latest}|" backend.Dockerfile
+          grep astral-sh/uv backend.Dockerfile
+
+      - name: Bump caddy/nginx majors, warn on new postgres major
+        run: |
+          touch pr-note.md
+          tag_exists() {  # library image, tag
+            curl -fsSL "https://hub.docker.com/v2/repositories/library/$1/tags/$2" >/dev/null 2>&1
+          }
+          bump_major() {  # image, file
+            local cur next
+            cur=$(grep -oE "image: $1:[0-9]+" "$2" | grep -oE '[0-9]+$')
+            next=$((cur + 1))
+            if tag_exists "$1" "$next"; then
+              sed -i "s|image: $1:$cur|image: $1:$next|" "$2"
+              echo "- Docker: bumped \`$1\` major $cur -> $next in \`$2\`" >> pr-note.md
+            fi
+          }
+          bump_major caddy misc/caddy.yml
+          bump_major nginx misc/nginx.yml
+          # postgres: never auto-bump; a new major can't start on the old pgdb volume
+          pgcur=$(grep -oE 'image: postgres:[0-9]+' docker-compose.yml | grep -oE '[0-9]+$')
+          if tag_exists postgres "$((pgcur + 1))"; then
+            echo "- :warning: **postgres $((pgcur + 1)) is available** (pinned: $pgcur). Upgrading requires a dump/restore or pg_upgrade of the \`pgdb\` volume; update \`docker-compose.yml\` and \`misc/convert-backup.yml\` manually." >> pr-note.md
+          fi
+          cat pr-note.md
+
+      - name: Upload docker pins
+        uses: actions/upload-artifact@v4
+        with:
+          name: docker-pins
+          path: |
+            backend.Dockerfile
+            misc/caddy.yml
+            misc/nginx.yml
+            pr-note.md
+          retention-days: 5
+
   create-pr:
-    needs: [python, vuejs]
+    needs: [python, vuejs, docker-pins]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -89,6 +136,24 @@ jobs:
           name: package-json
           path: frontend/
       
+      - name: Download docker pins
+        uses: actions/download-artifact@v4
+        with:
+          name: docker-pins
+          path: .
+
+      - name: Compose PR body
+        run: |
+          cat > "$RUNNER_TEMP/pr-body.md" <<'EOF'
+          Update all frontend and backend dependencies.
+
+          - Backend: Updated Python dependencies for all supported versions
+          - Frontend: Updated Node.js dependencies
+          - Docker: Bumped pinned uv version in backend.Dockerfile
+          EOF
+          cat pr-note.md >> "$RUNNER_TEMP/pr-body.md"
+          rm pr-note.md
+
       - name: Download Python requirements
         uses: actions/download-artifact@v4
         with:
@@ -108,11 +173,7 @@ jobs:
           token: ${{ secrets.PAT_TOKEN }}
           branch: update/dependencies
           title: Update dependencies
-          body: |
-            Update all frontend and backend dependencies.
-            
-            - Backend: Updated Python dependencies for all supported versions
-            - Frontend: Updated Node.js dependencies
+          body-path: ${{ runner.temp }}/pr-body.md
           delete-branch: true
           labels: |
             Dependencies

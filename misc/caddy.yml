@@ -1,7 +1,7 @@
 services:
 
   parkour2-caddy:
-    image: caddy:latest
+    image: caddy:2
     container_name: parkour2-caddy
     restart: unless-stopped
     ports:
