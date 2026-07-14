@@ -1,11 +1,21 @@
 > Versioning is by dates (in `yy.mm.dd` format).
 
-??.??.??
+26.07.14
 ========
 
-- ...
-- New VueJS user interface available for Index Generator and Load Flowcells. These two were the last submodules that were pending.
-- Support to unload pools from flowcells.
+- New VueJS/Tabulator user interface available for Index Generator and Load Flowcells. These were the last submodules that were pending, so all submodules are now on the new frontend except Invoice, Statistics and Usage (still WIP).
+- Support to unload pools from flowcells, plus a "destroy flowcells" fix and clearer labels.
+- Index Generator: added a "Fill %" column and increased visibility of the Index Type column; header changes and styling fixes. Pool "Fill %" now respects the multiplier. Library coordinates are preserved when generating indices.
+- "Apply to all" / "Apply to selected records" is now more lenient: with no selection it applies to all records.
+- Change Ownership: now a search box, resequencing is available through it, and related projects are open to all users (with restrictions for normal and PI users). Related-projects scope is now enforced on the write path (security).
+- New Statistics pages.
+- RO-Crate: new Viewer with refined structure and MD5 generation; export button is restricted to staff; fixed preview and PDF export dropping name-only linked entities (#300); clarified the Size tooltip.
+- Emails: new `INSTANCE_VERSION` and `INSTANCE_NAME` env vars; instance version moved from the email subject into the signature.
+- Excel export cell typing is now explicit.
+- Added a sample/library name-ending validator to avoid downstream pipeline errors.
+- The Request edit window now forces a fresh GET of the request when opened.
+- Version number is now shown properly.
+- Updated backend and frontend dependencies (Django 5.2, simple-history 3.12, and others), with the required migrations added.
 
 
 26.04.23
