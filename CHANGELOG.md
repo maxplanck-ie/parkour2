@@ -16,6 +16,7 @@
 - The Request edit window now forces a fresh GET of the request when opened.
 - Version number is now shown properly.
 - Updated backend and frontend dependencies (Django 5.2, simple-history 3.12, and others), with the required migrations added.
+- Fixed nginx config for `make prod`: proxy `/vue/vue-assets/` to the frontend with the `/vue` prefix stripped, so the new UI assets load with the correct MIME type instead of a blank page.
 
 
 26.04.23
