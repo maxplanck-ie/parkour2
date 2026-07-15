@@ -160,6 +160,39 @@ class InvoicingViewSet(viewsets.ReadOnlyModelViewSet):
 
         return Response(data)
 
+    @action(methods=["get"], detail=False)
+    def reports(self, request):
+        """List every file available in the invoicing media directory.
+
+        This lets the frontend show all uploaded reports at once instead of
+        forcing the user to pick a month before seeing what exists.
+        """
+        import os
+
+        base_dir = os.path.join(settings.MEDIA_ROOT, "invoicing")
+        data = []
+
+        if os.path.isdir(base_dir):
+            for root, _dirs, files in os.walk(base_dir):
+                for filename in files:
+                    abs_path = os.path.join(root, filename)
+                    rel_path = os.path.relpath(abs_path, settings.MEDIA_ROOT)
+                    stat = os.stat(abs_path)
+                    data.append(
+                        {
+                            "name": filename,
+                            "path": rel_path.replace(os.sep, "/"),
+                            "url": settings.MEDIA_URL + rel_path.replace(os.sep, "/"),
+                            "size": stat.st_size,
+                            "modified": timezone.datetime.fromtimestamp(
+                                stat.st_mtime
+                            ).strftime("%Y-%m-%d %H:%M"),
+                        }
+                    )
+
+        data.sort(key=lambda x: x["modified"], reverse=True)
+        return Response(data)
+
     @action(
         methods=["post"],
         detail=False,

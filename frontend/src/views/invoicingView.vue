@@ -1,0 +1,506 @@
+<template>
+  <div class="parent-container">
+    <!-- Loading overlay -->
+    <div v-if="loading || fakeLoading" class="loading-overlay">
+      <div v-if="!fakeLoading" class="spinner"></div>
+      <p v-if="!fakeLoading">
+        Loading <span style="font-weight: bold">Invoicing</span>...
+      </p>
+    </div>
+
+    <!-- Header -->
+    <div class="header">
+      <div class="header-logo" style="display: inline; margin-right: 10px">
+        <img
+          :src="iconHeader"
+          alt="Invoicing"
+          width="42"
+          height="42"
+          style="display: block"
+        />
+      </div>
+      <div class="header-title" style="display: inline">Invoicing</div>
+
+      <!-- Sticky right section for filters and report actions -->
+      <div class="sticky-actions">
+        <div class="search-bar">
+          <input v-model="searchQuery" type="text" placeholder="Search" />
+          <font-awesome-icon
+            icon="fa-solid fa-magnifying-glass"
+            style="color: darkgrey"
+          />
+        </div>
+
+        <!-- Date range filter (billing months) -->
+        <div class="invoicing-filter">
+          <label for="invoicingStart">From</label>
+          <input
+            id="invoicingStart"
+            v-model="startMonth"
+            type="month"
+            @change="getInvoicing"
+          />
+        </div>
+        <div class="invoicing-filter">
+          <label for="invoicingEnd">To</label>
+          <input
+            id="invoicingEnd"
+            v-model="endMonth"
+            type="month"
+            @change="getInvoicing"
+          />
+        </div>
+
+        <!-- Sequencer filter -->
+        <div class="invoicing-filter">
+          <label for="invoicingSequencer">Sequencer</label>
+          <select id="invoicingSequencer" v-model="sequencerFilter">
+            <option value="">All</option>
+            <option v-for="name in sequencerOptions" :key="name" :value="name">
+              {{ name }}
+            </option>
+          </select>
+        </div>
+
+        <!-- Report actions -->
+        <button class="header-button" @click="downloadReport">
+          <font-awesome-icon icon="fa-solid fa-download" style="color: white" />
+          <span> Download Report </span>
+        </button>
+        <button class="header-button" @click="showUploadPopup = true">
+          <font-awesome-icon icon="fa-solid fa-upload" style="color: white" />
+          <span> Upload Reports </span>
+        </button>
+        <button class="header-button" @click="openViewReports">
+          <font-awesome-icon
+            icon="fa-solid fa-folder-open"
+            style="color: white"
+          />
+          <span> View Uploaded Reports </span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Main content section with table -->
+    <div class="table-container">
+      <TabulatorTable
+        v-if="!loading"
+        ref="tabulatorTableRef"
+        :rowData="filteredRows"
+        :columnDefs="columnsList"
+        :enableDefaultFilters="false"
+        :tableOptions="tableOptions"
+      />
+    </div>
+
+    <!-- Upload Reports popup -->
+    <div v-if="showUploadPopup" class="popup-overlay">
+      <div class="popup-container" :style="{ width: '500px', height: '260px' }">
+        <div class="popup-header">
+          <span class="popup-title">Upload Reports</span>
+          <button class="popup-close-button" @click="showUploadPopup = false">
+            &times;
+          </button>
+        </div>
+        <div class="popup-body">
+          <div class="invoicing-form-row">
+            <label>Select Month</label>
+            <input v-model="uploadMonth" type="month" />
+          </div>
+          <div class="invoicing-form-row">
+            <label>Browse Report</label>
+            <input ref="uploadFileInput" type="file" />
+          </div>
+        </div>
+        <div class="popup-footer">
+          <button class="popup-button yes-button" @click="uploadReport">
+            Upload
+          </button>
+          <button
+            class="popup-button secondary"
+            @click="showUploadPopup = false"
+          >
+            Cancel
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- View Uploaded Reports popup: lists everything in the invoicing media dir -->
+    <div v-if="showViewReportsPopup" class="popup-overlay">
+      <div class="popup-container" :style="{ width: '640px', height: '520px' }">
+        <div class="popup-header">
+          <span class="popup-title">View Uploaded Reports</span>
+          <button
+            class="popup-close-button"
+            @click="showViewReportsPopup = false"
+          >
+            &times;
+          </button>
+        </div>
+        <div class="popup-body">
+          <div
+            v-if="uploadedReports.length === 0"
+            style="text-align: center; padding: 30px; color: #888"
+          >
+            No uploaded reports found in the invoicing media directory.
+          </div>
+          <div v-else class="uploaded-reports-list">
+            <div
+              v-for="file in uploadedReports"
+              :key="file.path"
+              class="uploaded-report-item"
+            >
+              <div class="uploaded-report-info">
+                <font-awesome-icon
+                  icon="fa-solid fa-file-excel"
+                  style="color: #1d6f42; margin-right: 8px"
+                />
+                <div>
+                  <div class="uploaded-report-name">{{ file.name }}</div>
+                  <div class="uploaded-report-meta">
+                    {{ file.path }} · {{ formatSize(file.size) }} ·
+                    {{ file.modified }}
+                  </div>
+                </div>
+              </div>
+              <a
+                class="popup-button yes-button uploaded-report-download"
+                :href="file.url"
+                :download="file.name"
+              >
+                Download
+              </a>
+            </div>
+          </div>
+        </div>
+        <div class="popup-footer">
+          <button
+            class="popup-button secondary"
+            @click="showViewReportsPopup = false"
+          >
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+import TabulatorTable from "../components/TabulatorTableFull.vue";
+import {
+  showNotification,
+  handleError,
+  createAxiosObject,
+  urlStringStartsWith
+} from "../utilities/utilityFunctions";
+import { invoicingColumnDefs } from "../constants/invoicingConsts";
+import iconHeader from "../assets/icons/header_statistics.svg";
+
+const axiosRef = createAxiosObject();
+const urlStringStart = urlStringStartsWith();
+
+function currentMonthString() {
+  const today = new Date();
+  return `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(
+    2,
+    "0"
+  )}`;
+}
+
+export default {
+  name: "Invoicing",
+  components: {
+    TabulatorTable
+  },
+  data() {
+    return {
+      iconHeader,
+      loading: true,
+      fakeLoading: false,
+      invoicingList: [],
+      columnsList: [],
+      readLengthNames: {},
+      libraryProtocolNames: {},
+      searchQuery: "",
+      startMonth: currentMonthString(),
+      endMonth: currentMonthString(),
+      sequencerFilter: "",
+      showUploadPopup: false,
+      showViewReportsPopup: false,
+      uploadMonth: currentMonthString(),
+      uploadedReports: [],
+      tableOptions: {
+        index: "request",
+        placeholder: "No invoicing items to show."
+      }
+    };
+  },
+  computed: {
+    sequencerOptions() {
+      const set = new Set();
+      this.invoicingList.forEach((row) => {
+        (row.sequencerList || []).forEach((name) => set.add(name));
+      });
+      return [...set].sort();
+    },
+    filteredRows() {
+      const query = this.searchQuery.trim().toLowerCase();
+      return this.invoicingList.filter((row) => {
+        const matchesSequencer =
+          !this.sequencerFilter ||
+          (row.sequencerList || []).includes(this.sequencerFilter);
+        const matchesSearch =
+          !query ||
+          [row.request, row.cost_unit, row.sequencer, row.library_protocol]
+            .join(" ")
+            .toLowerCase()
+            .includes(query);
+        return matchesSequencer && matchesSearch;
+      });
+    }
+  },
+  async mounted() {
+    this.columnsList = invoicingColumnDefs();
+    await this.fetchLookups();
+    await this.getInvoicing();
+  },
+  methods: {
+    fakeLoadingStart() {
+      this.fakeLoading = true;
+    },
+    fakeLoadingStop() {
+      setTimeout(() => {
+        this.fakeLoading = false;
+      }, 300);
+    },
+    async fetchLookups() {
+      try {
+        const [readLengths, protocols] = await Promise.all([
+          axiosRef.get(urlStringStart + "/api/read_lengths_invoicing/"),
+          axiosRef.get(urlStringStart + "/api/library_protocols_invoicing/")
+        ]);
+        (readLengths.data || []).forEach((item) => {
+          this.readLengthNames[item.id] = item.name;
+        });
+        (protocols.data || []).forEach((item) => {
+          this.libraryProtocolNames[item.id] = item.name;
+        });
+      } catch (error) {
+        handleError(error);
+      }
+    },
+    async getInvoicing() {
+      if (this.startMonth > this.endMonth) {
+        showNotification(
+          "The 'From' month cannot be later than the 'To' month.",
+          "warning"
+        );
+        return;
+      }
+      this.loading = true;
+      try {
+        const response = await axiosRef.get(
+          urlStringStart + "/api/invoicing/",
+          {
+            params: { start: this.startMonth, end: this.endMonth }
+          }
+        );
+        this.invoicingList = (response.data || [])
+          .filter((element) => element.library_protocol !== "")
+          .map((element) => {
+            const sequencerList = [
+              ...new Set((element.sequencer || []).map((x) => x.sequencer_name))
+            ].sort();
+            const percentage = (element.percentage || [])
+              .map((flowcell) =>
+                (flowcell.pools || []).map((p) => p.percentage).join(", ")
+              )
+              .join("; ");
+            const readLength = [...(element.read_length || [])]
+              .map((id) => this.readLengthNames[id] || id)
+              .sort()
+              .join("; ");
+            return {
+              request: element.request || "",
+              cost_unit: element.cost_unit || "",
+              sequencerList,
+              sequencer: sequencerList.join("; "),
+              flowcell: (element.flowcell || []).join("; "),
+              pool: (element.pool || []).join("; "),
+              percentage,
+              read_length: readLength,
+              num_libraries_samples_show:
+                element.num_libraries_samples_show || "",
+              library_protocol:
+                this.libraryProtocolNames[element.library_protocol] ||
+                element.library_protocol ||
+                "",
+              fixed_costs: element.fixed_costs,
+              sequencing_costs: element.sequencing_costs,
+              preparation_costs: element.preparation_costs,
+              variable_costs: element.variable_costs,
+              total_costs: element.total_costs
+            };
+          });
+      } catch (error) {
+        handleError(error);
+      } finally {
+        this.loading = false;
+      }
+    },
+    downloadReport() {
+      const params = new URLSearchParams({
+        start: this.startMonth,
+        end: this.endMonth
+      });
+      window.open(
+        `${urlStringStart}/api/invoicing/download/?${params.toString()}`,
+        "_blank"
+      );
+    },
+    async uploadReport() {
+      const fileInput = this.$refs.uploadFileInput;
+      const file = fileInput && fileInput.files && fileInput.files[0];
+      if (!this.uploadMonth) {
+        showNotification("Please select the month.", "warning");
+        return;
+      }
+      if (!file) {
+        showNotification("Please select the report file.", "warning");
+        return;
+      }
+      const payload = new FormData();
+      payload.append("report", file);
+      payload.append("month", this.uploadMonth);
+      try {
+        await axiosRef.post(
+          `${urlStringStart}/api/invoicing/upload/`,
+          payload,
+          { headers: { "Content-Type": "multipart/form-data" } }
+        );
+        showNotification("Report has been successfully uploaded.", "success");
+        this.showUploadPopup = false;
+      } catch (error) {
+        showNotification("Error while uploading the report.", "error");
+      }
+    },
+    async openViewReports() {
+      this.showViewReportsPopup = true;
+      try {
+        const response = await axiosRef.get(
+          `${urlStringStart}/api/invoicing/reports/`
+        );
+        this.uploadedReports = response.data || [];
+      } catch (error) {
+        handleError(error);
+      }
+    },
+    formatSize(bytes) {
+      if (bytes === null || bytes === undefined) return "";
+      if (bytes < 1024) return `${bytes} B`;
+      if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
+      return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
+    }
+  }
+};
+</script>
+
+<style>
+html,
+body,
+#app {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.parent-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+}
+
+.table-container {
+  flex: 1;
+  overflow: auto;
+  position: relative;
+}
+
+.invoicing-filter {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-right: 10px;
+  color: white;
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+.invoicing-filter input,
+.invoicing-filter select {
+  padding: 4px 6px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 13px;
+}
+
+.invoicing-form-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.invoicing-form-row label {
+  width: 110px;
+  font-weight: bold;
+}
+
+.invoicing-form-row input {
+  flex: 1;
+  padding: 5px 6px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.uploaded-reports-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.uploaded-report-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 10px;
+  border: 1px solid #eee;
+  border-radius: 6px;
+}
+
+.uploaded-report-info {
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+}
+
+.uploaded-report-name {
+  font-weight: bold;
+  font-size: 13px;
+}
+
+.uploaded-report-meta {
+  font-size: 11px;
+  color: #888;
+}
+
+.uploaded-report-download {
+  text-decoration: none;
+  white-space: nowrap;
+  margin-left: 10px;
+}
+</style>
