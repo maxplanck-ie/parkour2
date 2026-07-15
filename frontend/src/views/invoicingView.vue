@@ -31,24 +31,26 @@
           />
         </div>
 
-        <!-- Date range filter (billing months) -->
-        <div class="invoicing-filter">
-          <label for="invoicingStart">From</label>
-          <input
-            id="invoicingStart"
-            v-model="startMonth"
-            type="month"
-            @change="getInvoicing"
-          />
-        </div>
-        <div class="invoicing-filter">
-          <label for="invoicingEnd">To</label>
-          <input
-            id="invoicingEnd"
-            v-model="endMonth"
-            type="month"
-            @change="getInvoicing"
-          />
+        <!-- Date range filter (billing months derived from the picked date) -->
+        <div class="date-filters">
+          <div class="date-filter">
+            <label for="invoicingStart">From</label>
+            <input
+              id="invoicingStart"
+              v-model="startDate"
+              type="date"
+              :class="{ 'invalid-date': !startDateValid }"
+            />
+          </div>
+          <div class="date-filter">
+            <label for="invoicingEnd">To</label>
+            <input
+              id="invoicingEnd"
+              v-model="endDate"
+              type="date"
+              :class="{ 'invalid-date': !endDateValid }"
+            />
+          </div>
         </div>
 
         <!-- Sequencer filter -->
@@ -105,7 +107,7 @@
         <div class="popup-body">
           <div class="invoicing-form-row">
             <label>Select Month</label>
-            <input v-model="uploadMonth" type="month" />
+            <input v-model="uploadDate" type="date" />
           </div>
           <div class="invoicing-form-row">
             <label>Browse Report</label>
@@ -145,9 +147,9 @@
           >
             No uploaded reports found in the invoicing media directory.
           </div>
-          <div v-else class="uploaded-reports-list">
+          <div v-else class="uploaded-reports-list" @scroll="onReportsScroll">
             <div
-              v-for="file in uploadedReports"
+              v-for="file in visibleReports"
               :key="file.path"
               class="uploaded-report-item"
             >
@@ -175,6 +177,14 @@
           </div>
         </div>
         <div class="popup-footer">
+          <span
+            v-if="uploadedReports.length > 0"
+            class="uploaded-report-meta"
+            style="margin-right: auto"
+          >
+            Showing {{ visibleReports.length }} of
+            {{ uploadedReports.length }}
+          </span>
           <button
             class="popup-button secondary"
             @click="showViewReportsPopup = false"
@@ -196,21 +206,23 @@ import {
   urlStringStartsWith
 } from "../utilities/utilityFunctions";
 import { invoicingColumnDefs } from "../constants/invoicingConsts";
+import { isValidDate, formatDateForInput } from "../utilities/dateUtils";
 import iconHeader from "../assets/icons/header_statistics.svg";
 
 const axiosRef = createAxiosObject();
 const urlStringStart = urlStringStartsWith();
+const REPORTS_PAGE_SIZE = 20;
 
-function currentMonthString() {
-  const today = new Date();
-  return `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(
-    2,
-    "0"
-  )}`;
+function todayString() {
+  return formatDateForInput(new Date());
+}
+
+function monthOf(dateString) {
+  return (dateString || "").slice(0, 7);
 }
 
 export default {
-  name: "Invoicing",
+  name: "InvoicingView",
   components: {
     TabulatorTable
   },
@@ -224,13 +236,17 @@ export default {
       readLengthNames: {},
       libraryProtocolNames: {},
       searchQuery: "",
-      startMonth: currentMonthString(),
-      endMonth: currentMonthString(),
+      startDate: todayString(),
+      endDate: todayString(),
+      startDateValid: true,
+      endDateValid: true,
+      dateChangeTimer: null,
       sequencerFilter: "",
       showUploadPopup: false,
       showViewReportsPopup: false,
-      uploadMonth: currentMonthString(),
+      uploadDate: todayString(),
       uploadedReports: [],
+      visibleReportsCount: REPORTS_PAGE_SIZE,
       tableOptions: {
         index: "request",
         placeholder: "No invoicing items to show."
@@ -259,12 +275,28 @@ export default {
             .includes(query);
         return matchesSequencer && matchesSearch;
       });
+    },
+    visibleReports() {
+      return this.uploadedReports.slice(0, this.visibleReportsCount);
+    }
+  },
+  watch: {
+    startDate(newVal) {
+      this.handleDateChange("start", newVal);
+    },
+    endDate(newVal) {
+      this.handleDateChange("end", newVal);
     }
   },
   async mounted() {
     this.columnsList = invoicingColumnDefs();
     await this.fetchLookups();
     await this.getInvoicing();
+  },
+  beforeUnmount() {
+    if (this.dateChangeTimer) {
+      clearTimeout(this.dateChangeTimer);
+    }
   },
   methods: {
     fakeLoadingStart() {
@@ -291,20 +323,38 @@ export default {
         handleError(error);
       }
     },
+    handleDateChange(type, value) {
+      clearTimeout(this.dateChangeTimer);
+      this[`${type}DateValid`] = isValidDate(value);
+      if (!this[`${type}DateValid`]) return;
+      this.dateChangeTimer = setTimeout(() => {
+        this.getInvoicing();
+      }, 500);
+    },
     async getInvoicing() {
-      if (this.startMonth > this.endMonth) {
+      if (!isValidDate(this.startDate) || !isValidDate(this.endDate)) {
+        return;
+      }
+      if (this.startDate > this.endDate) {
+        this.startDateValid = false;
+        this.endDateValid = false;
         showNotification(
-          "The 'From' month cannot be later than the 'To' month.",
+          "The 'From' date cannot be later than the 'To' date.",
           "warning"
         );
         return;
       }
+      this.startDateValid = true;
+      this.endDateValid = true;
       this.loading = true;
       try {
         const response = await axiosRef.get(
           urlStringStart + "/api/invoicing/",
           {
-            params: { start: this.startMonth, end: this.endMonth }
+            params: {
+              start: monthOf(this.startDate),
+              end: monthOf(this.endDate)
+            }
           }
         );
         this.invoicingList = (response.data || [])
@@ -352,8 +402,8 @@ export default {
     },
     downloadReport() {
       const params = new URLSearchParams({
-        start: this.startMonth,
-        end: this.endMonth
+        start: monthOf(this.startDate),
+        end: monthOf(this.endDate)
       });
       window.open(
         `${urlStringStart}/api/invoicing/download/?${params.toString()}`,
@@ -363,7 +413,7 @@ export default {
     async uploadReport() {
       const fileInput = this.$refs.uploadFileInput;
       const file = fileInput && fileInput.files && fileInput.files[0];
-      if (!this.uploadMonth) {
+      if (!isValidDate(this.uploadDate)) {
         showNotification("Please select the month.", "warning");
         return;
       }
@@ -373,7 +423,7 @@ export default {
       }
       const payload = new FormData();
       payload.append("report", file);
-      payload.append("month", this.uploadMonth);
+      payload.append("month", monthOf(this.uploadDate));
       try {
         await axiosRef.post(
           `${urlStringStart}/api/invoicing/upload/`,
@@ -383,11 +433,12 @@ export default {
         showNotification("Report has been successfully uploaded.", "success");
         this.showUploadPopup = false;
       } catch (error) {
-        showNotification("Error while uploading the report.", "error");
+        showNotification("Error while uploading the report: " + error, "error");
       }
     },
     async openViewReports() {
       this.showViewReportsPopup = true;
+      this.visibleReportsCount = REPORTS_PAGE_SIZE;
       try {
         const response = await axiosRef.get(
           `${urlStringStart}/api/invoicing/reports/`
@@ -395,6 +446,16 @@ export default {
         this.uploadedReports = response.data || [];
       } catch (error) {
         handleError(error);
+      }
+    },
+    onReportsScroll(event) {
+      const el = event.target;
+      const nearBottom = el.scrollHeight - el.scrollTop - el.clientHeight < 80;
+      if (
+        nearBottom &&
+        this.visibleReportsCount < this.uploadedReports.length
+      ) {
+        this.visibleReportsCount += REPORTS_PAGE_SIZE;
       }
     },
     formatSize(bytes) {
@@ -471,6 +532,8 @@ body,
   display: flex;
   flex-direction: column;
   gap: 8px;
+  max-height: 380px;
+  overflow-y: auto;
 }
 
 .uploaded-report-item {
