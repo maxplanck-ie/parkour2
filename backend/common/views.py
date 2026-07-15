@@ -123,7 +123,7 @@ def get_navigation_tree(request):
             {
                 "text": "Invoicing",
                 "iconCls": "x-fa fa-eur",
-                "viewType": "invoicing",
+                "viewType": "invoicing-vue",
                 "leaf": True,
             },
             {
