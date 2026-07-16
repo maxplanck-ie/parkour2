@@ -1,5 +1,14 @@
 > Versioning is by dates (in `yy.mm.dd` format).
 
+26.07.16
+========
+
+- Load Flowcells: restored the "Download Sample Sheet" action (per-flowcell button in the group header), including the `download_sample_sheet` and `retrieve_samplesheet` backend endpoints and the AVITI RunManifest format.
+- Load Flowcells: "Apply to All" now stays within the flowcell (its lanes) instead of spilling across flowcells sharing a request or protocol.
+- Load Flowcells: selecting a lane from a different flowcell no longer leaves its checkbox visually checked after the warning; the invalid selection is undone.
+- Load Flowcells: redesigned the Load dialog — larger window, Sequencer and Flowcell ID moved beside the lane assignment with inline labels, and the Available Pools list reflowed to use the full vertical height.
+
+
 26.07.14
 ========
 
