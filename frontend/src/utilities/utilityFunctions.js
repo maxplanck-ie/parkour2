@@ -329,6 +329,8 @@ export function applyValueToAllRows(cell, getTabulatorInstance, options = {}) {
         (!requestId && data.request_name === requestName);
     } else if (groupByField === "library_protocol_name") {
       sameGroup = data.library_protocol_name === protocolName;
+    } else if (groupByField) {
+      sameGroup = data[groupByField] === rowData[groupByField];
     } else {
       sameGroup =
         (requestId && data.request_id === requestId) ||

@@ -6,6 +6,7 @@ import {
 import iconSelectAll from "../assets/icons/action_select_all.svg";
 import iconDeselectAll from "../assets/icons/action_deselect_all.svg";
 import iconDestroyPool from "../assets/icons/action_pool_destroy.svg";
+import iconExportDownload from "../assets/icons/export_download.svg";
 
 export function loadFlowcellsGroupHeader(value, rows = []) {
   const formattedDate = rows[0]?.create_time || "";
@@ -27,6 +28,9 @@ export function loadFlowcellsGroupHeader(value, rows = []) {
         </div>
       </div>
       <div class="group-action-buttons-container" style="position: sticky; gap: 5px;">
+        <div title="Download Sample Sheet" class="group-action-button" onclick="handleGroupButtonClick(event, '${value}', 'downloadSampleSheet')">
+          <img src="${iconExportDownload}" alt="Download Sample Sheet" width="24" height="24" />
+        </div>
         <div title="Destroy Flowcell" class="group-action-button" onclick="handleGroupButtonClick(event, '${value}', 'destroyFlowcell')">
           <img src="${iconDestroyPool}" alt="Destroy Flowcell" width="24" height="24" />
         </div>

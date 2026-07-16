@@ -1334,9 +1334,41 @@ export default {
         case "deselectAll":
           await this.setGroupSelection(groupValue, false);
           break;
+        case "downloadSampleSheet":
+          await this.downloadSampleSheetForFlowcell(groupValue);
+          break;
         case "destroyFlowcell":
           this.confirmDestroyFlowcell(groupValue);
           break;
+      }
+    },
+    async downloadSampleSheetForFlowcell(flowcellId) {
+      const flowcellRows = this.flowcellsList.filter(
+        (row) => row.flowcell_id === flowcellId
+      );
+      if (flowcellRows.length === 0) {
+        showNotification("Flowcell was not found.", "warning");
+        return;
+      }
+
+      const flowcellPk = flowcellRows[0]?.flowcell;
+      if (!flowcellPk) {
+        showNotification("Flowcell ID was not found.", "error");
+        return;
+      }
+
+      try {
+        const response = await axiosRef.post(
+          `${urlStringStart}/api/flowcells/download_sample_sheet/`,
+          {
+            ids: JSON.stringify(flowcellRows.map((row) => row.pk)),
+            flowcell_id: flowcellPk
+          },
+          { responseType: "blob" }
+        );
+        saveAs(response.data, `${flowcellId || "flowcell"}_SampleSheet.csv`);
+      } catch (error) {
+        handleError(error);
       }
     },
     confirmDestroyFlowcell(flowcellId) {
