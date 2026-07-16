@@ -112,10 +112,10 @@ clean:
 
 sweep:  ## Remove any sqldump and migrations tar gzipped older than a week. (Excluding current symlink targets.)
 	@find ./misc -ctime +7 -name db_\*.sqldump \
-		-not -name "$$(file misc/latest.sqldump | sed 's/.*\(db_.*\.sqldump\).*/\1/')" \
+		-not -name "$$(readlink misc/latest.sqldump || basename misc/latest.sqldump)" \
 		-exec /bin/rm -rf {} +;
 	@find ./misc -ctime +7 -name migras_\*.tar.gz \
-		-not -name "$$(file misc/migras.tar.gz | sed 's/.*\(migras_.*\.tar\.gz\).*/\1/')" \
+		-not -name "$$(readlink misc/migras.tar.gz || basename misc/migras.tar.gz)" \
 		-exec /bin/rm -rf {} +;
 
 prune:
