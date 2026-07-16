@@ -108,7 +108,7 @@ set-base:
 clean:
 	@#docker compose exec parkour2-django rm -f backend/logs/*.log
 	@$(MAKE) set-base hardreset-caddyfile-prod hardreset-nginx-server-prod hardreset-frontend-dockerfile disable-explorer > /dev/null
-	@test -e ./misc/parkour.env.ignore && git checkout ./misc/parkour.env || :
+	@git ls-files --error-unmatch ./misc/parkour.env >/dev/null 2>&1 && git checkout -- ./misc/parkour.env 2>/dev/null || :
 
 sweep:  ## Remove any sqldump and migrations tar gzipped older than a week. (Excluding current symlink targets.)
 	@find ./misc -ctime +7 -name db_\*.sqldump \
