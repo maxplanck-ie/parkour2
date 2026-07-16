@@ -623,46 +623,6 @@
         </div>
         <div class="popup-body">
           <div class="load-flowcell-layout">
-            <div class="load-panel load-flowcell-setup-panel">
-              <div class="load-panel-body">
-                <div class="load-form-grid">
-                  <div
-                    class="filter-item load-form-field"
-                    style="margin-bottom: 0"
-                  >
-                    <label>Sequencer</label>
-                    <select
-                      v-model="loadForm.sequencerId"
-                      :class="{ 'input-error': loadSequencerError }"
-                      @change="handleSequencerChange"
-                    >
-                      <option :value="null">Select Sequencer</option>
-                      <option
-                        v-for="sequencer in sequencersList"
-                        :key="sequencer.id"
-                        :value="sequencer.id"
-                      >
-                        {{ sequencer.name }}
-                      </option>
-                    </select>
-                  </div>
-                  <div
-                    class="filter-item load-form-field"
-                    style="margin-bottom: 0"
-                  >
-                    <label>Flowcell ID</label>
-                    <input
-                      v-model.trim="loadForm.flowcellId"
-                      type="text"
-                      placeholder="Flowcell ID"
-                      :class="{ 'input-error': flowcellIdError }"
-                      @input="flowcellIdError = false"
-                    />
-                  </div>
-                </div>
-              </div>
-            </div>
-
             <div class="load-flowcell-columns">
               <div class="load-flowcell-left">
                 <div class="load-panel load-pools-panel">
@@ -731,6 +691,45 @@
               </div>
 
               <div class="load-flowcell-right">
+                <div class="load-panel load-flowcell-setup-panel">
+                  <div class="load-panel-body">
+                    <div class="load-form-grid">
+                      <div
+                        class="filter-item load-form-field"
+                        style="margin-bottom: 0"
+                      >
+                        <label>Sequencer</label>
+                        <select
+                          v-model="loadForm.sequencerId"
+                          :class="{ 'input-error': loadSequencerError }"
+                          @change="handleSequencerChange"
+                        >
+                          <option :value="null">Select Sequencer</option>
+                          <option
+                            v-for="sequencer in sequencersList"
+                            :key="sequencer.id"
+                            :value="sequencer.id"
+                          >
+                            {{ sequencer.name }}
+                          </option>
+                        </select>
+                      </div>
+                      <div
+                        class="filter-item load-form-field"
+                        style="margin-bottom: 0"
+                      >
+                        <label>Flowcell ID</label>
+                        <input
+                          v-model.trim="loadForm.flowcellId"
+                          type="text"
+                          placeholder="Flowcell ID"
+                          :class="{ 'input-error': flowcellIdError }"
+                          @input="flowcellIdError = false"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
                 <div class="load-panel lane-board">
                   <div class="lane-board-header">
                     <div class="lane-board-title-block">
