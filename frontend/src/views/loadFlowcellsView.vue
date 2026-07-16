@@ -144,10 +144,6 @@
           />
           <span> Export to Excel </span>
         </button>
-        <button class="header-button" @click="downloadSampleSheet">
-          <font-awesome-icon icon="fa-solid fa-file-csv" style="color: white" />
-          <span> Download Sample Sheet </span>
-        </button>
         <button class="header-button" @click="openLoadPopup">
           <font-awesome-icon
             icon="fa-solid fa-square-plus"
@@ -1355,14 +1351,6 @@ export default {
         return;
       }
       await this.downloadSampleSheetForRows(flowcellRows);
-    },
-    async downloadSampleSheet() {
-      const selectedRows = this.selectedRows;
-      if (selectedRows.length === 0) {
-        showNotification("You did not select any lanes.", "warning");
-        return;
-      }
-      await this.downloadSampleSheetForRows(selectedRows);
     },
     async downloadSampleSheetForRows(rows) {
       const selectedRows = rows || [];
