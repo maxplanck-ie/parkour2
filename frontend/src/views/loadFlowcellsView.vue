@@ -2534,8 +2534,8 @@ export default {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
   grid-template-areas:
-    "name meta"
-    "read button";
+    "name button"
+    "read meta";
   column-gap: 14px;
   row-gap: 8px;
   align-items: center;
