@@ -144,6 +144,10 @@
           />
           <span> Export to Excel </span>
         </button>
+        <button class="header-button" @click="downloadSampleSheet">
+          <font-awesome-icon icon="fa-solid fa-file-csv" style="color: white" />
+          <span> Download Sample Sheet </span>
+        </button>
         <button class="header-button" @click="openLoadPopup">
           <font-awesome-icon
             icon="fa-solid fa-square-plus"
@@ -1350,10 +1354,34 @@ export default {
         showNotification("Flowcell was not found.", "warning");
         return;
       }
+      await this.downloadSampleSheetForRows(flowcellRows);
+    },
+    async downloadSampleSheet() {
+      const selectedRows = this.selectedRows;
+      if (selectedRows.length === 0) {
+        showNotification("You did not select any lanes.", "warning");
+        return;
+      }
+      await this.downloadSampleSheetForRows(selectedRows);
+    },
+    async downloadSampleSheetForRows(rows) {
+      const selectedRows = rows || [];
+      if (selectedRows.length === 0) {
+        showNotification("You did not select any lanes.", "warning");
+        return;
+      }
 
-      const flowcellPk = flowcellRows[0]?.flowcell;
+      const flowcellPk = selectedRows[0]?.flowcell;
       if (!flowcellPk) {
         showNotification("Flowcell ID was not found.", "error");
+        return;
+      }
+
+      if (selectedRows.some((row) => row.flowcell !== flowcellPk)) {
+        showNotification(
+          "Select lanes from the same flowcell to download a sample sheet.",
+          "warning"
+        );
         return;
       }
 
@@ -1361,12 +1389,15 @@ export default {
         const response = await axiosRef.post(
           `${urlStringStart}/api/flowcells/download_sample_sheet/`,
           {
-            ids: JSON.stringify(flowcellRows.map((row) => row.pk)),
+            ids: JSON.stringify(selectedRows.map((row) => row.pk)),
             flowcell_id: flowcellPk
           },
           { responseType: "blob" }
         );
-        saveAs(response.data, `${flowcellId || "flowcell"}_SampleSheet.csv`);
+        saveAs(
+          response.data,
+          `${selectedRows[0].flowcell_id || "flowcell"}_SampleSheet.csv`
+        );
       } catch (error) {
         handleError(error);
       }
