@@ -1266,6 +1266,11 @@ export default {
       const table = this.tabulatorInstance?.getTable?.();
       if (table) {
         await table.updateData([{ pk, selected }]);
+        // Force a re-render so the native checkbox reflects the data even when
+        // the value did not change (e.g. rejecting a click that natively
+        // checked the box while the row's selected flag stayed false).
+        const row = table.getRows().find((r) => r.getData().pk === pk);
+        row?.reformat?.();
       }
     },
     async handleRowSelectionToggle(rowData, checked) {
