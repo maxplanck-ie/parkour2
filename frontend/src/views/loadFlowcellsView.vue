@@ -623,191 +623,204 @@
         </div>
         <div class="popup-body">
           <div class="load-flowcell-layout">
-            <div class="load-flowcell-left">
-              <div class="load-panel load-flowcell-setup-panel">
-                <div class="load-panel-header">
-                  <span>Flowcell Setup</span>
-                </div>
-                <div class="load-panel-body">
-                  <div class="load-form-grid">
-                    <div
-                      class="filter-item load-form-field"
-                      style="margin-bottom: 0"
-                    >
-                      <label>Sequencer</label>
-                      <select
-                        v-model="loadForm.sequencerId"
-                        :class="{ 'input-error': loadSequencerError }"
-                        @change="handleSequencerChange"
-                      >
-                        <option :value="null">Select Sequencer</option>
-                        <option
-                          v-for="sequencer in sequencersList"
-                          :key="sequencer.id"
-                          :value="sequencer.id"
-                        >
-                          {{ sequencer.name }}
-                        </option>
-                      </select>
-                    </div>
-                    <div
-                      class="filter-item load-form-field"
-                      style="margin-bottom: 0"
-                    >
-                      <label>Flowcell ID</label>
-                      <input
-                        v-model.trim="loadForm.flowcellId"
-                        type="text"
-                        placeholder="Flowcell ID"
-                        :class="{ 'input-error': flowcellIdError }"
-                        @input="flowcellIdError = false"
-                      />
-                    </div>
-                  </div>
-                </div>
+            <div class="load-panel load-flowcell-setup-panel">
+              <div class="load-panel-header">
+                <span>Flowcell Setup</span>
               </div>
-
-              <div class="load-panel load-pools-panel">
-                <div class="load-panel-header">
-                  <span>Available Pools</span>
-                  <span class="load-panel-subtitle">
-                    Ready pools can be dragged into open lanes.
-                  </span>
-                </div>
-                <div class="load-pools-list">
+              <div class="load-panel-body">
+                <div class="load-form-grid">
                   <div
-                    v-if="!loadModalAvailablePools.length"
-                    class="load-empty-state"
+                    class="filter-item load-form-field"
+                    style="margin-bottom: 0"
                   >
-                    No pools are currently available for loading.
-                  </div>
-                  <template v-else>
-                    <div
-                      v-for="pool in loadModalAvailablePools"
-                      :key="pool.pk"
-                      class="load-pool-row"
-                      :class="{
-                        ready: pool.ready,
-                        disabled: !pool.ready || pool.remainingLoads <= 0,
-                        dragging: draggedPoolId === pool.pk
-                      }"
-                      :draggable="pool.ready && pool.remainingLoads > 0"
-                      @dragstart="startPoolDrag(pool)"
-                      @dragend="handlePoolDragEnd"
+                    <label>Sequencer</label>
+                    <select
+                      v-model="loadForm.sequencerId"
+                      :class="{ 'input-error': loadSequencerError }"
+                      @change="handleSequencerChange"
                     >
-                      <div class="load-pool-main">
-                        <span
-                          class="load-pool-name load-pool-link"
-                          @click.stop="openPoolInfoPopupByPool(pool)"
-                        >
-                          {{ pool.name }}
-                        </span>
-                        <span
-                          class="load-pool-read-length"
-                          :title="`Read length: ${pool.read_length_name || '-'}`"
-                        >
-                          Read length: {{ pool.read_length_name || "-" }}
-                        </span>
-                      </div>
-                      <div class="load-pool-right">
-                        <div class="load-pool-meta">
-                          Pool size: {{ pool.remainingLoadsLabel }}
-                        </div>
-                        <button
-                          class="load-pool-return-button"
-                          :disabled="!pool.ready"
-                          :title="
-                            pool.ready
-                              ? 'Return pool to Index Generator'
-                              : 'Only ready pools can be returned'
-                          "
-                          @click.stop="confirmReturnPoolToPooling(pool)"
-                        >
-                          Return to Index Generator
-                        </button>
-                      </div>
-                    </div>
-                  </template>
+                      <option :value="null">Select Sequencer</option>
+                      <option
+                        v-for="sequencer in sequencersList"
+                        :key="sequencer.id"
+                        :value="sequencer.id"
+                      >
+                        {{ sequencer.name }}
+                      </option>
+                    </select>
+                  </div>
+                  <div
+                    class="filter-item load-form-field"
+                    style="margin-bottom: 0"
+                  >
+                    <label>Flowcell ID</label>
+                    <input
+                      v-model.trim="loadForm.flowcellId"
+                      type="text"
+                      placeholder="Flowcell ID"
+                      :class="{ 'input-error': flowcellIdError }"
+                      @input="flowcellIdError = false"
+                    />
+                  </div>
                 </div>
               </div>
             </div>
 
-            <div class="load-flowcell-right">
-              <div class="load-panel lane-board">
-                <div class="lane-board-header">
-                  <div class="lane-board-title-block">
-                    <span class="lane-board-title">Assign Pools to Lanes</span>
-                    <span class="lane-board-subtitle">
-                      Drag a ready pool from the left side onto each lane card.
+            <div class="load-flowcell-columns">
+              <div class="load-flowcell-left">
+                <div class="load-panel load-pools-panel">
+                  <div class="load-panel-header">
+                    <span>Available Pools</span>
+                    <span class="load-panel-subtitle">
+                      Ready pools can be dragged into open lanes.
                     </span>
                   </div>
-                  <span v-if="currentLoadSequencer" class="lane-board-capacity">
-                    Lane Capacity (M): {{ currentLoadSequencer.lane_capacity }}
-                  </span>
-                </div>
-                <div v-if="!currentLoadSequencer" class="load-empty-state">
-                  Choose a sequencer first to display its lanes.
-                </div>
-                <div v-else class="lane-grid">
-                  <div
-                    v-for="laneName in loadModalLaneNames"
-                    :key="laneName"
-                    class="lane-drop-card"
-                    :class="{
-                      loaded: !!loadAssignments[laneName],
-                      droppable: isLaneDropAllowed(laneName),
-                      'drop-hover':
-                        hoveredLaneName === laneName &&
-                        isLaneDropAllowed(laneName)
-                    }"
-                    @dragover.prevent="handleLaneDragOver(laneName)"
-                    @drop="handleLaneDrop(laneName)"
-                  >
-                    <div class="lane-drop-card-title">{{ laneName }}</div>
-                    <div class="lane-drop-card-content">
+                  <div class="load-pools-list">
+                    <div
+                      v-if="!loadModalAvailablePools.length"
+                      class="load-empty-state"
+                    >
+                      No pools are currently available for loading.
+                    </div>
+                    <template v-else>
                       <div
-                        class="lane-drop-card-pool"
+                        v-for="pool in loadModalAvailablePools"
+                        :key="pool.pk"
+                        class="load-pool-row"
                         :class="{
-                          'lane-drop-card-hidden': !loadAssignments[laneName],
-                          'lane-drop-card-pool-clickable':
-                            !!loadAssignments[laneName]
+                          ready: pool.ready,
+                          disabled: !pool.ready || pool.remainingLoads <= 0,
+                          dragging: draggedPoolId === pool.pk
                         }"
-                        @click="
-                          loadAssignments[laneName] &&
-                          openPoolInfoPopupByPool(loadAssignments[laneName])
-                        "
+                        :draggable="pool.ready && pool.remainingLoads > 0"
+                        @dragstart="startPoolDrag(pool)"
+                        @dragend="handlePoolDragEnd"
                       >
-                        {{ loadAssignments[laneName]?.name || "-" }}
+                        <div class="load-pool-main">
+                          <span
+                            class="load-pool-name load-pool-link"
+                            @click.stop="openPoolInfoPopupByPool(pool)"
+                          >
+                            {{ pool.name }}
+                          </span>
+                          <span
+                            class="load-pool-read-length"
+                            :title="`Read length: ${pool.read_length_name || '-'}`"
+                          >
+                            Read length: {{ pool.read_length_name || "-" }}
+                          </span>
+                        </div>
+                        <div class="load-pool-right">
+                          <div class="load-pool-meta">
+                            Pool size: {{ pool.remainingLoadsLabel }}
+                          </div>
+                          <button
+                            class="load-pool-return-button"
+                            :disabled="!pool.ready"
+                            :title="
+                              pool.ready
+                                ? 'Return pool to Index Generator'
+                                : 'Only ready pools can be returned'
+                            "
+                            @click.stop="confirmReturnPoolToPooling(pool)"
+                          >
+                            Return to Index Generator
+                          </button>
+                        </div>
                       </div>
-                      <div
-                        class="lane-drop-card-meta"
-                        :class="{
-                          'lane-drop-card-hidden': !loadAssignments[laneName]
-                        }"
+                    </template>
+                  </div>
+                </div>
+              </div>
+
+              <div class="load-flowcell-right">
+                <div class="load-panel lane-board">
+                  <div class="lane-board-header">
+                    <div class="lane-board-title-block">
+                      <span class="lane-board-title"
+                        >Assign Pools to Lanes</span
                       >
-                        {{ loadAssignments[laneName]?.read_length_name || "-" }}
+                      <span class="lane-board-subtitle">
+                        Drag a ready pool from the left side onto each lane
+                        card.
+                      </span>
+                    </div>
+                    <span
+                      v-if="currentLoadSequencer"
+                      class="lane-board-capacity"
+                    >
+                      Lane Capacity (M):
+                      {{ currentLoadSequencer.lane_capacity }}
+                    </span>
+                  </div>
+                  <div v-if="!currentLoadSequencer" class="load-empty-state">
+                    Choose a sequencer first to display its lanes.
+                  </div>
+                  <div v-else class="lane-grid">
+                    <div
+                      v-for="laneName in loadModalLaneNames"
+                      :key="laneName"
+                      class="lane-drop-card"
+                      :class="{
+                        loaded: !!loadAssignments[laneName],
+                        droppable: isLaneDropAllowed(laneName),
+                        'drop-hover':
+                          hoveredLaneName === laneName &&
+                          isLaneDropAllowed(laneName)
+                      }"
+                      @dragover.prevent="handleLaneDragOver(laneName)"
+                      @drop="handleLaneDrop(laneName)"
+                    >
+                      <div class="lane-drop-card-title">{{ laneName }}</div>
+                      <div class="lane-drop-card-content">
+                        <div
+                          class="lane-drop-card-pool"
+                          :class="{
+                            'lane-drop-card-hidden': !loadAssignments[laneName],
+                            'lane-drop-card-pool-clickable':
+                              !!loadAssignments[laneName]
+                          }"
+                          @click="
+                            loadAssignments[laneName] &&
+                            openPoolInfoPopupByPool(loadAssignments[laneName])
+                          "
+                        >
+                          {{ loadAssignments[laneName]?.name || "-" }}
+                        </div>
+                        <div
+                          class="lane-drop-card-meta"
+                          :class="{
+                            'lane-drop-card-hidden': !loadAssignments[laneName]
+                          }"
+                        >
+                          {{
+                            loadAssignments[laneName]?.read_length_name || "-"
+                          }}
+                        </div>
+                        <div
+                          class="lane-drop-placeholder"
+                          :class="{
+                            'lane-drop-card-hidden':
+                              !!loadAssignments[laneName],
+                            'lane-drop-placeholder-empty':
+                              !loadAssignments[laneName]
+                          }"
+                        >
+                          Drop Pool Here
+                        </div>
                       </div>
-                      <div
-                        class="lane-drop-placeholder"
+                      <button
+                        class="lane-remove-button"
                         :class="{
-                          'lane-drop-card-hidden': !!loadAssignments[laneName],
-                          'lane-drop-placeholder-empty':
+                          'lane-remove-button-hidden':
                             !loadAssignments[laneName]
                         }"
+                        :disabled="!loadAssignments[laneName]"
+                        @click="unassignLane(laneName)"
                       >
-                        Drop Pool Here
-                      </div>
+                        Remove
+                      </button>
                     </div>
-                    <button
-                      class="lane-remove-button"
-                      :class="{
-                        'lane-remove-button-hidden': !loadAssignments[laneName]
-                      }"
-                      :disabled="!loadAssignments[laneName]"
-                      @click="unassignLane(laneName)"
-                    >
-                      Remove
-                    </button>
                   </div>
                 </div>
               </div>
@@ -2140,8 +2153,8 @@ export default {
 }
 
 .load-flowcell-popup {
-  width: 1040px;
-  height: 760px;
+  width: 1100px;
+  height: calc(100vh - 32px);
   max-height: calc(100vh - 32px);
   overflow: hidden;
 }
@@ -2166,10 +2179,18 @@ export default {
 }
 
 .load-flowcell-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  height: 100%;
+  min-height: 0;
+}
+
+.load-flowcell-columns {
   display: grid;
   grid-template-columns: 0.8fr 1.3fr;
   gap: 14px;
-  height: 100%;
+  flex: 1;
   min-height: 0;
 }
 
@@ -2185,10 +2206,20 @@ export default {
   overflow: hidden;
 }
 
+.load-flowcell-setup-panel {
+  flex-shrink: 0;
+}
+
 .load-form-grid {
   display: flex;
-  flex-direction: column;
-  gap: 8px;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+
+.load-form-grid .load-form-field {
+  flex: 1 1 220px;
+  min-width: 0;
 }
 
 .load-form-field label {
@@ -2640,7 +2671,7 @@ export default {
     height: 88vh;
   }
 
-  .load-flowcell-layout {
+  .load-flowcell-columns {
     grid-template-columns: 1fr;
   }
 }
