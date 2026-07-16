@@ -724,7 +724,7 @@
                       @keydown.down.prevent="moveRelatedProjectHighlight(1)"
                       @keydown.up.prevent="moveRelatedProjectHighlight(-1)"
                       @keydown.enter.prevent="selectHighlightedRelatedProject"
-                      :disabled="!canEditRequest"
+                      :disabled="!canEditRelatedProjects"
                       placeholder="Search by Request ID or name"
                     />
                     <font-awesome-icon
@@ -764,11 +764,11 @@
                       v-for="project in relatedProjectsSelection"
                       :key="`selected-related-${project.id}`"
                       class="related-project-chip"
-                      :class="{ disabled: !canEditRequest }"
+                      :class="{ disabled: !canEditRelatedProjects }"
                     >
                       <span>#{{ project.id }}</span>
                       <button
-                        v-if="canEditRequest"
+                        v-if="canEditRelatedProjects"
                         type="button"
                         class="related-project-remove"
                         :aria-label="`Remove related project #${project.id}`"
@@ -914,7 +914,7 @@
               :disabled="
                 isRequestSaving ||
                 (isEditMode && isRequestLoading) ||
-                !canEditRequest
+                (!canEditRequest && !relatedProjectsChanged)
               "
               @click="saveRequest"
             >
@@ -1382,6 +1382,26 @@ export default {
       if (!this.isEditMode) return true;
       if (this.isStaffUser) return true;
       return !this.restrictPermissions;
+    },
+    canEditRelatedProjects() {
+      // Related projects stay editable even when restrict_permissions
+      // locks the rest of the request: staff have unrestricted access,
+      // and normal users can only link requests the backend lets them
+      // see (their own, plus PI-group requests for is_pi users).
+      return true;
+    },
+    relatedProjectsChanged() {
+      if (!this.isEditMode) return false;
+      const current = (this.relatedProjectsSelection || [])
+        .map((project) => String(project.id))
+        .sort();
+      const base = (this.editSnapshot?.related_request_ids || [])
+        .map(String)
+        .sort();
+      return (
+        current.length !== base.length ||
+        current.some((id, index) => id !== base[index])
+      );
     },
     requestEditorModeLabel() {
       return this.requestEditorMode === "library" ? "Library" : "Sample";
@@ -4042,7 +4062,7 @@ export default {
       }
     },
     async fetchRelatedProjects({ query = "", ids = [] } = {}) {
-      if (!this.canEditRequest) return;
+      if (!this.canEditRelatedProjects) return;
       try {
         const normalizedIds = (Array.isArray(ids) ? ids : [])
           .map((id) => Number(id))
@@ -4156,7 +4176,7 @@ export default {
       }
     },
     handleRelatedProjectInput(event) {
-      if (!this.canEditRequest) return;
+      if (!this.canEditRelatedProjects) return;
       const query = String(event.target.value || "");
       this.relatedProjectQuery = query;
       this.showRelatedProjectSuggestions = !!query;
@@ -4201,7 +4221,7 @@ export default {
       }
     },
     moveRelatedProjectHighlight(direction) {
-      if (!this.canEditRequest) return;
+      if (!this.canEditRelatedProjects) return;
       this.openRelatedProjectSuggestions();
       this.moveAutocompleteHighlight(
         "highlightedRelatedProjectSuggestionIndex",
@@ -4220,7 +4240,7 @@ export default {
       }
     },
     removeRelatedProject(projectId) {
-      if (!this.canEditRequest) return;
+      if (!this.canEditRelatedProjects) return;
       const id = Number(projectId);
       this.relatedProjectsSelection = this.relatedProjectsSelection.filter(
         (project) => project.id !== id
@@ -4342,6 +4362,9 @@ export default {
     },
     async saveExistingRequest() {
       if (!this.canEditRequest) {
+        if (this.relatedProjectsChanged) {
+          return this.saveRelatedProjectsOnly();
+        }
         showNotification("You lack permission to edit requests.", "warning");
         return;
       }
@@ -4491,6 +4514,75 @@ export default {
             related_requests: this.relatedProjectsSelection.map(
               (project) => project.id
             ),
+            files: this.uploadedRequestFiles || [],
+            fileIds: this.uploadedRequestFileIds || [],
+            records: {
+              library: this.editRecordsByType.library || [],
+              sample: this.editRecordsByType.sample || []
+            }
+          });
+          if (this.closeOnSave) {
+            this.emitClose();
+          }
+        } else {
+          showNotification("Request update failed.", "error");
+        }
+      } catch (error) {
+        handleError(error);
+      } finally {
+        this.isRequestSaving = false;
+      }
+    },
+    async saveRelatedProjectsOnly() {
+      // Limited save path for locked (restrict_permissions) requests:
+      // only related_requests may change; every other field is resubmitted
+      // from the load-time snapshot so nothing else is modified.
+      if (this.isRequestSaving) return;
+      if (!this.requestId) {
+        showNotification("Request ID is missing.", "error");
+        return;
+      }
+      try {
+        this.isRequestSaving = true;
+        const relatedRequestIds = this.relatedProjectsSelection.map(
+          (project) => project.id
+        );
+        const payload = {
+          cost_unit: this.editSnapshot.cost_unit || null,
+          description: this.editSnapshot.description || "",
+          related_requests: relatedRequestIds,
+          records: this.existingRecords.map((record) => ({
+            pk: record.pk,
+            record_type: record.record_type
+          })),
+          files: this.editSnapshot.fileIds || []
+        };
+        const formData = new FormData();
+        formData.append("data", JSON.stringify(payload));
+        const response = await axiosRef.post(
+          `${urlStringStart}/api/requests/${this.requestId}/edit/`,
+          formData,
+          {
+            headers: { "Content-Type": "multipart/form-data" }
+          }
+        );
+        if (response?.data?.success) {
+          this.editSnapshot.related_request_ids = [...relatedRequestIds];
+          if (this.notifyOnSave) {
+            showNotification(
+              "Related projects updated successfully.",
+              "success"
+            );
+          }
+          this.emitSaved({
+            success: true,
+            mode: "edit",
+            request_id: this.requestId,
+            name: response.data.name,
+            user: response.data.user,
+            cost_unit: this.editSnapshot.cost_unit || null,
+            description: this.editSnapshot.description || "",
+            related_requests: relatedRequestIds,
             files: this.uploadedRequestFiles || [],
             fileIds: this.uploadedRequestFileIds || [],
             records: {
