@@ -2218,16 +2218,27 @@ export default {
 .load-form-grid .load-form-field {
   flex: 1 1 220px;
   min-width: 0;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
 }
 
 .load-form-field label {
-  padding: 0 0 5px;
+  padding: 0;
   margin-bottom: 0;
   border: none;
   background: transparent;
   color: #244a60;
   font-size: 12px;
   font-weight: 700;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.load-form-grid .load-form-field select,
+.load-form-grid .load-form-field input[type="text"] {
+  flex: 1;
 }
 
 .load-form-field select,
