@@ -624,9 +624,6 @@
         <div class="popup-body">
           <div class="load-flowcell-layout">
             <div class="load-panel load-flowcell-setup-panel">
-              <div class="load-panel-header">
-                <span>Flowcell Setup</span>
-              </div>
               <div class="load-panel-body">
                 <div class="load-form-grid">
                   <div
@@ -2153,7 +2150,8 @@ export default {
 }
 
 .load-flowcell-popup {
-  width: 1100px;
+  width: 1320px;
+  max-width: calc(100vw - 32px);
   height: calc(100vh - 32px);
   max-height: calc(100vh - 32px);
   overflow: hidden;
