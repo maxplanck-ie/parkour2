@@ -53,17 +53,6 @@
           </div>
         </div>
 
-        <!-- Sequencer filter -->
-        <div class="invoicing-filter">
-          <label for="invoicingSequencer">Sequencer</label>
-          <select id="invoicingSequencer" v-model="sequencerFilter">
-            <option value="">All</option>
-            <option v-for="name in sequencerOptions" :key="name" :value="name">
-              {{ name }}
-            </option>
-          </select>
-        </div>
-
         <!-- Report actions -->
         <button class="header-button" @click="downloadReport">
           <font-awesome-icon icon="fa-solid fa-download" style="color: white" />
@@ -241,7 +230,6 @@ export default {
       startDateValid: true,
       endDateValid: true,
       dateChangeTimer: null,
-      sequencerFilter: "",
       showUploadPopup: false,
       showViewReportsPopup: false,
       uploadDate: todayString(),
@@ -254,27 +242,15 @@ export default {
     };
   },
   computed: {
-    sequencerOptions() {
-      const set = new Set();
-      this.invoicingList.forEach((row) => {
-        (row.sequencerList || []).forEach((name) => set.add(name));
-      });
-      return [...set].sort();
-    },
     filteredRows() {
       const query = this.searchQuery.trim().toLowerCase();
-      return this.invoicingList.filter((row) => {
-        const matchesSequencer =
-          !this.sequencerFilter ||
-          (row.sequencerList || []).includes(this.sequencerFilter);
-        const matchesSearch =
-          !query ||
-          [row.request, row.cost_unit, row.sequencer, row.library_protocol]
-            .join(" ")
-            .toLowerCase()
-            .includes(query);
-        return matchesSequencer && matchesSearch;
-      });
+      if (!query) return this.invoicingList;
+      return this.invoicingList.filter((row) =>
+        [row.request, row.cost_unit, row.sequencer, row.library_protocol]
+          .join(" ")
+          .toLowerCase()
+          .includes(query)
+      );
     },
     visibleReports() {
       return this.uploadedReports.slice(0, this.visibleReportsCount);
@@ -372,12 +348,21 @@ export default {
               .map((id) => this.readLengthNames[id] || id)
               .sort()
               .join("; ");
+            // Each flowcell entry is "dd.mm.yyyy FLOWCELLID"; split into
+            // separate Date and Flowcell ID columns.
+            const flowcellEntries = element.flowcell || [];
+            const flowcellDates = flowcellEntries.map(
+              (entry) => entry.split(" ")[0]
+            );
+            const flowcellIds = flowcellEntries.map((entry) =>
+              entry.split(" ").slice(1).join(" ")
+            );
             return {
               request: element.request || "",
               cost_unit: element.cost_unit || "",
-              sequencerList,
               sequencer: sequencerList.join("; "),
-              flowcell: (element.flowcell || []).join("; "),
+              flowcell_date: flowcellDates.join("; "),
+              flowcell_id: flowcellIds.join("; "),
               pool: (element.pool || []).join("; "),
               percentage,
               read_length: readLength,

@@ -55,54 +55,80 @@ export function invoicingColumnDefs() {
       minWidth: 250,
       frozen: true,
       cssClass: "right-border",
+      headerFilter: true,
+      headerFilterPlaceholder: "Filter...",
       formatter: textFormatter("left", true)
     },
     {
       field: "cost_unit",
       title: "Cost Unit",
       minWidth: 150,
+      headerFilter: true,
+      headerFilterPlaceholder: "Filter...",
       formatter: textFormatter("left")
     },
     {
       field: "sequencer",
       title: "Sequencer",
       minWidth: 160,
+      headerFilter: true,
+      headerFilterPlaceholder: "Filter...",
       formatter: textFormatter("left")
     },
     {
-      field: "flowcell",
-      title: "Date + Flowcell ID",
-      minWidth: 200,
+      field: "flowcell_date",
+      title: "Date",
+      minWidth: 130,
+      headerFilter: true,
+      headerFilterPlaceholder: "Filter...",
+      formatter: textFormatter("left")
+    },
+    {
+      field: "flowcell_id",
+      title: "Flowcell ID",
+      minWidth: 160,
+      headerFilter: true,
+      headerFilterPlaceholder: "Filter...",
       formatter: textFormatter("left")
     },
     {
       field: "pool",
       title: "Pool",
       minWidth: 150,
+      headerFilter: true,
+      headerFilterPlaceholder: "Filter...",
       formatter: textFormatter("left")
     },
     {
       field: "percentage",
       title: "%",
       minWidth: 120,
+      headerFilter: true,
+      headerFilterPlaceholder: "Filter...",
       formatter: textFormatter("left")
     },
     {
       field: "read_length",
       title: "Read Length",
       minWidth: 150,
+      headerFilter: true,
+      headerFilterPlaceholder: "Filter...",
       formatter: textFormatter("left")
     },
     {
       field: "num_libraries_samples_show",
       title: "# of Libraries/Samples",
       minWidth: 160,
+      headerFilter: true,
+      headerFilterPlaceholder: "Filter...",
       formatter: textFormatter("left")
     },
     {
       field: "library_protocol",
       title: "Library Protocol",
       minWidth: 200,
+      headerFilter: true,
+      headerFilterPlaceholder: "Filter...",
       formatter: textFormatter("left")
     },
     {
@@ -110,6 +136,8 @@ export function invoicingColumnDefs() {
       title: "Fixed Costs",
       minWidth: 130,
       hozAlign: "right",
+      headerFilter: true,
+      headerFilterPlaceholder: "Filter...",
       formatter: moneyFormatter()
     },
     {
@@ -117,6 +145,8 @@ export function invoicingColumnDefs() {
       title: "Sequencing Costs",
       minWidth: 140,
       hozAlign: "right",
+      headerFilter: true,
+      headerFilterPlaceholder: "Filter...",
       formatter: moneyFormatter()
     },
     {
@@ -124,6 +154,8 @@ export function invoicingColumnDefs() {
       title: "Preparation Costs",
       minWidth: 140,
       hozAlign: "right",
+      headerFilter: true,
+      headerFilterPlaceholder: "Filter...",
       formatter: moneyFormatter()
     },
     {
@@ -131,6 +163,8 @@ export function invoicingColumnDefs() {
       title: "Variable Costs",
       minWidth: 130,
       hozAlign: "right",
+      headerFilter: true,
+      headerFilterPlaceholder: "Filter...",
       formatter: moneyFormatter()
     },
     {
@@ -138,6 +172,8 @@ export function invoicingColumnDefs() {
       title: "Total Costs",
       minWidth: 130,
       hozAlign: "right",
+      headerFilter: true,
+      headerFilterPlaceholder: "Filter...",
       formatter: moneyFormatter()
     }
   ];
