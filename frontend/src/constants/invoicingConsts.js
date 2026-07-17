@@ -47,12 +47,64 @@ function moneyFormatter() {
   };
 }
 
+// Parse a comparison expression typed into a numeric header filter.
+// Supports: ">100", ">=100", "<50", "<=50", "=0", "100" (exact) and
+// "100-200" (inclusive range). Returns null for an empty box (no filter)
+// and {op: "invalid"} for a partial/unparsable entry (treated as no
+// filter so rows are not all hidden mid-typing).
+function parseNumericExpression(raw) {
+  const s = String(raw ?? "").trim();
+  if (!s) return null;
+  const num = (x) => Number(String(x).replace(",", "."));
+  const between = s.match(/^(\d+(?:[.,]\d+)?)\s*-\s*(\d+(?:[.,]\d+)?)$/);
+  if (between) {
+    return { op: "between", a: num(between[1]), b: num(between[2]) };
+  }
+  const cmp = s.match(/^(>=|<=|>|<|=)?\s*(-?\d+(?:[.,]\d+)?)$/);
+  if (cmp) {
+    return { op: cmp[1] || "=", a: num(cmp[2]) };
+  }
+  return { op: "invalid" };
+}
+
+// Build a Tabulator headerFilterFunc that compares each row's numeric value
+// (via `extract`) against the parsed comparison expression.
+function numericHeaderFilter(extract) {
+  return (headerValue, rowValue) => {
+    const expr = parseNumericExpression(headerValue);
+    if (!expr || expr.op === "invalid") return true;
+    const v = extract(rowValue);
+    if (v === null || v === undefined || Number.isNaN(v)) return false;
+    switch (expr.op) {
+      case ">":
+        return v > expr.a;
+      case ">=":
+        return v >= expr.a;
+      case "<":
+        return v < expr.a;
+      case "<=":
+        return v <= expr.a;
+      case "=":
+        return v === expr.a;
+      case "between": {
+        const lo = Math.min(expr.a, expr.b);
+        const hi = Math.max(expr.a, expr.b);
+        return v >= lo && v <= hi;
+      }
+      default:
+        return true;
+    }
+  };
+}
+
+const NUMERIC_FILTER_PLACEHOLDER = ">100  50-200";
+
 export function invoicingColumnDefs() {
   return [
     {
       field: "request",
       title: "Request",
-      minWidth: 250,
+      minWidth: 150,
       frozen: true,
       cssClass: "right-border",
       headerFilter: true,
@@ -62,7 +114,7 @@ export function invoicingColumnDefs() {
     {
       field: "cost_unit",
       title: "Cost Unit",
-      minWidth: 150,
+      minWidth: 90,
       headerFilter: true,
       headerFilterPlaceholder: "Filter...",
       formatter: textFormatter("left")
@@ -70,7 +122,7 @@ export function invoicingColumnDefs() {
     {
       field: "sequencer",
       title: "Sequencer",
-      minWidth: 160,
+      minWidth: 115,
       headerFilter: true,
       headerFilterPlaceholder: "Filter...",
       formatter: textFormatter("left")
@@ -78,7 +130,7 @@ export function invoicingColumnDefs() {
     {
       field: "flowcell_date",
       title: "Date",
-      minWidth: 130,
+      minWidth: 95,
       headerFilter: true,
       headerFilterPlaceholder: "Filter...",
       formatter: textFormatter("left")
@@ -86,7 +138,7 @@ export function invoicingColumnDefs() {
     {
       field: "flowcell_id",
       title: "Flowcell ID",
-      minWidth: 160,
+      minWidth: 120,
       headerFilter: true,
       headerFilterPlaceholder: "Filter...",
       formatter: textFormatter("left")
@@ -94,7 +146,7 @@ export function invoicingColumnDefs() {
     {
       field: "pool",
       title: "Pool",
-      minWidth: 150,
+      minWidth: 100,
       headerFilter: true,
       headerFilterPlaceholder: "Filter...",
       formatter: textFormatter("left")
@@ -102,7 +154,7 @@ export function invoicingColumnDefs() {
     {
       field: "percentage",
       title: "%",
-      minWidth: 120,
+      minWidth: 90,
       headerFilter: true,
       headerFilterPlaceholder: "Filter...",
       formatter: textFormatter("left")
@@ -110,7 +162,7 @@ export function invoicingColumnDefs() {
     {
       field: "read_length",
       title: "Read Length",
-      minWidth: 150,
+      minWidth: 105,
       headerFilter: true,
       headerFilterPlaceholder: "Filter...",
       formatter: textFormatter("left")
@@ -118,15 +170,16 @@ export function invoicingColumnDefs() {
     {
       field: "num_libraries_samples_show",
       title: "# of Libraries/Samples",
-      minWidth: 160,
-      headerFilter: true,
-      headerFilterPlaceholder: "Filter...",
+      minWidth: 115,
+      headerFilter: "input",
+      headerFilterPlaceholder: NUMERIC_FILTER_PLACEHOLDER,
+      headerFilterFunc: numericHeaderFilter((v) => parseFloat(String(v))),
       formatter: textFormatter("left")
     },
     {
       field: "library_protocol",
       title: "Library Protocol",
-      minWidth: 200,
+      minWidth: 140,
       headerFilter: true,
       headerFilterPlaceholder: "Filter...",
       formatter: textFormatter("left")
@@ -134,46 +187,51 @@ export function invoicingColumnDefs() {
     {
       field: "fixed_costs",
       title: "Fixed Costs",
-      minWidth: 130,
+      minWidth: 95,
       hozAlign: "right",
-      headerFilter: true,
-      headerFilterPlaceholder: "Filter...",
+      headerFilter: "input",
+      headerFilterPlaceholder: NUMERIC_FILTER_PLACEHOLDER,
+      headerFilterFunc: numericHeaderFilter((v) => Number(v)),
       formatter: moneyFormatter()
     },
     {
       field: "sequencing_costs",
       title: "Sequencing Costs",
-      minWidth: 140,
+      minWidth: 105,
       hozAlign: "right",
-      headerFilter: true,
-      headerFilterPlaceholder: "Filter...",
+      headerFilter: "input",
+      headerFilterPlaceholder: NUMERIC_FILTER_PLACEHOLDER,
+      headerFilterFunc: numericHeaderFilter((v) => Number(v)),
       formatter: moneyFormatter()
     },
     {
       field: "preparation_costs",
       title: "Preparation Costs",
-      minWidth: 140,
+      minWidth: 105,
       hozAlign: "right",
-      headerFilter: true,
-      headerFilterPlaceholder: "Filter...",
+      headerFilter: "input",
+      headerFilterPlaceholder: NUMERIC_FILTER_PLACEHOLDER,
+      headerFilterFunc: numericHeaderFilter((v) => Number(v)),
       formatter: moneyFormatter()
     },
     {
       field: "variable_costs",
       title: "Variable Costs",
-      minWidth: 130,
+      minWidth: 95,
       hozAlign: "right",
-      headerFilter: true,
-      headerFilterPlaceholder: "Filter...",
+      headerFilter: "input",
+      headerFilterPlaceholder: NUMERIC_FILTER_PLACEHOLDER,
+      headerFilterFunc: numericHeaderFilter((v) => Number(v)),
       formatter: moneyFormatter()
     },
     {
       field: "total_costs",
       title: "Total Costs",
-      minWidth: 130,
+      minWidth: 95,
       hozAlign: "right",
-      headerFilter: true,
-      headerFilterPlaceholder: "Filter...",
+      headerFilter: "input",
+      headerFilterPlaceholder: NUMERIC_FILTER_PLACEHOLDER,
+      headerFilterFunc: numericHeaderFilter((v) => Number(v)),
       formatter: moneyFormatter()
     }
   ];
