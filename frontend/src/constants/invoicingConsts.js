@@ -98,6 +98,24 @@ function numericHeaderFilter(extract) {
 }
 
 const NUMERIC_FILTER_PLACEHOLDER = ">100  50-200";
+const NUMERIC_FILTER_HELP =
+  "Numeric filter — type a comparison:\n" +
+  ">100  above    <50  below\n" +
+  ">=100 / <=50   at least / at most\n" +
+  "=0  exact      100-200  range";
+
+// Shared config that turns a column's header filter into the numeric
+// comparison-expression filter, with a syntax tooltip on both the header
+// title and the filter input.
+function numericFilterConfig(extract) {
+  return {
+    headerFilter: "input",
+    headerFilterPlaceholder: NUMERIC_FILTER_PLACEHOLDER,
+    headerFilterFunc: numericHeaderFilter(extract),
+    headerFilterParams: { elementAttributes: { title: NUMERIC_FILTER_HELP } },
+    headerTooltip: NUMERIC_FILTER_HELP
+  };
+}
 
 export function invoicingColumnDefs() {
   return [
@@ -171,9 +189,7 @@ export function invoicingColumnDefs() {
       field: "num_libraries_samples_show",
       title: "# of Libraries/Samples",
       minWidth: 115,
-      headerFilter: "input",
-      headerFilterPlaceholder: NUMERIC_FILTER_PLACEHOLDER,
-      headerFilterFunc: numericHeaderFilter((v) => parseFloat(String(v))),
+      ...numericFilterConfig((v) => parseFloat(String(v))),
       formatter: textFormatter("left")
     },
     {
@@ -189,9 +205,7 @@ export function invoicingColumnDefs() {
       title: "Fixed Costs",
       minWidth: 95,
       hozAlign: "right",
-      headerFilter: "input",
-      headerFilterPlaceholder: NUMERIC_FILTER_PLACEHOLDER,
-      headerFilterFunc: numericHeaderFilter((v) => Number(v)),
+      ...numericFilterConfig((v) => Number(v)),
       formatter: moneyFormatter()
     },
     {
@@ -199,9 +213,7 @@ export function invoicingColumnDefs() {
       title: "Sequencing Costs",
       minWidth: 105,
       hozAlign: "right",
-      headerFilter: "input",
-      headerFilterPlaceholder: NUMERIC_FILTER_PLACEHOLDER,
-      headerFilterFunc: numericHeaderFilter((v) => Number(v)),
+      ...numericFilterConfig((v) => Number(v)),
       formatter: moneyFormatter()
     },
     {
@@ -209,9 +221,7 @@ export function invoicingColumnDefs() {
       title: "Preparation Costs",
       minWidth: 105,
       hozAlign: "right",
-      headerFilter: "input",
-      headerFilterPlaceholder: NUMERIC_FILTER_PLACEHOLDER,
-      headerFilterFunc: numericHeaderFilter((v) => Number(v)),
+      ...numericFilterConfig((v) => Number(v)),
       formatter: moneyFormatter()
     },
     {
@@ -219,9 +229,7 @@ export function invoicingColumnDefs() {
       title: "Variable Costs",
       minWidth: 95,
       hozAlign: "right",
-      headerFilter: "input",
-      headerFilterPlaceholder: NUMERIC_FILTER_PLACEHOLDER,
-      headerFilterFunc: numericHeaderFilter((v) => Number(v)),
+      ...numericFilterConfig((v) => Number(v)),
       formatter: moneyFormatter()
     },
     {
@@ -229,9 +237,7 @@ export function invoicingColumnDefs() {
       title: "Total Costs",
       minWidth: 95,
       hozAlign: "right",
-      headerFilter: "input",
-      headerFilterPlaceholder: NUMERIC_FILTER_PLACEHOLDER,
-      headerFilterFunc: numericHeaderFilter((v) => Number(v)),
+      ...numericFilterConfig((v) => Number(v)),
       formatter: moneyFormatter()
     }
   ];
