@@ -14,10 +14,10 @@
     "start-prod": "npm install && vite build && npx serve -s dist -l 5173"
   },
   "dependencies": {
-    "@fortawesome/fontawesome-svg-core": "7.3.0",
-    "@fortawesome/free-regular-svg-icons": "7.3.0",
-    "@fortawesome/free-solid-svg-icons": "7.3.0",
-    "@fortawesome/vue-fontawesome": "3.3.1",
+    "@fortawesome/fontawesome-svg-core": "7.3.1",
+    "@fortawesome/free-regular-svg-icons": "7.3.1",
+    "@fortawesome/free-solid-svg-icons": "7.3.1",
+    "@fortawesome/vue-fontawesome": "3.3.2",
     "ag-grid-community": "34.1.2",
     "ag-grid-vue3": "34.1.2",
     "axios": "1.18.1",
@@ -27,23 +27,23 @@
     "js-cookie": "3.0.8",
     "jszip": "^3.10.1",
     "moment": "2.30.1",
-    "pinia": "3.0.4",
+    "pinia": "4.0.2",
     "sass": "1.101.0",
     "serve": "14.2.6",
     "tabulator-tables": "6.5.2",
-    "vue": "3.5.39",
-    "vue-router": "5.1.0",
+    "vue": "3.5.40",
+    "vue-router": "5.2.0",
     "vue-toastification": "2.0.0-rc.5",
     "xlsx": "https://cdn.sheetjs.com/xlsx-0.20.3/xlsx-0.20.3.tgz"
   },
   "devDependencies": {
     "@eslint/js": "10.0.1",
-    "@vitejs/plugin-vue": "6.0.7",
+    "@vitejs/plugin-vue": "6.0.8",
     "@vitejs/plugin-vue-jsx": "5.1.6",
     "eslint": "10.7.0",
     "eslint-plugin-vue": "10.9.2",
     "globals": "17.7.0",
     "vue-eslint-parser": "10.4.1",
-    "vite": "8.1.4"
+    "vite": "8.1.5"
   }
 }
