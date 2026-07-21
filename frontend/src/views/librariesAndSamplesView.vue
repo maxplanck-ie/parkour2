@@ -1552,6 +1552,7 @@ export default {
       roCratePreviewConfig: null,
       requestEditorSyncing: false,
       requestEditorSyncTimer: null,
+      requestEditorSyncAttempts: 0,
       pendingSavedRequestId: null,
       pendingSavedMode: null,
       paperlessApproval: false,
@@ -2394,6 +2395,7 @@ export default {
       }
       this.pendingSavedRequestId = requestId;
       this.requestEditorSyncing = true;
+      this.requestEditorSyncAttempts = 0;
 
       if (!this.pendingSavedRequestId) {
         this.getLibrariesSamples(1, false, true).finally(() => {
@@ -2402,14 +2404,21 @@ export default {
         return;
       }
 
+      // Bounded: give up after this many polls rather than retrying forever
+      // if the saved request never shows up (e.g. filtered out by date range,
+      // or the save silently failed to persist).
+      const maxAttempts = 30;
       const poll = async () => {
         if (this.loading || this.syncLoading) return;
+        this.requestEditorSyncAttempts += 1;
         await this.getLibrariesSamples(1, false, true);
         if (
           this.pendingSavedRequestId &&
           this.requestMetaById?.[this.pendingSavedRequestId]
         ) {
           this.finishRequestEditorSync();
+        } else if (this.requestEditorSyncAttempts >= maxAttempts) {
+          this.timeoutRequestEditorSync();
         }
       };
 
@@ -2426,6 +2435,7 @@ export default {
       }
       this.pendingSavedRequestId = null;
       this.pendingSavedMode = null;
+      this.requestEditorSyncAttempts = 0;
       this.requestEditorSyncing = false;
     },
     finishRequestEditorSync() {
@@ -2434,6 +2444,14 @@ export default {
           ? "Request updated successfully."
           : "Request created successfully.";
       showNotification(message, "success");
+      this.stopRequestEditorSync();
+      this.closeRequestEditorModal();
+    },
+    timeoutRequestEditorSync() {
+      showNotification(
+        "Request saved, but the list took too long to refresh. Reload the page to see it.",
+        "warning"
+      );
       this.stopRequestEditorSync();
       this.closeRequestEditorModal();
     },
