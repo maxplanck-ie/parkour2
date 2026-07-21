@@ -38,11 +38,14 @@ class Migration(migrations.Migration):
                 (
                     "id",
                     models.BigIntegerField(
-                        auto_created=True, blank=True, db_index=True
+                        auto_created=True,
+                        blank=True,
+                        db_index=True,
+                        verbose_name="ID",
                     ),
                 ),
                 ("name", models.CharField(max_length=200, verbose_name="File Name")),
-                ("file", models.FileField(upload_to="templates/invoicing/")),
+                ("file", models.TextField(max_length=100)),
                 (
                     "uploaded_at",
                     models.DateTimeField(
