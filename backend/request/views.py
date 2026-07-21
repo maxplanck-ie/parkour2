@@ -7,6 +7,7 @@ from io import StringIO
 from unicodedata import normalize
 from urllib.parse import urlencode
 
+from common.mviews import refresh_batched
 from common.serializers import UserSerializer
 from common.utils import retrieve_group_items
 from common.views import CsrfExemptSessionAuthentication, StandardResultsSetPagination
@@ -1123,22 +1124,26 @@ class ApproveViewSet(viewsets.ModelViewSet):
             if not all(s == 0 for s in instance.statuses):
                 raise ValueError(f"Not all statuses are zero: {instance.statuses}")
             if token == instance.token:
-                instance.libraries.all().update(status=1)
-                instance.samples.all().update(status=1)
-                instance.token = None
-                instance.approval = {
-                    "TIMESTAMP": dateformat.format(timezone.now(), "c"),
-                    "TOKEN": token,
-                    "REMOTE_ADDR": request.META["REMOTE_ADDR"],
-                    "REMOTE_PORT": request.META["REMOTE_PORT"],
-                    "HTTP_USER_AGENT": request.headers["user-agent"],
-                    "HTTP_ACCEPT": request.headers["accept"],
-                    "HTTP_ACCEPT_ENCODING": request.headers["accept-encoding"],
-                    "HTTP_ACCEPT_LANGUAGE": request.headers["accept-language"],
-                    "HTTP_X_FORWARDED_FOR": request.headers["x-forwarded-for"],
-                    "HTTP_X_REAL_IP": request.headers["x-real-ip"],
-                }
-                instance.save(update_fields=["token", "approval"])
+                library_ids = list(instance.libraries.values_list("id", flat=True))
+                sample_ids = list(instance.samples.values_list("id", flat=True))
+                with transaction.atomic():
+                    instance.libraries.all().update(status=1)
+                    instance.samples.all().update(status=1)
+                    instance.token = None
+                    instance.approval = {
+                        "TIMESTAMP": dateformat.format(timezone.now(), "c"),
+                        "TOKEN": token,
+                        "REMOTE_ADDR": request.META.get("REMOTE_ADDR"),
+                        "REMOTE_PORT": request.META.get("REMOTE_PORT"),
+                        "HTTP_USER_AGENT": request.headers.get("user-agent"),
+                        "HTTP_ACCEPT": request.headers.get("accept"),
+                        "HTTP_ACCEPT_ENCODING": request.headers.get("accept-encoding"),
+                        "HTTP_ACCEPT_LANGUAGE": request.headers.get("accept-language"),
+                        "HTTP_X_FORWARDED_FOR": request.headers.get("x-forwarded-for"),
+                        "HTTP_X_REAL_IP": request.headers.get("x-real-ip"),
+                    }
+                    instance.save(update_fields=["token", "approval"])
+                refresh_batched(library_ids=library_ids, sample_ids=sample_ids)
             else:
                 raise ValueError(f"Token mismatch.")
         except Exception as e:
