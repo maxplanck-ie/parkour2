@@ -17,6 +17,14 @@ Unreleased
 - Load Flowcells: pools containing only QC-failed (negative status) libraries/samples alongside fully-pooled (status 4) ones can now be loaded onto a flowcell; a warning is returned instead of a hard block. Pools with any other non-ready status (e.g. still mid-workflow) are still rejected.
 - Requests: file reference popup now labels the file hash "Checksum" instead of "MD5", since `wd40` computes it with BLAKE3 (`b3sum`), not MD5.
 
+26.07.21
+========
+
+- Invoicing: the From/To filter now only picks whole calendar months (present or past) instead of arbitrary days, and always defaults to the current month with nothing persisted across reloads.
+- Invoicing: fixed the search box only accepting one character at a time; search now also covers the entire Invoicing History instead of just the currently displayed billing month.
+- Invoicing: Download Report respects the From/To pickers again, so previous months can still be downloaded.
+- Invoicing: added Excel export with reusable template upload/download, matching the other submodules.
+
 
 26.07.16
 ========
