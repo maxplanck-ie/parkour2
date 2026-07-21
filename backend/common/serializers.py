@@ -7,6 +7,7 @@ from .models import (
     PoolingTemplate,
     RunStatisticsTemplate,
     SequencesStatisticsTemplate,
+    InvoicingTemplate,
 )
 
 from .models import CostUnit, Duty, User
@@ -69,4 +70,10 @@ class RunStatisticsTemplateSerializer(ModelSerializer):
 class SequencesStatisticsTemplateSerializer(ModelSerializer):
     class Meta:
         model = SequencesStatisticsTemplate
+        fields = ["id", "name", "file", "uploaded_at"]
+
+
+class InvoicingTemplateSerializer(ModelSerializer):
+    class Meta:
+        model = InvoicingTemplate
         fields = ["id", "name", "file", "uploaded_at"]

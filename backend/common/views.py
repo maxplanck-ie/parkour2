@@ -30,6 +30,7 @@ from .models import (
     PoolingTemplate,
     RunStatisticsTemplate,
     SequencesStatisticsTemplate,
+    InvoicingTemplate,
 )
 from .serializers import (
     CostUnitSerializer,
@@ -42,6 +43,7 @@ from .serializers import (
     PoolingTemplateSerializer,
     RunStatisticsTemplateSerializer,
     SequencesStatisticsTemplateSerializer,
+    InvoicingTemplateSerializer,
 )
 
 User = get_user_model()
@@ -434,3 +436,8 @@ class RunStatisticsTemplateViewSet(BaseTemplateViewSet):
 class SequencesStatisticsTemplateViewSet(BaseTemplateViewSet):
     model = SequencesStatisticsTemplate
     serializer_class = SequencesStatisticsTemplateSerializer
+
+
+class InvoicingTemplateViewSet(BaseTemplateViewSet):
+    model = InvoicingTemplate
+    serializer_class = InvoicingTemplateSerializer

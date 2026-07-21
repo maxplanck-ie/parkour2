@@ -15,6 +15,16 @@ export function isValidDate(dateString) {
   );
 }
 
+export function isValidMonth(monthString) {
+  if (!/^\d{4}-\d{2}$/.test(monthString)) return false;
+  const [yearStr, monthStr] = monthString.split("-");
+  const year = Number(yearStr);
+  const month = Number(monthStr);
+  if (year < 1000 || year > 9999) return false;
+  if (month < 1 || month > 12) return false;
+  return true;
+}
+
 export function formatDateForInput(date) {
   if (!date) return "";
   const year = date.getFullYear();

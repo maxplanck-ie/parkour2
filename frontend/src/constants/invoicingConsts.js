@@ -242,3 +242,63 @@ export function invoicingColumnDefs() {
     }
   ];
 }
+
+export function invoicingExportColumns() {
+  return [
+    { header: "Request ID", key: "request", width: 16, excelType: "text" },
+    { header: "Cost Unit", key: "cost_unit", width: 16, excelType: "text" },
+    { header: "Sequencer", key: "sequencer", width: 22, excelType: "text" },
+    { header: "Date", key: "flowcell_date", width: 14, excelType: "text" },
+    { header: "Flowcell ID", key: "flowcell_id", width: 18, excelType: "text" },
+    { header: "Pool ID", key: "pool", width: 18, excelType: "text" },
+    { header: "% of Lanes", key: "percentage", width: 14, excelType: "text" },
+    { header: "Read Length", key: "read_length", width: 18, excelType: "text" },
+    {
+      header: "# of Libraries/Samples",
+      key: "num_libraries_samples_show",
+      width: 20,
+      excelType: "text"
+    },
+    {
+      header: "Library Preparation Protocol",
+      key: "library_protocol",
+      width: 28,
+      excelType: "text"
+    },
+    {
+      header: "Fixed Costs",
+      key: "fixed_costs",
+      width: 16,
+      excelType: "number",
+      decimalPlaces: 2
+    },
+    {
+      header: "Sequencing Costs",
+      key: "sequencing_costs",
+      width: 16,
+      excelType: "number",
+      decimalPlaces: 2
+    },
+    {
+      header: "Preparation Costs",
+      key: "preparation_costs",
+      width: 16,
+      excelType: "number",
+      decimalPlaces: 2
+    },
+    {
+      header: "Variable Costs",
+      key: "variable_costs",
+      width: 16,
+      excelType: "number",
+      decimalPlaces: 2
+    },
+    {
+      header: "Total Costs",
+      key: "total_costs",
+      width: 16,
+      excelType: "number",
+      decimalPlaces: 2
+    }
+  ];
+}
