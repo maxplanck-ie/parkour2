@@ -20,10 +20,7 @@ Unreleased
 26.07.21
 ========
 
-- Invoicing: the From/To filter now only picks whole calendar months (present or past) instead of arbitrary days, and always defaults to the current month with nothing persisted across reloads.
-- Invoicing: fixed the search box only accepting one character at a time; search now also covers the entire Invoicing History instead of just the currently displayed billing month.
-- Invoicing: Download Report respects the From/To pickers again, so previous months can still be downloaded.
-- Invoicing: added Excel export with reusable template upload/download, matching the other submodules.
+- New VueJS/Tabulator user interface for Invoicing, replacing the ExtJS grid: month-only From/To filters (always defaulting to the current month, never a custom saved range), search across the entire Invoicing History, Download/Upload/View Reports actions, and Excel export with reusable templates.
 
 
 26.07.16
