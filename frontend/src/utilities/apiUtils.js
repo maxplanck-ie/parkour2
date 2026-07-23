@@ -64,12 +64,7 @@ export function handleError(error) {
 }
 
 export function urlStringStartsWith() {
-  let urlString = window.location.href.split("/vue/");
-  if (urlString[0] === "http://localhost:5174") {
-    return "http://localhost:9980";
-  } else {
-    return urlString[0];
-  }
+  return window.location.href.split("/vue/")[0];
 }
 
 export function createAxiosObject() {

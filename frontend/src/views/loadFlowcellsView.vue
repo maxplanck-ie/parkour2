@@ -1396,10 +1396,14 @@ export default {
           },
           { responseType: "blob" }
         );
-        saveAs(
-          response.data,
-          `${selectedRows[0].flowcell_id || "flowcell"}_SampleSheet.csv`
-        );
+        const contentDisposition = response.headers["content-disposition"];
+        const match =
+          contentDisposition &&
+          contentDisposition.match(/filename="?([^"]+)"?/);
+        const filename = match
+          ? match[1]
+          : `${selectedRows[0].flowcell_id || "flowcell"}_SampleSheet.csv`;
+        saveAs(response.data, filename);
       } catch (error) {
         handleError(error);
       }
