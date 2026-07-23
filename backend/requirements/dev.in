@@ -7,7 +7,6 @@ Werkzeug
 rich
 django-migration-linter
 django-schema-viewer
-django-cors-headers
 django-sql-explorer
 openai
 sql_metadata
