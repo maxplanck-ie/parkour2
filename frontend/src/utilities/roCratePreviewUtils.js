@@ -1,5 +1,4 @@
 const METADATA_FILE_NAME = "ro-crate-metadata.json";
-const ROOT_DATASET_ID = "./";
 
 function isPlainObject(value) {
   return value !== null && typeof value === "object" && !Array.isArray(value);
@@ -24,19 +23,6 @@ function extractReferenceIds(value, collected = new Set()) {
   });
 
   return collected;
-}
-
-function formatBytes(size) {
-  if (!Number.isFinite(size) || size <= 0) return "0 B";
-  const units = ["B", "KB", "MB", "GB"];
-  let value = size;
-  let unitIndex = 0;
-  while (value >= 1024 && unitIndex < units.length - 1) {
-    value /= 1024;
-    unitIndex += 1;
-  }
-  const digits = unitIndex === 0 ? 0 : value >= 10 ? 1 : 2;
-  return `${value.toFixed(digits)} ${units[unitIndex]}`;
 }
 
 function createEntityIndex(graph) {
@@ -84,22 +70,10 @@ export function parseRoCratePayload(roCrate, source = {}) {
 
   return {
     source: {
-      name: source.name || METADATA_FILE_NAME,
-      size: source.size || 0,
-      sizeLabel: formatBytes(source.size || 0),
-      loadedAt: new Date().toISOString()
+      name: source.name || METADATA_FILE_NAME
     },
-    roCrate,
     graph,
     entityMap,
-    backlinkMap: createBacklinkIndex(graph),
-    stats: {
-      rootDatasetId: entityMap[ROOT_DATASET_ID]?.["@id"] || ROOT_DATASET_ID
-    },
-    archive: {
-      files: [],
-      byId: {},
-      orphaned: []
-    }
+    backlinkMap: createBacklinkIndex(graph)
   };
 }

@@ -1,11 +1,12 @@
 import json
+import math
 import mimetypes
 import os
 import re
 import uuid
 from dataclasses import dataclass
 from datetime import date, datetime, time
-from decimal import Decimal
+from decimal import ROUND_HALF_UP, Decimal
 from io import BytesIO
 from itertools import chain
 from zipfile import ZIP_DEFLATED, ZipFile
@@ -58,27 +59,10 @@ PARKOUR_SOFTWARE_ID = "#parkour-software"
 RO_CRATE_EXPORT_ACTION_ID = "#ro-crate-export-action"
 RO_CRATE_LICENSE_ID = "#parkour-ro-crate-license"
 RO_CRATE_ROOT_ID = "./"
-RO_CRATE_COMPLETED_STATUS = 6
+RO_CRATE_EXPORTABLE_STATUSES = {5, 6}
 RO_CRATE_ARCHIVE_STUB_MAX_LENGTH = 180
 RO_CRATE_EXPORT_FILENAME_MAX_LENGTH = 50
-
-RO_CRATE_SECTION_IDS = {
-    "request",
-    "samples",
-    "libraries",
-    "library_preparation",
-    "pooling",
-    "protocols",
-    "organisms",
-    "library_types",
-    "read_lengths",
-    "index_types",
-    "nucleic_acid_types",
-    "index_pools",
-    "flowcells",
-    "sequencers",
-    "lanes",
-}
+RO_CRATE_EMBEDDED_PDF_NAME = "ro-crate-preview.pdf"
 
 PATH_REFERENCE_VALUE_KEYS = ("path",)
 PATH_REFERENCE_MD5_KEYS = ("md5",)
@@ -101,32 +85,42 @@ def _normalise_field_policy_key(value):
     return re.sub(r"[^a-z0-9]+", "", str(value or "").lower())
 
 
-def _load_shared_hidden_fields():
+def _load_shared_json(filename, description):
     module_dir = os.path.dirname(__file__)
-    policy_paths = [
+    candidate_paths = [
         os.path.abspath(
-            os.path.join(module_dir, "..", "shared", "roCrateHiddenFields.json")
+            os.path.join(module_dir, "..", "shared", filename)
         ),
         os.path.abspath(
-            os.path.join(module_dir, "..", "..", "shared", "roCrateHiddenFields.json")
+            os.path.join(module_dir, "..", "..", "shared", filename)
         ),
     ]
-    policy_path = next((path for path in policy_paths if os.path.exists(path)), None)
-    if policy_path is None:
+    config_path = next(
+        (path for path in candidate_paths if os.path.exists(path)),
+        None,
+    )
+    if config_path is None:
         raise RuntimeError(
-            "RO-Crate hidden field policy file could not be loaded. Searched: "
-            + ", ".join(policy_paths)
+            f"RO-Crate {description} file could not be loaded. Searched: "
+            + ", ".join(candidate_paths)
         )
 
     try:
-        with open(policy_path, encoding="utf-8") as handle:
-            policy = json.load(handle)
+        with open(config_path, encoding="utf-8") as handle:
+            return json.load(handle)
     except OSError as exc:
         raise RuntimeError(
-            "RO-Crate hidden field policy file could not be loaded."
+            f"RO-Crate {description} file could not be loaded."
         ) from exc
     except ValueError as exc:
-        raise RuntimeError("RO-Crate hidden field policy is not valid JSON.") from exc
+        raise RuntimeError(f"RO-Crate {description} is not valid JSON.") from exc
+
+
+def _load_shared_hidden_fields():
+    policy = _load_shared_json(
+        "roCrateHiddenFields.json",
+        "hidden field policy",
+    )
 
     hidden_fields = policy.get("userDefinedVariableHiddenFields")
     if not isinstance(hidden_fields, list):
@@ -137,6 +131,31 @@ def _load_shared_hidden_fields():
 
 
 RO_CRATE_HIDDEN_FIELD_KEYS = _load_shared_hidden_fields()
+
+
+def _load_shared_preview_fields():
+    config = _load_shared_json(
+        "roCratePreviewFields.json",
+        "preview field configuration",
+    )
+
+    parsed = {}
+    for section in ("requestDetails", "preparation", "sequencing"):
+        fields = config.get(section)
+        if not isinstance(fields, list) or not all(
+            isinstance(field, dict)
+            and isinstance(field.get("key"), str)
+            and isinstance(field.get("label"), str)
+            for field in fields
+        ):
+            raise RuntimeError(
+                f"RO-Crate preview field configuration must define {section} fields."
+            )
+        parsed[section] = tuple((field["label"], field["key"]) for field in fields)
+    return parsed
+
+
+RO_CRATE_PREVIEW_FIELDS = _load_shared_preview_fields()
 
 
 def _is_comment_export_field(field_name):
@@ -159,7 +178,6 @@ def _is_hidden_export_field(*field_names):
 class ExportSelection:
     barcode_values: list
     request_values: list
-    selected_sections: set
     preview_requested: bool
     pdf_requested: bool
     accessible_requests: object
@@ -182,23 +200,6 @@ def _parse_csv_values(raw_value):
     if not raw_value:
         return []
     return [item.strip() for item in str(raw_value).split(",") if item.strip()]
-
-
-def _normalise_sections(raw_sections):
-    if raw_sections is None:
-        return set(RO_CRATE_SECTION_IDS)
-
-    selected = _parse_csv_values(raw_sections)
-    if not selected:
-        return Response({"error": "Select at least one RO-Crate section."}, status=400)
-
-    invalid = sorted(set(selected) - RO_CRATE_SECTION_IDS)
-    if invalid:
-        return Response(
-            {"error": "Unknown RO-Crate section value.", "invalid_sections": invalid},
-            status=400,
-        )
-    return set(selected)
 
 
 def _normalise_true_flag(raw_value, query_name):
@@ -354,33 +355,17 @@ def _index_pair_metadata(index_pair):
     return metadata
 
 
-def _clean_comments(comments):
-    cleaned = []
-    seen = set()
-    for entry in comments or []:
-        if not entry:
-            continue
-        public_entry = {
-            "name": entry.get("name"),
-            "value": _normalise_property_value(entry.get("value")),
-        }
-        if public_entry["value"] in (None, "", [], {}):
-            continue
-        key = (
-            public_entry["name"],
-            json.dumps(public_entry["value"], sort_keys=True, default=str),
-        )
-        if key in seen:
-            continue
-        seen.add(key)
-        cleaned.append(public_entry)
-    return cleaned
-
-
-def _extract_model_fields(instance, prefix="", section=None, exclude_fields=None):
+def _extract_model_fields(
+    instance,
+    prefix="",
+    section=None,
+    exclude_fields=None,
+    include_hidden_fields=None,
+):
     if instance is None:
         return {}
     exclude_fields = set(exclude_fields or [])
+    include_hidden_fields = set(include_hidden_fields or [])
     data = {}
     for field in instance._meta.concrete_fields:
         field_name = field.name
@@ -392,7 +377,10 @@ def _extract_model_fields(instance, prefix="", section=None, exclude_fields=None
             else field_name
         )
         target_name = f"{prefix}{export_name}"
-        if _is_hidden_export_field(field_name, export_name, target_name):
+        if (
+            field_name not in include_hidden_fields
+            and _is_hidden_export_field(field_name, export_name, target_name)
+        ):
             continue
         try:
             value = (
@@ -461,7 +449,16 @@ def _ro_crate_archive_name(archive_stub):
 
 def _ro_crate_pdf_name(archive_name):
     pdf_base = re.sub(r"\.(zip|pdf)$", "", str(archive_name or ""), flags=re.I)
-    return _bounded_export_filename(pdf_base, ".pdf")
+    archive_stub = re.sub(r"_ro_crate$", "", pdf_base, flags=re.I)
+    suffix = "_ro_crate_preview"
+    extension = ".pdf"
+    max_stub_length = max(
+        1,
+        RO_CRATE_EXPORT_FILENAME_MAX_LENGTH - len(suffix) - len(extension),
+    )
+    safe_stub = _safe_archive_component(archive_stub, "parkour")
+    safe_stub = safe_stub[:max_stub_length].rstrip("._-") or "parkour"
+    return f"{safe_stub}{suffix}{extension}"
 
 
 def _parkour_identifier(entity_type, value):
@@ -525,9 +522,6 @@ def _request_file_archive_path(file_obj, request_obj):
 def _select_records(request):
     barcodes = _parse_csv_values(request.query_params.get("barcodes"))
     requests = _parse_csv_values(request.query_params.get("requests"))
-    sections = _normalise_sections(request.query_params.get("sections"))
-    if isinstance(sections, Response):
-        return sections
     preview = _normalise_preview(request.query_params.get("preview"))
     if isinstance(preview, Response):
         return preview
@@ -563,13 +557,16 @@ def _select_records(request):
         barcode for barcode in barcodes if barcode not in found_barcodes
     )
 
-    delivered_libraries, skipped_libraries = _split_delivered(library_rows)
-    delivered_samples, skipped_samples = _split_delivered(sample_rows)
+    exportable_libraries, skipped_libraries = _split_exportable(library_rows)
+    exportable_samples, skipped_samples = _split_exportable(sample_rows)
     skipped_records = sorted(set(skipped_libraries + skipped_samples))
-    if skipped_records and not delivered_libraries and not delivered_samples:
+    if skipped_records and not exportable_libraries and not exportable_samples:
         return Response(
             {
-                "error": "RO-Crate export requires selected libraries or samples to have Delivered status.",
+                "error": (
+                    "RO-Crate export requires selected libraries or samples to "
+                    "have Sequencing or Delivered status."
+                ),
                 "skipped_records": skipped_records,
             },
             status=400,
@@ -584,18 +581,17 @@ def _select_records(request):
     )
     request_ids_from_names = set(request_qs.values_list("id", flat=True))
     request_ids_from_rows = {
-        row.request_id for row in chain(delivered_libraries, delivered_samples)
+        row.request_id for row in chain(exportable_libraries, exportable_samples)
     }
 
     return ExportSelection(
         barcode_values=barcodes,
         request_values=requests,
-        selected_sections=sections,
         preview_requested=preview,
         pdf_requested=pdf,
         accessible_requests=accessible_requests,
-        library_rows=delivered_libraries,
-        sample_rows=delivered_samples,
+        library_rows=exportable_libraries,
+        sample_rows=exportable_samples,
         missing_barcodes=missing_barcodes,
         missing_requests=missing_requests,
         skipped_records=skipped_records,
@@ -603,17 +599,17 @@ def _select_records(request):
     )
 
 
-def _split_delivered(rows):
-    delivered = []
+def _split_exportable(rows):
+    exportable = []
     skipped = []
     for row in rows:
-        if getattr(row, "status", None) == RO_CRATE_COMPLETED_STATUS:
-            delivered.append(row)
+        if getattr(row, "status", None) in RO_CRATE_EXPORTABLE_STATUSES:
+            exportable.append(row)
         else:
             skipped.append(
                 getattr(row, "barcode", None) or getattr(row, "name", None) or str(row)
             )
-    return delivered, skipped
+    return exportable, skipped
 
 
 def _requests_by_id(accessible_requests, request_ids):
@@ -662,7 +658,7 @@ class SimpleROCrateBuilder:
             "@context": [RO_CRATE_CONTEXT_URI, self._context()],
             "@graph": self.graph,
         }
-        ro_crate = _filter_sections(ro_crate, self.selection.selected_sections)
+        ro_crate = _prepare_public_graph(ro_crate)
         archive_name = _ro_crate_archive_name(
             _archive_stub(requests_by_id, self.selection.target_request_ids)
         )
@@ -1118,7 +1114,12 @@ class SimpleROCrateBuilder:
                     )
                 )
             sample_mv_comments = _comments_from_mapping(
-                _extract_model_fields(row, "sample_mv_"), "samples"
+                _extract_model_fields(
+                    row,
+                    "sample_mv_",
+                    include_hidden_fields={"create_time"},
+                ),
+                "samples",
             )
             prep = self.library_preparations.get(row.sample_id)
             if prep:
@@ -1240,7 +1241,12 @@ class SimpleROCrateBuilder:
                 library["associatedPool"] = pool_refs
 
             library_mv_comments = _comments_from_mapping(
-                _extract_model_fields(row, "library_mv_"), "libraries"
+                _extract_model_fields(
+                    row,
+                    "library_mv_",
+                    include_hidden_fields={"create_time"},
+                ),
+                "libraries",
             )
             self._add_process(
                 process_id,
@@ -1989,10 +1995,6 @@ def _entity_section(entity):
     return None
 
 
-def _comment_section(comment):
-    return comment.get("_section")
-
-
 def _filter_refs(value, kept_ids):
     if isinstance(value, list):
         filtered = []
@@ -2016,18 +2018,11 @@ def _filter_refs(value, kept_ids):
     return value
 
 
-def _filter_sections(ro_crate, selected_sections):
+def _prepare_public_graph(ro_crate):
     graph = ro_crate.get("@graph", [])
-    kept = []
-    for entity in graph:
-        section = entity.get("_section") or _entity_section(entity)
-        if section and section not in selected_sections:
-            continue
-        kept.append(entity)
-
-    kept_ids = {entity.get("@id") for entity in kept if entity.get("@id")}
+    kept_ids = {entity.get("@id") for entity in graph if entity.get("@id")}
     public_graph = []
-    for entity in kept:
+    for entity in graph:
         cleaned = {}
         for key, value in entity.items():
             if key in {"_section", "comments"}:
@@ -2054,264 +2049,30 @@ PDF_FIELD_OTHER_MATERIALS = "otherMaterials"
 PDF_FIELD_CONTENT_URL = "contentUrl"
 PDF_FIELD_IS_PART_OF = "isPartOf"
 PDF_FIELD_REQUEST_CONTEXT = "requestContext"
+PDF_PREVIEW_TITLE = "RO Crate Preview"
+PDF_PREVIEW_SUBTITLE = (
+    "RO-Crate preview generated from Parkour metadata for selected libraries and samples."
+)
 
-PDF_HIDDEN_DIRECT_FIELDS = {
-    PDF_FIELD_ID,
-    PDF_FIELD_TYPE,
-    "about",
-    PDF_FIELD_ADDITIONAL_PROPERTY,
-    "additionalType",
-    "comment",
-    "comments",
-    "contentSize",
-    "encodingFormat",
-    "hasPart",
-    PDF_FIELD_IDENTIFIER,
-    "includedInDataCatalog",
-    PDF_FIELD_IS_PART_OF,
-    "mentions",
-    "publisher",
-    "sameAs",
-    "subjectOf",
-    "url",
-}
-PDF_RELATED_MODEL_HIDDEN_FIELDS = {"sample", "library"}
-PDF_VISIBLE_ID_FIELDS = {"i7_id", "i5_id", "indexI7Id", "indexI5Id"}
-PDF_NORMALISED_VISIBLE_ID_FIELDS = {
-    _normalise_field_policy_key(field) for field in PDF_VISIBLE_ID_FIELDS
-}
-PDF_LINKED_MODEL_RELATION_FIELDS = [
-    "organism",
-    "nucleicAcidType",
-    "libraryType",
-    "readLength",
-    "indexType",
-    "indexI7",
-    "indexI5",
-    "selectedIndexPair",
-    "associatedPool",
-]
-PDF_RELATION_LABELS = {
-    "indexI7": "Selected I7 Index",
-    "indexI5": "Selected I5 Index",
-    "availableProtocols": "Available Protocols",
-    "executesLabProtocol": "Protocol",
-    "instrument": "Instrument",
-    "hasInstrument": "Instrument",
-    "hasLane": "Lane",
-    "poolSize": "Pool Size",
-    "member": "Members",
-    "sequencedOn": "Sequenced On",
-    "object": "Input",
-    "result": "Output",
-    "dataFiles": "Data",
-    "processSequence": "Processes",
-}
-PDF_BACKLINK_PROPERTIES = {
-    "object",
-    "result",
-    "hasPart",
-    "about",
-    "dataFiles",
-    "processSequence",
-}
-PDF_HIDDEN_FIELD_PATTERNS = (
-    re.compile(r"email", re.I),
-    re.compile(r"telephone", re.I),
-    re.compile(r"(^|_)token($|_)", re.I),
-    re.compile(r"(^|_)status($|_)", re.I),
-)
-PDF_PROPERTY_LABEL_OVERRIDES = {
-    "dateCreated": "Date Created",
-    "datePublished": "Date Published",
-    "request_filepaths": "External File Paths",
-    "request_metapaths": "External Metadata Paths",
-    "barcode": "Barcode",
-    "identifier": "Barcode",
-}
-PDF_MODEL_DISPLAY_RULES = [
-    {
-        "model_name": "Library",
-        "prefixes": ("library_db_",),
-        "id_prefixes": ("#library-material-",),
-    },
-    {
-        "model_name": "Sample",
-        "prefixes": ("sample_db_",),
-        "id_prefixes": ("#sample-material-",),
-    },
-    {"model_name": "LibraryPreparation", "prefixes": ("library_preparation_",)},
-    {"model_name": "Pooling", "prefixes": ("pooling_",)},
-    {"model_name": "Request", "prefixes": ("request_",)},
-    {
-        "model_name": "Flowcell",
-        "prefixes": ("flowcell_",),
-        "id_prefixes": ("#flowcell-",),
-    },
-    {"model_name": "Lane", "prefixes": ("lane_",), "id_prefixes": ("#lane-",)},
-    {
-        "model_name": "Sequencer",
-        "prefixes": ("sequencer_",),
-        "id_prefixes": ("#sequencer-",),
-    },
-    {
-        "model_name": "IndexPool",
-        "prefixes": ("index_pool_",),
-        "id_prefixes": ("#index-pool-",),
-    },
-    {
-        "model_name": "PoolSize",
-        "prefixes": ("index_pool_size_",),
-        "id_prefixes": ("#index-pool-size-",),
-    },
-    {
-        "model_name": "Organism",
-        "prefixes": ("organism_",),
-        "id_prefixes": ("#organism-",),
-    },
-    {
-        "model_name": "LibraryType",
-        "prefixes": ("library_type_",),
-        "id_prefixes": ("#library-type-",),
-    },
-    {
-        "model_name": "ReadLength",
-        "prefixes": ("read_length_",),
-        "id_prefixes": ("#read-length-",),
-    },
-    {
-        "model_name": "IndexType",
-        "prefixes": ("index_type_",),
-        "id_prefixes": ("#index-type-",),
-    },
-    {
-        "model_name": "NucleicAcidType",
-        "prefixes": ("nucleic_acid_type_",),
-        "id_prefixes": ("#nucleic-acid-type-",),
-    },
-    {
-        "model_name": "LibraryProtocol",
-        "prefixes": ("protocol_",),
-        "id_prefixes": ("#protocol-",),
-    },
-    {
-        "model_name": "IndexI7",
-        "prefixes": ("index_i7_",),
-        "id_prefixes": ("#index-i7-",),
-    },
-    {
-        "model_name": "IndexI5",
-        "prefixes": ("index_i5_",),
-        "id_prefixes": ("#index-i5-",),
-    },
-    {
-        "model_name": "IndexPair",
-        "prefixes": ("index_pair_",),
-        "id_prefixes": ("#index-pair-",),
-    },
-    {
-        "model_name": "CompleteLibraryData",
-        "prefixes": ("library_mv_", "library_export_"),
-        "summary_only": True,
-    },
-    {
-        "model_name": "CompleteSampleData",
-        "prefixes": ("sample_mv_", "sample_export_"),
-        "summary_only": True,
-    },
-]
-PDF_MODEL_SECTION_RULES = sorted(
-    [
-        (rule["model_name"], rule["prefixes"])
-        for rule in PDF_MODEL_DISPLAY_RULES
-        if not rule.get("summary_only")
-    ],
-    key=lambda rule: max(len(prefix) for prefix in rule[1]),
-    reverse=True,
-)
-PDF_MODEL_ID_RULES = sorted(
-    [
-        (prefix, rule["model_name"])
-        for rule in PDF_MODEL_DISPLAY_RULES
-        for prefix in rule.get("id_prefixes", ())
-    ],
-    key=lambda rule: len(rule[0]),
-    reverse=True,
-)
-PDF_PROPERTY_PREFIXES = sorted(
-    {prefix for rule in PDF_MODEL_DISPLAY_RULES for prefix in rule["prefixes"]},
-    key=len,
-    reverse=True,
-)
-PDF_PROPERTY_PREFIX_PATTERN = re.compile(
-    rf"^({'|'.join(re.escape(prefix) for prefix in PDF_PROPERTY_PREFIXES)})"
-)
-PDF_SUMMARY_PROPERTY_PREFIXES = tuple(
-    prefix
-    for rule in PDF_MODEL_DISPLAY_RULES
-    if rule.get("summary_only")
-    for prefix in rule["prefixes"]
-)
-PDF_REPEATED_DATA_OBJECT_FIELDS = {
-    "associatedPool",
-    "derivedFrom",
-    "indexI7",
-    "indexI5",
-    "indexType",
-    "libraryProtocol",
-    "libraryType",
-    "nucleicAcidType",
-    "organism",
-    "readLength",
-    "requestContext",
-    "selectedIndexPair",
-    "sequencedOn",
-}
-PDF_REPEATED_DATA_OBJECT_KEYS = {
-    f"dataobject{_normalise_field_policy_key(field)}"
-    for field in PDF_REPEATED_DATA_OBJECT_FIELDS
-}
+PDF_PREPARATION_CARD_FIELDS = RO_CRATE_PREVIEW_FIELDS["preparation"]
+PDF_SEQUENCING_CARD_FIELDS = RO_CRATE_PREVIEW_FIELDS["sequencing"]
+PDF_REQUEST_DETAIL_FIELDS = RO_CRATE_PREVIEW_FIELDS["requestDetails"]
 
 
 def _pdf_label_for_field(field_name):
-    if field_name in PDF_PROPERTY_LABEL_OVERRIDES:
-        return PDF_PROPERTY_LABEL_OVERRIDES[field_name]
-    label = PDF_PROPERTY_PREFIX_PATTERN.sub("", str(field_name or ""))
+    label = str(field_name or "")
     label = re.sub(r"([a-z0-9])([A-Z])", r"\1 \2", label)
     label = re.sub(r"[_-]+", " ", label)
     label = re.sub(r"\s+", " ", label).strip()
     return label.title()
 
 
-def _pdf_is_hidden_field(field_name):
-    key = str(field_name or "")
-    normalised = _normalise_field_policy_key(key)
-    prefixless = PDF_PROPERTY_PREFIX_PATTERN.sub("", key)
-    prefixless_normalised = _normalise_field_policy_key(prefixless)
-    if key in PDF_HIDDEN_DIRECT_FIELDS:
-        return True
-    if _is_hidden_export_field(key, prefixless):
-        return True
-    if normalised in RO_CRATE_HIDDEN_FIELD_KEYS:
-        return True
-    if prefixless_normalised in RO_CRATE_HIDDEN_FIELD_KEYS:
-        return True
-    if any(pattern.search(key) for pattern in PDF_HIDDEN_FIELD_PATTERNS):
-        return True
-    return bool(
-        re.search(r"(^|_)id$", prefixless, re.I)
-        and prefixless not in PDF_VISIBLE_ID_FIELDS
-        and prefixless_normalised not in PDF_NORMALISED_VISIBLE_ID_FIELDS
-    )
-
-
 class ROCrateTextPDF(FPDF):
-    def __init__(self, title, footer_context):
+    def __init__(self, title):
         super().__init__(orientation="P", unit="mm", format="A4")
         self.set_auto_page_break(auto=True, margin=14)
         self.set_margins(12, 10, 12)
         self.title = title
-        self.footer_context = footer_context
         self.font_family = "Helvetica"
         self.unicode_font = False
         self._configure_fonts()
@@ -2345,8 +2106,12 @@ class ROCrateTextPDF(FPDF):
         self.set_y(-11)
         self.set_font(self.font_family, "", 7)
         self.set_text_color(90, 110, 120)
-        context = self.safe_text(self.footer_context[:118])
-        self.cell(0, 6, f"{context} | Page {self.page_no()} of {{nb}}", align="R")
+        self.cell(
+            0,
+            6,
+            self.safe_text(f"Page {self.page_no()} of {{nb}}"),
+            align="R",
+        )
         self.set_text_color(16, 36, 47)
 
 
@@ -2363,17 +2128,18 @@ class ROCratePdfRenderer:
         }
         self.backlink_map = self._build_backlink_map()
         self._request_groups = None
-        self._written_record_section_signatures = set()
         self.pdf = None
 
     def render(self):
         request_groups = self.request_groups()
-        footer_context = self._footer_context(request_groups)
-        title = self.archive_name.replace(".zip", "").replace("_", " ")
-        self.pdf = ROCrateTextPDF(title=title, footer_context=footer_context)
+        self.pdf = ROCrateTextPDF(title=PDF_PREVIEW_TITLE)
         self.pdf.alias_nb_pages()
         self.pdf.add_page()
-        self._write_title(title)
+        for request_group in request_groups:
+            for record in request_group.get("records") or []:
+                record["_pdfLink"] = self.pdf.add_link()
+        self._write_title()
+        self._write_selected_records_overview(request_groups)
         for request_group in request_groups:
             self._write_request_group(request_group)
         if self.skipped_records:
@@ -2395,26 +2161,6 @@ class ROCratePdfRenderer:
                         {"sourceId": source_id, "property": key}
                     )
         return backlink_map
-
-    def _footer_context(self, request_groups):
-        request_names = [group["name"] for group in request_groups if group["name"]]
-        record_names = [
-            record["name"]
-            for group in request_groups
-            for record in group["records"]
-            if record["name"]
-        ]
-        request_text = (
-            f"Request: {request_names[0]}"
-            if len(request_names) == 1
-            else f"Requests: {', '.join(request_names) or 'Selected requests'}"
-        )
-        record_text = (
-            f"Library/Sample: {record_names[0]}"
-            if len(record_names) == 1
-            else f"Libraries/Samples: {len(record_names)} selected"
-        )
-        return f"{request_text} | {record_text}"
 
     def request_groups(self):
         if self._request_groups is not None:
@@ -2439,13 +2185,18 @@ class ROCratePdfRenderer:
         study_id = study.get(PDF_FIELD_ID) or f"request-{index + 1}"
         request_number = self._id_suffix(study_id)
         request_entity = self.entity_by_id(f"#request-context-{request_number}")
-        record_ids = self._study_record_ids(study)
+        record_ids = sorted(
+            self._study_record_ids(study),
+            key=lambda record_id: (
+                self.entity_by_id(record_id) or {}
+            ).get(PDF_FIELD_IDENTIFIER)
+            or self.entity_label(self.entity_by_id(record_id)),
+        )
         records = sorted(
             [
                 record
-                for record in (
-                    self._build_record(record_id) for record_id in record_ids
-                )
+                for record_index, record_id in enumerate(record_ids)
+                for record in [self._build_record(record_id, record_index)]
                 if record
             ],
             key=lambda record: record["name"],
@@ -2456,7 +2207,7 @@ class ROCratePdfRenderer:
             "name": self.entity_label(request_entity)
             or self.entity_label(study)
             or f"Selected request {index + 1}",
-            "requestRows": self.rows_for_entity(request_entity, "Request Details"),
+            "requestRows": self.request_detail_rows(request_entity),
             "records": records,
             "attachments": self.attachments_for_request(
                 request_entity.get(PDF_FIELD_ID) if request_entity else ""
@@ -2464,14 +2215,19 @@ class ROCratePdfRenderer:
         }
 
     def _build_fallback_request_group(self):
+        record_entities = sorted(
+            [entity for entity in self.graph if self.is_record_entity(entity)],
+            key=lambda entity: entity.get(PDF_FIELD_IDENTIFIER)
+            or entity.get(PDF_FIELD_NAME)
+            or "",
+        )
         records = sorted(
             [
                 record
-                for record in (
-                    self._build_record(entity.get(PDF_FIELD_ID))
-                    for entity in self.graph
-                    if self.is_record_entity(entity)
-                )
+                for record_index, entity in enumerate(record_entities)
+                for record in [
+                    self._build_record(entity.get(PDF_FIELD_ID), record_index)
+                ]
                 if record
             ],
             key=lambda record: record["name"],
@@ -2481,7 +2237,7 @@ class ROCratePdfRenderer:
             "id": "fallback-request",
             "requestNumber": "",
             "name": self.entity_label(root) or "Selected request",
-            "requestRows": self.rows_for_entity(root, "Request Details"),
+            "requestRows": self.request_detail_rows(root),
             "records": records,
             "attachments": self.attachments_for_request(""),
         }
@@ -2501,7 +2257,7 @@ class ROCratePdfRenderer:
             if self.is_record_id(entity_id)
         ]
 
-    def _build_record(self, record_id):
+    def _build_record(self, record_id, record_index=0):
         entity = self.entity_by_id(record_id)
         if not entity:
             return None
@@ -2511,300 +2267,210 @@ class ROCratePdfRenderer:
             or entity.get(PDF_FIELD_IDENTIFIER)
             or "Unnamed record"
         )
-        sections = {}
-
-        def add_rows(title, rows):
-            visible_rows = [row for row in rows if not self.is_hidden_row(row)]
-            if visible_rows:
-                sections.setdefault(title, []).extend(visible_rows)
-
-        primary_title = f"{record_type}: {record_name}"
-        add_rows(
-            "Overview",
-            [
-                {
-                    "key": "Name",
-                    "value": entity.get(PDF_FIELD_NAME) or "Unnamed record",
-                },
-                {"key": "Barcode", "value": entity.get(PDF_FIELD_IDENTIFIER) or ""},
-            ],
-        )
-        for row in self.property_rows(entity, skip_summary_models=True):
-            add_rows(
-                "Overview" if row.get("group") == primary_title else row.get("group"),
-                [row],
-            )
-        for section in self.related_model_sections(entity):
-            add_rows(section["title"], section["rows"])
-        for section in self.sequencing_sections(entity):
-            add_rows(section["title"], section["rows"])
-        process_entities = self.record_process_entities(record_id)
-        for section in self.process_detail_sections(process_entities):
-            add_rows(section["title"], section["rows"])
-        add_rows(
-            "Processes & Data",
-            self.backlink_rows(
-                record_id,
-                omit_source_ids=[
-                    process_entity.get(PDF_FIELD_ID)
-                    for process_entity in process_entities
-                ],
-            ),
+        metadata = self._record_materialized_view_metadata(
+            record_id, entity, record_type
         )
 
         return {
             "id": record_id,
             "type": record_type,
             "name": record_name,
-            "barcode": entity.get(PDF_FIELD_IDENTIFIER) or "",
+            "barcode": self._formatted_barcode(
+                entity.get(PDF_FIELD_IDENTIFIER), record_type, ""
+            ),
             "sections": [
-                {"title": title, "rows": self.unique_rows(rows)}
-                for title, rows in sections.items()
-                if rows
+                {
+                    "title": "Preparation",
+                    "rows": self._record_card_rows(
+                        PDF_PREPARATION_CARD_FIELDS,
+                        entity,
+                        metadata,
+                        record_type,
+                        record_index,
+                    ),
+                },
+                {
+                    "title": "Sequencing",
+                    "rows": self._record_card_rows(
+                        PDF_SEQUENCING_CARD_FIELDS,
+                        entity,
+                        metadata,
+                        record_type,
+                        record_index,
+                    ),
+                },
             ],
         }
 
-    def rows_for_entity(self, entity, default_group):
-        if not entity:
-            return []
-        direct_rows = [
-            {
-                "key": _pdf_label_for_field(key),
-                "value": self.display_value(value),
-                "group": default_group,
-            }
-            for key, value in entity.items()
-            if key != PDF_FIELD_NAME and not _pdf_is_hidden_field(key)
-        ]
+    def _record_materialized_view_metadata(self, record_id, entity, record_type):
+        prefix = "library_mv_" if record_type == "Library" else "sample_mv_"
+        values = {}
+        for source_entity in [entity, *self.record_process_entities(record_id)]:
+            refs = [
+                *self.reference_values(
+                    source_entity.get(PDF_FIELD_ADDITIONAL_PROPERTY)
+                ),
+                *self.reference_values(
+                    source_entity.get(PDF_FIELD_PARAMETER_VALUE)
+                ),
+            ]
+            for prop in (
+                self.resolve_reference(reference) for reference in refs
+            ):
+                if not isinstance(prop, dict):
+                    continue
+                name = str(prop.get(PDF_FIELD_NAME) or "")
+                if name.startswith(prefix) and name not in values:
+                    values[name] = prop.get(PDF_FIELD_VALUE)
+        return {"prefix": prefix, "values": values}
+
+    def _record_card_rows(
+        self, fields, entity, metadata, record_type, record_index
+    ):
         return [
-            row
-            for row in [*direct_rows, *self.property_rows(entity)]
-            if not self.is_hidden_row(row)
+            {
+                "key": label,
+                "value": self._record_card_value(
+                    field,
+                    entity,
+                    metadata,
+                    record_type,
+                    record_index,
+                ),
+            }
+            for label, field in fields
         ]
 
-    def property_rows(self, entity, skip_summary_models=False):
+    def _record_card_value(
+        self, field, entity, metadata, record_type, record_index
+    ):
+        def read_value(key):
+            return metadata["values"].get(f"{metadata['prefix']}{key}")
+
+        raw_value = read_value(field)
+        if field == "name":
+            return entity.get(PDF_FIELD_NAME) or "-"
+        if field == "barcode":
+            return self._formatted_barcode(
+                entity.get(PDF_FIELD_IDENTIFIER), record_type
+            )
+        if field == "well_position":
+            return self._plate_coordinate(record_index)
+        if field == "gmo":
+            if record_type == "Library":
+                return "No"
+            if raw_value is True:
+                return "Yes"
+            if raw_value is False:
+                return "No"
+            return "-"
+        if field == "nucleic_acid_type_name" and self.is_empty(raw_value):
+            return "No Input Type"
+        if field == "library_protocol_name" and self.is_empty(raw_value):
+            return "No Protocol"
+        if field == "analysis_type_name" and self.is_empty(raw_value):
+            return "No Analysis Type"
+        if field == "input":
+            return self._input_card_value(
+                read_value("measured_value"), read_value("measuring_unit")
+            )
+        if field == "create_time":
+            return self._date_card_value(raw_value)
+        if field == "starting_amount":
+            return self._fixed_card_number(raw_value, 1)
+        if field == "concentration_library":
+            places = 1 if self._number_value(raw_value) == 0 else 3
+            return self._fixed_card_number(raw_value, places)
+        if field in {"pcr_cycles", "average_fragment_size", "sequencing_depth"}:
+            return self._rounded_card_number(raw_value)
+        return self._card_display_value(raw_value)
+
+    def _input_card_value(self, value, unit):
+        if self._number_value(value) == -1 and unit == "Unknown":
+            return "Unknown"
+        displayed_value = self._card_display_value(value, "")
+        displayed_unit = self._card_display_value(unit, "")
+        if not displayed_value and not displayed_unit:
+            return "-"
+        return " ".join(
+            part for part in (displayed_value, displayed_unit) if part
+        )
+
+    def _formatted_barcode(self, value, record_type, empty_value="-"):
+        barcode = str(value or "")
+        if not barcode:
+            return empty_value
+        if record_type == "Sample" and len(barcode) > 2 and barcode[2] == "L":
+            return f"{barcode}*"
+        return barcode
+
+    def _number_value(self, value):
+        if self.is_empty(value):
+            return None
+        try:
+            return float(value)
+        except (TypeError, ValueError):
+            return None
+
+    def _fixed_card_number(self, value, decimal_places):
+        number = self._number_value(value)
+        if number is None or not math.isfinite(number):
+            return "-"
+        quantum = Decimal(1).scaleb(-decimal_places)
+        rounded = Decimal(number).quantize(quantum, rounding=ROUND_HALF_UP)
+        return f"{rounded:.{decimal_places}f}"
+
+    def _rounded_card_number(self, value):
+        number = self._number_value(value)
+        if number is None or not math.isfinite(number):
+            return "-"
+        return str(math.floor(number + 0.5))
+
+    def _date_card_value(self, value):
+        text = str(value or "").strip()
+        match = re.match(r"^(\d{4})-(\d{2})-(\d{2})", text)
+        if not match:
+            return self._card_display_value(value)
+        return f"{match.group(3)}.{match.group(2)}.{match.group(1)}"
+
+    def _card_display_value(self, value, empty_value="-"):
+        if self.is_empty(value):
+            return empty_value
+        if isinstance(value, (list, tuple, set)):
+            return ", ".join(str(item) for item in value) or empty_value
+        if value is True:
+            return "Yes"
+        if value is False:
+            return "No"
+        return str(value)
+
+    def _plate_coordinate(self, record_index):
+        index = int(record_index or 0) % 96
+        return f"{chr(65 + (index % 8))}{(index // 8) + 1}"
+
+    def request_detail_rows(self, entity):
+        if not entity:
+            return []
         refs = [
             *self.reference_values(entity.get(PDF_FIELD_ADDITIONAL_PROPERTY)),
             *self.reference_values(entity.get(PDF_FIELD_PARAMETER_VALUE)),
         ]
-        properties = [
-            prop
-            for prop in (self.resolve_reference(ref) for ref in refs)
-            if isinstance(prop, dict)
-        ]
         property_by_name = {
             prop.get(PDF_FIELD_NAME): prop
-            for prop in properties
-            if prop.get(PDF_FIELD_NAME)
+            for prop in (self.resolve_reference(ref) for ref in refs)
+            if isinstance(prop, dict) and prop.get(PDF_FIELD_NAME)
         }
         rows = []
-        for prop in properties:
-            name = prop.get(PDF_FIELD_NAME)
-            if not name:
-                continue
-            if skip_summary_models and self.is_summary_model_property(name):
-                continue
-            if self.is_standalone_measuring_unit_property(name, property_by_name):
-                continue
-            if self.duplicates_direct_entity_field(
-                entity, name, prop.get(PDF_FIELD_VALUE)
-            ):
-                continue
-            row = {
-                "key": _pdf_label_for_field(name),
-                "value": self.display_property_value(prop, property_by_name),
-                "group": self.group_for_property(name, entity),
-            }
-            if not self.is_hidden_row(row) and not self.is_low_value_preview_row(row):
-                rows.append(row)
+        for label, field in PDF_REQUEST_DETAIL_FIELDS:
+            raw_value = (
+                entity.get(field)
+                if field in {"name", "description"}
+                else (property_by_name.get(field) or {}).get(PDF_FIELD_VALUE)
+            )
+            value = self.display_value(raw_value)
+            if not self.is_empty(value):
+                rows.append({"key": label, "value": value})
         return rows
-
-    def related_model_sections(self, entity):
-        sections = []
-        for related_entity in self.related_model_entities(entity):
-            options = self.related_model_display_options(related_entity)
-            rows = self.rows_for_related_model_entity(related_entity, **options)
-            if rows:
-                sections.append(
-                    {
-                        "title": self.model_section_title_for_entity(related_entity),
-                        "rows": rows,
-                    }
-                )
-        return sections
-
-    def related_model_display_options(self, entity):
-        entity_id = str(entity.get(PDF_FIELD_ID, ""))
-        if entity_id.startswith("#library-type-"):
-            return {"omit_relation_keys": {"availableProtocols"}}
-        if entity_id.startswith("#index-pair-"):
-            return {
-                "omit_display_keys": {"indexType"},
-                "omit_relation_keys": {"indexI7", "indexI5"},
-            }
-        return {}
-
-    def related_model_entities(self, entity):
-        related = []
-        for key in PDF_LINKED_MODEL_RELATION_FIELDS:
-            related.extend(
-                self.entity_by_id(entity_id)
-                for entity_id in self.reference_ids(entity.get(key))
-            )
-        seen = set()
-        unique = []
-        for related_entity in related:
-            if not related_entity or self.is_low_value_backlink(related_entity):
-                continue
-            entity_id = related_entity.get(PDF_FIELD_ID)
-            if entity_id and entity_id not in seen:
-                seen.add(entity_id)
-                unique.append(related_entity)
-        return unique
-
-    def rows_for_related_model_entity(
-        self,
-        entity,
-        omit_direct_keys=None,
-        omit_relation_keys=None,
-        omit_display_keys=None,
-        omit_property_rows=False,
-    ):
-        omitted_direct = set(omit_direct_keys or set()) | set(
-            omit_display_keys or set()
-        )
-        direct_rows = [
-            {"key": _pdf_label_for_field(key), "value": self.display_value(value)}
-            for key, value in entity.items()
-            if key != PDF_FIELD_NAME
-            and key not in PDF_RELATION_LABELS
-            and key not in omitted_direct
-            and key not in PDF_RELATED_MODEL_HIDDEN_FIELDS
-            and not _pdf_is_hidden_field(key)
-            and not self.is_summary_model_property(key)
-        ]
-        relation_rows = self.relation_rows(
-            entity, omit_relation_keys=omit_relation_keys
-        )
-        property_rows = [] if omit_property_rows else self.property_rows(entity, True)
-        rows = [
-            row
-            for row in [*direct_rows, *property_rows, *relation_rows]
-            if not self.is_hidden_row(row) and not self.is_low_value_preview_row(row)
-        ]
-        # A linked term entity (e.g. an organism) may carry only a name, which is
-        # otherwise consumed by the section title. Surface it as a Name row so the
-        # section still renders instead of being dropped as empty by callers that
-        # skip sections without rows (matches the preview fix for #300).
-        if not rows:
-            name = entity.get(PDF_FIELD_NAME) or entity.get(PDF_FIELD_IDENTIFIER)
-            value = self.display_value(name)
-            if value not in (None, "", [], {}):
-                rows.append({"key": "Name", "value": value})
-        return rows
-
-    def sequencing_sections(self, entity):
-        sections = []
-        for flowcell_id in self.reference_ids(entity.get("sequencedOn")):
-            flowcell = self.entity_by_id(flowcell_id)
-            if not flowcell:
-                continue
-            rows = self.rows_for_flowcell(flowcell)
-            if rows:
-                sections.append(
-                    {
-                        "title": f"Flowcell: {self.short_entity_label(flowcell, 'Flowcell')}",
-                        "rows": rows,
-                    }
-                )
-        return sections
-
-    def rows_for_flowcell(self, flowcell):
-        rows = [
-            *self.rows_for_related_model_entity(
-                flowcell, omit_relation_keys={"instrument", "hasInstrument", "hasLane"}
-            )
-        ]
-        for sequencer_id in self.reference_ids(flowcell.get("hasInstrument")):
-            self.add_nested_entity_rows(
-                rows, "Sequencer", self.entity_by_id(sequencer_id)
-            )
-        lanes = [
-            self.entity_by_id(lane_id)
-            for lane_id in self.reference_ids(flowcell.get("hasLane"))
-        ]
-        lanes = [lane for lane in lanes if lane]
-        if len(lanes) > 1:
-            rows.append(
-                {
-                    "key": "Lanes",
-                    "value": [self.lane_table_row(lane) for lane in lanes],
-                }
-            )
-        else:
-            for lane in lanes:
-                self.add_nested_entity_rows(rows, "Lane", lane)
-        for data_id in self.reference_ids(flowcell.get("hasPart")):
-            data_entity = self.entity_by_id(data_id)
-            if (
-                data_entity
-                and not self.is_lane_entity(data_entity)
-                and not self.is_generic_flowcell_data_entity(data_entity)
-            ):
-                self.add_nested_entity_rows(
-                    rows,
-                    "Flowcell Data",
-                    data_entity,
-                    omit_direct_keys={"additionalType", "encodingFormat"},
-                    omit_relation_keys={"about", "isPartOf"},
-                    omit_entity_summary=True,
-                )
-        return [
-            row
-            for row in self.unique_rows(rows)
-            if not self.is_hidden_row(row) and not self.is_low_value_preview_row(row)
-        ]
-
-    def add_nested_entity_rows(
-        self,
-        rows,
-        label,
-        entity,
-        omit_direct_keys=None,
-        omit_relation_keys=None,
-        omit_property_rows=False,
-        omit_entity_summary=False,
-    ):
-        if not entity or self.should_skip_nested_entity(label, entity):
-            return
-        if not omit_entity_summary:
-            rows.append({"key": label, "value": self.entity_label(entity)})
-        for row in self.rows_for_related_model_entity(
-            entity,
-            omit_direct_keys=omit_direct_keys,
-            omit_relation_keys=omit_relation_keys,
-            omit_property_rows=omit_property_rows,
-        ):
-            if not self.is_low_value_preview_row(row, label):
-                rows.append({**row, "key": f"{label} {row['key']}"})
-
-    def lane_table_row(self, lane):
-        row = {"Lane": self.entity_label(lane)}
-        for item in self.rows_for_related_model_entity(
-            lane, omit_direct_keys={"additionalType"}
-        ):
-            row[item["key"]] = item["value"]
-        return row
-
-    def process_detail_sections(self, process_entities):
-        sections = []
-        for process_entity in process_entities:
-            rows = self.rows_for_process_entity(process_entity)
-            if rows:
-                sections.append(
-                    {"title": self.process_section_title(process_entity), "rows": rows}
-                )
-        return sections
 
     def record_process_entities(self, record_id):
         process_ids = [
@@ -2818,69 +2484,6 @@ class ROCratePdfRenderer:
             for entity_id in dict.fromkeys(process_ids)
             if self.entity_by_id(entity_id)
         ]
-
-    def rows_for_process_entity(self, process_entity):
-        rows = [
-            *self.rows_for_related_model_entity(
-                process_entity,
-                omit_relation_keys={"executesLabProtocol", "object", "result"},
-            )
-        ]
-        for protocol_id in self.reference_ids(
-            process_entity.get("executesLabProtocol")
-        ):
-            self.add_nested_entity_rows(
-                rows, "Protocol", self.entity_by_id(protocol_id)
-            )
-        for data_id in self.reference_ids(process_entity.get("result")):
-            self.add_nested_entity_rows(
-                rows,
-                "Data Object",
-                self.entity_by_id(data_id),
-                omit_direct_keys={
-                    "additionalType",
-                    "encodingFormat",
-                    *PDF_REPEATED_DATA_OBJECT_FIELDS,
-                },
-                omit_relation_keys=PDF_REPEATED_DATA_OBJECT_FIELDS,
-                omit_property_rows=True,
-                omit_entity_summary=True,
-            )
-        return [
-            row
-            for row in self.unique_rows(rows)
-            if not self.is_hidden_row(row) and not self.is_low_value_preview_row(row)
-        ]
-
-    def relation_rows(self, entity, omit_relation_keys=None):
-        omitted = set(omit_relation_keys or set())
-        return [
-            {
-                "key": label,
-                "value": self.display_value(entity[key]),
-            }
-            for key, label in PDF_RELATION_LABELS.items()
-            if key not in omitted and entity.get(key)
-        ]
-
-    def backlink_rows(self, entity_id, omit_source_ids=None):
-        omitted = set(omit_source_ids or [])
-        rows = []
-        for link in self.backlink_map.get(entity_id, []):
-            if link["property"] not in PDF_BACKLINK_PROPERTIES:
-                continue
-            if link["sourceId"] in omitted:
-                continue
-            entity = self.entity_by_id(link["sourceId"])
-            if not entity or self.is_low_value_backlink(entity):
-                continue
-            rows.append(
-                {
-                    "key": _pdf_label_for_field(link["property"]),
-                    "value": self.entity_label(entity),
-                }
-            )
-        return rows
 
     def attachments_for_request(self, request_context_id):
         files = []
@@ -2920,22 +2523,6 @@ class ROCratePdfRenderer:
             or ""
         )
 
-    def short_entity_label(self, entity, prefix):
-        return re.sub(
-            rf"^{re.escape(prefix)}\s+", "", self.entity_label(entity), flags=re.I
-        )
-
-    def process_section_title(self, process_entity):
-        label = self.entity_label(process_entity)
-        match = re.match(
-            r"^(sample|library|sequencing)\s+metadata\s+capture\s+for\s+(.+)$",
-            label,
-            flags=re.I,
-        )
-        if match:
-            return f"Process: {match.group(2)}"
-        return f"Process: {label}"
-
     def is_record_entity(self, entity):
         return self.is_record_id(entity.get(PDF_FIELD_ID) if entity else "")
 
@@ -2965,168 +2552,8 @@ class ROCratePdfRenderer:
             and RO_CRATE_ROOT_ID in self.reference_ids(entity.get(PDF_FIELD_IS_PART_OF))
         )
 
-    def is_lane_entity(self, entity):
-        return str(entity.get(PDF_FIELD_ID, "") if entity else "").startswith("#lane-")
-
     def is_process_entity(self, entity):
         return "CreateAction" in self.entity_types(entity)
-
-    def is_assay_entity(self, entity):
-        entity_id = str(entity.get(PDF_FIELD_ID, "") if entity else "")
-        return (
-            entity_id.startswith("#flowcell-assay-")
-            or entity_id.startswith("#sample-assay-")
-            or entity_id.startswith("#library-assay-")
-        )
-
-    def is_generic_flowcell_data_entity(self, entity):
-        return bool(
-            re.match(r"^#flowcell-data-\d+$", str(entity.get(PDF_FIELD_ID, "")))
-        )
-
-    def is_low_value_backlink(self, entity):
-        entity_id = str(entity.get(PDF_FIELD_ID, "") if entity else "")
-        return entity_id.startswith("#study-") or entity_id.startswith(
-            "#source-sample-"
-        )
-
-    def should_skip_nested_entity(self, label, entity):
-        return self.normalized_display_key(label) == "assay" and self.is_assay_entity(
-            entity
-        )
-
-    def is_low_value_preview_row(self, row, parent_label=""):
-        row_key = self.normalized_display_key(row.get("key"))
-        parent_key = self.normalized_display_key(parent_label)
-        if self.is_raw_property_name_list_row(row):
-            return True
-        if row_key.startswith("assay"):
-            return True
-        if parent_key == "dataobject" and row_key in PDF_REPEATED_DATA_OBJECT_KEYS:
-            return True
-        return False
-
-    def is_raw_property_name_list_row(self, row):
-        if not self.normalized_display_key(row.get("key")).endswith("parametervalue"):
-            return False
-        values = (
-            row.get("value")
-            if isinstance(row.get("value"), list)
-            else [row.get("value")]
-        )
-        tokens = []
-        for value in values:
-            if isinstance(value, str):
-                tokens.extend(value.split(","))
-        tokens = [re.sub(r"^\d+\.\s*", "", token).strip() for token in tokens if token]
-        return bool(tokens) and all(
-            PDF_PROPERTY_PREFIX_PATTERN.match(token) for token in tokens
-        )
-
-    def normalized_display_key(self, value):
-        return re.sub(r"[^a-z0-9]+", "", str(value or "").lower())
-
-    def is_summary_model_property(self, name):
-        return str(name or "").startswith(PDF_SUMMARY_PROPERTY_PREFIXES)
-
-    def display_property_value(self, property_value, property_by_name):
-        value = self.display_value(property_value.get(PDF_FIELD_VALUE))
-        unit = self.unit_for_measured_property(property_value, property_by_name)
-        if not unit or self.is_empty(value):
-            return value
-        return f"{value} {unit}"
-
-    def unit_for_measured_property(self, property_value, property_by_name):
-        unit_name = self.measuring_unit_property_name(
-            property_value.get(PDF_FIELD_NAME)
-        )
-        if not unit_name:
-            return ""
-        return self.display_value(
-            property_by_name.get(unit_name, {}).get(PDF_FIELD_VALUE)
-        )
-
-    def measuring_unit_property_name(self, property_name):
-        property_name = str(property_name or "")
-        if property_name.endswith("measured_value_facility"):
-            return re.sub(
-                r"measured_value_facility$",
-                "measuring_unit_facility",
-                property_name,
-            )
-        if property_name.endswith("measured_value"):
-            return re.sub(r"measured_value$", "measuring_unit", property_name)
-        return ""
-
-    def is_standalone_measuring_unit_property(self, property_name, property_by_name):
-        property_name = str(property_name or "")
-        if property_name.endswith("measuring_unit_facility"):
-            return (
-                re.sub(
-                    r"measuring_unit_facility$",
-                    "measured_value_facility",
-                    property_name,
-                )
-                in property_by_name
-            )
-        if property_name.endswith("measuring_unit"):
-            return (
-                re.sub(r"measuring_unit$", "measured_value", property_name)
-                in property_by_name
-            )
-        return False
-
-    def duplicates_direct_entity_field(self, entity, property_name, property_value):
-        normalized = PDF_PROPERTY_PREFIX_PATTERN.sub("", str(property_name or ""))
-        direct_key_map = {
-            "name": PDF_FIELD_NAME,
-            "description": "description",
-            "identifier": PDF_FIELD_IDENTIFIER,
-            "barcode": PDF_FIELD_IDENTIFIER,
-        }
-        direct_key = direct_key_map.get(normalized)
-        if not direct_key or direct_key not in entity:
-            return False
-        return self.display_value(entity.get(direct_key)) == self.display_value(
-            property_value
-        )
-
-    def group_for_property(self, name, entity):
-        model_name = self.model_name_for_property(name)
-        if not model_name:
-            return "Additional Details"
-        return f"{model_name}: {self.entity_label(entity) or 'Record'}"
-
-    def model_name_for_property(self, name):
-        property_name = str(name or "")
-        for model_name, prefixes in PDF_MODEL_SECTION_RULES:
-            if property_name.startswith(prefixes):
-                return model_name
-        return None
-
-    def model_section_title_for_entity(self, entity):
-        first_property = None
-        for ref in [
-            *self.reference_values(entity.get(PDF_FIELD_ADDITIONAL_PROPERTY)),
-            *self.reference_values(entity.get(PDF_FIELD_PARAMETER_VALUE)),
-        ]:
-            prop = self.resolve_reference(ref)
-            if isinstance(prop, dict) and prop.get(PDF_FIELD_NAME):
-                first_property = prop.get(PDF_FIELD_NAME)
-                break
-        model_name = self.model_name_for_property(
-            first_property
-        ) or self.model_name_for_id(entity.get(PDF_FIELD_ID))
-        return (
-            f"{model_name or 'Linked Model'}: {self.entity_label(entity) or 'Record'}"
-        )
-
-    def model_name_for_id(self, entity_id):
-        entity_id = str(entity_id or "")
-        for prefix, model_name in PDF_MODEL_ID_RULES:
-            if entity_id.startswith(prefix):
-                return model_name
-        return None
 
     def reference_values(self, value):
         if isinstance(value, list):
@@ -3169,8 +2596,13 @@ class ROCratePdfRenderer:
             parsed = self.parse_structured_string(value)
             if parsed is not None:
                 return self.display_value(parsed)
+            return self._date_card_value(value)
         if value is None:
             return ""
+        if value is True:
+            return "true"
+        if value is False:
+            return "false"
         return str(value)
 
     def parse_structured_string(self, value):
@@ -3183,15 +2615,6 @@ class ROCratePdfRenderer:
             return None
         return parsed if isinstance(parsed, (dict, list)) else None
 
-    def is_hidden_row(self, row):
-        return (
-            self.is_empty(row.get("value"))
-            or _pdf_is_hidden_field(row.get("key"))
-            or _pdf_is_hidden_field(
-                PDF_PROPERTY_PREFIX_PATTERN.sub("", str(row.get("key")))
-            )
-        )
-
     def is_empty(self, value):
         return (
             value in ("", None)
@@ -3199,40 +2622,70 @@ class ROCratePdfRenderer:
             or (isinstance(value, dict) and not value)
         )
 
-    def unique_rows(self, rows):
-        seen = set()
-        unique = []
-        for row in rows:
-            key = (
-                row.get("key"),
-                json.dumps(row.get("value"), sort_keys=True, default=str),
-            )
-            if key in seen:
-                continue
-            seen.add(key)
-            unique.append(row)
-        return unique
-
     def _id_suffix(self, entity_id):
         match = re.search(r"(\d+)$", str(entity_id or ""))
         return match.group(1) if match else ""
 
-    def _write_title(self, title):
+    def _write_title(self):
         self.pdf.set_font(self.pdf.font_family, "B", 14)
         self.pdf.cell(
-            0, 8, self.pdf.safe_text(title), new_x=XPos.LMARGIN, new_y=YPos.NEXT
+            0,
+            8,
+            self.pdf.safe_text(PDF_PREVIEW_TITLE),
+            new_x=XPos.LMARGIN,
+            new_y=YPos.NEXT,
         )
         self.pdf.set_font(self.pdf.font_family, "", 8)
         self.pdf.set_text_color(90, 110, 120)
         self.pdf.cell(
             0,
             5,
-            self.pdf.safe_text("RO-Crate preview generated from Parkour metadata."),
+            self.pdf.safe_text(PDF_PREVIEW_SUBTITLE),
             new_x=XPos.LMARGIN,
             new_y=YPos.NEXT,
         )
         self.pdf.set_text_color(16, 36, 47)
         self.pdf.ln(2)
+
+    def _write_selected_records_overview(self, request_groups):
+        self._write_section("Selected Libraries & Samples")
+        for request_group in request_groups:
+            records = request_group.get("records") or []
+            if not records:
+                continue
+            if self.pdf.get_y() > self.pdf.page_break_trigger - 18:
+                self.pdf.add_page()
+            self.pdf.set_x(self.pdf.l_margin)
+            self.pdf.set_font(self.pdf.font_family, "B", 9)
+            self.pdf.multi_cell(
+                0,
+                5,
+                self.pdf.safe_text(
+                    request_group.get("name") or "Selected request"
+                ),
+                new_x=XPos.LMARGIN,
+                new_y=YPos.NEXT,
+            )
+            self.pdf.set_font(self.pdf.font_family, "U", 8)
+            self.pdf.set_text_color(13, 111, 115)
+            for record in records:
+                label = (
+                    f"{record['barcode']}: {record['name']}"
+                    if record.get("barcode")
+                    else record["name"]
+                )
+                self.pdf.set_x(self.pdf.l_margin + 4)
+                self.pdf.multi_cell(
+                    self.pdf.epw - 4,
+                    4.5,
+                    self.pdf.safe_text(label),
+                    link=record.get("_pdfLink", ""),
+                    new_x=XPos.LMARGIN,
+                    new_y=YPos.NEXT,
+                )
+            self.pdf.set_text_color(16, 36, 47)
+            self.pdf.set_font(self.pdf.font_family, "", 8)
+            self.pdf.ln(1)
 
     def _write_request_group(self, request_group):
         self._write_heading(f"Request: {request_group['name']}", level=1)
@@ -3251,24 +2704,22 @@ class ROCratePdfRenderer:
             self._write_record(record)
 
     def _write_record(self, record):
+        if self.pdf.get_y() > self.pdf.page_break_trigger - 18:
+            self.pdf.add_page()
+        record_link = record.get("_pdfLink")
+        if record_link:
+            self.pdf.set_link(
+                record_link,
+                y=self.pdf.get_y(),
+                page=self.pdf.page_no(),
+            )
         title = f"{record['type']}: {record['name']}"
         if record.get("barcode"):
             title = f"{title} ({record['barcode']})"
         self._write_heading(title, level=2)
         for section in record["sections"]:
-            if self._record_section_was_written(section):
-                continue
             self._write_section(section["title"])
             self._write_rows(section["rows"])
-
-    def _record_section_was_written(self, section):
-        if section.get("title") == "Overview":
-            return False
-        signature = json.dumps(section, sort_keys=True, default=str)
-        if signature in self._written_record_section_signatures:
-            return True
-        self._written_record_section_signatures.add(signature)
-        return False
 
     def _write_heading(self, text, level):
         self.pdf.ln(3 if level == 1 else 2)
@@ -3405,14 +2856,24 @@ class ROCratePdfRenderer:
         return text
 
 
-def _zip_response(ro_crate_payload, archive_name, file_entries):
+def _render_pdf(result, skipped_records):
+    return ROCratePdfRenderer(
+        result.ro_crate,
+        result.archive_name,
+        skipped_records=skipped_records,
+    ).render()
+
+
+def _zip_response(result, skipped_records):
+    pdf_bytes = _render_pdf(result, skipped_records)
     buffer = BytesIO()
     with ZipFile(buffer, "w", compression=ZIP_DEFLATED) as zip_file:
         zip_file.writestr(
             "ro-crate-metadata.json",
-            json.dumps(ro_crate_payload, indent=2, ensure_ascii=False),
+            json.dumps(result.ro_crate, indent=2, ensure_ascii=False),
         )
-        for archive_path, source_path in file_entries:
+        zip_file.writestr(RO_CRATE_EMBEDDED_PDF_NAME, pdf_bytes)
+        for archive_path, source_path in result.file_entries:
             try:
                 with open(source_path, "rb") as handle:
                     zip_file.writestr(archive_path, handle.read())
@@ -3420,17 +2881,13 @@ def _zip_response(ro_crate_payload, archive_name, file_entries):
                 continue
 
     response = HttpResponse(buffer.getvalue(), content_type="application/zip")
-    response["Content-Disposition"] = f'attachment; filename="{archive_name}"'
+    response["Content-Disposition"] = f'attachment; filename="{result.archive_name}"'
     return response
 
 
 def _pdf_response(result, skipped_records):
     pdf_name = _ro_crate_pdf_name(result.archive_name)
-    pdf_bytes = ROCratePdfRenderer(
-        result.ro_crate,
-        result.archive_name,
-        skipped_records=skipped_records,
-    ).render()
+    pdf_bytes = _render_pdf(result, skipped_records)
     response = HttpResponse(pdf_bytes, content_type="application/pdf")
     response["Content-Disposition"] = f'attachment; filename="{pdf_name}"'
     response["Cache-Control"] = "no-store"
@@ -3450,7 +2907,7 @@ def _crate_response(preview_requested, pdf_requested, result, skipped_records):
         )
         response["Cache-Control"] = "no-store"
         return response
-    return _zip_response(result.ro_crate, result.archive_name, result.file_entries)
+    return _zip_response(result, skipped_records)
 
 
 class GenerateROCrate(viewsets.ViewSet):

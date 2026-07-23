@@ -307,9 +307,9 @@
         <button
           v-if="isStaffUser"
           class="header-button"
-          id="openROCratePopupButton"
+          id="openROCratePreviewButton"
           type="button"
-          data-testid="open-ro-crate-popup-button"
+          data-testid="open-ro-crate-preview-button"
           @click="handleROCrateClick"
         >
           <img
@@ -580,9 +580,10 @@
                       <strong>.zip</strong> package for the selected records in
                       the currently opened request. The package contains a
                       <strong>ro-crate-metadata.json</strong> file with linked
-                      metadata and can also include attached request files. This
-                      is useful when metadata needs to be shared with other
-                      systems or reused in a standardized ISA-aligned format.
+                      metadata and a <strong>ro-crate-preview.pdf</strong>. It
+                      can also include attached request files. This is useful
+                      when metadata needs to be shared with other systems or
+                      reused in a standardized ISA-aligned format.
                     </li>
                     <li>
                       <strong>Select All / Deselect All:</strong> Select or
@@ -779,235 +780,237 @@
       class="rocrate-preview-overlay"
       data-testid="ro-crate-preview-overlay"
       tabindex="0"
-      @keydown.esc.prevent="closeROCratePreviewModal"
+      @keydown.esc.prevent.stop="handleROCratePreviewEscape"
     >
       <div class="rocrate-preview-modal">
         <div class="rocrate-preview-modal-header">
           <div class="rocrate-preview-modal-title">
             <img
               class="rocrate-preview-modal-icon"
-              src="@/assets/icons/parkour_32x32.png"
+              src="@/assets/icons/ro-crate-logo.svg"
               alt=""
             />
             <span>RO-Crate Preview</span>
           </div>
-          <button
-            class="popup-close-button"
-            type="button"
-            aria-label="Close RO-Crate preview"
-            data-testid="close-ro-crate-preview-button"
-            @click="closeROCratePreviewModal"
-          >
-            &times;
-          </button>
+          <div class="rocrate-preview-modal-actions">
+            <div
+              class="rocrate-preview-help"
+              @mouseenter="openROCratePreviewHelp"
+              @mouseleave="scheduleROCratePreviewHelpClose"
+            >
+              <button
+                class="rocrate-preview-help-button"
+                type="button"
+                aria-label="RO-Crate preview help"
+                aria-controls="ro-crate-preview-help-panel"
+                aria-haspopup="dialog"
+                :aria-expanded="showROCratePreviewHelp.toString()"
+                @focus="openROCratePreviewHelp"
+              >
+                ?
+              </button>
+              <div
+                v-if="showROCratePreviewHelp"
+                id="ro-crate-preview-help-panel"
+                class="rocrate-preview-help-panel"
+                role="dialog"
+                aria-label="RO-Crate preview help"
+                @mouseenter="cancelROCratePreviewHelpClose"
+                @mouseleave="scheduleROCratePreviewHelpClose"
+              >
+                <div class="rocrate-preview-help-scroll">
+                  <div class="rocrate-preview-help-header">
+                    <div class="rocrate-preview-help-title">
+                      RO-Crate Preview Guide
+                    </div>
+                    <p>
+                      This window lets you inspect the selected Parkour records
+                      before downloading a PDF preview or the final RO-Crate
+                      ZIP. The preview and both exports use the same selected
+                      libraries, samples, request details, and displayed
+                      formatting.
+                    </p>
+                  </div>
+
+                  <div class="rocrate-preview-help-grid">
+                    <section class="rocrate-preview-help-section">
+                      <div class="rocrate-preview-help-section-title">
+                        <font-awesome-icon icon="fa-solid fa-layer-group" />
+                        <span>Selected Libraries &amp; Samples</span>
+                      </div>
+                      <ul>
+                        <li>
+                          Records are grouped by their Parkour request so you
+                          can see exactly what the export contains.
+                        </li>
+                        <li>
+                          Each chip uses the
+                          <strong>Barcode: Name</strong> format.
+                        </li>
+                        <li>
+                          Click a chip to jump to that library or sample in the
+                          detailed preview.
+                        </li>
+                        <li>
+                          All selected records are included; there is no
+                          RO-Crate date filter or metadata-selection step.
+                        </li>
+                      </ul>
+                    </section>
+
+                    <section class="rocrate-preview-help-section">
+                      <div class="rocrate-preview-help-section-title">
+                        <font-awesome-icon
+                          icon="fa-solid fa-magnifying-glass"
+                        />
+                        <span>Search &amp; Navigation</span>
+                      </div>
+                      <ul>
+                        <li>
+                          Search request names, record names, barcodes,
+                          attachment names, paths, and displayed values.
+                        </li>
+                        <li>
+                          Field labels such as <strong>Flowcell IDs</strong> are
+                          not searched.
+                        </li>
+                        <li>
+                          When you enter several words, every word must match
+                          somewhere in the same visible result.
+                        </li>
+                        <li>
+                          Press <strong>Enter</strong> for the next matching
+                          record, <strong>Shift + Enter</strong> for the
+                          previous one, and <strong>Escape</strong> to clear the
+                          search.
+                        </li>
+                      </ul>
+                    </section>
+
+                    <section class="rocrate-preview-help-section">
+                      <div class="rocrate-preview-help-section-title">
+                        <font-awesome-icon icon="fa-solid fa-folder-open" />
+                        <span>Request Details</span>
+                      </div>
+                      <ul>
+                        <li>
+                          Each request shows its name, description, external
+                          file paths, and external metadata paths.
+                        </li>
+                        <li>
+                          Attached request files are listed when they are
+                          available in the generated RO-Crate metadata.
+                        </li>
+                        <li>
+                          Long paths and structured values remain visible
+                          without changing their exported content.
+                        </li>
+                      </ul>
+                    </section>
+
+                    <section class="rocrate-preview-help-section">
+                      <div class="rocrate-preview-help-section-title">
+                        <font-awesome-icon icon="fa-solid fa-flask" />
+                        <span>Preparation &amp; Sequencing</span>
+                      </div>
+                      <ul>
+                        <li>
+                          <strong>Preparation</strong> shows the corresponding
+                          Libraries &amp; Samples fields in the same column
+                          order.
+                        </li>
+                        <li>
+                          <strong>Sequencing</strong> shows read length, depth,
+                          flowcell IDs, and sequencers.
+                        </li>
+                        <li>
+                          Dates, decimal values, units, barcodes, empty values,
+                          and special values follow the Libraries &amp; Samples
+                          display rules.
+                        </li>
+                        <li>
+                          The standalone PDF uses the same sections, values, and
+                          formatting as this preview.
+                        </li>
+                      </ul>
+                    </section>
+
+                    <section class="rocrate-preview-help-section">
+                      <div class="rocrate-preview-help-section-title">
+                        <font-awesome-icon icon="fa-solid fa-file-lines" />
+                        <span>Export Preview</span>
+                      </div>
+                      <ul>
+                        <li>
+                          Downloads a readable PDF containing the selected
+                          libraries and samples, request details, Preparation,
+                          and Sequencing sections.
+                        </li>
+                        <li>
+                          Entries in the PDF's selected-record overview link to
+                          their corresponding detail sections.
+                        </li>
+                        <li>
+                          The downloaded filename ends with
+                          <strong>_ro_crate_preview.pdf</strong>.
+                        </li>
+                        <li>The PDF footer contains only the page number.</li>
+                      </ul>
+                    </section>
+
+                    <section class="rocrate-preview-help-section">
+                      <div class="rocrate-preview-help-section-title">
+                        <font-awesome-icon icon="fa-solid fa-download" />
+                        <span>Export RO-Crate</span>
+                      </div>
+                      <ul>
+                        <li>
+                          Downloads the final ZIP with
+                          <strong>ro-crate-metadata.json</strong> in its root.
+                        </li>
+                        <li>
+                          The same root also contains
+                          <strong>ro-crate-preview.pdf</strong>.
+                        </li>
+                        <li>
+                          Available request files are included using their
+                          generated archive paths.
+                        </li>
+                        <li>
+                          RO-Crate Documentation opens the documentation for the
+                          metadata package and its structure.
+                        </li>
+                      </ul>
+                    </section>
+                  </div>
+
+                  <div class="rocrate-preview-help-callout">
+                    <font-awesome-icon icon="fa-solid fa-circle-info" />
+                    <span>
+                      RO-Crate generation accepts selected libraries and samples
+                      in <strong>Sequencing</strong> or
+                      <strong>Delivered</strong> status. Any selected record in
+                      another status is skipped before this preview opens.
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <button
+              class="popup-close-button"
+              type="button"
+              aria-label="Close RO-Crate preview"
+              data-testid="close-ro-crate-preview-button"
+              @click="closeROCratePreviewModal"
+            >
+              &times;
+            </button>
+          </div>
         </div>
         <div class="rocrate-preview-modal-body">
           <ROCratePreviewView
             :preview-config="roCratePreviewConfig"
-            :embedded="true"
           />
-        </div>
-      </div>
-    </div>
-
-    <!-- Popup for RO-Crate Export Options -->
-    <div
-      v-if="showROCrateExportPopup"
-      class="popup-overlay"
-      tabindex="0"
-      @click.self="closeROCrateExportModal"
-      @keydown="handleROCratePopupKeydown"
-    >
-      <div
-        class="popup-container rocrate-modal"
-        data-testid="ro-crate-export-modal"
-      >
-        <div class="popup-header">
-          <div class="popup-title">
-            <img class="popup-title-icon" :src="iconDownloadROCrate" alt="" />
-            <span>Export RO-Crate</span>
-          </div>
-          <div class="rocrate-help-wrapper">
-            <button
-              class="rocrate-help-button"
-              type="button"
-              aria-label="RO-Crate help"
-            >
-              ?
-            </button>
-            <div class="rocrate-help-popup">
-              <div class="rocrate-help-scroll">
-                <div class="rocrate-help-title">Export RO-Crate Guide</div>
-                <p class="rocrate-help-intro">
-                  RO-Crate gives you one structured export package for the
-                  delivered libraries or samples you selected. The ZIP contains
-                  <strong>ro-crate-metadata.json</strong> and request
-                  attachments when available.
-                </p>
-                <div class="rocrate-help-grid">
-                  <section class="rocrate-help-section">
-                    <div class="rocrate-help-section-title">
-                      What this export contains
-                    </div>
-                    <ul class="rocrate-help-list">
-                      <li>
-                        Selected sample or library metadata, grouped by related
-                        request.
-                      </li>
-                      <li>
-                        Linked request, preparation, pooling, sequencing, and
-                        reference metadata for the sections you keep selected.
-                      </li>
-                      <li>
-                        Request attachments and external path metadata when
-                        those values are available in Parkour.
-                      </li>
-                    </ul>
-                  </section>
-                  <section class="rocrate-help-section">
-                    <div class="rocrate-help-section-title">How to use it</div>
-                    <ul class="rocrate-help-list">
-                      <li>
-                        Click <strong>Preview</strong> to inspect the metadata
-                        before exporting the ZIP.
-                      </li>
-                      <li>
-                        Keep all sections selected for the most complete
-                        metadata package.
-                      </li>
-                      <li>
-                        Open <strong>ro-crate-metadata.json</strong> in any
-                        RO-Crate-aware tool to inspect the graph.
-                      </li>
-                    </ul>
-                  </section>
-                </div>
-              </div>
-            </div>
-          </div>
-          <button
-            class="popup-close-button"
-            type="button"
-            @click="closeROCrateExportModal"
-          >
-            &times;
-          </button>
-        </div>
-
-        <div class="popup-body rocrate-body">
-          <div class="rocrate-summary">
-            <div class="rocrate-summary-card rocrate-summary-card-wide">
-              <span class="label">Selected Requests</span>
-              <span
-                class="value"
-                :class="{
-                  'rocrate-summary-count': roCrateRequestCount !== 1,
-                  'rocrate-request-name': roCrateRequestCount === 1
-                }"
-              >
-                {{ roCrateContext?.name || "-" }}
-              </span>
-            </div>
-            <div class="rocrate-summary-card">
-              <span class="label">{{ roCrateSelectedLabel }}</span>
-              <span class="value rocrate-summary-count">
-                {{ roCrateSelectedDisplay }}
-              </span>
-            </div>
-          </div>
-
-          <div class="rocrate-toolbar">
-            <div style="font-weight: bold">Choose information to include:</div>
-            <div class="rocrate-toolbar-actions">
-              <button
-                class="popup-button secondary small"
-                type="button"
-                data-testid="ro-crate-select-all-sections-button"
-                :disabled="!canConfigureROCrateExport"
-                @click="selectAllROCrateSections"
-              >
-                Select All
-              </button>
-              <button
-                class="popup-button secondary small"
-                type="button"
-                data-testid="ro-crate-clear-sections-button"
-                :disabled="!canConfigureROCrateExport"
-                @click="clearAllROCrateSections"
-              >
-                Clear All
-              </button>
-            </div>
-          </div>
-
-          <div class="rocrate-options-grid">
-            <label
-              v-for="option in roCrateSectionOptions"
-              :key="option.id"
-              class="rocrate-option"
-            >
-              <input
-                v-model="roCrateSelectedSections"
-                type="checkbox"
-                :value="option.id"
-                :data-testid="`ro-crate-section-${option.id}`"
-                :disabled="!canConfigureROCrateExport"
-              />
-              <div class="rocrate-option-content">
-                <div class="rocrate-option-title">{{ option.label }}</div>
-                <div class="rocrate-option-description">
-                  {{ option.description }}
-                </div>
-              </div>
-            </label>
-          </div>
-
-          <div
-            v-if="roCrateValidationMessage"
-            class="rocrate-validation"
-            data-testid="ro-crate-validation-message"
-          >
-            {{ roCrateValidationMessage }}
-          </div>
-        </div>
-
-        <div class="popup-footer rocrate-footer">
-          <div class="rocrate-footer-links">
-            <a
-              class="file-upload-label rocrate-footer-link"
-              href="https://www.researchobject.org/ro-crate/specification/1.2/introduction.html"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <font-awesome-icon icon="fa-solid fa-file-lines" />
-              RO-Crate Documentation
-            </a>
-          </div>
-          <div class="rocrate-footer-actions">
-            <button
-              ref="defaultROCrateButton"
-              class="popup-button yes-button"
-              type="button"
-              data-testid="preview-ro-crate-button"
-              :disabled="roCrateBusy || !canPreviewROCrate"
-              :title="
-                canPreviewROCrate
-                  ? ''
-                  : 'Select at least one library or sample before previewing.'
-              "
-              @click="previewROCrateFromModal"
-            >
-              <span v-if="roCrateBusy">Opening...</span>
-              <span v-else>Preview</span>
-            </button>
-            <button
-              class="popup-button secondary"
-              type="button"
-              @click="closeROCrateExportModal"
-            >
-              Cancel
-            </button>
-          </div>
         </div>
       </div>
     </div>
@@ -1319,7 +1322,6 @@ import {
   librariesAndSamplesColumnDefs,
   librariesAndSamplesExportColumns
 } from "../constants/librariesAndSamplesConsts";
-import { RO_CRATE_SECTION_OPTIONS } from "../constants/roCratePreviewConsts";
 import { statusMap, getStatusClass } from "../constants/statusConsts";
 import RequestEditorView from "./requestEditorView.vue";
 import ROCratePreviewView from "./roCratePreviewView.vue";
@@ -1333,9 +1335,7 @@ import iconExportUpload from "../assets/icons/export_upload.svg";
 import iconDownloadROCrate from "../assets/icons/action_rocrate.svg";
 const axiosRef = createAxiosObject();
 const urlStringStart = urlStringStartsWith();
-const RO_CRATE_COMPLETED_STATUS = 6;
-const defaultROCrateSections = () =>
-  RO_CRATE_SECTION_OPTIONS.map((option) => option.id);
+const RO_CRATE_EXPORTABLE_STATUSES = new Set([5, 6]);
 
 export default {
   name: "LibrariesAndSamples",
@@ -1544,11 +1544,9 @@ export default {
       activeRequestMeta: null,
       activeRequestAction: null,
       activeRequestContext: null,
-      showROCrateExportPopup: false,
-      roCrateContext: null,
-      roCrateBusy: false,
-      roCrateSelectedSections: defaultROCrateSections(),
       showROCratePreviewModal: false,
+      showROCratePreviewHelp: false,
+      roCratePreviewHelpCloseTimer: null,
       roCratePreviewConfig: null,
       requestEditorSyncing: false,
       requestEditorSyncTimer: null,
@@ -1576,6 +1574,7 @@ export default {
   beforeUnmount() {
     document.removeEventListener("click", this.handleOutsideClick);
     document.removeEventListener("keydown", this.handleKeyDown);
+    this.cancelROCratePreviewHelpClose();
     this.stopRequestEditorSync();
     window.handleGroupButtonClick = null;
     window.openRequestEditorById = null;
@@ -1583,60 +1582,6 @@ export default {
   computed: {
     statusMap() {
       return statusMap;
-    },
-    roCrateSectionOptions() {
-      return RO_CRATE_SECTION_OPTIONS;
-    },
-    roCrateSelectedBarcodes() {
-      return Array.isArray(this.roCrateContext?.selectedBarcodes)
-        ? this.roCrateContext.selectedBarcodes.filter((value) => Boolean(value))
-        : [];
-    },
-    roCrateSelectedCount() {
-      return this.roCrateSelectedBarcodes.length;
-    },
-    roCrateSelectedDisplay() {
-      const count = this.roCrateSelectedCount;
-      const type = String(this.roCrateContext?.selectedType || "")
-        .trim()
-        .toUpperCase();
-      if (type === "L") {
-        return `${count} ${count === 1 ? "library" : "libraries"}`;
-      }
-      if (type === "S") {
-        return `${count} ${count === 1 ? "sample" : "samples"}`;
-      }
-      return `${count} ${count === 1 ? "library/sample" : "libraries/samples"}`;
-    },
-    roCrateRequestCount() {
-      const count = Number(this.roCrateContext?.selectedRequestCount || 0);
-      return Number.isFinite(count) && count > 0 ? count : 0;
-    },
-    canConfigureROCrateExport() {
-      return this.roCrateSelectedBarcodes.length > 0;
-    },
-    canPreviewROCrate() {
-      return (
-        this.canConfigureROCrateExport &&
-        this.roCrateSelectedSections.length > 0
-      );
-    },
-    roCrateSelectedLabel() {
-      const type = String(this.roCrateContext?.selectedType || "")
-        .trim()
-        .toUpperCase();
-      if (type === "L") return "Selected Libraries";
-      if (type === "S") return "Selected Samples";
-      return "Selected Libraries or Samples";
-    },
-    roCrateValidationMessage() {
-      if (!this.roCrateSelectedBarcodes.length) {
-        return "Select at least one library or sample with a valid barcode to preview an RO-Crate.";
-      }
-      if (!this.roCrateSelectedSections.length) {
-        return "Select at least one information section to include in the RO-Crate.";
-      }
-      return "";
     }
   },
   watch: {
@@ -2053,6 +1998,17 @@ export default {
       ) {
         this.showPageHelp = false;
       }
+
+      const roCratePreviewHelp = this.$el.querySelector(
+        ".rocrate-preview-help"
+      );
+      if (
+        this.showROCratePreviewHelp &&
+        roCratePreviewHelp &&
+        !roCratePreviewHelp.contains(event.target)
+      ) {
+        this.closeROCratePreviewHelp();
+      }
     },
     handleKeyDown(event) {
       const isEscape = event.key === "Escape";
@@ -2062,10 +2018,6 @@ export default {
       }
       if (isEscape && this.showExportPopup) {
         this.showExportPopup = false;
-        return;
-      }
-      if (isEscape && this.showROCrateExportPopup) {
-        this.closeROCrateExportModal();
         return;
       }
       if (isEscape && this.showAdvancedFilters) {
@@ -2123,7 +2075,6 @@ export default {
       if (this.showAdvancedFilters) {
         this.showSelectColumns = false;
         this.showExportPopup = false;
-        this.showROCrateExportPopup = false;
         this.showPageHelp = false;
       }
     },
@@ -2132,7 +2083,6 @@ export default {
       if (this.showSelectColumns) {
         this.showAdvancedFilters = false;
         this.showExportPopup = false;
-        this.showROCrateExportPopup = false;
         this.showPageHelp = false;
       }
     },
@@ -2142,7 +2092,6 @@ export default {
         this.showAdvancedFilters = false;
         this.showSelectColumns = false;
         this.showExportPopup = false;
-        this.showROCrateExportPopup = false;
       }
       this.showPageHelp = nextValue;
     },
@@ -2472,70 +2421,44 @@ export default {
     },
     openROCratePreviewModal(previewConfig) {
       this.roCratePreviewConfig = previewConfig || null;
+      this.cancelROCratePreviewHelpClose();
+      this.showROCratePreviewHelp = false;
       this.showROCratePreviewModal = true;
       this.$nextTick(() => {
         document.querySelector(".rocrate-preview-overlay")?.focus?.();
       });
     },
     closeROCratePreviewModal() {
+      this.closeROCratePreviewHelp();
       this.showROCratePreviewModal = false;
       this.roCratePreviewConfig = null;
     },
-    closeROCrateExportModal() {
-      this.showROCrateExportPopup = false;
-      this.roCrateBusy = false;
-      this.roCrateContext = null;
+    openROCratePreviewHelp() {
+      this.cancelROCratePreviewHelpClose();
+      this.showROCratePreviewHelp = true;
     },
-    selectAllROCrateSections() {
-      this.roCrateSelectedSections = defaultROCrateSections();
+    closeROCratePreviewHelp() {
+      this.cancelROCratePreviewHelpClose();
+      this.showROCratePreviewHelp = false;
     },
-    clearAllROCrateSections() {
-      this.roCrateSelectedSections = [];
+    scheduleROCratePreviewHelpClose() {
+      this.cancelROCratePreviewHelpClose();
+      this.roCratePreviewHelpCloseTimer = window.setTimeout(() => {
+        this.showROCratePreviewHelp = false;
+        this.roCratePreviewHelpCloseTimer = null;
+      }, 180);
     },
-    handleROCratePopupKeydown(event) {
-      if (event.key === "Escape") {
-        event.preventDefault();
-        this.closeROCrateExportModal();
+    cancelROCratePreviewHelpClose() {
+      if (!this.roCratePreviewHelpCloseTimer) return;
+      window.clearTimeout(this.roCratePreviewHelpCloseTimer);
+      this.roCratePreviewHelpCloseTimer = null;
+    },
+    handleROCratePreviewEscape() {
+      if (this.showROCratePreviewHelp) {
+        this.closeROCratePreviewHelp();
         return;
       }
-      if (event.key !== "Enter") return;
-      event.preventDefault();
-      if (!this.roCrateBusy) {
-        this.previewROCrateFromModal();
-      }
-    },
-    previewROCrateFromModal() {
-      if (!this.roCrateSelectedBarcodes.length) {
-        showNotification(
-          "Select records with valid barcodes to preview RO-Crate.",
-          "warning"
-        );
-        return;
-      }
-      if (!this.roCrateSelectedSections.length) {
-        showNotification("Select at least one information section.", "warning");
-        return;
-      }
-
-      this.roCrateBusy = true;
-      this.openROCratePreviewModal({
-        barcodes: this.roCrateSelectedBarcodes,
-        sections: this.roCrateSelectedSections,
-        requestName: this.roCrateContext?.name || "",
-        requestNames: Array.isArray(this.roCrateContext?.selectedRequestNames)
-          ? this.roCrateContext.selectedRequestNames
-          : [],
-        requestIds: Array.isArray(this.roCrateContext?.selectedRequestIds)
-          ? this.roCrateContext.selectedRequestIds
-          : this.roCrateContext?.id
-            ? [this.roCrateContext.id]
-            : [],
-        selectedType: this.roCrateContext?.selectedType || "",
-        selectedCount: this.roCrateSelectedCount,
-        selectedRequestCount: this.roCrateRequestCount
-      });
-      this.showROCrateExportPopup = false;
-      this.roCrateBusy = false;
+      this.closeROCratePreviewModal();
     },
     handleRequestActionRefresh() {
       this.requestMetaById = {};
@@ -2833,7 +2756,6 @@ export default {
         (row) => row.selected
       );
       this.exportSelection = this.hasSelectedRows ? "selected" : "all";
-      this.showROCrateExportPopup = false;
       this.showExportPopup = true;
     },
     getSelectedLibrariesSamplesRows() {
@@ -2841,14 +2763,14 @@ export default {
     },
     handleROCrateClick() {
       const selectedRows = this.getSelectedLibrariesSamplesRows();
-      const completedRows = selectedRows.filter(
-        (row) => Number(row?.status) === RO_CRATE_COMPLETED_STATUS
+      const exportableRows = selectedRows.filter((row) =>
+        RO_CRATE_EXPORTABLE_STATUSES.has(Number(row?.status))
       );
-      const skippedCount = selectedRows.length - completedRows.length;
+      const skippedCount = selectedRows.length - exportableRows.length;
 
-      if (!completedRows.length) {
+      if (!exportableRows.length) {
         showNotification(
-          "Select at least one delivered library or sample for RO-Crate export.",
+          "Select at least one library or sample in Sequencing or Delivered status for RO-Crate export.",
           "warning"
         );
         return;
@@ -2856,37 +2778,26 @@ export default {
 
       if (skippedCount > 0) {
         showNotification(
-          `${skippedCount} selected ${skippedCount === 1 ? "record was" : "records were"} skipped because RO-Crate export requires Delivered status.`,
+          `${skippedCount} selected ${skippedCount === 1 ? "record was" : "records were"} skipped because RO-Crate export requires Sequencing or Delivered status.`,
           "warning"
         );
       }
 
       const selectedBarcodes = Array.from(
         new Set(
-          completedRows
+          exportableRows
             .map((row) => ((row?.barcode ?? "") + "").trim())
             .filter(Boolean)
         )
       );
 
-      const selectedTypes = [
-        ...new Set(
-          completedRows
-            .map((row) =>
-              String(row?.type || "")
-                .trim()
-                .toUpperCase()
-            )
-            .filter((type) => type === "L" || type === "S")
-        )
-      ];
       const requestNames = [
         ...new Set(
-          completedRows.map((row) => row?.request_name).filter(Boolean)
+          exportableRows.map((row) => row?.request_name).filter(Boolean)
         )
       ];
       const requestIds = [
-        ...new Set(completedRows.map((row) => row?.request_id).filter(Boolean))
+        ...new Set(exportableRows.map((row) => row?.request_id).filter(Boolean))
       ];
       const requestLabel =
         requestNames.length === 1
@@ -2897,19 +2808,11 @@ export default {
       this.showAdvancedFilters = false;
       this.showSelectColumns = false;
       this.showPageHelp = false;
-      this.roCrateSelectedSections = defaultROCrateSections();
-      this.roCrateContext = {
-        id: requestIds.length === 1 ? requestIds[0] : null,
-        name: requestLabel,
-        selectedBarcodes,
-        selectedRequestNames: requestNames,
-        selectedRequestIds: requestIds,
-        selectedType: selectedTypes.length === 1 ? selectedTypes[0] : "mixed",
-        selectedRequestCount: requestNames.length
-      };
-      this.showROCrateExportPopup = true;
-      this.$nextTick(() => {
-        this.$refs.defaultROCrateButton?.focus?.();
+      this.openROCratePreviewModal({
+        barcodes: selectedBarcodes,
+        requestName: requestLabel,
+        requestNames,
+        requestIds
       });
     },
     async handleExport() {
@@ -3139,7 +3042,7 @@ body,
   width: calc(100% - 20px);
   height: calc(100% - 20px);
   overflow: hidden;
-  background: #f4fafb;
+  background: #f5f7f8;
   border-radius: 8px;
   box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
   display: flex;
@@ -3151,21 +3054,182 @@ body,
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  padding: 16px 24px;
+  padding: 14px 18px;
   border-bottom: 1px solid #e5e7eb;
   background: #ffffff;
   color: #13415b;
-  font-size: 20px;
+  font-size: 18px;
   font-weight: 600;
 }
 
 .rocrate-preview-modal-header .popup-close-button {
   color: #13415b;
-  border-radius: 4px;
+  font-size: 24px;
 }
 
 .rocrate-preview-modal-header .popup-close-button:hover {
-  background: #edf3f5;
+  color: #0f5c84;
+}
+
+.rocrate-preview-modal-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.rocrate-preview-help {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+.rocrate-preview-help-button {
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: #13415b;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.rocrate-preview-help-button:hover,
+.rocrate-preview-help-button:focus-visible {
+  color: #0f5c84;
+  outline: none;
+}
+
+.rocrate-preview-help-panel {
+  position: absolute;
+  z-index: 8;
+  top: calc(100% + 10px);
+  right: -28px;
+  width: min(760px, calc(100vw - 72px));
+  max-height: min(72vh, 760px);
+  padding: 0;
+  overflow: hidden;
+  border: 1px solid #d7dee3;
+  border-radius: 14px;
+  background: #ffffff;
+  color: #44505f;
+  box-shadow: 0 18px 42px rgba(0, 0, 0, 0.18);
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1.5;
+}
+
+.rocrate-preview-help-panel::before {
+  content: "";
+  position: absolute;
+  top: -7px;
+  right: 36px;
+  width: 14px;
+  height: 14px;
+  border-top: 1px solid #d7dee3;
+  border-left: 1px solid #d7dee3;
+  background: #ffffff;
+  transform: rotate(45deg);
+}
+
+.rocrate-preview-help-scroll {
+  max-height: min(72vh, 760px);
+  padding: 18px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-gutter: stable;
+}
+
+.rocrate-preview-help-header {
+  margin-bottom: 14px;
+}
+
+.rocrate-preview-help-title {
+  margin-bottom: 4px;
+  color: #13415b;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.rocrate-preview-help-header p {
+  margin: 0;
+  color: #4b5563;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.rocrate-preview-help-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.rocrate-preview-help-section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 14px;
+  border: 1px solid #dbe4ea;
+  border-radius: 12px;
+  background: linear-gradient(180deg, #f9fbfc 0%, #f4f7f8 100%);
+}
+
+.rocrate-preview-help-section-title {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #13415b;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.rocrate-preview-help-section-title svg {
+  color: #07867f;
+}
+
+.rocrate-preview-help-panel ul {
+  display: grid;
+  gap: 6px;
+  margin: 0;
+  padding-left: 18px;
+  color: #44505f;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.rocrate-preview-help-panel li + li {
+  margin-top: 0;
+}
+
+.rocrate-preview-help-callout {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-top: 14px;
+  padding: 10px 12px;
+  border: 1px solid #c7e2de;
+  border-radius: 10px;
+  background: #eef7f6;
+  color: #275c56;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.rocrate-preview-help-callout svg {
+  flex: 0 0 auto;
+  margin-top: 3px;
+  color: #07867f;
+}
+
+@media (max-width: 760px) {
+  .rocrate-preview-help-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 .rocrate-preview-modal-title {
@@ -3184,8 +3248,9 @@ body,
 }
 
 .rocrate-preview-modal-icon {
-  width: 24px;
-  height: 24px;
+  width: 42px;
+  height: 42px;
+  object-fit: contain;
   flex-shrink: 0;
 }
 
@@ -3196,12 +3261,9 @@ body,
 }
 
 @media print {
-  body.rocrate-printing,
   body:has(.rocrate-preview-overlay),
-  body.rocrate-printing #app,
   body:has(.rocrate-preview-overlay) #app,
-  body:has(.rocrate-preview-overlay) .parent-container,
-  body.rocrate-printing .parent-container {
+  body:has(.rocrate-preview-overlay) .parent-container {
     height: auto !important;
     min-height: 0 !important;
     margin: 0 !important;
@@ -3212,13 +3274,11 @@ body,
 
   body:has(.rocrate-preview-overlay)
     .parent-container
-    > :not(.rocrate-preview-overlay),
-  body.rocrate-printing .parent-container > :not(.rocrate-preview-overlay) {
+    > :not(.rocrate-preview-overlay) {
     display: none !important;
   }
 
-  body:has(.rocrate-preview-overlay) .rocrate-preview-overlay,
-  body.rocrate-printing .rocrate-preview-overlay {
+  body:has(.rocrate-preview-overlay) .rocrate-preview-overlay {
     position: static;
     inset: auto;
     display: block;
@@ -3231,8 +3291,7 @@ body,
     overflow: visible !important;
   }
 
-  body:has(.rocrate-preview-overlay) .rocrate-preview-modal,
-  body.rocrate-printing .rocrate-preview-modal {
+  body:has(.rocrate-preview-overlay) .rocrate-preview-modal {
     width: auto !important;
     height: auto !important;
     min-height: 0 !important;
@@ -3246,13 +3305,11 @@ body,
     display: block;
   }
 
-  body:has(.rocrate-preview-overlay) .rocrate-preview-modal-header,
-  body.rocrate-printing .rocrate-preview-modal-header {
+  body:has(.rocrate-preview-overlay) .rocrate-preview-modal-header {
     display: none !important;
   }
 
-  body:has(.rocrate-preview-overlay) .rocrate-preview-modal-body,
-  body.rocrate-printing .rocrate-preview-modal-body {
+  body:has(.rocrate-preview-overlay) .rocrate-preview-modal-body {
     display: block;
     height: auto !important;
     min-height: 0 !important;
@@ -3278,238 +3335,6 @@ body,
   height: 20px;
   opacity: 0.9;
   filter: brightness(0) invert(1);
-}
-
-.rocrate-modal {
-  width: min(860px, 94vw);
-  max-height: min(720px, 90vh);
-  display: flex;
-  flex-direction: column;
-}
-
-.rocrate-help-wrapper {
-  position: relative;
-  display: inline-flex;
-  margin-right: 10px;
-}
-
-.rocrate-help-button {
-  min-width: 18px;
-  min-height: 18px;
-  border: none;
-  background: transparent;
-  color: #ffffff;
-  font-size: 18px;
-  line-height: 1;
-  cursor: pointer;
-}
-
-.rocrate-help-popup {
-  position: absolute;
-  top: calc(100% + 6px);
-  right: 0;
-  width: min(520px, calc(100vw - 32px));
-  max-height: min(60vh, 520px);
-  overflow: hidden;
-  border-radius: 14px;
-  border: 1px solid #d7dee3;
-  background: #ffffff;
-  box-shadow: 0 18px 42px rgba(0, 0, 0, 0.18);
-  color: #44505f;
-  display: none;
-  z-index: 20;
-}
-
-.rocrate-help-scroll {
-  max-height: min(60vh, 520px);
-  overflow-y: auto;
-  padding: 14px;
-}
-
-.rocrate-help-wrapper:hover .rocrate-help-popup,
-.rocrate-help-wrapper:focus-within .rocrate-help-popup {
-  display: block;
-}
-
-.rocrate-help-title {
-  font-size: 16px;
-  font-weight: 700;
-  color: #13415b;
-  margin-bottom: 6px;
-}
-
-.rocrate-help-intro {
-  margin: 0 0 12px;
-  font-size: 13px;
-  line-height: 1.6;
-  color: #4b5563;
-}
-
-.rocrate-help-grid {
-  display: grid;
-  gap: 10px;
-}
-
-.rocrate-help-section {
-  border: 1px solid #dbe4ea;
-  border-radius: 12px;
-  background: linear-gradient(180deg, #f9fbfc 0%, #f4f7f8 100%);
-  padding: 12px;
-}
-
-.rocrate-help-section-title {
-  font-size: 13px;
-  font-weight: 700;
-  color: #13415b;
-  margin-bottom: 8px;
-}
-
-.rocrate-help-list {
-  margin: 0;
-  padding-left: 18px;
-  display: grid;
-  gap: 6px;
-  font-size: 12px;
-  line-height: 1.55;
-  color: #44505f;
-}
-
-.rocrate-help-list strong {
-  color: #13415b;
-}
-
-.rocrate-body {
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-  max-height: min(620px, calc(90vh - 120px));
-  overflow-y: auto;
-}
-
-.rocrate-summary {
-  display: grid;
-  grid-template-columns: minmax(0, 1.7fr) minmax(160px, 0.8fr);
-  gap: 8px;
-}
-
-.rocrate-summary-card {
-  border: 1px solid #dbe4ea;
-  border-radius: 12px;
-  background: linear-gradient(180deg, #f9fbfc 0%, #f4f7f8 100%);
-  padding: 10px 12px;
-  display: grid;
-  gap: 4px;
-  min-width: 0;
-}
-
-.rocrate-summary-card .label {
-  font-weight: 700;
-  color: #13415b;
-  font-size: 12px;
-  text-transform: uppercase;
-  letter-spacing: 0.03em;
-}
-
-.rocrate-summary-card .value {
-  color: #44505f;
-  word-break: break-word;
-  font-size: 14px;
-  line-height: 1.4;
-}
-
-.rocrate-summary-count {
-  font-size: 20px !important;
-  line-height: 1;
-  font-weight: 700;
-  color: #13415b !important;
-}
-
-.rocrate-request-name {
-  color: #13415b !important;
-  font-size: 20px !important;
-  font-weight: 600;
-  line-height: 1;
-}
-
-.rocrate-toolbar,
-.rocrate-footer {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-}
-
-.rocrate-toolbar-actions,
-.rocrate-footer-links,
-.rocrate-footer-actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-
-.rocrate-options-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 8px;
-}
-
-.rocrate-option {
-  display: flex;
-  align-items: flex-start;
-  gap: 8px;
-  border: 1px solid #d3dbe2;
-  border-radius: 10px;
-  padding: 10px;
-  background: #ffffff;
-  cursor: pointer;
-}
-
-.rocrate-option input[type="checkbox"] {
-  width: 18px;
-  height: 18px;
-  min-width: 18px;
-  min-height: 18px;
-  flex: 0 0 18px;
-  margin-top: 2px;
-  box-sizing: border-box;
-}
-
-.rocrate-option-content {
-  display: grid;
-  gap: 2px;
-}
-
-.rocrate-option-title {
-  font-size: 13px;
-  font-weight: 700;
-  color: #13415b;
-}
-
-.rocrate-option-description {
-  font-size: 12px;
-  line-height: 1.5;
-  color: #44505f;
-}
-
-.rocrate-validation {
-  padding: 10px 12px;
-  border-radius: 8px;
-  border: 1px solid #efc7c7;
-  background: #fff4f4;
-  color: #a3272b;
-  font-size: 12px;
-  line-height: 1.45;
-}
-
-.rocrate-footer a {
-  text-decoration: none;
-}
-
-.rocrate-footer-link {
-  color: #333;
-  white-space: nowrap;
-  gap: 6px;
-  padding: 8px 12px;
 }
 
 .date-filter-item input[type="date"] {
@@ -3893,21 +3718,6 @@ body.input-dropdown-open .tabulator-tooltip {
     grid-template-columns: 1fr;
   }
 
-  .rocrate-summary,
-  .rocrate-options-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .rocrate-toolbar,
-  .rocrate-footer {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  .rocrate-footer-links,
-  .rocrate-footer-actions {
-    width: 100%;
-  }
 }
 
 @media (max-width: 820px) {

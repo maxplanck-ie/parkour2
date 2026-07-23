@@ -706,24 +706,6 @@ class TestGenerateROCrateAPI(BaseAPITestCase):
         payload = self._parse_payload(response)
         self.assertIn("error", payload)
 
-    def test_rejects_empty_sections_parameter(self):
-        response = self.client.get(
-            reverse("generate-ro-crate-list"),
-            {"requests": self.request.name, "sections": ""},
-        )
-        self.assertEqual(response.status_code, 400)
-        payload = self._parse_payload(response)
-        self.assertIn("Select at least one RO-Crate section", payload["error"])
-
-    def test_rejects_unknown_sections_parameter(self):
-        response = self.client.get(
-            reverse("generate-ro-crate-list"),
-            {"requests": self.request.name, "sections": "samples,unexpected"},
-        )
-        self.assertEqual(response.status_code, 400)
-        payload = self._parse_payload(response)
-        self.assertEqual(payload["invalid_sections"], ["unexpected"])
-
     def test_rejects_unknown_boolean_export_flag_values(self):
         for query_name in ("preview", "pdf"):
             with self.subTest(query_name=query_name):
@@ -734,6 +716,32 @@ class TestGenerateROCrateAPI(BaseAPITestCase):
                 self.assertEqual(response.status_code, 400)
                 payload = self._parse_payload(response)
                 self.assertIn(query_name, payload["error"])
+
+    @patch("library.ro_crate.CompleteSampleData.objects")
+    @patch("library.ro_crate.CompleteLibraryData.objects")
+    def test_legacy_sections_parameter_is_ignored(
+        self, mock_library_objects, mock_sample_objects
+    ):
+        sample = create_sample("all-sections-sample", status=6)
+        self.request.samples.add(sample)
+        self._set_ro_crate_complete_data_rows(
+            mock_library_objects,
+            mock_sample_objects,
+            samples=[self._sample_view_row(sample)],
+        )
+
+        response = self.client.get(
+            reverse("generate-ro-crate-list"),
+            {"barcodes": sample.barcode, "sections": "samples"},
+        )
+
+        self.assertEqual(response.status_code, 200)
+        payload, _ = self._extract_zip_payload(response)
+        graph_ids = self._graph_ids(payload)
+        self.assertIn(f"#sample-material-{sample.pk}", graph_ids)
+        self.assertIn(f"#protocol-{sample.library_protocol_id}", graph_ids)
+        self.assertIn(f"#organism-{sample.organism_id}", graph_ids)
+        self.assertIn(f"#index-type-{sample.index_type_id}", graph_ids)
 
     @patch("library.ro_crate.CompleteSampleData.objects")
     @patch("library.ro_crate.CompleteLibraryData.objects")
@@ -778,6 +786,10 @@ class TestGenerateROCrateAPI(BaseAPITestCase):
         payload, archive_names = self._extract_zip_payload(response)
         self.assertIn("@graph", payload)
         self.assertIn("ro-crate-metadata.json", archive_names)
+        pdf_name = "ro-crate-preview.pdf"
+        self.assertIn(pdf_name, archive_names)
+        with ZipFile(BytesIO(response.content), "r") as zip_file:
+            self.assertTrue(zip_file.read(pdf_name).startswith(b"%PDF"))
 
         graph_ids = self._graph_ids(payload)
         self.assertIn("./", graph_ids)
@@ -880,7 +892,10 @@ class TestGenerateROCrateAPI(BaseAPITestCase):
             metapaths["analysis"]["md5"], "0cc175b9c0f1b6a831c399e269772661"
         )
         self.assertNotIn("data/project/huge.fastq.gz", archive_names)
-        self.assertEqual(archive_names, {"ro-crate-metadata.json"})
+        self.assertEqual(
+            archive_names,
+            {"ro-crate-metadata.json", "ro-crate-preview.pdf"},
+        )
 
     @patch("library.ro_crate.CompleteSampleData.objects")
     @patch("library.ro_crate.CompleteLibraryData.objects")
@@ -946,6 +961,7 @@ class TestGenerateROCrateAPI(BaseAPITestCase):
                 "sample_db_removed_equal_representation_nucleotides",
                 "sample_db_removed_rna_quality",
                 "sample_mv_analysis_type_name",
+                "sample_mv_create_time",
                 "sample_mv_pool_names",
                 "sample_mv_sequencer_names",
                 "sample_mv_flowcell_ids",
@@ -1043,72 +1059,6 @@ class TestGenerateROCrateAPI(BaseAPITestCase):
             {"@id": f"#sample-data-{sample.pk}"},
             study_entry.get("dataFiles", []),
         )
-
-    @patch("library.ro_crate.CompleteSampleData.objects")
-    @patch("library.ro_crate.CompleteLibraryData.objects")
-    def test_selected_sections_remove_unselected_entities_refs_and_properties(
-        self, mock_library_objects, mock_sample_objects
-    ):
-        sample = create_sample("section-filter-sample", status=6)
-        self.request.samples.add(sample)
-        LibraryPreparation.objects.create(
-            sample=sample,
-            starting_amount=12.5,
-            pcr_cycles=9,
-            concentration_library=3.2,
-            mean_fragment_size=280,
-        )
-        Pooling.objects.create(
-            sample=sample, concentration_c1=4.4, comment="sample pool"
-        )
-        self._set_ro_crate_complete_data_rows(
-            mock_library_objects,
-            mock_sample_objects,
-            samples=[self._sample_view_row(sample)],
-        )
-
-        response = self.client.get(
-            reverse("generate-ro-crate-list"),
-            {"barcodes": sample.barcode, "sections": "samples"},
-        )
-        self.assertEqual(response.status_code, 200)
-        payload, _ = self._extract_zip_payload(response)
-        graph_ids = self._graph_ids(payload)
-
-        self.assertIn(f"#sample-material-{sample.pk}", graph_ids)
-        self.assertIn(f"#sample-data-{sample.pk}", graph_ids)
-        self.assertNotIn(f"#protocol-{sample.library_protocol_id}", graph_ids)
-        self.assertNotIn(f"#organism-{sample.organism_id}", graph_ids)
-        self.assertNotIn(f"#index-type-{sample.index_type_id}", graph_ids)
-
-        sample_entry = self._graph_entry(payload, f"#sample-material-{sample.pk}")
-        self._assert_comment_names_include(
-            sample_entry,
-            ["sample_db_name"],
-            payload,
-        )
-        sample_process = self._graph_entry(payload, f"#sample-process-{sample.pk}")
-        self._assert_comment_names_include(
-            sample_process,
-            ["sample_mv_analysis_type_name"],
-            payload,
-        )
-        self._assert_comment_names_exclude(
-            sample_entry,
-            [
-                "library_preparation_starting_amount",
-                "pooling_concentration_c1",
-                "pooling_comment",
-                "pooling_sample",
-                "sample_mv_analysis_type_name",
-            ],
-            payload,
-        )
-        self.assertNotIn("organism", sample_entry)
-        self.assertNotIn("indexType", sample_entry)
-        self.assertNotIn("associatedPool", sample_entry)
-
-        self.assertNotIn("executesLabProtocol", sample_process)
 
     @patch("library.ro_crate.CompleteSampleData.objects")
     @patch("library.ro_crate.CompleteLibraryData.objects")
@@ -1226,80 +1176,139 @@ class TestGenerateROCrateAPI(BaseAPITestCase):
             {"requests": self.request.name, "pdf": "true"},
         )
 
-        self._assert_pdf_response(response, f"{self.request.pk}_ro_crate.pdf")
-
-    def test_pdf_preview_omits_repeated_data_object_index_relationships(self):
-        renderer = self._pdf_renderer_for_graph(
-            [
-                {
-                    "@id": "#library-process-1",
-                    "@type": "CreateAction",
-                    "name": "Library metadata capture",
-                    "result": [{"@id": "#library-data-1"}],
-                },
-                {
-                    "@id": "#library-data-1",
-                    "@type": "MediaObject",
-                    "name": "Library export metadata",
-                    "indexType": {"@id": "#index-type-1"},
-                    "indexI7": {"@id": "#index-i7-1"},
-                    "indexI5": {"@id": "#index-i5-1"},
-                },
-                {"@id": "#index-type-1", "@type": "Thing", "name": "Dual Index"},
-                {"@id": "#index-i7-1", "@type": "Thing", "name": "I7-1"},
-                {"@id": "#index-i5-1", "@type": "Thing", "name": "I5-1"},
-            ]
+        self._assert_pdf_response(
+            response,
+            f"{self.request.pk}_ro_crate_preview.pdf",
         )
 
-        rows = renderer.rows_for_process_entity(
-            renderer.entity_by_id("#library-process-1")
-        )
-
-        row_keys = {row["key"] for row in rows}
-        self.assertNotIn("Data Object Index Type", row_keys)
-        self.assertNotIn("Data Object Selected I7 Index", row_keys)
-        self.assertNotIn("Data Object Selected I5 Index", row_keys)
-
-    def test_pdf_renders_name_only_linked_organism_section(self):
-        # Regression test for #300: a linked term entity that carries only a
-        # name (e.g. an organism) must still render its own section instead of
-        # being dropped as empty from a record's grouping.
-        renderer = self._pdf_renderer_for_graph(
-            [
-                {
-                    "@id": "#library-material-501",
-                    "@type": "Thing",
-                    "name": "Delivered library",
-                    "identifier": "26L000501",
-                    "organism": {"@id": "#organism-1"},
-                },
-                {"@id": "#organism-1", "@type": "Thing", "name": "Arabidopsis"},
-            ]
-        )
-
-        sections = renderer.related_model_sections(
-            renderer.entity_by_id("#library-material-501")
-        )
-
-        organism_sections = [
-            section
-            for section in sections
-            if section["title"] == "Organism: Arabidopsis"
+    def test_pdf_preview_uses_formatted_preparation_and_sequencing_sections(self):
+        graph = [
+            {
+                "@id": "#library-material-501",
+                "@type": "Thing",
+                "name": "Preview library",
+                "identifier": "26L000501",
+            },
+            {
+                "@id": "#library-process-501",
+                "@type": "CreateAction",
+                "object": [{"@id": "#library-material-501"}],
+                "parameterValue": [
+                    {"@id": "#library-input-value"},
+                    {"@id": "#library-input-unit"},
+                    {"@id": "#library-concentration"},
+                    {"@id": "#library-depth"},
+                ],
+            },
+            {
+                "@id": "#library-input-value",
+                "@type": "PropertyValue",
+                "name": "library_mv_measured_value",
+                "value": 2,
+            },
+            {
+                "@id": "#library-input-unit",
+                "@type": "PropertyValue",
+                "name": "library_mv_measuring_unit",
+                "value": "ng/µl",
+            },
+            {
+                "@id": "#library-concentration",
+                "@type": "PropertyValue",
+                "name": "library_mv_concentration_library",
+                "value": 1.5,
+            },
+            {
+                "@id": "#library-depth",
+                "@type": "PropertyValue",
+                "name": "library_mv_sequencing_depth",
+                "value": 24.6,
+            },
         ]
-        self.assertEqual(len(organism_sections), 1)
+        renderer = self._pdf_renderer_for_graph(graph)
+
+        record = renderer._build_record("#library-material-501")
+        sections = {section["title"]: section["rows"] for section in record["sections"]}
+        preparation = {row["key"]: row["value"] for row in sections["Preparation"]}
+        sequencing = {row["key"]: row["value"] for row in sections["Sequencing"]}
+
+        self.assertEqual(set(sections), {"Preparation", "Sequencing"})
         self.assertEqual(
-            organism_sections[0]["rows"],
-            [{"key": "Name", "value": "Arabidopsis"}],
+            list(preparation)[:3],
+            ["Name", "Barcode", "Plate Coord"],
+        )
+        self.assertNotIn("Status", preparation)
+        self.assertNotIn("S/L", preparation)
+        self.assertEqual(preparation["Input"], "2 ng/µl")
+        self.assertEqual(preparation["ng/µl Library"], "1.500")
+        self.assertEqual(sequencing["Depth (M)"], "25")
+        self.assertEqual(renderer._input_card_value(-1, "Unknown"), "Unknown")
+        self.assertEqual(
+            renderer._formatted_barcode("26L000502", "Sample"),
+            "26L000502*",
+        )
+        self.assertEqual(
+            renderer._formatted_barcode("26L000501", "Library"),
+            "26L000501",
+        )
+        self.assertEqual(renderer._fixed_card_number(1.25, 1), "1.3")
+        self.assertEqual(
+            renderer._date_card_value("2026-01-30T23:30:00-05:00"),
+            "30.01.2026",
+        )
+        self.assertTrue(renderer.render().startswith(b"%PDF"))
+        self.assertEqual(len(renderer.pdf.links), 1)
+        self.assertGreaterEqual(
+            sum(len(page.annots) for page in renderer.pdf.pages.values()),
+            1,
         )
 
-    def test_pdf_model_display_rules_match_longest_prefix_first(self):
-        renderer = self._pdf_renderer_for_graph([])
+    def test_pdf_request_details_use_preview_allowlist(self):
+        graph = [
+            {
+                "@id": "#request-context-101",
+                "@type": "Dataset",
+                "name": "Preview request",
+                "description": "Request description",
+                "additionalProperty": [
+                    {"@id": "#request-filepaths"},
+                    {"@id": "#request-metapaths"},
+                    {"@id": "#request-qc-completed-at"},
+                ],
+            },
+            {
+                "@id": "#request-filepaths",
+                "@type": "PropertyValue",
+                "name": "request_filepaths",
+                "value": {"data": "/data/request"},
+            },
+            {
+                "@id": "#request-metapaths",
+                "@type": "PropertyValue",
+                "name": "request_metapaths",
+                "value": {"metadata": "/data/request/metadata"},
+            },
+            {
+                "@id": "#request-qc-completed-at",
+                "@type": "PropertyValue",
+                "name": "request_qc_completed_at",
+                "value": "2026-04-02T12:00:00Z",
+            },
+        ]
+        renderer = self._pdf_renderer_for_graph(graph)
+
+        rows = renderer.request_detail_rows(
+            renderer.entity_by_id("#request-context-101")
+        )
 
         self.assertEqual(
-            renderer.model_name_for_property("index_pool_size_name"), "PoolSize"
-        )
-        self.assertEqual(
-            renderer.model_name_for_property("index_pool_name"), "IndexPool"
+            [row["key"] for row in rows],
+            [
+                "Name",
+                "Description",
+                "External File Paths",
+                "External Metadata Paths",
+            ],
         )
 
     def test_export_filenames_are_limited_to_50_characters(self):
@@ -1311,14 +1320,14 @@ class TestGenerateROCrateAPI(BaseAPITestCase):
         self.assertLessEqual(len(archive_name), 50)
         self.assertLessEqual(len(pdf_name), 50)
         self.assertTrue(archive_name.endswith(".zip"))
-        self.assertTrue(pdf_name.endswith(".pdf"))
+        self.assertTrue(pdf_name.endswith("_ro_crate_preview.pdf"))
 
     @patch("library.ro_crate.CompleteSampleData.objects")
     @patch("library.ro_crate.CompleteLibraryData.objects")
-    def test_rejects_selection_when_no_selected_record_is_delivered(
+    def test_rejects_selection_when_no_selected_record_is_exportable(
         self, mock_library_objects, mock_sample_objects
     ):
-        library = create_library("crate-library", status=5)
+        library = create_library("crate-library", status=4)
         self.request.libraries.add(library)
         self._set_ro_crate_complete_data_rows(
             mock_library_objects,
@@ -1331,38 +1340,45 @@ class TestGenerateROCrateAPI(BaseAPITestCase):
         )
         self.assertEqual(response.status_code, 400)
         payload = self._parse_payload(response)
-        self.assertIn("Delivered status", payload.get("error", ""))
+        self.assertIn("Sequencing or Delivered status", payload.get("error", ""))
         self.assertEqual(payload["skipped_records"], [library.barcode])
 
     @patch("library.ro_crate.CompleteSampleData.objects")
     @patch("library.ro_crate.CompleteLibraryData.objects")
-    def test_mixed_status_selection_exports_delivered_and_reports_skipped(
+    def test_sequencing_records_are_exported_while_other_status_is_skipped(
         self, mock_library_objects, mock_sample_objects
     ):
-        delivered_library = create_library("delivered-crate-library", status=6)
         sequencing_library = create_library("sequencing-crate-library", status=5)
-        self.request.libraries.add(delivered_library, sequencing_library)
+        pooled_library = create_library("pooled-crate-library", status=4)
+        sequencing_sample = create_sample("sequencing-crate-sample", status=5)
+        self.request.libraries.add(sequencing_library, pooled_library)
+        self.request.samples.add(sequencing_sample)
         self._set_ro_crate_complete_data_rows(
             mock_library_objects,
             mock_sample_objects,
             libraries=[
-                self._library_view_row(delivered_library),
                 self._library_view_row(sequencing_library),
+                self._library_view_row(pooled_library),
             ],
+            samples=[self._sample_view_row(sequencing_sample)],
         )
 
         response = self.client.get(
             reverse("generate-ro-crate-list"),
             {
-                "barcodes": f"{delivered_library.barcode},{sequencing_library.barcode}",
+                "barcodes": (
+                    f"{sequencing_library.barcode},{pooled_library.barcode},"
+                    f"{sequencing_sample.barcode}"
+                ),
                 "preview": "true",
             },
         )
         payload = self._extract_preview_payload(response)
-        self.assertEqual(payload["skipped_records"], [sequencing_library.barcode])
+        self.assertEqual(payload["skipped_records"], [pooled_library.barcode])
         graph_ids = self._graph_ids(payload["ro_crate"])
-        self.assertIn(f"#library-material-{delivered_library.pk}", graph_ids)
-        self.assertNotIn(f"#library-material-{sequencing_library.pk}", graph_ids)
+        self.assertIn(f"#library-material-{sequencing_library.pk}", graph_ids)
+        self.assertNotIn(f"#library-material-{pooled_library.pk}", graph_ids)
+        self.assertIn(f"#sample-material-{sequencing_sample.pk}", graph_ids)
 
     @patch("library.ro_crate.CompleteSampleData.objects")
     @patch("library.ro_crate.CompleteLibraryData.objects")
@@ -1559,6 +1575,7 @@ class TestGenerateROCrateAPI(BaseAPITestCase):
             process_entry,
             [
                 "library_mv_analysis_type_name",
+                "library_mv_create_time",
                 "library_mv_pool_names",
                 "library_mv_flowcell_ids",
                 "library_mv_sequencer_names",

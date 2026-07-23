@@ -1,0 +1,38 @@
+{
+  "requestDetails": [
+    { "key": "name", "label": "Name" },
+    { "key": "description", "label": "Description" },
+    { "key": "request_filepaths", "label": "External File Paths" },
+    { "key": "request_metapaths", "label": "External Metadata Paths" }
+  ],
+  "preparation": [
+    { "key": "name", "label": "Name" },
+    { "key": "barcode", "label": "Barcode" },
+    { "key": "well_position", "label": "Plate Coord" },
+    { "key": "pool_names", "label": "Pool Paths" },
+    { "key": "gmo", "label": "Propagable & GMO" },
+    { "key": "create_time", "label": "Date" },
+    { "key": "nucleic_acid_type_name", "label": "Input Type" },
+    { "key": "comment_input", "label": "Comment Input" },
+    { "key": "organism_name", "label": "Organism" },
+    { "key": "library_protocol_name", "label": "Protocol" },
+    { "key": "analysis_type_name", "label": "Analysis Type" },
+    { "key": "input", "label": "Input" },
+    { "key": "starting_amount", "label": "Starting Amount" },
+    { "key": "pcr_cycles", "label": "Cycles" },
+    { "key": "concentration_library", "label": "ng/µl Library" },
+    { "key": "average_fragment_size", "label": "bp" },
+    { "key": "index_type_name", "label": "Index Type" },
+    { "key": "coordinate", "label": "Coord" },
+    { "key": "i7_id", "label": "I7 ID" },
+    { "key": "index_i7", "label": "Index I7" },
+    { "key": "i5_id", "label": "I5 ID" },
+    { "key": "index_i5", "label": "Index I5" }
+  ],
+  "sequencing": [
+    { "key": "read_length_name", "label": "Length" },
+    { "key": "sequencing_depth", "label": "Depth (M)" },
+    { "key": "flowcell_ids", "label": "Flowcell IDs" },
+    { "key": "sequencer_names", "label": "Sequencers" }
+  ]
+}

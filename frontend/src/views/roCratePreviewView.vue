@@ -1,59 +1,59 @@
 <template>
-  <div class="rocrate-preview-page" :class="{ embedded }">
-    <div
-      class="rocrate-preview-shell"
-      :class="{ 'is-empty': !model && !loading && !errorMessage }"
-    >
+  <div class="rocrate-preview-page">
+    <div class="rocrate-preview-shell">
       <section
-        class="upload-stage"
-        :class="{ centered: !model && !loading && !errorMessage }"
+        v-if="model"
+        class="preview-action-bar"
       >
-        <div class="upload-content">
-          <h1 class="upload-title-main">
-            <img
-              class="upload-title-icon"
-              src="@/assets/icons/parkour_32x32.png"
-              alt=""
-            />
-            <span>Parkour RO-Crate Preview</span>
-          </h1>
-          <div class="upload-title">
-            {{ model ? labels.loadedTitle : labels.emptyTitle }}
+        <div class="preview-action-copy">
+          <div class="preview-action-title">
+            RO-Crate export
           </div>
-          <div class="upload-subtitle">
-            {{ model ? labels.loadedSubtitle : labels.emptySubtitle }}
-          </div>
-          <div class="upload-actions">
-            <div v-if="model?.source?.name" class="upload-current-file">
-              {{ model.source.name }}
-            </div>
-            <button
-              v-if="model"
-              class="hero-button primary rocrate-export-button"
-              type="button"
-              :disabled="exportBusy || !canExportPreview"
-              @click="exportROCrate"
-            >
-              <font-awesome-icon icon="fa-solid fa-box-archive" />
-              {{ exportBusy ? "Exporting..." : "Export RO-Crate" }}
-            </button>
-            <button
-              v-if="model"
-              class="hero-button secondary pdf-export-button"
-              type="button"
-              data-testid="export-ro-crate-pdf-button"
-              :disabled="pdfBusy || !canExportPreview"
-              @click="exportToPdf"
-            >
-              <font-awesome-icon icon="fa-solid fa-file-pdf" />
-              {{ pdfBusy ? "Exporting..." : "Export to PDF" }}
-            </button>
+          <div class="preview-action-subtitle">
+            {{ labels.loadedSubtitle }}
           </div>
         </div>
-        <div class="upload-watermark" aria-hidden="true">
-          <div class="upload-watermark-crop">
-            <img src="@/assets/icons/ro-crate-wide.svg" alt="" />
+        <div class="preview-actions">
+          <div
+            v-if="model?.source?.name"
+            class="preview-output-file"
+          >
+            <span class="preview-output-file-label">ZIP output:</span>
+            <span class="preview-output-file-name">
+              {{ model.source.name }}
+            </span>
           </div>
+          <button
+            class="preview-action-button secondary"
+            type="button"
+            data-testid="export-ro-crate-pdf-button"
+            title="Download this preview as a PDF"
+            :disabled="pdfBusy || !canExportPreview"
+            @click="exportToPdf"
+          >
+            <font-awesome-icon icon="fa-solid fa-download" />
+            {{ pdfBusy ? "Exporting..." : "Export Preview" }}
+          </button>
+          <button
+            class="preview-action-button primary"
+            type="button"
+            title="Download the selected records as an RO-Crate ZIP"
+            :disabled="exportBusy || !canExportPreview"
+            @click="exportROCrate"
+          >
+            <font-awesome-icon icon="fa-solid fa-download" />
+            {{ exportBusy ? "Exporting..." : "Export RO-Crate" }}
+          </button>
+          <a
+            class="preview-action-button secondary"
+            href="https://www.researchobject.org/ro-crate/specification/1.1/introduction.html"
+            target="_blank"
+            rel="noopener noreferrer"
+            title="Open the RO-Crate documentation in a new tab"
+          >
+            <font-awesome-icon icon="fa-solid fa-file-lines" />
+            RO-Crate Documentation
+          </a>
         </div>
       </section>
 
@@ -72,12 +72,70 @@
         <span>
           {{ skippedRecords.length }}
           {{ skippedRecords.length === 1 ? "record was" : "records were" }}
-          skipped because RO-Crate export requires Delivered status:
+          skipped because RO-Crate export requires Sequencing or Delivered
+          status:
           {{ skippedRecords.join(", ") }}
         </span>
       </div>
 
-      <section v-if="model" class="preview-workspace">
+      <section v-if="model">
+        <section
+          class="detail-card request-overview-card"
+          aria-label="Selected libraries and samples"
+        >
+          <div class="detail-header">
+            <div class="detail-kicker">
+              <font-awesome-icon
+                class="detail-kicker-icon"
+                icon="fa-solid fa-layer-group"
+              />
+              <span>Selected Libraries &amp; Samples</span>
+            </div>
+          </div>
+          <div
+            v-if="visibleRequestGroups.length"
+            class="request-overview-list"
+          >
+            <article
+              v-for="request in visibleRequestGroups"
+              :key="`overview-${request.id}`"
+              class="request-overview-item"
+            >
+              <div class="request-overview-title">
+                <ROCrateHighlightedText
+                  :value="request.name"
+                  :search-tokens="searchTokens"
+                />
+              </div>
+              <div v-if="request.records.length" class="record-chip-list">
+                <button
+                  v-for="record in request.records"
+                  :key="`overview-${request.id}-${record.id}`"
+                  class="record-chip"
+                  type="button"
+                  :title="`Go to ${record.type.toLowerCase()} ${record.name}`"
+                  @click="scrollToRecord(request.id, record.id)"
+                >
+                  <template v-if="record.barcode">
+                    <span class="record-chip-barcode">
+                      <ROCrateHighlightedText
+                        :value="record.barcode"
+                        :search-tokens="searchTokens"
+                      />
+                    </span>
+                    <span class="record-chip-separator">:</span>
+                  </template>
+                  <ROCrateHighlightedText
+                    :value="record.name"
+                    :search-tokens="searchTokens"
+                  />
+                </button>
+              </div>
+              <div v-else class="empty-inline">{{ labels.noRecords }}</div>
+            </article>
+          </div>
+        </section>
+
         <section
           class="preview-search-panel"
           aria-label="Search RO-Crate preview"
@@ -85,57 +143,58 @@
           <div class="preview-search-copy">
             <div class="preview-search-title">Search Preview</div>
             <div class="preview-search-meta">{{ searchResultSummary }}</div>
-            <div
-              v-if="previewRecordLimitExceeded"
-              class="preview-search-meta limit-note"
-            >
-              Showing first {{ previewRecordDisplayCount }} of
-              {{ previewRecordTotalCount }}
-              libraries/samples in preview. ZIP and PDF exports include all
-              selected records.
-            </div>
           </div>
-          <div class="table-search-inline">
+          <div class="preview-search-controls">
             <div class="table-search-input-wrap">
               <input
-                v-model.trim="tableSearchInput"
+                ref="previewSearchInput"
+                v-model="searchInput"
                 class="table-search-input"
                 type="search"
-                placeholder="Search by request, record, field, or value"
+                placeholder="Search by request, record, barcode, or value"
+                @keydown.enter.prevent="
+                  navigateSearchResults($event.shiftKey ? -1 : 1)
+                "
+                @keydown.esc.prevent="clearSearch"
               />
+              <button
+                v-if="searchInput"
+                class="table-search-clear"
+                type="button"
+                aria-label="Clear preview search"
+                title="Clear search"
+                @click="clearSearch"
+              >
+                <font-awesome-icon icon="fa-solid fa-xmark" />
+              </button>
               <font-awesome-icon
                 class="table-search-icon"
                 icon="fa-solid fa-magnifying-glass"
               />
             </div>
-          </div>
-        </section>
-
-        <section class="detail-card request-overview-card">
-          <div class="detail-header">
-            <div class="detail-kicker">Request(s) Overview</div>
-          </div>
-          <div class="request-overview-list">
-            <article
-              v-for="request in visibleRequestGroups"
-              :key="`overview-${request.id}`"
-              class="request-overview-item"
+            <div
+              v-if="searchMatchRecords.length"
+              class="preview-search-navigation"
+              aria-label="Search result navigation"
             >
-              <div class="request-overview-title">{{ request.name }}</div>
-              <div v-if="request.records.length" class="record-chip-list">
-                <span
-                  v-for="record in request.records"
-                  :key="`overview-${request.id}-${record.id}`"
-                  class="record-chip"
-                >
-                  {{ record.name
-                  }}<template v-if="record.barcode">
-                    ({{ record.barcode }})</template
-                  >
-                </span>
-              </div>
-              <div v-else class="empty-inline">{{ labels.noRecords }}</div>
-            </article>
+              <button
+                type="button"
+                title="Previous matching record (Shift+Enter)"
+                aria-label="Previous matching record"
+                @click="navigateSearchResults(-1)"
+              >
+                <font-awesome-icon icon="fa-solid fa-angle-left" />
+              </button>
+              <span>{{ activeSearchResultLabel }}</span>
+              <button
+                type="button"
+                title="Next matching record (Enter)"
+                aria-label="Next matching record"
+                @click="navigateSearchResults(1)"
+              >
+                <font-awesome-icon icon="fa-solid fa-angle-right" />
+              </button>
+            </div>
           </div>
         </section>
 
@@ -147,14 +206,22 @@
           <div class="detail-header">
             <div>
               <div class="detail-kicker">
-                Request {{ index + 1 }}: {{ request.name }}
+                <font-awesome-icon
+                  class="detail-kicker-icon"
+                  icon="fa-solid fa-folder-open"
+                />
+                <span>Request {{ index + 1 }}:</span>
+                <ROCrateHighlightedText
+                  :value="request.name"
+                  :search-tokens="searchTokens"
+                />
               </div>
             </div>
           </div>
 
           <section v-if="request.requestRows.length" class="record-group">
             <div class="record-group-title">Request Details</div>
-            <div class="quick-summary-table record-group-table">
+            <div class="quick-summary-table">
               <div
                 v-for="row in request.requestRows"
                 :key="`${request.id}-request-${row.key}`"
@@ -163,7 +230,10 @@
               >
                 <div class="quick-summary-key">{{ row.key }}</div>
                 <div class="quick-summary-value" :class="valueClassForRow(row)">
-                  <ROCrateDisplayValue :value="row.value" />
+                  <ROCrateDisplayValue
+                    :value="row.value"
+                    :search-tokens="searchTokens"
+                  />
                 </div>
               </div>
             </div>
@@ -176,13 +246,31 @@
                 v-for="record in request.records"
                 :key="record.id"
                 class="record-table-block"
+                :id="recordAnchorId(request.id, record.id)"
+                tabindex="-1"
               >
                 <div class="record-table-header">
-                  <div class="record-table-title">
-                    {{ record.type }}: {{ record.name }}
-                  </div>
-                  <div v-if="record.barcode" class="record-table-subtitle">
-                    Barcode: {{ record.barcode }}
+                  <div class="record-table-heading">
+                    <font-awesome-icon
+                      class="record-table-title-icon"
+                      icon="fa-solid fa-flask"
+                    />
+                    <div>
+                      <div class="record-table-title">
+                        {{ record.type }}:
+                        <ROCrateHighlightedText
+                          :value="record.name"
+                          :search-tokens="searchTokens"
+                        />
+                      </div>
+                      <div v-if="record.barcode" class="record-table-subtitle">
+                        Barcode:
+                        <ROCrateHighlightedText
+                          :value="record.barcode"
+                          :search-tokens="searchTokens"
+                        />
+                      </div>
+                    </div>
                   </div>
                 </div>
                 <section
@@ -191,19 +279,21 @@
                   class="record-group nested"
                 >
                   <div class="record-group-title">{{ section.title }}</div>
-                  <div class="quick-summary-table record-group-table">
+                  <div class="record-card-grid">
                     <div
                       v-for="row in section.rows"
                       :key="`${record.id}-${section.title}-${row.key}`"
-                      class="quick-summary-row"
-                      :class="{ 'wide-row': row.wide }"
+                      class="record-data-card"
                     >
-                      <div class="quick-summary-key">{{ row.key }}</div>
+                      <div class="record-data-key">{{ row.key }}</div>
                       <div
-                        class="quick-summary-value"
+                        class="record-data-value"
                         :class="valueClassForRow(row)"
                       >
-                        <ROCrateDisplayValue :value="row.value" />
+                        <ROCrateDisplayValue
+                          :value="row.value"
+                          :search-tokens="searchTokens"
+                        />
                       </div>
                     </div>
                   </div>
@@ -222,7 +312,10 @@
                 class="attachment-item"
               >
                 <font-awesome-icon icon="fa-solid fa-file-lines" />
-                <span>{{ file.name }}</span>
+                <ROCrateHighlightedText
+                  :value="file.name"
+                  :search-tokens="searchTokens"
+                />
               </div>
             </div>
           </section>
@@ -236,26 +329,15 @@
 import { h } from "vue";
 import { saveAs } from "file-saver";
 import {
-  RO_CRATE_BACKLINK_PROPERTIES,
   RO_CRATE_ENDPOINT,
   RO_CRATE_ENTITY_IDS,
   RO_CRATE_ENTITY_PREFIXES,
   RO_CRATE_FIELD_KEYS,
-  RO_CRATE_HIDDEN_FIELD_PATTERNS,
-  RO_CRATE_INBUILT_HIDDEN_FIELDS,
-  RO_CRATE_LINKED_MODEL_RELATION_FIELDS,
-  RO_CRATE_MODEL_DISPLAY_RULES_BY_PREFIX,
-  RO_CRATE_MODEL_SECTION_ID_RULES,
+  RO_CRATE_PREPARATION_CARD_FIELDS,
   RO_CRATE_PREVIEW_LABELS,
-  RO_CRATE_PROPERTY_LABEL_OVERRIDES,
-  RO_CRATE_PROPERTY_PREFIX_PATTERN,
   RO_CRATE_RECORD_TYPES,
-  RO_CRATE_REPEATED_DATA_OBJECT_FIELDS,
-  RO_CRATE_REPEATED_DATA_OBJECT_KEYS,
-  RO_CRATE_RELATED_MODEL_HIDDEN_FIELDS,
-  RO_CRATE_RELATION_FIELDS,
-  RO_CRATE_VISIBLE_ID_FIELDS,
-  USER_DEFINED_VARIABLE_HIDDEN_FIELDS
+  RO_CRATE_REQUEST_DETAIL_FIELDS,
+  RO_CRATE_SEQUENCING_CARD_FIELDS
 } from "../constants/roCratePreviewConsts";
 import { parseRoCratePayload } from "../utilities/roCratePreviewUtils";
 import {
@@ -268,25 +350,61 @@ import {
 const axiosRef = createAxiosObject();
 const urlStringStart = urlStringStartsWith();
 const fieldKeys = RO_CRATE_FIELD_KEYS;
-const hiddenFields = new Set(RO_CRATE_INBUILT_HIDDEN_FIELDS);
-const userHiddenFields = new Set(USER_DEFINED_VARIABLE_HIDDEN_FIELDS || []);
-const visibleIdFields = new Set(RO_CRATE_VISIBLE_ID_FIELDS);
-const relatedModelHiddenFields = new Set(RO_CRATE_RELATED_MODEL_HIDDEN_FIELDS);
-const normalisePolicyField = (value) =>
-  String(value || "")
-    .replace(/[^a-z0-9]+/gi, "")
-    .toLowerCase();
-const hiddenPolicyFields = new Set(
-  [...hiddenFields, ...userHiddenFields].map((field) =>
-    normalisePolicyField(field)
-  )
-);
-const visibleIdPolicyFields = new Set(
-  [...visibleIdFields].map((field) => normalisePolicyField(field))
-);
 const RO_CRATE_SEARCH_DEBOUNCE_MS = 250;
-const RO_CRATE_PREVIEW_RECORD_LIMIT = 20;
 const RO_CRATE_EXPORT_FILENAME_MAX_LENGTH = 50;
+
+function uniqueSearchTokens(tokens) {
+  return [
+    ...new Set(
+      (tokens || [])
+        .map((token) => String(token || "").trim().toLowerCase())
+        .filter(Boolean)
+    )
+  ];
+}
+
+function escapedRegExp(value) {
+  return String(value).replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+function highlightedTextNodes(value, tokens) {
+  const text = String(value ?? "");
+  const normalizedTokens = uniqueSearchTokens(tokens).sort(
+    (left, right) => right.length - left.length
+  );
+  if (!text || !normalizedTokens.length) return [text];
+
+  const tokenPattern = new RegExp(
+    `(${normalizedTokens.map(escapedRegExp).join("|")})`,
+    "gi"
+  );
+  const tokenSet = new Set(normalizedTokens);
+  return text
+    .split(tokenPattern)
+    .filter((part) => part !== "")
+    .map((part, index) =>
+      tokenSet.has(part.toLowerCase())
+        ? h("mark", { class: "search-match-highlight", key: index }, part)
+        : part
+    );
+}
+
+const HighlightedText = {
+  name: "ROCrateHighlightedText",
+  props: {
+    value: {
+      type: [String, Number, Boolean],
+      default: ""
+    },
+    searchTokens: {
+      type: Array,
+      default: () => []
+    }
+  },
+  render() {
+    return h("span", highlightedTextNodes(this.value, this.searchTokens));
+  }
+};
 
 const DisplayValue = {
   name: "ROCrateDisplayValue",
@@ -294,6 +412,10 @@ const DisplayValue = {
     value: {
       type: [String, Number, Boolean, Array, Object],
       default: ""
+    },
+    searchTokens: {
+      type: Array,
+      default: () => []
     }
   },
   methods: {
@@ -301,7 +423,10 @@ const DisplayValue = {
       return value && typeof value === "object" && !Array.isArray(value);
     },
     renderPrimitive(value) {
-      return h("span", String(value ?? "-"));
+      return h(
+        "span",
+        highlightedTextNodes(value ?? "-", this.searchTokens)
+      );
     },
     isTableList(values) {
       return (
@@ -382,16 +507,13 @@ const DisplayValue = {
 export default {
   name: "ROCratePreviewView",
   components: {
-    ROCrateDisplayValue: DisplayValue
+    ROCrateDisplayValue: DisplayValue,
+    ROCrateHighlightedText: HighlightedText
   },
   props: {
     previewConfig: {
       type: Object,
       default: null
-    },
-    embedded: {
-      type: Boolean,
-      default: false
     }
   },
   data() {
@@ -399,9 +521,10 @@ export default {
       loading: false,
       errorMessage: "",
       model: null,
-      tableSearchInput: "",
-      debouncedTableSearchInput: "",
-      tableSearchDebounceTimer: null,
+      searchInput: "",
+      debouncedSearchInput: "",
+      searchDebounceTimer: null,
+      activeSearchResultIndex: -1,
       activePreviewConfig: null,
       exportBusy: false,
       pdfBusy: false,
@@ -418,62 +541,55 @@ export default {
       );
       return identifiers.barcodes.length > 0 || identifiers.requests.length > 0;
     },
-    searchTerm() {
-      return String(this.debouncedTableSearchInput || "").toLowerCase();
+    searchTokens() {
+      return uniqueSearchTokens(
+        String(this.debouncedSearchInput || "").split(/\s+/)
+      );
+    },
+    searchMatchRecords() {
+      if (!this.searchTokens.length) return [];
+      return this.visibleRequestGroups.flatMap((request) =>
+        request.records.map((record) => ({
+          requestId: request.id,
+          recordId: record.id
+        }))
+      );
+    },
+    activeSearchResultLabel() {
+      if (!this.searchMatchRecords.length) return "";
+      const activePosition =
+        this.activeSearchResultIndex >= 0
+          ? this.activeSearchResultIndex + 1
+          : "–";
+      return `${activePosition} / ${this.searchMatchRecords.length}`;
     },
     searchResultSummary() {
-      if (!this.searchTerm) {
-        return "Search visible requests, records, fields, and values.";
+      if (!this.searchTokens.length) {
+        return "Search visible requests, records, barcodes, and values.";
       }
       const requestCount = this.visibleRequestGroups.length;
       const requestLabel = requestCount === 1 ? "request" : "requests";
-      return `${requestCount} ${requestLabel} match "${this.debouncedTableSearchInput}"`;
+      const recordCount = this.searchMatchRecords.length;
+      const recordLabel = recordCount === 1 ? "record" : "records";
+      return (
+        `${recordCount} ${recordLabel} in ${requestCount} ${requestLabel} ` +
+        `match "${this.debouncedSearchInput.trim()}"`
+      );
     },
     rootEntity() {
       return this.entityById(RO_CRATE_ENTITY_IDS.rootDataset);
     },
-    previewRecordTotalCount() {
-      if (!this.model) return 0;
-      const studies = this.previewStudies();
-      if (studies.length) {
-        return studies.reduce(
-          (count, study) => count + this.studyRecordIds(study).length,
-          0
-        );
-      }
-      return this.model.graph.filter((entity) => this.isRecordEntity(entity))
-        .length;
-    },
-    previewRecordDisplayCount() {
-      return this.requestGroups.reduce(
-        (count, request) => count + request.records.length,
-        0
-      );
-    },
-    previewRecordLimitExceeded() {
-      return this.previewRecordTotalCount > this.previewRecordDisplayCount;
-    },
     requestGroups() {
       if (!this.model) return [];
       const studies = this.previewStudies();
-      let remainingRecordSlots = RO_CRATE_PREVIEW_RECORD_LIMIT;
-      const groups = studies.map((study, index) => {
-        const group = this.buildRequestGroup(
-          study,
-          index,
-          remainingRecordSlots
-        );
-        remainingRecordSlots = Math.max(
-          0,
-          remainingRecordSlots - group.records.length
-        );
-        return group;
-      });
+      const groups = studies.map((study, index) =>
+        this.buildRequestGroup(study, index)
+      );
       if (groups.length) return groups;
-      return [this.buildFallbackRequestGroup(RO_CRATE_PREVIEW_RECORD_LIMIT)];
+      return [this.buildFallbackRequestGroup()];
     },
     visibleRequestGroups() {
-      if (!this.searchTerm) return this.requestGroups;
+      if (!this.searchTokens.length) return this.requestGroups;
       return this.requestGroups
         .map((request) => ({
           ...request,
@@ -482,17 +598,20 @@ export default {
               request.name,
               record.name,
               record.barcode,
-              record.type,
               ...record.sections.flatMap((section) =>
-                section.rows.flatMap((row) => [row.key, row.value])
+                section.rows.map((row) => row.value)
               )
             ])
           ),
           requestRows: request.requestRows.filter((row) =>
-            this.matchesSearch([request.name, row.key, row.value])
+            this.matchesSearch([request.name, row.value])
           ),
           attachments: request.attachments.filter((file) =>
-            this.matchesSearch([request.name, file.name, file.id])
+            this.matchesSearch([
+              request.name,
+              file.name,
+              file.contentUrl
+            ])
           )
         }))
         .filter(
@@ -505,16 +624,18 @@ export default {
     }
   },
   watch: {
-    tableSearchInput(newValue) {
-      window.clearTimeout(this.tableSearchDebounceTimer);
+    searchInput(newValue) {
+      window.clearTimeout(this.searchDebounceTimer);
 
       if (!newValue) {
-        this.debouncedTableSearchInput = "";
+        this.debouncedSearchInput = "";
+        this.activeSearchResultIndex = -1;
         return;
       }
 
-      this.tableSearchDebounceTimer = window.setTimeout(() => {
-        this.debouncedTableSearchInput = newValue;
+      this.searchDebounceTimer = window.setTimeout(() => {
+        this.debouncedSearchInput = newValue.trim();
+        this.activeSearchResultIndex = -1;
       }, RO_CRATE_SEARCH_DEBOUNCE_MS);
     },
     previewConfig: {
@@ -528,9 +649,63 @@ export default {
     }
   },
   beforeUnmount() {
-    window.clearTimeout(this.tableSearchDebounceTimer);
+    window.clearTimeout(this.searchDebounceTimer);
   },
   methods: {
+    clearSearch() {
+      window.clearTimeout(this.searchDebounceTimer);
+      this.searchInput = "";
+      this.debouncedSearchInput = "";
+      this.activeSearchResultIndex = -1;
+      this.$nextTick(() => this.$refs.previewSearchInput?.focus());
+    },
+    navigateSearchResults(direction = 1) {
+      const pendingSearch = this.searchInput.trim();
+      if (pendingSearch !== this.debouncedSearchInput) {
+        window.clearTimeout(this.searchDebounceTimer);
+        this.debouncedSearchInput = pendingSearch;
+        this.activeSearchResultIndex = -1;
+        this.$nextTick(() => this.navigateSearchResults(direction));
+        return;
+      }
+
+      const matches = this.searchMatchRecords;
+      if (!matches.length) return;
+      const nextIndex =
+        this.activeSearchResultIndex < 0
+          ? direction < 0
+            ? matches.length - 1
+            : 0
+          : (this.activeSearchResultIndex + direction + matches.length) %
+            matches.length;
+      this.activeSearchResultIndex = nextIndex;
+      const match = matches[nextIndex];
+      this.scrollToRecord(match.requestId, match.recordId);
+    },
+    recordAnchorId(requestId, recordId) {
+      const anchorKey = `${requestId}-${recordId}`
+        .replace(/[^a-z0-9_-]+/gi, "-")
+        .replace(/^-+|-+$/g, "");
+      return `ro-crate-record-${anchorKey}`;
+    },
+    scrollToRecord(requestId, recordId) {
+      this.$nextTick(() => {
+        const recordElement = document.getElementById(
+          this.recordAnchorId(requestId, recordId)
+        );
+        if (!recordElement) return;
+        const searchPanel = this.$el.querySelector(".preview-search-panel");
+        const searchPanelOffset = searchPanel
+          ? Math.ceil(searchPanel.getBoundingClientRect().height) + 18
+          : 96;
+        recordElement.style.scrollMarginTop = `${searchPanelOffset}px`;
+        recordElement.scrollIntoView({
+          behavior: "smooth",
+          block: "start"
+        });
+        recordElement.focus({ preventScroll: true });
+      });
+    },
     previewIdentifierValues(config = {}) {
       const barcodes = Array.isArray(config?.barcodes)
         ? config.barcodes.filter(Boolean)
@@ -554,15 +729,11 @@ export default {
       const identifiers = this.previewIdentifierValues(
         this.activePreviewConfig
       );
-      const sections = Array.isArray(this.activePreviewConfig?.sections)
-        ? this.activePreviewConfig.sections.filter(Boolean)
-        : [];
       const params = { ...extra };
       if (identifiers.barcodes.length)
         params.barcodes = identifiers.barcodes.join(",");
       if (identifiers.requests.length)
         params.requests = identifiers.requests.join(",");
-      if (sections.length) params.sections = sections.join(",");
       return params;
     },
     async loadPreviewFromConfig(previewConfig) {
@@ -573,12 +744,7 @@ export default {
         return;
       }
 
-      this.activePreviewConfig = {
-        ...previewConfig,
-        sections: Array.isArray(previewConfig.sections)
-          ? previewConfig.sections
-          : []
-      };
+      this.activePreviewConfig = { ...previewConfig };
       this.loading = true;
       this.errorMessage = "";
       this.model = null;
@@ -694,10 +860,31 @@ export default {
     },
     fallbackPdfFilename() {
       const archiveName = this.fallbackArchiveFilename();
-      if (archiveName.toLowerCase().endsWith(".zip")) {
-        return archiveName.replace(/\.zip$/i, ".pdf");
-      }
-      return this.boundedExportFilename(archiveName, ".pdf");
+      const archiveBase = archiveName
+        .replace(/\.(zip|pdf)$/i, "")
+        .replace(/_ro_crate$/i, "");
+      return this.boundedExportFilenameWithSuffix(
+        archiveBase,
+        "ro_crate_preview",
+        ".pdf"
+      );
+    },
+    boundedExportFilenameWithSuffix(baseName, semanticSuffix, extension) {
+      const suffix = extension.startsWith(".") ? extension : `.${extension}`;
+      const safeSemanticSuffix = this.sanitizeFilenamePart(semanticSuffix);
+      const separator = "_";
+      const maxBaseLength = Math.max(
+        1,
+        RO_CRATE_EXPORT_FILENAME_MAX_LENGTH -
+          separator.length -
+          safeSemanticSuffix.length -
+          suffix.length
+      );
+      const safeBase =
+        this.sanitizeFilenamePart(baseName)
+          .slice(0, maxBaseLength)
+          .replace(/[._-]+$/g, "") || "parkour";
+      return `${safeBase}${separator}${safeSemanticSuffix}${suffix}`;
     },
     boundedExportFilename(baseName, extension) {
       const suffix = extension.startsWith(".") ? extension : `.${extension}`;
@@ -753,22 +940,17 @@ export default {
         )
       );
     },
-    buildRequestGroup(
-      study,
-      index,
-      recordLimit = RO_CRATE_PREVIEW_RECORD_LIMIT
-    ) {
+    buildRequestGroup(study, index) {
       const studyId = study?.[fieldKeys.id] || `request-${index + 1}`;
       const requestNumber = this.idSuffix(studyId);
       const requestEntity = this.entityById(
         `${RO_CRATE_ENTITY_PREFIXES.requestContext}${requestNumber}`
       );
-      const recordIds = this.previewRecordIds(
-        this.studyRecordIds(study),
-        recordLimit
-      );
+      const recordIds = this.previewRecordIds(this.studyRecordIds(study));
       const records = recordIds
-        .map((recordId) => this.buildRecord(recordId))
+        .map((recordId, recordIndex) =>
+          this.buildRecord(recordId, recordIndex)
+        )
         .filter(Boolean)
         .sort((left, right) => left.name.localeCompare(right.name));
 
@@ -779,12 +961,12 @@ export default {
           requestEntity?.[fieldKeys.name] ||
           study?.[fieldKeys.name] ||
           `${RO_CRATE_PREVIEW_LABELS.unnamedRequest} ${index + 1}`,
-        requestRows: this.rowsForEntity(requestEntity, "Request Details"),
+        requestRows: this.requestDetailRows(requestEntity),
         records,
         attachments: this.attachmentsForRequest(requestEntity?.[fieldKeys.id])
       };
     },
-    buildFallbackRequestGroup(recordLimit = RO_CRATE_PREVIEW_RECORD_LIMIT) {
+    buildFallbackRequestGroup() {
       const records = this.model.graph
         .filter((entity) => this.isRecordEntity(entity))
         .sort((left, right) =>
@@ -792,8 +974,9 @@ export default {
             this.recordSortLabel(right[fieldKeys.id])
           )
         )
-        .slice(0, recordLimit)
-        .map((entity) => this.buildRecord(entity[fieldKeys.id]))
+        .map((entity, recordIndex) =>
+          this.buildRecord(entity[fieldKeys.id], recordIndex)
+        )
         .filter(Boolean)
         .sort((left, right) => left.name.localeCompare(right.name));
       return {
@@ -803,7 +986,7 @@ export default {
           this.rootEntity?.[fieldKeys.name] ||
           this.activePreviewConfig?.requestName ||
           RO_CRATE_PREVIEW_LABELS.unnamedRequest,
-        requestRows: this.rowsForEntity(this.rootEntity, "Request Details"),
+        requestRows: this.requestDetailRows(this.rootEntity),
         records,
         attachments: this.attachmentsForRequest("")
       };
@@ -819,386 +1002,227 @@ export default {
         this.isRecordId(id)
       );
     },
-    previewRecordIds(recordIds, recordLimit) {
+    previewRecordIds(recordIds) {
       return [...new Set(recordIds)]
         .sort((left, right) =>
           this.recordSortLabel(left).localeCompare(this.recordSortLabel(right))
-        )
-        .slice(0, recordLimit);
+        );
     },
     recordSortLabel(recordId) {
       const entity = this.entityById(recordId);
       return String(
-        entity?.[fieldKeys.name] ||
-          entity?.[fieldKeys.identifier] ||
+        entity?.[fieldKeys.identifier] ||
+          entity?.[fieldKeys.name] ||
           recordId ||
           ""
       );
     },
-    buildRecord(recordId) {
+    buildRecord(recordId, recordIndex = 0) {
       const entity = this.entityById(recordId);
       if (!entity) return null;
       const type = this.recordType(entity);
-      const rowsBySection = new Map();
-      const addRows = (title, rows) => {
-        const visibleRows = rows.filter((row) => !this.isHiddenRow(row));
-        if (!visibleRows.length) return;
-        rowsBySection.set(title, [
-          ...(rowsBySection.get(title) || []),
-          ...visibleRows
-        ]);
-      };
-
       const recordName =
         entity[fieldKeys.name] ||
         entity[fieldKeys.identifier] ||
         RO_CRATE_PREVIEW_LABELS.unnamedRecord;
-      const primaryModelSectionTitle = `${type}: ${recordName}`;
-      addRows("Overview", [
-        {
-          key: "Name",
-          value: entity[fieldKeys.name] || RO_CRATE_PREVIEW_LABELS.unnamedRecord
-        },
-        { key: "Barcode", value: entity[fieldKeys.identifier] || "" }
-      ]);
-      this.propertyRows(entity, { skipSummaryModels: true }).forEach((row) =>
-        addRows(
-          row.group === primaryModelSectionTitle ? "Overview" : row.group,
-          [row]
-        )
-      );
-      this.relatedModelSections(entity).forEach((section) => {
-        addRows(section.title, section.rows);
-      });
-      const sequencingSections = this.sequencingSections(entity);
-      sequencingSections.forEach((section) => {
-        addRows(section.title, section.rows);
-      });
-      const processEntities = this.recordProcessEntities(recordId);
-      const processSections = this.processDetailSections(
+      const metadata = this.recordMaterializedViewMetadata(
         recordId,
-        processEntities
+        entity,
+        type
       );
-      processSections.forEach((section) => {
-        addRows(section.title, section.rows);
-      });
-      addRows(
-        "Processes & Data",
-        this.backlinkRows(recordId, {
-          omitSourceIds: processEntities.map(
-            (processEntity) => processEntity[fieldKeys.id]
-          )
-        })
-      );
+      const cardContext = {
+        entity,
+        metadata,
+        type,
+        recordIndex
+      };
 
       return {
         id: recordId,
         type,
         name: recordName,
-        barcode: entity[fieldKeys.identifier] || "",
-        sections: [...rowsBySection.entries()]
-          .map(([title, rows]) => ({
-            title,
-            rows: this.uniqueRows(rows).filter((row) =>
-              this.matchesSearch([title, row.key, row.value])
+        barcode: this.formattedBarcode(
+          entity[fieldKeys.identifier],
+          type,
+          ""
+        ),
+        sections: [
+          {
+            title: "Preparation",
+            rows: this.recordCardRows(
+              RO_CRATE_PREPARATION_CARD_FIELDS,
+              cardContext
             )
-          }))
-          .filter((section) => section.rows.length)
+          },
+          {
+            title: "Sequencing",
+            rows: this.recordCardRows(
+              RO_CRATE_SEQUENCING_CARD_FIELDS,
+              cardContext
+            )
+          }
+        ]
       };
     },
-    rowsForEntity(entity, defaultGroup) {
-      if (!entity) return [];
-      return [
-        ...Object.entries(entity)
-          .filter(([key]) => !hiddenFields.has(key))
-          .filter(([key]) => !this.shouldHideField(key))
-          .map(([key, value]) => ({
-            key: this.labelForField(key),
-            value: this.displayValue(value),
-            group: defaultGroup,
-            wide: this.isWideValue(key, value)
-          })),
-        ...this.propertyRows(entity)
-      ]
-        .filter((row) => !this.isHiddenRow(row))
-        .filter((row) => this.matchesSearch([row.key, row.value]));
+    recordMaterializedViewMetadata(recordId, entity, type) {
+      const prefix = type === RO_CRATE_RECORD_TYPES.library
+        ? "library_mv_"
+        : "sample_mv_";
+      const metadata = new Map();
+      [entity, ...this.recordProcessEntities(recordId)].forEach(
+        (sourceEntity) => {
+          const properties = [
+            ...this.referenceValues(
+              sourceEntity?.[fieldKeys.additionalProperty]
+            ),
+            ...this.referenceValues(sourceEntity?.[fieldKeys.parameterValue])
+          ]
+            .map((reference) => this.resolveReference(reference))
+            .filter(Boolean);
+          properties.forEach((property) => {
+            const name = String(property?.[fieldKeys.name] || "");
+            if (!name.startsWith(prefix) || metadata.has(name)) return;
+            metadata.set(name, property?.[fieldKeys.value]);
+          });
+        }
+      );
+      return {
+        prefix,
+        values: metadata
+      };
     },
-    propertyRows(entity, options = {}) {
+    recordCardRows(fields, context) {
+      return fields.map((field) => ({
+        key: field.label,
+        value: this.recordCardValue(field.key, context)
+      }));
+    },
+    recordCardValue(field, context) {
+      const { entity, metadata, type, recordIndex } = context;
+      const readValue = (key) =>
+        metadata.values.get(`${metadata.prefix}${key}`);
+      const rawValue = readValue(field);
+
+      if (field === "name") {
+        return entity?.[fieldKeys.name] || "-";
+      }
+      if (field === "barcode") {
+        return this.formattedBarcode(
+          entity?.[fieldKeys.identifier],
+          type
+        );
+      }
+      if (field === "well_position") {
+        return this.plateCoordinate(recordIndex);
+      }
+      if (field === "gmo") {
+        if (type === RO_CRATE_RECORD_TYPES.library) return "No";
+        if (rawValue === true) return "Yes";
+        if (rawValue === false) return "No";
+        return "-";
+      }
+      if (field === "nucleic_acid_type_name" && this.isEmpty(rawValue)) {
+        return "No Input Type";
+      }
+      if (field === "library_protocol_name" && this.isEmpty(rawValue)) {
+        return "No Protocol";
+      }
+      if (field === "analysis_type_name" && this.isEmpty(rawValue)) {
+        return "No Analysis Type";
+      }
+      if (field === "input") {
+        return this.inputCardValue(
+          readValue("measured_value"),
+          readValue("measuring_unit")
+        );
+      }
+      if (field === "create_time") {
+        return this.formatDate(rawValue) || this.cardDisplayValue(rawValue);
+      }
+      if (field === "starting_amount") {
+        return this.fixedCardNumber(rawValue, 1);
+      }
+      if (field === "concentration_library") {
+        return this.fixedCardNumber(
+          rawValue,
+          Number(rawValue) === 0 ? 1 : 3
+        );
+      }
+      if (
+        ["pcr_cycles", "average_fragment_size", "sequencing_depth"].includes(
+          field
+        )
+      ) {
+        return this.roundedCardNumber(rawValue);
+      }
+      return this.cardDisplayValue(rawValue);
+    },
+    inputCardValue(value, unit) {
+      if (Number(value) === -1 && unit === "Unknown") return "Unknown";
+      const displayedValue = this.cardDisplayValue(value, "");
+      const displayedUnit = this.cardDisplayValue(unit, "");
+      if (!displayedValue && !displayedUnit) return "-";
+      if (!displayedValue) return displayedUnit;
+      if (!displayedUnit) return displayedValue;
+      return `${displayedValue} ${displayedUnit}`;
+    },
+    formattedBarcode(value, recordType, emptyValue = "-") {
+      const barcode = String(value || "");
+      if (!barcode) return emptyValue;
+      return recordType === RO_CRATE_RECORD_TYPES.sample &&
+        barcode[2] === "L"
+        ? `${barcode}*`
+        : barcode;
+    },
+    fixedCardNumber(value, decimalPlaces) {
+      const number = Number(value);
+      if (this.isEmpty(value) || !Number.isFinite(number)) return "-";
+      return number.toFixed(decimalPlaces);
+    },
+    roundedCardNumber(value) {
+      const number = Number(value);
+      if (this.isEmpty(value) || !Number.isFinite(number)) return "-";
+      return String(Math.round(number));
+    },
+    cardDisplayValue(value, emptyValue = "-") {
+      if (this.isEmpty(value)) return emptyValue;
+      if (Array.isArray(value)) {
+        return value.length ? value.join(", ") : emptyValue;
+      }
+      if (value === true) return "Yes";
+      if (value === false) return "No";
+      return String(value);
+    },
+    plateCoordinate(recordIndex) {
+      const index = Number(recordIndex) % 96;
+      const row = String.fromCharCode(65 + (index % 8));
+      const column = Math.floor(index / 8) + 1;
+      return `${row}${column}`;
+    },
+    requestDetailRows(entity) {
+      if (!entity) return [];
       const refs = [
         ...this.referenceValues(entity?.[fieldKeys.additionalProperty]),
         ...this.referenceValues(entity?.[fieldKeys.parameterValue])
       ];
-      const properties = refs
-        .map((ref) => this.resolveReference(ref))
-        .filter(Boolean);
-      const propertyByName = this.propertyMapByName(properties);
-
-      return properties
-        .map((property) => {
-          const name = property[fieldKeys.name];
-          if (options.skipSummaryModels && this.isSummaryModelProperty(name)) {
-            return null;
-          }
-          if (this.isStandaloneMeasuringUnitProperty(name, propertyByName)) {
-            return null;
-          }
-          if (
-            this.duplicatesDirectEntityField(
-              entity,
-              name,
-              property[fieldKeys.value]
-            )
-          ) {
-            return null;
-          }
-          return {
-            key: this.labelForField(name),
-            value: this.displayPropertyValue(property, propertyByName),
-            group: this.groupForProperty(name, entity),
-            wide: this.isWideValue(name, property[fieldKeys.value])
-          };
-        })
-        .filter(Boolean)
-        .filter((row) => !this.isHiddenRow(row));
-    },
-    propertyMapByName(properties) {
-      return new Map(
-        properties
+      const propertiesByName = new Map(
+        refs
+          .map((ref) => this.resolveReference(ref))
           .filter((property) => property?.[fieldKeys.name])
           .map((property) => [property[fieldKeys.name], property])
       );
-    },
-    displayPropertyValue(property, propertyByName) {
-      const value = this.displayValue(property?.[fieldKeys.value]);
-      const unit = this.unitForMeasuredProperty(property, propertyByName);
-      if (!unit || this.isEmpty(value)) return value;
-      return `${value} ${unit}`;
-    },
-    unitForMeasuredProperty(property, propertyByName) {
-      const name = String(property?.[fieldKeys.name] || "");
-      const unitName = this.measuringUnitPropertyName(name);
-      if (!unitName) return "";
-      return this.displayValue(propertyByName.get(unitName)?.[fieldKeys.value]);
-    },
-    measuringUnitPropertyName(propertyName) {
-      if (propertyName.endsWith("measured_value_facility")) {
-        return propertyName.replace(
-          /measured_value_facility$/,
-          "measuring_unit_facility"
-        );
-      }
-      if (propertyName.endsWith("measured_value")) {
-        return propertyName.replace(/measured_value$/, "measuring_unit");
-      }
-      return "";
-    },
-    isStandaloneMeasuringUnitProperty(propertyName, propertyByName) {
-      const name = String(propertyName || "");
-      if (name.endsWith("measuring_unit_facility")) {
-        return propertyByName.has(
-          name.replace(/measuring_unit_facility$/, "measured_value_facility")
-        );
-      }
-      if (name.endsWith("measuring_unit")) {
-        return propertyByName.has(
-          name.replace(/measuring_unit$/, "measured_value")
-        );
-      }
-      return false;
-    },
-    duplicatesDirectEntityField(entity, propertyName, propertyValue) {
-      const directKey = this.directFieldKeyForProperty(propertyName);
-      if (
-        !directKey ||
-        !Object.prototype.hasOwnProperty.call(entity || {}, directKey)
-      ) {
-        return false;
-      }
-      return (
-        JSON.stringify(this.displayValue(entity[directKey])) ===
-        JSON.stringify(this.displayValue(propertyValue))
-      );
-    },
-    directFieldKeyForProperty(propertyName) {
-      const normalized = String(propertyName || "").replace(
-        RO_CRATE_PROPERTY_PREFIX_PATTERN,
-        ""
-      );
-      const directFieldMap = {
-        name: fieldKeys.name,
-        description: "description",
-        identifier: fieldKeys.identifier,
-        barcode: fieldKeys.identifier
-      };
-      return directFieldMap[normalized] || "";
-    },
-    relatedModelSections(entity) {
-      return this.relatedModelEntities(entity)
-        .map((relatedEntity) => {
-          const rows = this.rowsForRelatedModelEntity(
-            relatedEntity,
-            this.relatedModelDisplayOptions(relatedEntity)
-          );
-          return {
-            title: this.modelSectionTitleForEntity(relatedEntity),
-            rows
-          };
-        })
-        .filter((section) => section.rows.length)
-        .filter((section) => this.matchesSearch([section.title, section.rows]));
-    },
-    relatedModelDisplayOptions(entity) {
-      const id = String(entity?.[fieldKeys.id] || "");
-      if (id.startsWith("#library-type-")) {
-        return { omitRelationKeys: ["availableProtocols"] };
-      }
-      if (id.startsWith("#index-pair-")) {
+      return RO_CRATE_REQUEST_DETAIL_FIELDS.map(({ key, label }) => {
+        const rawValue = ["name", "description"].includes(key)
+          ? entity[key]
+          : propertiesByName.get(key)?.[fieldKeys.value];
+        const value = this.displayValue(rawValue);
+        if (this.isEmpty(value)) return null;
         return {
-          omitDisplayKeys: ["indexType"],
-          omitRelationKeys: ["indexI7", "indexI5"]
-        };
-      }
-      return {};
-    },
-    sequencingSections(entity) {
-      return this.referenceIds(entity?.sequencedOn)
-        .map((flowcellId) => this.entityById(flowcellId))
-        .filter(Boolean)
-        .map((flowcell) => {
-          const title = this.flowcellSectionTitle(flowcell);
-          return {
-            title,
-            rows: this.rowsForFlowcell(flowcell)
-          };
-        })
-        .filter((section) => section.rows.length)
-        .filter((section) => this.matchesSearch([section.title, section.rows]));
-    },
-    rowsForFlowcell(flowcell) {
-      const rows = [
-        ...this.rowsForRelatedModelEntity(flowcell, {
-          omitRelationKeys: ["instrument", "hasInstrument", "hasLane"]
-        })
-      ];
-      this.referenceIds(flowcell?.hasInstrument).forEach((sequencerId) => {
-        this.addNestedEntityRows(
-          rows,
-          "Sequencer",
-          this.entityById(sequencerId)
-        );
-      });
-      const lanes = this.referenceIds(flowcell?.hasLane)
-        .map((laneId) => this.entityById(laneId))
-        .filter(Boolean);
-      if (lanes.length > 1) {
-        rows.push({
-          key: "Lanes",
-          value: lanes.map((lane) => this.laneTableRow(lane)),
-          wide: true
-        });
-      } else {
-        lanes.forEach((lane) => {
-          this.addNestedEntityRows(rows, "Lane", lane);
-        });
-      }
-      this.referenceIds(flowcell?.hasPart)
-        .map((entityId) => this.entityById(entityId))
-        .filter((relatedEntity) => !this.isLaneEntity(relatedEntity))
-        .filter(
-          (relatedEntity) => !this.isGenericFlowcellDataEntity(relatedEntity)
-        )
-        .forEach((dataEntity) => {
-          this.addNestedEntityRows(rows, "Flowcell Data", dataEntity, {
-            omitDirectKeys: ["additionalType", "encodingFormat"],
-            omitRelationKeys: ["about", "isPartOf"],
-            omitEntitySummary: true
-          });
-        });
-      this.referenceIds(flowcell?.about).forEach((processId) => {
-        this.addNestedEntityRows(
-          rows,
-          "Flowcell Process",
-          this.entityById(processId),
-          {
-            omitDirectKeys: ["additionalType"],
-            omitRelationKeys: [
-              "instrument",
-              "hasInstrument",
-              "object",
-              "result"
-            ],
-            omitPropertyRows: true,
-            omitEntitySummary: true
-          }
-        );
-      });
-      return this.uniqueRows(rows)
-        .filter((row) => !this.isHiddenRow(row))
-        .filter((row) => !this.isLowValuePreviewRow(row))
-        .filter((row) => this.matchesSearch([row.key, row.value]));
-    },
-    addNestedEntityRows(rows, label, entity, options = {}) {
-      if (!entity) return;
-      if (this.shouldSkipNestedEntity(label, entity)) return;
-      if (!options.omitEntitySummary) {
-        rows.push({
           key: label,
-          value: this.entityLabel(entity),
-          wide: false
-        });
-      }
-      this.rowsForRelatedModelEntity(entity, options)
-        .filter((row) => !this.isLowValuePreviewRow(row, label))
-        .forEach((row) => {
-          rows.push({
-            ...row,
-            key: `${label} ${row.key}`
-          });
-        });
-    },
-    laneTableRow(lane) {
-      return this.rowsForRelatedModelEntity(lane, {
-        omitDirectKeys: ["additionalType"],
-        omitPropertyRows: false
-      }).reduce(
-        (row, item) => ({
-          ...row,
-          [item.key]: item.value
-        }),
-        { Lane: this.entityLabel(lane) }
-      );
-    },
-    flowcellSectionTitle(flowcell) {
-      return `Flowcell: ${this.shortEntityLabel(flowcell, "Flowcell")}`;
-    },
-    processSectionTitle(processEntity) {
-      const label = this.entityLabel(processEntity);
-      const match = label.match(
-        /^(sample|library|sequencing)\s+metadata\s+capture\s+for\s+(.+)$/i
-      );
-      if (match) {
-        return `Process: ${match[2]}`;
-      }
-      return `Process: ${label}`;
-    },
-    shortEntityLabel(entity, prefix) {
-      const label = this.entityLabel(entity);
-      return label.replace(new RegExp(`^${prefix}\\s+`, "i"), "");
-    },
-    processDetailSections(
-      recordId,
-      processEntities = this.recordProcessEntities(recordId)
-    ) {
-      return processEntities
-        .map((processEntity) => {
-          const title = this.processSectionTitle(processEntity);
-          return {
-            title,
-            rows: this.rowsForProcessEntity(processEntity)
-          };
-        })
-        .filter((section) => section.rows.length)
-        .filter((section) => this.matchesSearch([section.title, section.rows]));
+          value,
+          wide: key.endsWith("paths")
+        };
+      }).filter(Boolean);
     },
     recordProcessEntities(recordId) {
       const processIds = (this.model?.backlinkMap?.[recordId] || [])
@@ -1207,188 +1231,6 @@ export default {
         .filter((entityId) => this.isProcessEntity(this.entityById(entityId)));
       return [...new Set(processIds)]
         .map((entityId) => this.entityById(entityId))
-        .filter(Boolean);
-    },
-    rowsForProcessEntity(processEntity) {
-      const rows = [
-        ...this.rowsForRelatedModelEntity(processEntity, {
-          omitRelationKeys: ["executesLabProtocol", "object", "result"]
-        })
-      ];
-      this.referenceIds(processEntity?.executesLabProtocol).forEach(
-        (protocolId) => {
-          this.addNestedEntityRows(
-            rows,
-            "Protocol",
-            this.entityById(protocolId)
-          );
-        }
-      );
-      this.referenceIds(processEntity?.result).forEach((dataId) => {
-        this.addNestedEntityRows(rows, "Data Object", this.entityById(dataId), {
-          omitDirectKeys: ["additionalType", "encodingFormat"],
-          omitRelationKeys: RO_CRATE_REPEATED_DATA_OBJECT_FIELDS,
-          omitDisplayKeys: RO_CRATE_REPEATED_DATA_OBJECT_FIELDS,
-          omitPropertyRows: true,
-          omitEntitySummary: true
-        });
-      });
-      this.assaysForProcess(processEntity).forEach((assayEntity) => {
-        this.addNestedEntityRows(rows, "Assay", assayEntity, {
-          omitDirectKeys: [
-            "additionalType",
-            "measurementMethod",
-            "variableMeasured"
-          ],
-          omitRelationKeys: ["hasPart", "about"],
-          omitPropertyRows: true,
-          omitEntitySummary: true
-        });
-      });
-      return this.uniqueRows(rows)
-        .filter((row) => !this.isHiddenRow(row))
-        .filter((row) => !this.isLowValuePreviewRow(row))
-        .filter((row) => this.matchesSearch([row.key, row.value]));
-    },
-    assaysForProcess(processEntity) {
-      const processId = processEntity?.[fieldKeys.id];
-      if (!processId) return [];
-      const assayIds = (this.model?.backlinkMap?.[processId] || [])
-        .filter((link) => link.property === "about")
-        .map((link) => link.sourceId)
-        .filter((entityId) => this.isAssayEntity(this.entityById(entityId)));
-      return [...new Set(assayIds)]
-        .map((entityId) => this.entityById(entityId))
-        .filter(Boolean);
-    },
-    relatedModelEntities(entity) {
-      const relationValues = RO_CRATE_LINKED_MODEL_RELATION_FIELDS.flatMap(
-        (key) => this.referenceIds(entity?.[key])
-      )
-        .map((entityId) => this.entityById(entityId))
-        .filter(Boolean)
-        .filter((relatedEntity) => !this.isLowValueBacklink(relatedEntity));
-      const seen = new Set();
-      return relationValues.filter((relatedEntity) => {
-        const entityId = relatedEntity[fieldKeys.id];
-        if (!entityId || seen.has(entityId)) return false;
-        seen.add(entityId);
-        return true;
-      });
-    },
-    rowsForRelatedModelEntity(entity, options = {}) {
-      const omittedDirectKeys = new Set([
-        ...(options.omitDirectKeys || []),
-        ...(options.omitDisplayKeys || [])
-      ]);
-      const directRows = Object.entries(entity)
-        .filter(([key]) => key !== fieldKeys.name)
-        .filter(([key]) => !RO_CRATE_RELATION_FIELDS[key])
-        .filter(([key]) => !omittedDirectKeys.has(key))
-        .filter(([key]) => !relatedModelHiddenFields.has(key))
-        .filter(([key]) => !hiddenFields.has(key))
-        .filter(([key]) => !this.shouldHideField(key))
-        .filter(([key]) => !this.isSummaryModelProperty(key))
-        .map(([key, value]) => ({
-          key: this.labelForField(key),
-          value: this.displayValue(value),
-          wide: this.isWideValue(key, value)
-        }));
-      const rows = [
-        ...directRows,
-        ...(options.omitPropertyRows
-          ? []
-          : this.propertyRows(entity, { skipSummaryModels: true })),
-        ...this.relationRows(entity, options)
-      ]
-        .filter((row) => !this.isHiddenRow(row))
-        .filter((row) => !this.isLowValuePreviewRow(row));
-      // A linked term entity (e.g. an organism) may carry only a name, which is
-      // otherwise consumed by the section title. Surface it as a Name row so the
-      // section still renders deterministically instead of being dropped as empty
-      // by callers that filter on `rows.length`.
-      if (!rows.length) {
-        const name = entity?.[fieldKeys.name] || entity?.[fieldKeys.identifier];
-        if (!this.isEmpty(name)) {
-          rows.push({
-            key: "Name",
-            value: this.displayValue(name),
-            wide: false
-          });
-        }
-      }
-      return rows.filter((row) => this.matchesSearch([row.key, row.value]));
-    },
-    shouldSkipNestedEntity(label, entity) {
-      const normalizedLabel = this.normalizedDisplayKey(label);
-      return normalizedLabel === "assay" && this.isAssayEntity(entity);
-    },
-    isLowValuePreviewRow(row, parentLabel = "") {
-      const rowKey = this.normalizedDisplayKey(row?.key);
-      const parentKey = this.normalizedDisplayKey(parentLabel);
-      if (this.isRawPropertyNameListRow(row)) return true;
-      if (rowKey.startsWith("assay")) return true;
-      if (parentKey === "dataobject" && this.isRepeatedDataObjectKey(rowKey)) {
-        return true;
-      }
-      return false;
-    },
-    isRawPropertyNameListRow(row) {
-      const rowKey = this.normalizedDisplayKey(row?.key);
-      if (!rowKey.endsWith("parametervalue")) return false;
-      const values = Array.isArray(row?.value) ? row.value : [row?.value];
-      const tokens = values
-        .flatMap((value) => {
-          if (typeof value === "string") return value.split(/\s*,\s*/);
-          return [];
-        })
-        .map((value) =>
-          String(value || "")
-            .replace(/^\d+\.\s*/, "")
-            .trim()
-        )
-        .filter(Boolean);
-      return (
-        tokens.length > 0 &&
-        tokens.every((value) => RO_CRATE_PROPERTY_PREFIX_PATTERN.test(value))
-      );
-    },
-    isRepeatedDataObjectKey(rowKey) {
-      return RO_CRATE_REPEATED_DATA_OBJECT_KEYS.includes(rowKey);
-    },
-    normalizedDisplayKey(value) {
-      return String(value || "")
-        .replace(/[^a-z0-9]+/gi, "")
-        .toLowerCase();
-    },
-    relationRows(entity, options = {}) {
-      const omittedKeys = new Set(options.omitRelationKeys || []);
-      return Object.entries(RO_CRATE_RELATION_FIELDS)
-        .filter(([key]) => !omittedKeys.has(key))
-        .filter(([key]) => entity?.[key])
-        .map(([key, label]) => ({
-          key: label,
-          value: this.displayValue(entity[key]),
-          wide: this.isWideValue(key, entity[key])
-        }))
-        .filter((row) => !this.isHiddenRow(row));
-    },
-    backlinkRows(entityId, options = {}) {
-      const omittedSourceIds = new Set(options.omitSourceIds || []);
-      const backlinks = (this.model?.backlinkMap?.[entityId] || []).filter(
-        (link) => RO_CRATE_BACKLINK_PROPERTIES.includes(link.property)
-      );
-      return backlinks
-        .filter((link) => !omittedSourceIds.has(link.sourceId))
-        .map((link) => {
-          const entity = this.entityById(link.sourceId);
-          if (!entity || this.isLowValueBacklink(entity)) return null;
-          return {
-            key: this.labelForField(link.property),
-            value: this.entityLabel(entity),
-            wide: false
-          };
-        })
         .filter(Boolean);
     },
     attachmentsForRequest(requestContextId) {
@@ -1407,10 +1249,7 @@ export default {
             entity[fieldKeys.contentUrl] ||
             entity[fieldKeys.id],
           contentUrl: entity[fieldKeys.contentUrl]
-        }))
-        .filter((file) =>
-          this.matchesSearch([file.name, file.contentUrl, file.id])
-        );
+        }));
     },
     isRecordEntity(entity) {
       return this.isRecordId(entity?.[fieldKeys.id]);
@@ -1449,32 +1288,8 @@ export default {
         )
       );
     },
-    isLaneEntity(entity) {
-      return String(entity?.[fieldKeys.id] || "").startsWith(
-        RO_CRATE_ENTITY_PREFIXES.lane
-      );
-    },
     isProcessEntity(entity) {
       return this.entityTypes(entity).includes("CreateAction");
-    },
-    isAssayEntity(entity) {
-      const id = String(entity?.[fieldKeys.id] || "");
-      return (
-        id.startsWith(RO_CRATE_ENTITY_PREFIXES.flowcellAssay) ||
-        id.startsWith("#sample-assay-") ||
-        id.startsWith("#library-assay-")
-      );
-    },
-    isGenericFlowcellDataEntity(entity) {
-      const id = String(entity?.[fieldKeys.id] || "");
-      return /^#flowcell-data-\d+$/.test(id);
-    },
-    isLowValueBacklink(entity) {
-      const id = String(entity?.[fieldKeys.id] || "");
-      return (
-        id.startsWith(RO_CRATE_ENTITY_PREFIXES.study) ||
-        id.startsWith(RO_CRATE_ENTITY_PREFIXES.sourceSample)
-      );
     },
     entityById(entityId) {
       return this.model?.entityMap?.[entityId] || null;
@@ -1556,93 +1371,12 @@ export default {
       }
     },
     labelForField(field) {
-      if (RO_CRATE_PROPERTY_LABEL_OVERRIDES[field]) {
-        return RO_CRATE_PROPERTY_LABEL_OVERRIDES[field];
-      }
       return String(field || "")
-        .replace(RO_CRATE_PROPERTY_PREFIX_PATTERN, "")
         .replace(/([a-z0-9])([A-Z])/g, "$1 $2")
         .replace(/[_-]+/g, " ")
         .replace(/\s+/g, " ")
         .trim()
         .replace(/\b\w/g, (char) => char.toUpperCase());
-    },
-    groupForProperty(name, entity) {
-      const rule = this.modelSectionRuleForProperty(name);
-      if (!rule) return "Additional Details";
-      return `${rule.modelName}: ${this.entityLabel(entity) || "Record"}`;
-    },
-    modelSectionTitleForEntity(entity) {
-      const firstPropertyName = [
-        ...this.referenceValues(entity?.[fieldKeys.additionalProperty]),
-        ...this.referenceValues(entity?.[fieldKeys.parameterValue])
-      ]
-        .map((ref) => this.resolveReference(ref))
-        .find((property) => property?.[fieldKeys.name])?.[fieldKeys.name];
-      const rule =
-        this.modelSectionRuleForProperty(firstPropertyName) ||
-        this.modelSectionRuleForEntityId(entity?.[fieldKeys.id]);
-      return `${rule?.modelName || "Linked Model"}: ${
-        this.entityLabel(entity) || "Record"
-      }`;
-    },
-    modelSectionRuleForProperty(name) {
-      const propertyName = String(name || "");
-      return RO_CRATE_MODEL_DISPLAY_RULES_BY_PREFIX.find((rule) =>
-        rule.prefixes.some((prefix) => propertyName.startsWith(prefix))
-      );
-    },
-    modelSectionRuleForEntityId(entityId) {
-      const id = String(entityId || "");
-      const match = RO_CRATE_MODEL_SECTION_ID_RULES.find(([prefix]) =>
-        id.startsWith(prefix)
-      );
-      return match ? { modelName: match[1] } : null;
-    },
-    isSummaryModelProperty(name) {
-      const rule = this.modelSectionRuleForProperty(name);
-      return Boolean(rule?.summaryOnly);
-    },
-    shouldHideField(field) {
-      const key = String(field || "");
-      const policyKey = normalisePolicyField(key);
-      if (
-        hiddenFields.has(key) ||
-        userHiddenFields.has(key) ||
-        hiddenPolicyFields.has(policyKey)
-      )
-        return true;
-      if (this.isHiddenCommentField(key)) return true;
-      if (RO_CRATE_HIDDEN_FIELD_PATTERNS.some((pattern) => pattern.test(key))) {
-        return true;
-      }
-      const normalised = key.replace(RO_CRATE_PROPERTY_PREFIX_PATTERN, "");
-      const normalisedPolicyKey = normalisePolicyField(normalised);
-      return (
-        hiddenFields.has(normalised) ||
-        userHiddenFields.has(normalised) ||
-        hiddenPolicyFields.has(normalisedPolicyKey) ||
-        this.isHiddenCommentField(normalised) ||
-        (/(^|_)id$/i.test(normalised) &&
-          !visibleIdFields.has(normalised) &&
-          !visibleIdPolicyFields.has(normalisedPolicyKey))
-      );
-    },
-    isHiddenCommentField(field) {
-      const normalised = String(field || "")
-        .replace(/[^a-z0-9]+/gi, "")
-        .toLowerCase();
-      return (
-        (normalised.endsWith("comment") || normalised.endsWith("comments")) &&
-        !["usercomment", "usercomments"].includes(normalised)
-      );
-    },
-    isHiddenRow(row) {
-      return (
-        this.isEmpty(row?.value) ||
-        this.shouldHideField(row?.key) ||
-        userHiddenFields.has(String(row?.key || ""))
-      );
     },
     isEmpty(value) {
       return (
@@ -1656,37 +1390,20 @@ export default {
           !Object.keys(value).length)
       );
     },
-    isWideValue(key, value) {
-      const label = String(key || "").toLowerCase();
-      return (
-        label.includes("path") ||
-        label.includes("flowcell") ||
-        Array.isArray(value) ||
-        (value && typeof value === "object")
-      );
-    },
     valueClassForRow(row) {
       const key = String(row?.key || "").toLowerCase();
       return {
-        "path-value": key.includes("path"),
-        "barcode-value": key.includes("barcode")
+        "path-value": key.includes("path")
       };
     },
-    uniqueRows(rows) {
-      const seen = new Set();
-      return rows.filter((row) => {
-        const key = `${row.key}:${JSON.stringify(row.value)}`;
-        if (seen.has(key)) return false;
-        seen.add(key);
-        return true;
-      });
-    },
     matchesSearch(values) {
-      if (!this.searchTerm) return true;
-      return values.some((value) =>
-        JSON.stringify(value ?? "")
-          .toLowerCase()
-          .includes(this.searchTerm)
+      if (!this.searchTokens.length) return true;
+      const searchableText = values
+        .map((value) => JSON.stringify(value ?? ""))
+        .join(" ")
+        .toLowerCase();
+      return this.searchTokens.every((token) =>
+        searchableText.includes(token)
       );
     },
     idSuffix(entityId) {
@@ -1694,14 +1411,8 @@ export default {
     },
     formatDate(value) {
       const text = String(value || "").trim();
-      if (!/^\d{4}-\d{2}-\d{2}(T\d{2}:\d{2})?/.test(text)) return "";
-      const date = new Date(text);
-      if (Number.isNaN(date.getTime())) return "";
-      return new Intl.DateTimeFormat(undefined, {
-        day: "2-digit",
-        month: "2-digit",
-        year: "numeric"
-      }).format(date);
+      const match = text.match(/^(\d{4})-(\d{2})-(\d{2})/);
+      return match ? `${match[3]}.${match[2]}.${match[1]}` : "";
     }
   }
 };
@@ -1709,215 +1420,173 @@ export default {
 
 <style scoped>
 .rocrate-preview-page {
-  min-height: 100vh;
-  background:
-    radial-gradient(
-      circle at top left,
-      rgba(15, 95, 135, 0.18),
-      transparent 32%
-    ),
-    radial-gradient(
-      circle at top right,
-      rgba(43, 167, 123, 0.18),
-      transparent 28%
-    ),
-    linear-gradient(180deg, #f4fafb 0%, #ecf3f5 50%, #f8fcfd 100%);
-  color: #10242f;
-}
-
-.rocrate-preview-page.embedded {
   height: 100%;
   min-height: 100%;
   overflow: auto;
-  background: #f4fafb;
+  background: #f5f7f8;
+  color: #263b45;
 }
 
 .rocrate-preview-shell {
-  max-width: 1520px;
-  margin: 0 auto;
-  padding: 32px 24px 56px;
-}
-
-.rocrate-preview-page.embedded .rocrate-preview-shell {
   max-width: none;
-  padding: 16px 18px 28px;
+  margin: 0 auto;
+  padding: 12px;
 }
 
-.rocrate-preview-shell.is-empty {
-  min-height: 100vh;
+.detail-card {
+  background: #ffffff;
+  border: 1px solid #d9e0e3;
+}
+
+.preview-action-bar {
   display: flex;
   align-items: center;
-  justify-content: center;
-}
-
-.upload-stage,
-.detail-card {
-  background: rgba(255, 255, 255, 0.88);
-  border: 1px solid rgba(16, 36, 47, 0.08);
-  box-shadow: 0 20px 40px rgba(26, 58, 74, 0.08);
-  backdrop-filter: blur(12px);
-}
-
-.upload-stage {
-  position: relative;
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) 180px;
-  gap: 12px;
-  align-items: center;
-  border-radius: 24px;
-  padding: 20px 24px;
-  margin-bottom: 20px;
-}
-
-.rocrate-preview-page.embedded .upload-stage {
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 10px;
+  padding: 12px 14px;
+  background: #ffffff;
+  border: 1px solid #d9e0e3;
   border-radius: 8px;
-  margin-bottom: 16px;
 }
 
-.upload-stage.centered {
-  width: min(920px, 100%);
-  min-height: 236px;
-  margin: 0 auto;
-}
-
-.upload-content {
+.preview-action-copy {
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  min-height: 168px;
+  gap: 2px;
+  min-width: 180px;
 }
 
-.upload-title-main {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin: 0 0 12px;
-  color: #0f2a38;
-  font-size: clamp(1.5rem, 3vw, 2.2rem);
-  font-weight: 800;
-  text-align: left;
+.preview-action-title {
+  color: #244a60;
+  font-size: 15px;
+  font-weight: 700;
 }
 
-.upload-title-icon {
-  width: 30px;
-  height: 30px;
-  flex-shrink: 0;
+.preview-action-subtitle {
+  color: #61747d;
+  font-size: 12px;
+  line-height: 1.4;
 }
 
-.upload-title {
-  font-size: 24px;
-  font-weight: 800;
-  line-height: 1.16;
-}
-
-.upload-subtitle {
-  margin-top: 10px;
-  color: #4d6671;
-  line-height: 1.5;
-  max-width: 620px;
-}
-
-.upload-actions {
+.preview-actions {
   display: flex;
   flex-wrap: wrap;
-  gap: 14px;
+  justify-content: flex-end;
+  gap: 8px;
   align-items: center;
-  margin-top: 14px;
 }
 
-.upload-current-file {
-  max-width: min(520px, 100%);
-  padding: 11px 14px;
-  border-radius: 14px;
-  background: rgba(228, 240, 243, 0.9);
-  color: #214250;
-  font-size: 14px;
-  font-weight: 600;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.hero-button {
+.preview-output-file {
   display: inline-flex;
   align-items: center;
-  gap: 10px;
-  border-radius: 14px;
-  border: 0;
-  padding: 12px 16px;
-  font-size: 14px;
+  gap: 6px;
+  max-width: min(360px, 100%);
+  min-height: 38px;
+  padding: 0 11px;
+  border: 1px solid #dde5e8;
+  border-radius: 8px;
+  background: #f5f8f9;
+  color: #294856;
+  font-size: 12px;
+  cursor: default;
+}
+
+.preview-output-file-label {
+  color: #667b85;
+  font-size: 12px;
   font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.preview-output-file-name {
+  min-width: 0;
+  overflow: hidden;
+  font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.preview-action-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  min-height: 38px;
+  border-radius: 8px;
+  padding: 0 13px;
+  font-size: 13px;
+  font-weight: 600;
   cursor: pointer;
+  text-decoration: none;
+  transition:
+    background-color 0.18s ease,
+    border-color 0.18s ease;
 }
 
-.hero-button.primary {
-  background: linear-gradient(135deg, #0d6f73, #1b9c7c);
-  color: #fff;
+.preview-action-button.primary {
+  border: 1px solid #075f5a;
+  background: #006c66;
+  color: #ffffff;
 }
 
-.hero-button.secondary {
-  background: #e7f0f2;
-  color: #173948;
-  border: 1px solid rgba(16, 36, 47, 0.12);
+.preview-action-button.primary:hover {
+  background: #005b59;
 }
 
-.hero-button:disabled {
+.preview-action-button.secondary {
+  border: 1px solid #cbd7dc;
+  background: #ffffff;
+  color: #244a60;
+}
+
+.preview-action-button.secondary:hover {
+  border-color: #9eafb7;
+  background: #f4f8f8;
+}
+
+.preview-action-button:disabled {
   opacity: 0.62;
   cursor: not-allowed;
-}
-
-.upload-watermark {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 168px;
-  pointer-events: none;
-}
-
-.upload-watermark-crop {
-  width: 170px;
-  height: 170px;
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-}
-
-.upload-watermark img {
-  width: 410px;
-  opacity: 0.12;
-  filter: saturate(0.78);
 }
 
 .preview-feedback {
   display: flex;
   align-items: center;
-  gap: 12px;
-  border-radius: 18px;
-  padding: 16px 18px;
-  margin-bottom: 24px;
-  font-weight: 700;
+  gap: 10px;
+  min-height: 42px;
+  border: 1px solid #d7e1e4;
+  border-radius: 8px;
+  padding: 10px 12px;
+  margin-bottom: 10px;
+  background: #ffffff;
+  font-size: 13px;
+  font-weight: 600;
 }
 
 .preview-feedback.loading {
-  background: rgba(243, 249, 250, 0.9);
+  background: #f5f9f9;
 }
 
 .preview-feedback.error {
-  background: rgba(255, 240, 240, 0.96);
+  border-color: #e2b7b7;
+  background: #fff5f5;
   color: #7c2020;
 }
 
 .preview-feedback.warning {
-  background: rgba(255, 249, 229, 0.96);
+  border-color: #e5d49a;
+  background: #fff9e8;
   color: #755300;
 }
 
 .loading-spinner {
-  width: 20px;
-  height: 20px;
-  border: 3px solid rgba(13, 111, 115, 0.14);
-  border-top-color: #0d6f73;
+  width: 18px;
+  height: 18px;
+  border: 3px solid rgba(0, 108, 102, 0.14);
+  border-top-color: #006c66;
   border-radius: 50%;
   animation: spin 1s linear infinite;
 }
@@ -1927,69 +1596,174 @@ export default {
   top: 0;
   z-index: 3;
   display: grid;
-  grid-template-columns: minmax(220px, 320px) minmax(0, 1fr);
-  gap: 18px;
+  grid-template-columns: minmax(180px, 280px) minmax(0, 1fr);
+  gap: 12px;
   align-items: center;
-  margin-bottom: 18px;
-  padding: 14px 18px;
-  border: 1px solid rgba(13, 111, 115, 0.24);
-  border-radius: 0 0 14px 14px;
-  background: rgba(243, 250, 251, 0.98);
-  box-shadow: 0 10px 24px rgba(16, 36, 47, 0.08);
+  margin-bottom: 10px;
+  padding: 10px 14px;
+  border: 1px solid #c8d8dc;
+  border-top-color: #e3e8ea;
+  border-radius: 0 0 8px 8px;
+  background: rgba(247, 250, 250, 0.98);
+  box-shadow: 0 4px 10px rgba(26, 58, 74, 0.06);
 }
 
 .preview-search-title {
-  color: #173948;
-  font-size: 16px;
-  font-weight: 800;
+  color: #244a60;
+  font-size: 13px;
+  font-weight: 700;
 }
 
 .preview-search-meta {
-  margin-top: 3px;
-  color: #5e7884;
-  font-size: 13px;
+  margin-top: 2px;
+  color: #637b86;
+  font-size: 12px;
   line-height: 1.35;
 }
 
-.preview-search-meta.limit-note {
-  color: #1d5f78;
-  font-weight: 700;
+.preview-search-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
 }
 
 .table-search-input-wrap {
   position: relative;
+  flex: 1 1 auto;
+  min-width: 0;
 }
 
 .table-search-input {
   width: 100%;
-  border: 2px solid rgba(13, 111, 115, 0.36);
-  border-radius: 0 0 14px 14px;
-  padding: 13px 44px 13px 14px;
-  font-size: 15px;
-  color: #173948;
-  background: rgba(255, 255, 255, 0.96);
+  height: 38px;
+  border: 1px solid rgba(0, 0, 0, 0.18);
+  border-radius: 8px;
+  padding: 0 68px 0 12px;
+  font-size: 14px;
+  color: #333333;
+  background: #ffffff;
+  transition:
+    border-color 0.18s ease,
+    background-color 0.18s ease;
+}
+
+.table-search-input:hover {
+  border-color: rgba(0, 0, 0, 0.3);
+  background: #f9fbfb;
+}
+
+.table-search-input:focus {
+  outline: none;
+  border-color: #0b7f78;
+  box-shadow: 0 0 0 2px rgba(11, 127, 120, 0.12);
+}
+
+.table-search-input::-webkit-search-cancel-button {
+  appearance: none;
 }
 
 .table-search-icon {
   position: absolute;
   top: 50%;
-  right: 14px;
+  right: 12px;
   transform: translateY(-50%);
-  color: #0d6f73;
+  color: #6f858e;
+  pointer-events: none;
+}
+
+.table-search-clear {
+  position: absolute;
+  top: 50%;
+  right: 34px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: #607985;
+  cursor: pointer;
+  transform: translateY(-50%);
+}
+
+.table-search-clear:hover,
+.table-search-clear:focus-visible {
+  background: #e8eff0;
+  color: #244a60;
+  outline: none;
+}
+
+.preview-search-navigation {
+  display: inline-flex;
+  align-items: center;
+  flex: 0 0 auto;
+  height: 38px;
+  overflow: hidden;
+  border: 1px solid #cbd7dc;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #294856;
+  font-size: 12px;
+}
+
+.preview-search-navigation button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #0b746e;
+  cursor: pointer;
+}
+
+.preview-search-navigation button:hover,
+.preview-search-navigation button:focus-visible {
+  background: #eef5f5;
+  outline: none;
+}
+
+.preview-search-navigation span {
+  min-width: 50px;
+  padding: 0 6px;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.rocrate-preview-page :deep(.search-match-highlight) {
+  border-radius: 2px;
+  padding: 0 1px;
+  background: #fff0a8;
+  color: inherit;
+  font-size: inherit;
+  font-weight: inherit;
 }
 
 .detail-card {
-  border-radius: 22px;
-  padding: 18px;
-  margin-bottom: 18px;
+  border-radius: 8px;
+  padding: 14px;
+  margin-bottom: 10px;
 }
 
 .detail-kicker {
-  display: inline-block;
-  margin-bottom: 8px;
-  font-size: 18px;
-  font-weight: 800;
-  color: #173948;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  margin-bottom: 6px;
+  font-size: 15px;
+  font-weight: 700;
+  color: #244a60;
+}
+
+.detail-kicker-icon {
+  color: #0b7f78;
+  font-size: 0.9em;
 }
 
 .request-overview-list,
@@ -1997,110 +1771,196 @@ export default {
 .attachment-list {
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  margin-top: 14px;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.request-overview-card .request-overview-list {
+  margin-top: 4px;
+}
+
+.request-overview-card {
+  margin-bottom: 0;
+  padding-bottom: 12px;
+  border-bottom: 0;
+  border-radius: 8px 8px 0 0;
+  box-shadow: none;
+}
+
+.request-card > .detail-header {
+  margin: -2px -2px 0;
+  padding: 0 2px 8px;
+  border-bottom: 1px solid #e3e8ea;
 }
 
 .request-overview-item,
 .record-table-block,
 .attachment-item {
   min-width: 0;
-  padding: 14px 16px;
-  border-radius: 16px;
-  background: linear-gradient(
-    180deg,
-    rgba(248, 251, 252, 0.96),
-    rgba(255, 255, 255, 0.96)
-  );
-  border: 1px solid rgba(16, 36, 47, 0.06);
+  padding: 10px 12px;
+  border-radius: 8px;
+  background: #f9fbfb;
+  border: 1px solid #e0e6e8;
 }
 
-.request-overview-title,
+.record-table-block {
+  scroll-margin-top: 80px;
+}
+
+.record-table-header {
+  padding-bottom: 8px;
+  border-bottom: 1px solid #e3e8ea;
+}
+
+.record-table-block:focus {
+  outline: 2px solid rgba(13, 127, 119, 0.45);
+  outline-offset: 2px;
+}
+
+.request-overview-title {
+  color: #244a60;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.record-table-heading {
+  display: inline-flex;
+  align-items: flex-start;
+  gap: 7px;
+}
+
 .record-table-title {
-  color: #173948;
-  font-size: 16px;
-  font-weight: 800;
+  color: #244a60;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.record-table-title-icon {
+  color: #0b7f78;
+  font-size: 0.9em;
+  margin-top: 4px;
 }
 
 .record-table-subtitle {
-  margin-top: 4px;
-  color: #5c7784;
+  margin-top: 2px;
+  color: #667d87;
+  font-size: 12px;
 }
 
 .record-chip-list {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
-  margin-top: 10px;
+  gap: 6px;
+  margin-top: 7px;
 }
 
 .record-chip {
   display: inline-flex;
+  border: 1px solid #d8e4e6;
   max-width: 100%;
-  border-radius: 999px;
-  padding: 7px 10px;
-  background: rgba(13, 111, 115, 0.08);
-  color: #0d6f73;
+  border-radius: 7px;
+  padding: 4px 7px;
+  background: #eef5f5;
+  color: #0b746e;
+  cursor: pointer;
+  font-family: inherit;
   font-size: 12px;
-  font-weight: 800;
+  font-weight: 600;
+  line-height: 1.35;
   overflow-wrap: anywhere;
+  text-align: left;
+}
+
+.record-chip:hover,
+.record-chip:focus-visible {
+  border-color: #9fc2bf;
+  background: #e3f0ef;
+}
+
+.record-chip:focus-visible {
+  outline: 2px solid rgba(13, 127, 119, 0.45);
+  outline-offset: 2px;
+}
+
+.record-chip-barcode,
+.record-chip-separator {
+  color: #294856;
+}
+
+.record-chip-separator {
+  margin-right: 3px;
 }
 
 .record-group {
-  margin-top: 16px;
+  margin-top: 12px;
 }
 
 .record-group.nested {
-  margin-top: 14px;
+  margin-top: 12px;
 }
 
 .record-group-title,
 .quick-summary-key {
   font-size: 12px;
-  font-weight: 800;
-  letter-spacing: 0.05em;
+  font-weight: 700;
+  letter-spacing: 0.04em;
   text-transform: uppercase;
-  color: #5e7884;
+  color: #607985;
 }
 
 .record-group-title {
-  margin-bottom: 8px;
-  color: #1d5f78;
+  margin-bottom: 6px;
+  color: #2c6076;
 }
 
 .quick-summary-table {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 12px 18px;
+  gap: 8px;
 }
 
-.quick-summary-row {
+.record-card-grid {
   display: grid;
-  grid-template-columns: 112px minmax(0, 1fr);
-  gap: 12px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.quick-summary-row,
+.record-data-card {
+  display: grid;
+  grid-template-columns: 104px minmax(0, 1fr);
+  gap: 10px;
   align-items: start;
-  padding: 14px 16px;
-  border-radius: 16px;
-  background: linear-gradient(
-    180deg,
-    rgba(248, 251, 252, 0.96),
-    rgba(255, 255, 255, 0.96)
-  );
-  border: 1px solid rgba(16, 36, 47, 0.06);
+  min-height: 48px;
+  padding: 9px 11px;
+  border-radius: 8px;
+  background: #ffffff;
+  border: 1px solid #dfe5e7;
 }
 
 .quick-summary-row.wide-row {
   grid-column: 1 / -1;
-  grid-template-columns: 112px minmax(0, 1fr);
+  grid-template-columns: 104px minmax(0, 1fr);
 }
 
-.quick-summary-value {
-  color: #173948;
-  line-height: 1.55;
+.record-data-key {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: #607985;
+}
+
+.quick-summary-value,
+.record-data-value {
+  color: #294856;
+  font-size: 13px;
+  line-height: 1.4;
   overflow-wrap: anywhere;
 }
 
-.quick-summary-value.path-value {
+.quick-summary-value.path-value,
+.record-data-value.path-value {
   word-break: break-word;
 }
 
@@ -2118,23 +1978,23 @@ export default {
   width: 100%;
   min-width: 320px;
   border-collapse: collapse;
-  font-size: 13px;
+  font-size: 12px;
 }
 
 .quick-summary-value :deep(.structured-value-table th),
 .quick-summary-value :deep(.structured-value-table td) {
   border: 1px solid rgba(16, 36, 47, 0.12);
-  padding: 8px 10px;
+  padding: 6px 8px;
   text-align: left;
   vertical-align: top;
-  background: rgba(255, 255, 255, 0.72);
+  background: #ffffff;
 }
 
 .quick-summary-value :deep(.structured-value-table th) {
   width: 180px;
-  background: rgba(231, 240, 242, 0.86);
+  background: #eef3f4;
   color: #244858;
-  font-weight: 800;
+  font-weight: 700;
 }
 
 .quick-summary-value :deep(.structured-value-table.indexed-table th) {
@@ -2156,13 +2016,14 @@ export default {
 
 .attachment-item svg {
   margin-top: 2px;
-  color: #0d6f73;
+  color: #0b7f78;
   flex-shrink: 0;
 }
 
 .empty-inline {
-  color: #65818c;
-  line-height: 1.5;
+  color: #667d87;
+  font-size: 13px;
+  line-height: 1.4;
 }
 
 @keyframes spin {
@@ -2171,23 +2032,62 @@ export default {
   }
 }
 
-@media (max-width: 760px) {
-  .rocrate-preview-shell {
-    padding: 20px 14px 40px;
+@media (max-width: 1200px) {
+  .preview-action-bar {
+    align-items: flex-start;
   }
 
-  .upload-stage,
+  .preview-actions {
+    max-width: 70%;
+  }
+
+  .record-card-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 760px) {
+  .rocrate-preview-shell {
+    padding: 10px;
+  }
+
+  .preview-action-bar {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .preview-actions {
+    justify-content: flex-start;
+    max-width: none;
+  }
+
+  .preview-output-file {
+    flex: 1 1 100%;
+    max-width: 100%;
+  }
+
   .quick-summary-table,
+  .record-card-grid,
   .preview-search-panel {
     grid-template-columns: 1fr;
   }
 
-  .upload-watermark {
-    display: none;
+  .preview-action-button {
+    flex: 1 1 auto;
+  }
+
+  .preview-search-controls {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .preview-search-navigation {
+    align-self: flex-end;
   }
 
   .quick-summary-row,
-  .quick-summary-row.wide-row {
+  .quick-summary-row.wide-row,
+  .record-data-card {
     grid-template-columns: 1fr;
   }
 }

@@ -41,6 +41,7 @@ import {
   faPenToSquare,
   faCloudArrowUp,
   faLightbulb,
+  faFlask,
   faFloppyDisk
 } from "@fortawesome/free-solid-svg-icons";
 import {
@@ -89,6 +90,7 @@ library.add(
   faPenToSquare,
   faCloudArrowUp,
   faLightbulb,
+  faFlask,
   faFloppyDisk
 );
 
