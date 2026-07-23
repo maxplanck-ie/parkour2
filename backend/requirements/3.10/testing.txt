@@ -17,7 +17,6 @@ asgiref==3.12.1
     # via
     #   -c backend/requirements/3.10/dev.txt
     #   django
-    #   django-cors-headers
 asttokens==3.0.2
     # via
     #   -c backend/requirements/3.10/dev.txt
@@ -27,16 +26,16 @@ attrs==26.1.0
     #   -c backend/requirements/3.10/dev.txt
     #   jsonschema
     #   referencing
-boto3==1.43.51
+boto3==1.43.54
     # via
     #   -c backend/requirements/3.10/dev.txt
     #   -r backend/requirements/dev.in
-botocore==1.43.51
+botocore==1.43.54
     # via
     #   -c backend/requirements/3.10/dev.txt
     #   boto3
     #   s3transfer
-certifi==2026.6.17
+certifi==2026.7.22
     # via
     #   -c backend/requirements/3.10/dev.txt
     #   httpcore
@@ -103,7 +102,6 @@ django==5.2.16
     #   dj-database-url
     #   django-appconf
     #   django-authtools
-    #   django-cors-headers
     #   django-cryptography-django5
     #   django-debug-toolbar
     #   django-error-mail-dedup
@@ -128,10 +126,6 @@ django-authtools @ git+https://github.com/adRn-s/django-authtools@a3284c976719bd
     # via
     #   -c backend/requirements/3.10/dev.txt
     #   -r backend/requirements/base.in
-django-cors-headers==4.9.0
-    # via
-    #   -c backend/requirements/3.10/dev.txt
-    #   -r backend/requirements/dev.in
 django-cryptography-django5==2.2
     # via
     #   -c backend/requirements/3.10/dev.txt
@@ -168,7 +162,7 @@ django-schema-viewer==0.5.3
     # via
     #   -c backend/requirements/3.10/dev.txt
     #   -r backend/requirements/dev.in
-django-simple-history==3.12.0
+django-simple-history==3.13.0
     # via
     #   -c backend/requirements/3.10/dev.txt
     #   -r backend/requirements/base.in
@@ -210,7 +204,7 @@ fpdf2==2.8.7
     # via
     #   -c backend/requirements/3.10/dev.txt
     #   -r backend/requirements/base.in
-greenlet==3.5.3
+greenlet==3.5.4
     # via playwright
 gunicorn==26.0.0
     # via
@@ -323,7 +317,7 @@ numpy==2.5.1 ; python_full_version >= '3.12'
     #   contourpy
     #   matplotlib
     #   pandas
-openai==2.46.0
+openai==2.47.0
     # via
     #   -c backend/requirements/3.10/dev.txt
     #   -r backend/requirements/dev.in
@@ -342,7 +336,7 @@ pandas==2.3.3 ; python_full_version < '3.12'
     #   -c backend/requirements/3.10/dev.txt
     #   -r backend/requirements/base.in
     #   -r backend/requirements/dev.in
-pandas==3.0.3 ; python_full_version >= '3.12'
+pandas==3.0.5 ; python_full_version >= '3.12'
     # via
     #   -c backend/requirements/3.10/dev.txt
     #   -r backend/requirements/base.in
@@ -483,7 +477,7 @@ rpds-py==2026.6.3 ; python_full_version >= '3.11'
     #   -c backend/requirements/3.10/dev.txt
     #   jsonschema
     #   referencing
-s3transfer==0.19.1
+s3transfer==0.19.2
     # via
     #   -c backend/requirements/3.10/dev.txt
     #   boto3
@@ -499,7 +493,7 @@ sql-metadata==3.0.1
     # via
     #   -c backend/requirements/3.10/dev.txt
     #   -r backend/requirements/dev.in
-sqlglot==30.12.0
+sqlglot==30.13.0
     # via
     #   -c backend/requirements/3.10/dev.txt
     #   sql-metadata

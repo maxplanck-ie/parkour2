@@ -12,7 +12,6 @@ asgiref==3.12.1
     # via
     #   -c backend/requirements/3.13/base.txt
     #   django
-    #   django-cors-headers
 asttokens==3.0.2
     # via stack-data
 attrs==26.1.0
@@ -20,13 +19,13 @@ attrs==26.1.0
     #   -c backend/requirements/3.13/base.txt
     #   jsonschema
     #   referencing
-boto3==1.43.51
+boto3==1.43.54
     # via -r backend/requirements/dev.in
-botocore==1.43.51
+botocore==1.43.54
     # via
     #   boto3
     #   s3transfer
-certifi==2026.6.17
+certifi==2026.7.22
     # via
     #   httpcore
     #   httpx
@@ -72,7 +71,6 @@ django==5.2.16
     #   dj-database-url
     #   django-appconf
     #   django-authtools
-    #   django-cors-headers
     #   django-cryptography-django5
     #   django-debug-toolbar
     #   django-error-mail-dedup
@@ -95,8 +93,6 @@ django-authtools @ git+https://github.com/adRn-s/django-authtools@a3284c976719bd
     # via
     #   -c backend/requirements/3.13/base.txt
     #   -r backend/requirements/base.in
-django-cors-headers==4.9.0
-    # via -r backend/requirements/dev.in
 django-cryptography-django5==2.2
     # via django-sql-explorer
 django-debug-toolbar==7.0.0
@@ -125,7 +121,7 @@ django-monthfield==0.1.4
     #   -r backend/requirements/base.in
 django-schema-viewer==0.5.3
     # via -r backend/requirements/dev.in
-django-simple-history==3.12.0
+django-simple-history==3.13.0
     # via
     #   -c backend/requirements/3.13/base.txt
     #   -r backend/requirements/base.in
@@ -219,7 +215,7 @@ numpy==2.5.1
     #   contourpy
     #   matplotlib
     #   pandas
-openai==2.46.0
+openai==2.47.0
     # via -r backend/requirements/dev.in
 openpyxl==3.1.5
     # via
@@ -230,7 +226,7 @@ packaging==26.2
     #   -c backend/requirements/3.13/base.txt
     #   gunicorn
     #   matplotlib
-pandas==3.0.3
+pandas==3.0.5
     # via
     #   -c backend/requirements/3.13/base.txt
     #   -r backend/requirements/base.in
@@ -305,7 +301,7 @@ rpds-py==2026.6.3
     #   -c backend/requirements/3.13/base.txt
     #   jsonschema
     #   referencing
-s3transfer==0.19.1
+s3transfer==0.19.2
     # via boto3
 six==1.17.0
     # via
@@ -315,7 +311,7 @@ sniffio==1.3.1
     # via openai
 sql-metadata==3.0.1
     # via -r backend/requirements/dev.in
-sqlglot==30.12.0
+sqlglot==30.13.0
     # via sql-metadata
 sqlparse==0.5.5
     # via
