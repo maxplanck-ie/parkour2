@@ -9,13 +9,11 @@ INSTALLED_APPS += [
     "schema_viewer",
     # "debug_toolbar",
     "django_migration_linter",
-    "corsheaders",
     # "explorer",
 ]
 
 MIDDLEWARE = [
     # "debug_toolbar.middleware.DebugToolbarMiddleware",
-    "corsheaders.middleware.CorsMiddleware",
     *MIDDLEWARE,
 ]
 
@@ -45,12 +43,6 @@ additional_ips = os.environ.get("DEBUG_TOOLBAR_INTERNAL_IPS")
 if additional_ips:
     INTERNAL_IPS.extend(ip.strip() for ip in additional_ips.split(","))
 
-
-# CORS settings to enable API calls for Vue.js while development
-CORS_ALLOW_CREDENTIALS = True
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:5174",
-]
 
 DEBUG_TOOLBAR_CONFIG = {
     "SHOW_TOOLBAR_CALLBACK": lambda _: True,

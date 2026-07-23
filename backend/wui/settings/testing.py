@@ -19,19 +19,10 @@ NOTEBOOK_ARGUMENTS += [
 INSTALLED_APPS += [
     "schema_viewer",
     "django_migration_linter",
-    "corsheaders",
 ]
 
 MIDDLEWARE += [
-    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.common.CommonMiddleware",
-]
-
-
-# CORS settings to enable API calls for Vue.js while development
-CORS_ALLOW_CREDENTIALS = True
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:5174",
 ]
 
 MIGRATION_LINTER_OPTIONS = {
