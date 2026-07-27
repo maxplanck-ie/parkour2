@@ -54,21 +54,12 @@
           </div>
         </div>
 
-        <!-- Report actions -->
-        <button class="header-button" @click="downloadReport">
-          <font-awesome-icon icon="fa-solid fa-download" style="color: white" />
-          <span> Download Report </span>
-        </button>
-        <button class="header-button" @click="showUploadPopup = true">
-          <font-awesome-icon icon="fa-solid fa-upload" style="color: white" />
-          <span> Upload Reports </span>
-        </button>
-        <button class="header-button" @click="openViewReports">
+        <button class="header-button" @click="showCostsPanel = true">
           <font-awesome-icon
-            icon="fa-solid fa-folder-open"
+            icon="fa-solid fa-money-bill"
             style="color: white"
           />
-          <span> View Uploaded Reports </span>
+          <span> Costs </span>
         </button>
         <button
           class="header-button"
@@ -96,105 +87,8 @@
       />
     </div>
 
-    <!-- Upload Reports popup -->
-    <div v-if="showUploadPopup" class="popup-overlay">
-      <div class="popup-container" :style="{ width: '500px', height: '260px' }">
-        <div class="popup-header">
-          <span class="popup-title">Upload Reports</span>
-          <button class="popup-close-button" @click="showUploadPopup = false">
-            &times;
-          </button>
-        </div>
-        <div class="popup-body">
-          <div class="invoicing-form-row">
-            <label>Select Month</label>
-            <input v-model="uploadDate" type="date" />
-          </div>
-          <div class="invoicing-form-row">
-            <label>Browse Report</label>
-            <input ref="uploadFileInput" type="file" />
-          </div>
-        </div>
-        <div class="popup-footer">
-          <button class="popup-button yes-button" @click="uploadReport">
-            Upload
-          </button>
-          <button
-            class="popup-button secondary"
-            @click="showUploadPopup = false"
-          >
-            Cancel
-          </button>
-        </div>
-      </div>
-    </div>
-
-    <!-- View Uploaded Reports popup: lists everything in the invoicing media dir -->
-    <div v-if="showViewReportsPopup" class="popup-overlay">
-      <div class="popup-container" :style="{ width: '640px', height: '520px' }">
-        <div class="popup-header">
-          <span class="popup-title">View Uploaded Reports</span>
-          <button
-            class="popup-close-button"
-            @click="showViewReportsPopup = false"
-          >
-            &times;
-          </button>
-        </div>
-        <div class="popup-body">
-          <div
-            v-if="uploadedReports.length === 0"
-            style="text-align: center; padding: 30px; color: #888"
-          >
-            No uploaded reports found in the invoicing media directory.
-          </div>
-          <div v-else class="uploaded-reports-list" @scroll="onReportsScroll">
-            <div
-              v-for="file in visibleReports"
-              :key="file.path"
-              class="uploaded-report-item"
-            >
-              <div class="uploaded-report-info">
-                <font-awesome-icon
-                  icon="fa-solid fa-file-excel"
-                  style="color: #1d6f42; margin-right: 8px"
-                />
-                <div>
-                  <div class="uploaded-report-name">{{ file.name }}</div>
-                  <div class="uploaded-report-meta">
-                    {{ file.path }} · {{ formatSize(file.size) }} ·
-                    {{ file.modified }}
-                  </div>
-                </div>
-              </div>
-              <a
-                class="popup-button yes-button uploaded-report-download"
-                :href="file.url"
-                :download="file.name"
-              >
-                Download
-              </a>
-            </div>
-          </div>
-        </div>
-        <div class="popup-footer">
-          <span
-            v-if="uploadedReports.length > 0"
-            class="uploaded-report-meta"
-            style="margin-right: auto"
-          >
-            Showing {{ visibleReports.length }} of
-            {{ uploadedReports.length }}
-          </span>
-          <button
-            class="popup-button secondary"
-            @click="showViewReportsPopup = false"
-          >
-            Close
-          </button>
-        </div>
-      </div>
-    </div>
+    <!-- Costs side panel -->
+    <CostsPanel v-model="showCostsPanel" />
 
     <!-- Export to Excel popup: reuses the template-append pattern from the other tabs -->
     <div
@@ -407,6 +301,7 @@
 <script>
 import TabulatorTable from "../components/TabulatorTableFull.vue";
 import MonthYearPicker from "../components/MonthYearPicker.vue";
+import CostsPanel from "../components/CostsPanel.vue";
 import { saveAs } from "file-saver";
 import {
   showNotification,
@@ -422,11 +317,7 @@ import {
   invoicingColumnDefs,
   invoicingExportColumns
 } from "../constants/invoicingConsts";
-import {
-  isValidDate,
-  isValidMonth,
-  formatDateForInput
-} from "../utilities/dateUtils";
+import { isValidMonth, formatDateForInput } from "../utilities/dateUtils";
 import iconHeader from "../assets/icons/header_statistics.svg";
 import iconExportTemplateFile from "../assets/icons/export_template.svg";
 import iconExportTemplateFileLines from "../assets/icons/export_template_lines.svg";
@@ -436,7 +327,6 @@ import iconExportUpload from "../assets/icons/export_upload.svg";
 
 const axiosRef = createAxiosObject();
 const urlStringStart = urlStringStartsWith();
-const REPORTS_PAGE_SIZE = 20;
 // Wide enough to cover every request ever loaded, without needing a
 // dedicated "give me everything" endpoint from the backend.
 const FULL_HISTORY_START_MONTH = "2000-01";
@@ -457,7 +347,8 @@ export default {
   name: "InvoicingView",
   components: {
     TabulatorTable,
-    MonthYearPicker
+    MonthYearPicker,
+    CostsPanel
   },
   data() {
     return {
@@ -491,11 +382,7 @@ export default {
       startMonthValid: true,
       endMonthValid: true,
       dateChangeTimer: null,
-      showUploadPopup: false,
-      showViewReportsPopup: false,
-      uploadDate: todayString(),
-      uploadedReports: [],
-      visibleReportsCount: REPORTS_PAGE_SIZE,
+      showCostsPanel: false,
       showExportPopup: false,
       showExportHelpTooltip: false,
       isDragOver: false,
@@ -517,9 +404,6 @@ export default {
       return this.searchQuery.trim() && this.allInvoicingLoaded
         ? this.allInvoicingList
         : this.invoicingList;
-    },
-    visibleReports() {
-      return this.uploadedReports.slice(0, this.visibleReportsCount);
     }
   },
   watch: {
@@ -713,74 +597,6 @@ export default {
       } finally {
         this.allInvoicingLoading = false;
       }
-    },
-    downloadReport() {
-      // Downloads whatever whole month(s) the From/To pickers are set to.
-      // They default to the current month on every load and can only ever
-      // select whole months, so this defaults to the current full month
-      // while still allowing a deliberate switch to a previous one.
-      const params = new URLSearchParams({
-        start: this.startMonth,
-        end: this.endMonth
-      });
-      window.open(
-        `${urlStringStart}/api/invoicing/download/?${params.toString()}`,
-        "_blank"
-      );
-    },
-    async uploadReport() {
-      const fileInput = this.$refs.uploadFileInput;
-      const file = fileInput && fileInput.files && fileInput.files[0];
-      if (!isValidDate(this.uploadDate)) {
-        showNotification("Please select the month.", "warning");
-        return;
-      }
-      if (!file) {
-        showNotification("Please select the report file.", "warning");
-        return;
-      }
-      const payload = new FormData();
-      payload.append("report", file);
-      payload.append("month", monthOf(this.uploadDate));
-      try {
-        await axiosRef.post(
-          `${urlStringStart}/api/invoicing/upload/`,
-          payload,
-          { headers: { "Content-Type": "multipart/form-data" } }
-        );
-        showNotification("Report has been successfully uploaded.", "success");
-        this.showUploadPopup = false;
-      } catch (error) {
-        showNotification("Error while uploading the report: " + error, "error");
-      }
-    },
-    async openViewReports() {
-      this.showViewReportsPopup = true;
-      this.visibleReportsCount = REPORTS_PAGE_SIZE;
-      try {
-        const response = await axiosRef.get(
-          `${urlStringStart}/api/invoicing/reports/`
-        );
-        this.uploadedReports = response.data || [];
-      } catch (error) {
-        handleError(error);
-      }
-    },
-    onReportsScroll(event) {
-      const el = event.target;
-      const nearBottom = el.scrollHeight - el.scrollTop - el.clientHeight < 80;
-      if (
-        nearBottom &&
-        this.visibleReportsCount < this.uploadedReports.length
-      ) {
-        this.visibleReportsCount += REPORTS_PAGE_SIZE;
-      }
-    },
-    formatSize(bytes) {
-      if (bytes === null || bytes === undefined) return "";
-      if (bytes < 1024) return `${bytes} B`;
-      if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
-      return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
     },
     async fetchExportTemplates() {
       try {
@@ -990,63 +806,5 @@ body,
   border: 1px solid #ccc;
   border-radius: 4px;
   font-size: 13px;
-}
-
-.invoicing-form-row {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 12px;
-}
-
-.invoicing-form-row label {
-  width: 110px;
-  font-weight: bold;
-}
-
-.invoicing-form-row input {
-  flex: 1;
-  padding: 5px 6px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-}
-
-.uploaded-reports-list {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  max-height: 380px;
-  overflow-y: auto;
-}
-
-.uploaded-report-item {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 8px 10px;
-  border: 1px solid #eee;
-  border-radius: 6px;
-}
-
-.uploaded-report-info {
-  display: flex;
-  align-items: center;
-  overflow: hidden;
-}
-
-.uploaded-report-name {
-  font-weight: bold;
-  font-size: 13px;
-}
-
-.uploaded-report-meta {
-  font-size: 11px;
-  color: #888;
-}
-
-.uploaded-report-download {
-  text-decoration: none;
-  white-space: nowrap;
-  margin-left: 10px;
 }
 </style>
