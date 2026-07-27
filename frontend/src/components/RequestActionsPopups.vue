@@ -133,7 +133,7 @@
                   >
                     <span>{{ entry.value || "Empty" }}</span>
                     <span v-if="entry.md5" class="filepaths-md5">
-                      MD5: {{ entry.md5 }}
+                      Checksum: {{ entry.md5 }}
                     </span>
                   </button>
                 </div>
@@ -205,7 +205,7 @@
                   >
                     <span>{{ path.value || "Empty" }}</span>
                     <span v-if="path.md5" class="filepaths-md5">
-                      MD5: {{ path.md5 }}
+                      Checksum: {{ path.md5 }}
                     </span>
                   </button>
                   <div class="userpath-icons">
@@ -995,7 +995,7 @@ export default {
     },
     pathReferenceCopyValue(path, md5) {
       const cleanPath = path || "Empty";
-      return md5 ? `${cleanPath}\nMD5: ${md5}` : cleanPath;
+      return md5 ? `${cleanPath}\nChecksum: ${md5}` : cleanPath;
     },
     buildPathReferenceValue(path, md5) {
       if (!md5) return path;
