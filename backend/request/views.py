@@ -884,7 +884,20 @@ class RequestViewSet(viewsets.ModelViewSet):
         if isinstance(existing, dict):
             # legacy single-entry shape from before filepaths became a list
             existing = [existing] if any(existing.values()) else []
-        if entry not in existing:
+        # Match on "data" (the release path) so a later call - e.g. an async
+        # checksum worker posting just {"data": ..., "md5": ...} - updates
+        # the existing entry in place instead of accumulating duplicates.
+        match = next(
+            (
+                e
+                for e in existing
+                if e.get("data") and e.get("data") == entry.get("data")
+            ),
+            None,
+        )
+        if match is not None:
+            match.update(entry)
+        elif entry not in existing:
             existing = existing + [entry]
         instance.filepaths = existing
         records = list(instance.libraries.all()) + list(instance.samples.all())
