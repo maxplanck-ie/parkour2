@@ -2138,7 +2138,8 @@ export default {
    which can end up with real bounds and get painted before the user ever
    interacts with the table. Suppress the paint until a real click/keypress
    happens, so no cell looks pre-selected on load. */
-.normal-tabulator-table.pending-range-interaction
+.normal-tabulator-table
+  .pending-range-interaction
   .tabulator-cell.tabulator-range-selected {
   background-color: inherit !important;
   color: inherit !important;
