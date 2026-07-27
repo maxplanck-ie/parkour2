@@ -144,10 +144,14 @@ class InvoicingSerializer(ModelSerializer):
         return obj.cost_unit.name if obj.cost_unit else None
 
     def get_sequencer(self, obj):
+        # sequencer is SET_NULL on deletion, so old flowcells can reference a
+        # sequencer that no longer exists.
         return [
             {
                 "flowcell_id": flowcell.flowcell_id,
-                "sequencer_name": flowcell.sequencer.name,
+                "sequencer_name": flowcell.sequencer.name
+                if flowcell.sequencer_id
+                else "Unknown",
             }
             for flowcell in obj.flowcell.all()
         ]
@@ -169,6 +173,11 @@ class InvoicingSerializer(ModelSerializer):
         data = []
 
         for flowcell in obj.flowcell.all():
+            # sequencer is SET_NULL on deletion; without it there's no cost
+            # lookup key, so this flowcell can't be billed and is skipped.
+            if not flowcell.sequencer_id:
+                continue
+
             flowcell_dict = {
                 "flowcell_id": flowcell.flowcell_id,
                 "sequencer": flowcell.sequencer.pk,
@@ -206,6 +215,12 @@ class InvoicingSerializer(ModelSerializer):
 
                 item = libraries.first() or samples.first()
 
+                # read_length is SET_NULL on deletion; without it there's no
+                # cost lookup key, so this pool entry can't be billed and is
+                # skipped.
+                if not item or not item.read_length_id:
+                    continue
+
                 flowcell_dict["pools"].append(
                     {
                         "name": pool.name,
@@ -220,7 +235,9 @@ class InvoicingSerializer(ModelSerializer):
         return data
 
     def get_read_length(self, obj):
-        return {x.read_length.pk for x in obj.records}
+        # read_length is SET_NULL on deletion, so old records can reference
+        # a read length that no longer exists.
+        return {x.read_length.pk for x in obj.records if x.read_length_id}
 
     def get_num_libraries_samples_show(self, obj):
         num_libraries = obj.libraries.count()
