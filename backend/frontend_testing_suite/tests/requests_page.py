@@ -450,9 +450,7 @@ def test_ro_crate_preview_opens_with_expected_api_params(page: Page):
     expect(
         preview_overlay.get_by_role("link", name="RO-Crate Documentation")
     ).to_be_visible()
-    expect(
-        preview_overlay.get_by_text("Selected Libraries & Samples")
-    ).to_be_visible()
+    expect(preview_overlay.get_by_text("Selected Libraries & Samples")).to_be_visible()
     expect(
         preview_overlay.get_by_text("Request 1: 101_ROCrate Request")
     ).to_be_visible()
