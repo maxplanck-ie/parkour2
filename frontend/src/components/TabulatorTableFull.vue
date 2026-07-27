@@ -142,7 +142,8 @@ const HTML_TAGS = {
 
 const TABULATOR_CLASSES = {
   noGroupBy: "no-group-by",
-  disableEditing: "disable-editing"
+  disableEditing: "disable-editing",
+  pendingRangeInteraction: "pending-range-interaction"
 };
 
 const TABULATOR_SELECTORS = {
@@ -738,10 +739,32 @@ export default {
 
           // The range-select module auto-selects cell (0,0) on build, which
           // renders as a gray/blue highlight on the first row until the user
-          // clicks elsewhere. Clear it so the table starts unhighlighted.
+          // clicks elsewhere. Removing the range doesn't fully prevent this:
+          // the module always keeps one active range and immediately
+          // recreates a default one, which can end up with real bounds and
+          // get painted anyway. So also gate the paint itself via CSS until
+          // the first real interaction (see .pending-range-interaction).
           this.tabulatorInstance.getRanges().forEach((range) => range.remove());
 
           const tabulatorElement = this.getTabulatorElement();
+          tabulatorElement.classList.add(
+            TABULATOR_CLASSES.pendingRangeInteraction
+          );
+          const clearPendingRangeInteraction = () => {
+            tabulatorElement.classList.remove(
+              TABULATOR_CLASSES.pendingRangeInteraction
+            );
+          };
+          tabulatorElement.addEventListener(
+            DOM_EVENTS.mousedown,
+            clearPendingRangeInteraction,
+            { capture: true, once: true }
+          );
+          tabulatorElement.addEventListener(
+            DOM_EVENTS.keydown,
+            clearPendingRangeInteraction,
+            { capture: true, once: true }
+          );
           tabulatorElement.addEventListener(
             DOM_EVENTS.keydown,
             (e) => {
@@ -2107,6 +2130,18 @@ export default {
 .normal-tabulator-table .tabulator-cell.tabulator-range-selected {
   background-color: #c0e7fd !important;
   color: #003757 !important;
+  border-bottom: 1px solid #d0d0d0 !important;
+}
+
+/* Tabulator's range-select module always keeps one active range, and
+   recreates a default one (at cell 0,0) the instant we remove it on build —
+   which can end up with real bounds and get painted before the user ever
+   interacts with the table. Suppress the paint until a real click/keypress
+   happens, so no cell looks pre-selected on load. */
+.normal-tabulator-table.pending-range-interaction
+  .tabulator-cell.tabulator-range-selected {
+  background-color: inherit !important;
+  color: inherit !important;
   border-bottom: 1px solid #d0d0d0 !important;
 }
 
