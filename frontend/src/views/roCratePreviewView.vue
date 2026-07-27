@@ -112,7 +112,7 @@
                         :search-tokens="searchTokens"
                       />
                     </span>
-                    <span class="record-chip-separator">:</span>
+                    <span class="record-chip-separator">: </span>
                   </template>
                   <ROCrateHighlightedText
                     :value="record.name"
@@ -199,7 +199,7 @@
                   class="detail-kicker-icon"
                   icon="fa-solid fa-folder-open"
                 />
-                <span>Request {{ index + 1 }}:</span>
+                <span>Request {{ index + 1 }}: </span>
                 <ROCrateHighlightedText
                   :value="request.name"
                   :search-tokens="searchTokens"
