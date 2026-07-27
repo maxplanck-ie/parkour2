@@ -736,6 +736,11 @@ export default {
           this.tableBuilt = true;
           document.addEventListener(DOM_EVENTS.keydown, this.handleKeyDown);
 
+          // The range-select module auto-selects cell (0,0) on build, which
+          // renders as a gray/blue highlight on the first row until the user
+          // clicks elsewhere. Clear it so the table starts unhighlighted.
+          this.tabulatorInstance.getRanges().forEach((range) => range.remove());
+
           const tabulatorElement = this.getTabulatorElement();
           tabulatorElement.addEventListener(
             DOM_EVENTS.keydown,
