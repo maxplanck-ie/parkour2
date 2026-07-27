@@ -3,15 +3,9 @@ from django.contrib import admin
 
 from .models import (
     FixedCosts,
-    InvoicingReport,
     LibraryPreparationCosts,
     SequencingCosts,
 )
-
-
-@admin.register(InvoicingReport)
-class InvoicingReportAdmin(admin.ModelAdmin):
-    pass
 
 
 @admin.register(FixedCosts)
