@@ -31,25 +31,16 @@
           />
         </div>
 
-        <!-- Billing-month range filter: only whole months are selectable,
-             never partial ranges within a month, present or past. -->
+        <!-- Billing-month filter: always exactly one whole month, present or
+             past — never a range. -->
         <div class="date-filters">
           <div class="date-filter">
-            <label for="invoicingStart">From</label>
+            <label for="invoicingMonth">Month</label>
             <MonthYearPicker
-              id="invoicingStart"
-              v-model="startMonth"
+              id="invoicingMonth"
+              v-model="billingMonth"
               :max="maxMonth"
-              :invalid="!startMonthValid"
-            />
-          </div>
-          <div class="date-filter">
-            <label for="invoicingEnd">To</label>
-            <MonthYearPicker
-              id="invoicingEnd"
-              v-model="endMonth"
-              :max="maxMonth"
-              :invalid="!endMonthValid"
+              :invalid="!billingMonthValid"
             />
           </div>
         </div>
@@ -373,14 +364,12 @@ export default {
       searchQuery: "",
       // Always defaults to the current calendar month and is never
       // persisted, so a new month never keeps showing stale/previous data
-      // and requests can't accidentally be double-billed. The pickers only
-      // allow picking a whole month (present or past), never a partial
+      // and requests can't accidentally be double-billed. The picker only
+      // allows picking a whole month (present or past), never a partial
       // day-range within one.
-      startMonth: currentMonthString(),
-      endMonth: currentMonthString(),
+      billingMonth: currentMonthString(),
       maxMonth: currentMonthString(),
-      startMonthValid: true,
-      endMonthValid: true,
+      billingMonthValid: true,
       dateChangeTimer: null,
       showCostsPanel: false,
       showExportPopup: false,
@@ -407,11 +396,8 @@ export default {
     }
   },
   watch: {
-    startMonth(newVal) {
-      this.handleDateChange("start", newVal);
-    },
-    endMonth(newVal) {
-      this.handleDateChange("end", newVal);
+    billingMonth(newVal) {
+      this.handleDateChange(newVal);
     },
     searchQuery(newVal) {
       this.applySearchFilter(newVal);
@@ -461,10 +447,10 @@ export default {
         handleError(error);
       }
     },
-    handleDateChange(type, value) {
+    handleDateChange(value) {
       clearTimeout(this.dateChangeTimer);
-      this[`${type}MonthValid`] = isValidMonth(value);
-      if (!this[`${type}MonthValid`]) return;
+      this.billingMonthValid = isValidMonth(value);
+      if (!this.billingMonthValid) return;
       this.dateChangeTimer = setTimeout(() => {
         this.getInvoicing();
       }, 500);
@@ -537,28 +523,18 @@ export default {
       };
     },
     async getInvoicing() {
-      if (!isValidMonth(this.startMonth) || !isValidMonth(this.endMonth)) {
+      if (!isValidMonth(this.billingMonth)) {
         return;
       }
-      if (this.startMonth > this.endMonth) {
-        this.startMonthValid = false;
-        this.endMonthValid = false;
-        showNotification(
-          "The 'From' month cannot be later than the 'To' month.",
-          "warning"
-        );
-        return;
-      }
-      this.startMonthValid = true;
-      this.endMonthValid = true;
+      this.billingMonthValid = true;
       this.loading = true;
       try {
         const response = await axiosRef.get(
           urlStringStart + "/api/invoicing/",
           {
             params: {
-              start: this.startMonth,
-              end: this.endMonth
+              start: this.billingMonth,
+              end: this.billingMonth
             }
           }
         );
