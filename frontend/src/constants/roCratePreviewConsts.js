@@ -48,8 +48,7 @@ export const RO_CRATE_REQUEST_DETAIL_FIELDS =
 export const RO_CRATE_PREPARATION_CARD_FIELDS =
   roCratePreviewFields.preparation;
 
-export const RO_CRATE_SEQUENCING_CARD_FIELDS =
-  roCratePreviewFields.sequencing;
+export const RO_CRATE_SEQUENCING_CARD_FIELDS = roCratePreviewFields.sequencing;
 
 export const RO_CRATE_PREVIEW_LABELS = {
   loadedSubtitle:

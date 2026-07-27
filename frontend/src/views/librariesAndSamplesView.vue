@@ -1008,9 +1008,7 @@
           </div>
         </div>
         <div class="rocrate-preview-modal-body">
-          <ROCratePreviewView
-            :preview-config="roCratePreviewConfig"
-          />
+          <ROCratePreviewView :preview-config="roCratePreviewConfig" />
         </div>
       </div>
     </div>
@@ -3717,7 +3715,6 @@ body.input-dropdown-open .tabulator-tooltip {
   .status-help-list {
     grid-template-columns: 1fr;
   }
-
 }
 
 @media (max-width: 820px) {

@@ -88,12 +88,8 @@ def _normalise_field_policy_key(value):
 def _load_shared_json(filename, description):
     module_dir = os.path.dirname(__file__)
     candidate_paths = [
-        os.path.abspath(
-            os.path.join(module_dir, "..", "shared", filename)
-        ),
-        os.path.abspath(
-            os.path.join(module_dir, "..", "..", "shared", filename)
-        ),
+        os.path.abspath(os.path.join(module_dir, "..", "shared", filename)),
+        os.path.abspath(os.path.join(module_dir, "..", "..", "shared", filename)),
     ]
     config_path = next(
         (path for path in candidate_paths if os.path.exists(path)),
@@ -109,9 +105,7 @@ def _load_shared_json(filename, description):
         with open(config_path, encoding="utf-8") as handle:
             return json.load(handle)
     except OSError as exc:
-        raise RuntimeError(
-            f"RO-Crate {description} file could not be loaded."
-        ) from exc
+        raise RuntimeError(f"RO-Crate {description} file could not be loaded.") from exc
     except ValueError as exc:
         raise RuntimeError(f"RO-Crate {description} is not valid JSON.") from exc
 
@@ -377,9 +371,8 @@ def _extract_model_fields(
             else field_name
         )
         target_name = f"{prefix}{export_name}"
-        if (
-            field_name not in include_hidden_fields
-            and _is_hidden_export_field(field_name, export_name, target_name)
+        if field_name not in include_hidden_fields and _is_hidden_export_field(
+            field_name, export_name, target_name
         ):
             continue
         try:
@@ -2050,9 +2043,7 @@ PDF_FIELD_CONTENT_URL = "contentUrl"
 PDF_FIELD_IS_PART_OF = "isPartOf"
 PDF_FIELD_REQUEST_CONTEXT = "requestContext"
 PDF_PREVIEW_TITLE = "RO Crate Preview"
-PDF_PREVIEW_SUBTITLE = (
-    "RO-Crate preview generated from Parkour metadata for selected libraries and samples."
-)
+PDF_PREVIEW_SUBTITLE = "RO-Crate preview generated from Parkour metadata for selected libraries and samples."
 
 PDF_PREPARATION_CARD_FIELDS = RO_CRATE_PREVIEW_FIELDS["preparation"]
 PDF_SEQUENCING_CARD_FIELDS = RO_CRATE_PREVIEW_FIELDS["sequencing"]
@@ -2187,9 +2178,9 @@ class ROCratePdfRenderer:
         request_entity = self.entity_by_id(f"#request-context-{request_number}")
         record_ids = sorted(
             self._study_record_ids(study),
-            key=lambda record_id: (
-                self.entity_by_id(record_id) or {}
-            ).get(PDF_FIELD_IDENTIFIER)
+            key=lambda record_id: (self.entity_by_id(record_id) or {}).get(
+                PDF_FIELD_IDENTIFIER
+            )
             or self.entity_label(self.entity_by_id(record_id)),
         )
         records = sorted(
@@ -2310,13 +2301,9 @@ class ROCratePdfRenderer:
                 *self.reference_values(
                     source_entity.get(PDF_FIELD_ADDITIONAL_PROPERTY)
                 ),
-                *self.reference_values(
-                    source_entity.get(PDF_FIELD_PARAMETER_VALUE)
-                ),
+                *self.reference_values(source_entity.get(PDF_FIELD_PARAMETER_VALUE)),
             ]
-            for prop in (
-                self.resolve_reference(reference) for reference in refs
-            ):
+            for prop in (self.resolve_reference(reference) for reference in refs):
                 if not isinstance(prop, dict):
                     continue
                 name = str(prop.get(PDF_FIELD_NAME) or "")
@@ -2324,9 +2311,7 @@ class ROCratePdfRenderer:
                     values[name] = prop.get(PDF_FIELD_VALUE)
         return {"prefix": prefix, "values": values}
 
-    def _record_card_rows(
-        self, fields, entity, metadata, record_type, record_index
-    ):
+    def _record_card_rows(self, fields, entity, metadata, record_type, record_index):
         return [
             {
                 "key": label,
@@ -2341,9 +2326,7 @@ class ROCratePdfRenderer:
             for label, field in fields
         ]
 
-    def _record_card_value(
-        self, field, entity, metadata, record_type, record_index
-    ):
+    def _record_card_value(self, field, entity, metadata, record_type, record_index):
         def read_value(key):
             return metadata["values"].get(f"{metadata['prefix']}{key}")
 
@@ -2392,9 +2375,7 @@ class ROCratePdfRenderer:
         displayed_unit = self._card_display_value(unit, "")
         if not displayed_value and not displayed_unit:
             return "-"
-        return " ".join(
-            part for part in (displayed_value, displayed_unit) if part
-        )
+        return " ".join(part for part in (displayed_value, displayed_unit) if part)
 
     def _formatted_barcode(self, value, record_type, empty_value="-"):
         barcode = str(value or "")
@@ -2660,9 +2641,7 @@ class ROCratePdfRenderer:
             self.pdf.multi_cell(
                 0,
                 5,
-                self.pdf.safe_text(
-                    request_group.get("name") or "Selected request"
-                ),
+                self.pdf.safe_text(request_group.get("name") or "Selected request"),
                 new_x=XPos.LMARGIN,
                 new_y=YPos.NEXT,
             )

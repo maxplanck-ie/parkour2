@@ -741,7 +741,7 @@ class TestGenerateROCrateAPI(BaseAPITestCase):
         self.assertIn(f"#sample-material-{sample.pk}", graph_ids)
         self.assertIn(f"#protocol-{sample.library_protocol_id}", graph_ids)
         self.assertIn(f"#organism-{sample.organism_id}", graph_ids)
-        self.assertIn(f"#index-type-{sample.index_type_id}", graph_ids)
+        self.assertNotIn(f"#index-type-{sample.index_type_id}", graph_ids)
 
     @patch("library.ro_crate.CompleteSampleData.objects")
     @patch("library.ro_crate.CompleteLibraryData.objects")

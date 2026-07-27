@@ -450,9 +450,7 @@ def test_ro_crate_preview_opens_with_expected_api_params(page: Page):
     expect(
         preview_overlay.get_by_role("link", name="RO-Crate Documentation")
     ).to_be_visible()
-    expect(
-        preview_overlay.get_by_text("Selected Libraries & Samples")
-    ).to_be_visible()
+    expect(preview_overlay.get_by_text("Selected Libraries & Samples")).to_be_visible()
     expect(
         preview_overlay.get_by_text("Request 1: 101_ROCrate Request")
     ).to_be_visible()
@@ -468,26 +466,25 @@ def test_ro_crate_preview_opens_with_expected_api_params(page: Page):
     )
     expect(overview_chip).to_be_visible()
     overview_chip.click()
-    expect(
-        preview_overlay.locator(".record-table-block").filter(
-            has_text="Library: Delivered library"
-        )
-    ).to_be_focused()
+    focused_record_block = preview_overlay.locator(".record-table-block").filter(
+        has_text="Library: Delivered library"
+    )
+    expect(focused_record_block).to_be_focused()
     expect(preview_overlay.get_by_text("Preparation", exact=True)).to_have_count(2)
     expect(preview_overlay.get_by_text("Sequencing", exact=True)).to_have_count(2)
     expect(preview_overlay.get_by_text("Overview", exact=True)).to_have_count(0)
     expect(preview_overlay.get_by_text("Status", exact=True)).to_have_count(0)
     expect(preview_overlay.get_by_text("S/L", exact=True)).to_have_count(0)
-    expect(preview_overlay.get_by_text("Organism", exact=True)).to_be_visible()
-    expect(preview_overlay.get_by_text("Arabidopsis", exact=True)).to_be_visible()
-    expect(preview_overlay.get_by_text("2 ng/µl", exact=True)).to_be_visible()
-    expect(preview_overlay.get_by_text("1.500", exact=True)).to_be_visible()
-    expect(preview_overlay.get_by_text("Date", exact=True)).to_be_visible()
-    expect(preview_overlay.get_by_text("30.01.2026", exact=True)).to_be_visible()
-    expect(preview_overlay.get_by_text("Length", exact=True)).to_be_visible()
-    expect(preview_overlay.get_by_text("2x150", exact=True)).to_be_visible()
-    expect(preview_overlay.get_by_text("Flowcell IDs", exact=True)).to_be_visible()
-    expect(preview_overlay.get_by_text("FC001", exact=True)).to_be_visible()
+    expect(focused_record_block.get_by_text("Organism", exact=True)).to_be_visible()
+    expect(focused_record_block.get_by_text("Arabidopsis", exact=True)).to_be_visible()
+    expect(focused_record_block.get_by_text("2 ng/µl", exact=True)).to_be_visible()
+    expect(focused_record_block.get_by_text("1.500", exact=True)).to_be_visible()
+    expect(focused_record_block.get_by_text("Date", exact=True)).to_be_visible()
+    expect(focused_record_block.get_by_text("30.01.2026", exact=True)).to_be_visible()
+    expect(focused_record_block.get_by_text("Length", exact=True)).to_be_visible()
+    expect(focused_record_block.get_by_text("2x150", exact=True)).to_be_visible()
+    expect(focused_record_block.get_by_text("Flowcell IDs", exact=True)).to_be_visible()
+    expect(focused_record_block.get_by_text("FC001", exact=True)).to_be_visible()
     expect(
         preview_overlay.get_by_text("Library 1: Delivered library")
     ).not_to_be_visible()
