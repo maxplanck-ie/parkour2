@@ -277,7 +277,11 @@ class InvoicingSerializer(ModelSerializer):
             return f"{sampcount} samples"
 
     def get_library_protocol(self, obj):
-        protocols = {x.library_protocol.pk for x in obj.records}
+        # library_protocol is SET_NULL on the protocol's deletion, so old
+        # records can reference a protocol that no longer exists.
+        protocols = {
+            x.library_protocol.pk for x in obj.records if x.library_protocol_id
+        }
 
         return protocols.pop() if protocols else ""
 
