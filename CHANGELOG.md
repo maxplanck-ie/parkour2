@@ -3,6 +3,7 @@
 Unreleased
 ==========
 
+- Requests: `put_filepaths` (called by `wd40 rel .` per flowcell) now appends each ingested path entry instead of overwriting `filepaths`, deduplicating identical entries — a request split across flowcells or resequenced now retains all of its known data/metadata locations.
 - Deploy: fixed `misc/nginx-server.conf` to commit the prod Vite port (5173) instead of the dev one (5174), matching `Caddyfile`/`frontend.Dockerfile` — `make clean` always resets the frontend proxy port to prod regardless of a dev or prod deploy, so a dev port checked into git showed up as a spurious modification after every deploy.
 - Load Flowcells: pools containing only QC-failed (negative status) libraries/samples alongside fully-pooled (status 4) ones can now be loaded onto a flowcell; a warning is returned instead of a hard block. Pools with any other non-ready status (e.g. still mid-workflow) are still rejected.
 

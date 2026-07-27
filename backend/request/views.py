@@ -879,7 +879,14 @@ class RequestViewSet(viewsets.ModelViewSet):
     @action(methods=["post"], detail=True, permission_classes=[IsAdminUser])
     def put_filepaths(self, request, pk=None):
         instance = self.get_object()
-        instance.filepaths = request.data
+        entry = dict(request.data)
+        existing = instance.filepaths
+        if isinstance(existing, dict):
+            # legacy single-entry shape from before filepaths became a list
+            existing = [existing] if any(existing.values()) else []
+        if entry not in existing:
+            existing = existing + [entry]
+        instance.filepaths = existing
         records = list(instance.libraries.all()) + list(instance.samples.all())
         for r in records:
             # 'Sequencing' -> 'Delivered'

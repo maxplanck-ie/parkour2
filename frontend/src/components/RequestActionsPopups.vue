@@ -680,7 +680,7 @@ export default {
       uploadFile: null,
       isUploadDragOver: false,
       uploadBusy: false,
-      filepaths: {},
+      filepaths: [],
       userPaths: [],
       selectedOS: FILEPATH_OS.linux,
       showUserPathForm: false,
@@ -729,21 +729,29 @@ export default {
     },
     formattedFilepaths() {
       const entries = [];
-      const filepaths = this.filepaths || {};
-      Object.keys(filepaths).forEach((key) => {
-        const rawValue = filepaths[key];
-        const pathValue = this.pathReferencePath(rawValue);
-        const formatted =
-          key === REQUEST_DATA_FIELDS.filepathsData ||
-          key === REQUEST_DATA_FIELDS.filepathsMetadata
-            ? this.formatPathForOS(pathValue)
-            : pathValue || "";
-        const md5 = this.pathReferenceMd5(rawValue);
-        entries.push({
-          key,
-          value: formatted,
-          md5,
-          copyValue: this.pathReferenceCopyValue(formatted, md5)
+      const filepaths = this.filepaths;
+      const records = Array.isArray(filepaths)
+        ? filepaths
+        : filepaths && typeof filepaths === "object"
+          ? [filepaths]
+          : [];
+      records.forEach((record, index) => {
+        const suffix = records.length > 1 ? ` (${index + 1})` : "";
+        Object.keys(record || {}).forEach((key) => {
+          const rawValue = record[key];
+          const pathValue = this.pathReferencePath(rawValue);
+          const formatted =
+            key === REQUEST_DATA_FIELDS.filepathsData ||
+            key === REQUEST_DATA_FIELDS.filepathsMetadata
+              ? this.formatPathForOS(pathValue)
+              : pathValue || "";
+          const md5 = this.pathReferenceMd5(rawValue);
+          entries.push({
+            key: `${key}${suffix}`,
+            value: formatted,
+            md5,
+            copyValue: this.pathReferenceCopyValue(formatted, md5)
+          });
         });
       });
       return entries;
@@ -864,7 +872,7 @@ export default {
       this.uploadFile = null;
       this.isUploadDragOver = false;
       this.uploadBusy = false;
-      this.filepaths = {};
+      this.filepaths = [];
       this.userPaths = [];
       this.showUserPathForm = false;
       this.userPathForm = {
@@ -959,7 +967,7 @@ export default {
           apiUrl(REQUEST_API_ENDPOINTS.request(this.requestContext.id))
         );
         const data = response?.data || {};
-        this.filepaths = data.filepaths || {};
+        this.filepaths = data.filepaths || [];
         const metapaths = data.metapaths || {};
         this.userPaths = Object.entries(metapaths).map(
           ([name, value], index) => ({

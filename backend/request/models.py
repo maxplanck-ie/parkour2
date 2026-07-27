@@ -14,7 +14,7 @@ def get_sentinel_user():
 
 
 def filepaths_default():
-    return {"data": None, "metadata": None}
+    return []
 
 
 def metapaths_default():
