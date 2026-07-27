@@ -53,6 +53,17 @@ These prevent recurring regressions. Do not deviate without an explicit request.
 - Before adding any new CSS, search for an existing class or variable that already does
   the job and reuse it. New text/elements must inherit the surrounding look and feel.
 
+## Changelog
+
+- `CHANGELOG.md` uses date-based versioning (`yy.mm.dd`) for releases, but do NOT add
+  a date when recording a change. Every change (bug fix, feature, refactor with
+  user-visible or behavioral impact) MUST add a bullet under the `Unreleased` heading
+  at the top of the file. Create the `Unreleased` heading if it doesn't exist yet.
+- Dates are added manually, only at release time, by renaming `Unreleased` to the
+  `yy.mm.dd` release date. Never add or guess a date yourself.
+- Keep entries terse and specific (what changed and why it matters), matching the
+  style of existing entries — no filler.
+
 ## Commands
 
 - Run backend tests using Makefile rule: `djtest`.

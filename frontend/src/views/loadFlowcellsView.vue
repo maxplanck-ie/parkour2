@@ -2020,10 +2020,14 @@ export default {
       };
 
       try {
-        await axiosRef.post(`${urlStringStart}/api/flowcells/`, {
+        const response = await axiosRef.post(`${urlStringStart}/api/flowcells/`, {
           data: JSON.stringify(payload)
         });
         showNotification("Flowcell has been successfully loaded.", "success");
+        const warnings = response?.data?.warnings;
+        if (Array.isArray(warnings) && warnings.length) {
+          showNotification(warnings.join(" "), "warning");
+        }
         this.closeLoadPopup();
         await this.getFlowcells();
       } catch (error) {
@@ -2261,6 +2265,8 @@ export default {
   border-color: #d14343 !important;
   background: #fff8f8;
 }
+
+
 
 .load-form-field select:focus,
 .load-form-field input[type="text"]:focus {

@@ -1,5 +1,10 @@
 > Versioning is by dates (in `yy.mm.dd` format).
 
+Unreleased
+==========
+
+- Load Flowcells: pools containing only QC-failed (negative status) libraries/samples alongside fully-pooled (status 4) ones can now be loaded onto a flowcell; a warning is returned instead of a hard block. Pools with any other non-ready status (e.g. still mid-workflow) are still rejected.
+
 26.07.16
 ========
 
