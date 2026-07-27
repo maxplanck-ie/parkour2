@@ -36,22 +36,20 @@
         <div class="date-filters">
           <div class="date-filter">
             <label for="invoicingStart">From</label>
-            <input
+            <MonthYearPicker
               id="invoicingStart"
               v-model="startMonth"
-              type="month"
               :max="maxMonth"
-              :class="{ 'invalid-date': !startMonthValid }"
+              :invalid="!startMonthValid"
             />
           </div>
           <div class="date-filter">
             <label for="invoicingEnd">To</label>
-            <input
+            <MonthYearPicker
               id="invoicingEnd"
               v-model="endMonth"
-              type="month"
               :max="maxMonth"
-              :class="{ 'invalid-date': !endMonthValid }"
+              :invalid="!endMonthValid"
             />
           </div>
         </div>
@@ -408,6 +406,7 @@
 
 <script>
 import TabulatorTable from "../components/TabulatorTableFull.vue";
+import MonthYearPicker from "../components/MonthYearPicker.vue";
 import { saveAs } from "file-saver";
 import {
   showNotification,
@@ -457,7 +456,8 @@ function currentMonthString() {
 export default {
   name: "InvoicingView",
   components: {
-    TabulatorTable
+    TabulatorTable,
+    MonthYearPicker
   },
   data() {
     return {
