@@ -1970,6 +1970,8 @@ class SimpleROCrateBuilder:
             "associatedPool": {"@id": "http://schema.org/isRelatedTo", "@type": "@id"},
             "sequencedOn": {"@id": "http://schema.org/isRelatedTo", "@type": "@id"},
             "requestContext": {"@id": "http://schema.org/isPartOf", "@type": "@id"},
+            "variableMeasured": "http://schema.org/variableMeasured",
+            "measurementMethod": "http://schema.org/measurementMethod",
         }
 
 

@@ -1166,6 +1166,44 @@ class TestGenerateROCrateAPI(BaseAPITestCase):
 
     @patch("library.ro_crate.CompleteSampleData.objects")
     @patch("library.ro_crate.CompleteLibraryData.objects")
+    def test_context_defines_every_assay_term_for_valid_jsonld_compaction(
+        self, mock_library_objects, mock_sample_objects
+    ):
+        """
+        Assay entities set variableMeasured/measurementMethod (see
+        _add_assay); an RO-Crate 1.1 validator (rocrate-validator) flagged
+        these as undefined JSON-LD terms because the crate's own @context
+        (SimpleROCrateBuilder._context) didn't map them, which makes the
+        file descriptor invalid compacted JSON-LD per the RO-Crate spec.
+        """
+        library = create_library("context-crate-library", status=5)
+        self.request.libraries.add(library)
+        self._set_ro_crate_complete_data_rows(
+            mock_library_objects,
+            mock_sample_objects,
+            libraries=[self._library_view_row(library)],
+        )
+
+        response = self.client.get(
+            reverse("generate-ro-crate-list"),
+            {"barcodes": library.barcode, "preview": "true"},
+        )
+        payload = self._extract_preview_payload(response)
+        context = payload["ro_crate"]["@context"][1]
+
+        assay_id = f"#library-assay-{library.pk}"
+        assay_entry = self._graph_entry(payload["ro_crate"], assay_id)
+        for term in ("variableMeasured", "measurementMethod"):
+            self.assertIn(term, assay_entry)
+            self.assertIn(
+                term,
+                context,
+                f"'{term}' is used on Assay entities but missing from @context, "
+                "making the file descriptor invalid compacted JSON-LD.",
+            )
+
+    @patch("library.ro_crate.CompleteSampleData.objects")
+    @patch("library.ro_crate.CompleteLibraryData.objects")
     def test_pdf_mode_returns_pdf_attachment_and_disables_cache(
         self, mock_library_objects, mock_sample_objects
     ):
