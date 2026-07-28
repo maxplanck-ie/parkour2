@@ -931,6 +931,37 @@ class SimpleROCrateBuilder:
             }
         )
 
+    def _add_person_entity(self, user):
+        if not user:
+            return None
+        person_id = f"#person-{user.pk}"
+        person = {
+            "@id": person_id,
+            "@type": "Person",
+            "name": user.full_name or user.email,
+            "givenName": user.first_name,
+            "familyName": user.last_name,
+            "email": user.email,
+            "identifier": _parkour_identifier("user", user.pk),
+        }
+        organization = getattr(user, "organization", None)
+        if organization:
+            org_id = f"#organization-{organization.pk}"
+            self._add(
+                {
+                    "@id": org_id,
+                    "@type": "Organization",
+                    "name": organization.name,
+                    "identifier": _parkour_identifier("organization", organization.pk),
+                },
+                "request",
+            )
+            self._mention(org_id)
+            person["affiliation"] = _ref(org_id)
+        self._add(person, "request")
+        self._mention(person_id)
+        return person_id
+
     def _add_root_dataset(self, root_request):
         is_multi = len(self.selection.target_request_ids) > 1
         root_name = (
@@ -953,6 +984,7 @@ class SimpleROCrateBuilder:
                 "request",
             )
         )
+        person_id = self._add_person_entity(getattr(root_request, "user", None))
         root = self._add(
             {
                 "@id": RO_CRATE_ROOT_ID,
@@ -979,7 +1011,8 @@ class SimpleROCrateBuilder:
                 "conformsTo": [_ref(RO_CRATE_SPEC_URI)],
                 "additionalType": [_ref(ISA_INVESTIGATION_URI), "Investigation"],
                 "license": _ref(RO_CRATE_LICENSE_ID),
-                "creator": _ref(PARKOUR_SOFTWARE_ID),
+                "creator": _ref(person_id) if person_id else _ref(PARKOUR_SOFTWARE_ID),
+                "author": _ref(person_id) if person_id else _ref(PARKOUR_SOFTWARE_ID),
                 "publisher": _ref(PARKOUR_ORGANIZATION_ID),
                 "comments": comments,
                 "mentions": [],
