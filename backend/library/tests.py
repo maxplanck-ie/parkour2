@@ -1382,6 +1382,55 @@ class TestGenerateROCrateAPI(BaseAPITestCase):
 
     @patch("library.ro_crate.CompleteSampleData.objects")
     @patch("library.ro_crate.CompleteLibraryData.objects")
+    def test_sample_metadata_build_failure_is_isolated_and_recorded(
+        self, mock_library_objects, mock_sample_objects
+    ):
+        from library.ro_crate import SimpleROCrateBuilder
+
+        healthy_sample = create_sample("healthy-crate-sample", status=5)
+        broken_sample = create_sample("broken-crate-sample", status=5)
+        self.request.samples.add(healthy_sample, broken_sample)
+        self._set_ro_crate_complete_data_rows(
+            mock_library_objects,
+            mock_sample_objects,
+            samples=[
+                self._sample_view_row(healthy_sample),
+                self._sample_view_row(broken_sample),
+            ],
+        )
+
+        original_link_biology_terms = SimpleROCrateBuilder._link_biology_terms
+
+        def _link_biology_terms_side_effect(self, entity, model):
+            if model is not None and model.pk == broken_sample.pk:
+                raise ValueError("simulated metadata build failure")
+            return original_link_biology_terms(self, entity, model)
+
+        with patch.object(
+            SimpleROCrateBuilder,
+            "_link_biology_terms",
+            autospec=True,
+            side_effect=_link_biology_terms_side_effect,
+        ):
+            response = self.client.get(
+                reverse("generate-ro-crate-list"),
+                {
+                    "barcodes": (f"{healthy_sample.barcode},{broken_sample.barcode}"),
+                    "preview": "true",
+                },
+            )
+
+        payload = self._extract_preview_payload(response)
+        self.assertIn(
+            f"{broken_sample.barcode}: metadata build failed",
+            payload["skipped_records"],
+        )
+        graph_ids = self._graph_ids(payload["ro_crate"])
+        self.assertIn(f"#sample-material-{healthy_sample.pk}", graph_ids)
+        self.assertNotIn(f"#sample-material-{broken_sample.pk}", graph_ids)
+
+    @patch("library.ro_crate.CompleteSampleData.objects")
+    @patch("library.ro_crate.CompleteLibraryData.objects")
     def test_library_barcode_export_includes_library_relationships_and_hides_non_export_fields(
         self, mock_library_objects, mock_sample_objects
     ):

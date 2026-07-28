@@ -1,4 +1,5 @@
 import json
+import logging
 import math
 import mimetypes
 import os
@@ -33,6 +34,8 @@ LibraryPreparation = apps.get_model("library_preparation", "LibraryPreparation")
 Flowcell = apps.get_model("flowcell", "Flowcell")
 IndexPool = apps.get_model("index_generator", "Pool")
 IndexPair = apps.get_model("library_sample_shared", "IndexPair")
+
+logger = logging.getLogger(__name__)
 
 RO_CRATE_VERSION = "1.1"
 RO_CRATE_SPEC_URI = f"https://w3id.org/ro/crate/{RO_CRATE_VERSION}"
@@ -797,6 +800,19 @@ class SimpleROCrateBuilder:
     def _has_part(self, entity_id):
         self.has_part_refs.append(_ref(entity_id))
 
+    def _record_checkpoint(self):
+        return (len(self.graph), len(self.root_refs), len(self.has_part_refs))
+
+    def _rollback_to_checkpoint(self, checkpoint):
+        graph_length, root_refs_length, has_part_length = checkpoint
+        for entity in self.graph[graph_length:]:
+            entity_id = entity.get("@id")
+            if self.entities.get(entity_id) is entity:
+                del self.entities[entity_id]
+        del self.graph[graph_length:]
+        del self.root_refs[root_refs_length:]
+        del self.has_part_refs[has_part_length:]
+
     def _add_property_values(self, owner, property_name, values, section):
         owner_id = owner.get("@id")
         if not owner_id:
@@ -1073,207 +1089,231 @@ class SimpleROCrateBuilder:
 
     def _add_sample_entities(self):
         for row in self.selection.sample_rows:
-            model = self.sample_models.get(row.sample_id)
-            source_id = f"#source-sample-{row.sample_id}"
-            sample_id = f"#sample-material-{row.sample_id}"
-            process_id = f"#sample-process-{row.sample_id}"
-            data_id = f"#sample-data-{row.sample_id}"
-            assay_id = f"#sample-assay-{row.sample_id}"
-
-            self._add(
-                {
-                    "@id": source_id,
-                    "@type": "Thing",
-                    "name": f"Source for {row.name}",
-                    "identifier": _parkour_identifier("source-sample", row.sample_id),
-                    "additionalType": [_ref(ISA_MATERIAL_URI)],
-                    "comments": _comments_from_mapping(
-                        {"source_request_identifier": row.request_name}, "samples"
-                    ),
-                },
-                "samples",
-            )
-
-            comments = []
-            if model:
-                comments.extend(
-                    _comments_from_mapping(
-                        _extract_model_fields(model, "sample_db_"), "samples"
-                    )
+            checkpoint = self._record_checkpoint()
+            try:
+                self._add_sample_entity(row)
+            except Exception:
+                logger.exception(
+                    "RO-Crate export: failed to build sample entity for barcode %s",
+                    row.barcode,
                 )
-                comments.extend(
-                    _comments_from_mapping(
-                        _record_property_metadata(model, "sample_db_"), "samples"
-                    )
+                self._rollback_to_checkpoint(checkpoint)
+                self.selection.skipped_records.append(
+                    f"{row.barcode}: metadata build failed"
                 )
-            sample_mv_comments = _comments_from_mapping(
-                _extract_model_fields(
-                    row,
-                    "sample_mv_",
-                    include_hidden_fields={"create_time"},
+
+    def _add_sample_entity(self, row):
+        model = self.sample_models.get(row.sample_id)
+        source_id = f"#source-sample-{row.sample_id}"
+        sample_id = f"#sample-material-{row.sample_id}"
+        process_id = f"#sample-process-{row.sample_id}"
+        data_id = f"#sample-data-{row.sample_id}"
+        assay_id = f"#sample-assay-{row.sample_id}"
+
+        self._add(
+            {
+                "@id": source_id,
+                "@type": "Thing",
+                "name": f"Source for {row.name}",
+                "identifier": _parkour_identifier("source-sample", row.sample_id),
+                "additionalType": [_ref(ISA_MATERIAL_URI)],
+                "comments": _comments_from_mapping(
+                    {"source_request_identifier": row.request_name}, "samples"
                 ),
-                "samples",
-            )
-            prep = self.library_preparations.get(row.sample_id)
-            if prep:
-                comments.extend(
-                    _comments_from_mapping(
-                        _extract_model_fields(prep, "library_preparation_"),
-                        "library_preparation",
-                    )
-                )
-            pooling = self.pooling_by_sample.get(row.sample_id)
-            if pooling:
-                comments.extend(
-                    _comments_from_mapping(
-                        _extract_model_fields(pooling, "pooling_"), "pooling"
-                    )
-                )
+            },
+            "samples",
+        )
 
-            sample = self._add(
-                {
-                    "@id": sample_id,
-                    "@type": "Thing",
-                    "name": row.name,
-                    "identifier": row.barcode,
-                    "additionalType": [
-                        _ref(ISA_MATERIAL_URI),
-                        _ref(ISA_SAMPLE_URI),
-                        _ref("https://bioschemas.org/Sample"),
-                    ],
-                    "derivedFrom": [_ref(source_id)],
-                    "comments": comments,
-                },
-                "samples",
+        comments = []
+        if model:
+            comments.extend(
+                _comments_from_mapping(
+                    _extract_model_fields(model, "sample_db_"), "samples"
+                )
             )
-            self._add_property_values(sample, "additionalProperty", comments, "samples")
-            self._link_biology_terms(sample, model)
-            self._link_index_metadata(sample, model, row, "samples")
-            pool_refs = self._index_pool_refs(model)
-            if pool_refs:
-                sample["associatedPool"] = pool_refs
+            comments.extend(
+                _comments_from_mapping(
+                    _record_property_metadata(model, "sample_db_"), "samples"
+                )
+            )
+        sample_mv_comments = _comments_from_mapping(
+            _extract_model_fields(
+                row,
+                "sample_mv_",
+                include_hidden_fields={"create_time"},
+            ),
+            "samples",
+        )
+        prep = self.library_preparations.get(row.sample_id)
+        if prep:
+            comments.extend(
+                _comments_from_mapping(
+                    _extract_model_fields(prep, "library_preparation_"),
+                    "library_preparation",
+                )
+            )
+        pooling = self.pooling_by_sample.get(row.sample_id)
+        if pooling:
+            comments.extend(
+                _comments_from_mapping(
+                    _extract_model_fields(pooling, "pooling_"), "pooling"
+                )
+            )
 
-            self._add_process(
-                process_id,
-                f"Sample metadata capture for {row.name}",
-                "sample-process",
-                row.sample_id,
-                [_ref(source_id)],
-                [_ref(sample_id), _ref(data_id)],
-                model,
-                "samples",
-                comments=sample_mv_comments,
-                parameter_values=sample_mv_comments,
-            )
-            self._add_data(
-                data_id,
-                f"Sample export metadata for {row.name}",
-                "sample-data",
-                row.sample_id,
-                "samples",
-            )
-            self._add_assay(
-                assay_id,
-                f"Assay for sample {row.name}",
-                sample_id,
-                process_id,
-                data_id,
-                "samples",
-            )
-            record_entity_ids = [source_id, sample_id, process_id, data_id, assay_id]
-            self._link_to_record_requests(
-                sample, model, row.request_id, record_entity_ids
-            )
+        sample = self._add(
+            {
+                "@id": sample_id,
+                "@type": "Thing",
+                "name": row.name,
+                "identifier": row.barcode,
+                "additionalType": [
+                    _ref(ISA_MATERIAL_URI),
+                    _ref(ISA_SAMPLE_URI),
+                    _ref("https://bioschemas.org/Sample"),
+                ],
+                "derivedFrom": [_ref(source_id)],
+                "comments": comments,
+            },
+            "samples",
+        )
+        self._add_property_values(sample, "additionalProperty", comments, "samples")
+        self._link_biology_terms(sample, model)
+        self._link_index_metadata(sample, model, row, "samples")
+        pool_refs = self._index_pool_refs(model)
+        if pool_refs:
+            sample["associatedPool"] = pool_refs
+
+        self._add_process(
+            process_id,
+            f"Sample metadata capture for {row.name}",
+            "sample-process",
+            row.sample_id,
+            [_ref(source_id)],
+            [_ref(sample_id), _ref(data_id)],
+            model,
+            "samples",
+            comments=sample_mv_comments,
+            parameter_values=sample_mv_comments,
+        )
+        self._add_data(
+            data_id,
+            f"Sample export metadata for {row.name}",
+            "sample-data",
+            row.sample_id,
+            "samples",
+        )
+        self._add_assay(
+            assay_id,
+            f"Assay for sample {row.name}",
+            sample_id,
+            process_id,
+            data_id,
+            "samples",
+        )
+        record_entity_ids = [source_id, sample_id, process_id, data_id, assay_id]
+        self._link_to_record_requests(sample, model, row.request_id, record_entity_ids)
 
     def _add_library_entities(self):
         for row in self.selection.library_rows:
-            model = self.library_models.get(row.library_id)
-            library_id = f"#library-material-{row.library_id}"
-            process_id = f"#library-process-{row.library_id}"
-            data_id = f"#library-data-{row.library_id}"
-            assay_id = f"#library-assay-{row.library_id}"
-
-            comments = []
-            if model:
-                comments.extend(
-                    _comments_from_mapping(
-                        _extract_model_fields(model, "library_db_"), "libraries"
-                    )
+            checkpoint = self._record_checkpoint()
+            try:
+                self._add_library_entity(row)
+            except Exception:
+                logger.exception(
+                    "RO-Crate export: failed to build library entity for barcode %s",
+                    row.barcode,
                 )
-                comments.extend(
-                    _comments_from_mapping(
-                        _record_property_metadata(model, "library_db_"), "libraries"
-                    )
-                )
-            pooling = self.pooling_by_library.get(row.library_id)
-            if pooling:
-                comments.extend(
-                    _comments_from_mapping(
-                        _extract_model_fields(pooling, "pooling_"), "pooling"
-                    )
+                self._rollback_to_checkpoint(checkpoint)
+                self.selection.skipped_records.append(
+                    f"{row.barcode}: metadata build failed"
                 )
 
-            library = self._add(
-                {
-                    "@id": library_id,
-                    "@type": "Thing",
-                    "name": row.name,
-                    "identifier": row.barcode,
-                    "additionalType": [_ref(ISA_MATERIAL_URI), _ref(ISA_LIBRARY_URI)],
-                    "comments": comments,
-                },
-                "libraries",
-            )
-            self._add_property_values(
-                library, "additionalProperty", comments, "libraries"
-            )
-            self._link_biology_terms(library, model)
-            self._link_index_metadata(library, model, row, "libraries")
-            pool_refs = self._index_pool_refs(model)
-            if pool_refs:
-                library["associatedPool"] = pool_refs
+    def _add_library_entity(self, row):
+        model = self.library_models.get(row.library_id)
+        library_id = f"#library-material-{row.library_id}"
+        process_id = f"#library-process-{row.library_id}"
+        data_id = f"#library-data-{row.library_id}"
+        assay_id = f"#library-assay-{row.library_id}"
 
-            library_mv_comments = _comments_from_mapping(
-                _extract_model_fields(
-                    row,
-                    "library_mv_",
-                    include_hidden_fields={"create_time"},
-                ),
-                "libraries",
+        comments = []
+        if model:
+            comments.extend(
+                _comments_from_mapping(
+                    _extract_model_fields(model, "library_db_"), "libraries"
+                )
             )
-            self._add_process(
-                process_id,
-                f"Library metadata capture for {row.name}",
-                "library-process",
-                row.library_id,
-                [_ref(library_id)],
-                [_ref(data_id)],
-                model,
-                "libraries",
-                comments=library_mv_comments,
-                parameter_values=library_mv_comments,
+            comments.extend(
+                _comments_from_mapping(
+                    _record_property_metadata(model, "library_db_"), "libraries"
+                )
             )
-            self._add_data(
-                data_id,
-                f"Library export metadata for {row.name}",
-                "library-data",
-                row.library_id,
-                "libraries",
+        pooling = self.pooling_by_library.get(row.library_id)
+        if pooling:
+            comments.extend(
+                _comments_from_mapping(
+                    _extract_model_fields(pooling, "pooling_"), "pooling"
+                )
             )
-            self._add_assay(
-                assay_id,
-                f"Assay for library {row.name}",
-                library_id,
-                process_id,
-                data_id,
-                "libraries",
-            )
-            self._link_to_record_requests(
-                library,
-                model,
-                row.request_id,
-                [library_id, process_id, data_id, assay_id],
-            )
+
+        library = self._add(
+            {
+                "@id": library_id,
+                "@type": "Thing",
+                "name": row.name,
+                "identifier": row.barcode,
+                "additionalType": [_ref(ISA_MATERIAL_URI), _ref(ISA_LIBRARY_URI)],
+                "comments": comments,
+            },
+            "libraries",
+        )
+        self._add_property_values(library, "additionalProperty", comments, "libraries")
+        self._link_biology_terms(library, model)
+        self._link_index_metadata(library, model, row, "libraries")
+        pool_refs = self._index_pool_refs(model)
+        if pool_refs:
+            library["associatedPool"] = pool_refs
+
+        library_mv_comments = _comments_from_mapping(
+            _extract_model_fields(
+                row,
+                "library_mv_",
+                include_hidden_fields={"create_time"},
+            ),
+            "libraries",
+        )
+        self._add_process(
+            process_id,
+            f"Library metadata capture for {row.name}",
+            "library-process",
+            row.library_id,
+            [_ref(library_id)],
+            [_ref(data_id)],
+            model,
+            "libraries",
+            comments=library_mv_comments,
+            parameter_values=library_mv_comments,
+        )
+        self._add_data(
+            data_id,
+            f"Library export metadata for {row.name}",
+            "library-data",
+            row.library_id,
+            "libraries",
+        )
+        self._add_assay(
+            assay_id,
+            f"Assay for library {row.name}",
+            library_id,
+            process_id,
+            data_id,
+            "libraries",
+        )
+        self._link_to_record_requests(
+            library,
+            model,
+            row.request_id,
+            [library_id, process_id, data_id, assay_id],
+        )
 
     def _add_process(
         self,
