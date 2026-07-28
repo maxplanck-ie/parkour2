@@ -9,6 +9,8 @@ from drf_spectacular.views import (
     SpectacularSwaggerView,
 )
 
+from usage.views import InternalPIsView
+
 from .api import router
 
 urlpatterns = [
@@ -16,6 +18,7 @@ urlpatterns = [
     #   url("accounts/", include("authtools.urls")),
     path("api-auth/", include("rest_framework.urls", namespace="rest_framework")),
     path("api/", include(router.urls)),
+    path("api/internal_pis/", InternalPIsView.as_view(), name="internal-pis"),
     path("api/usage/", include("usage.urls")),
     path("", include("common.urls")),
     path("", include("request.urls")),
