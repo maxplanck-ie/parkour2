@@ -5,6 +5,7 @@ from unittest.mock import patch
 from django.core.files.base import ContentFile
 from request.models import FileRequest
 
+from common.models import Organization
 from common.tests import BaseAPITestCase, BaseTestCase
 from common.utils import get_random_name, timezone
 from django.contrib.auth import get_user_model
@@ -774,6 +775,9 @@ class TestGenerateROCrateAPI(BaseAPITestCase):
     ):
         """Exporting by request name should yield a structured RO-Crate."""
         self._set_ro_crate_complete_data_rows(mock_library_objects, mock_sample_objects)
+        organization = Organization.objects.create(name="Crate Institute")
+        self.user.organization = organization
+        self.user.save()
 
         response = self.client.get(
             reverse("generate-ro-crate-list"), {"requests": self.request.name}
@@ -813,7 +817,9 @@ class TestGenerateROCrateAPI(BaseAPITestCase):
             {"@id": f"#study-{self.request.id}"},
             dataset_entry.get("hasPart", []),
         )
-        self.assertEqual(dataset_entry.get("creator"), {"@id": "#parkour-software"})
+        person_id = f"#person-{self.user.id}"
+        self.assertEqual(dataset_entry.get("creator"), {"@id": person_id})
+        self.assertEqual(dataset_entry.get("author"), {"@id": person_id})
         self.assertEqual(
             dataset_entry.get("publisher"), {"@id": "#parkour-organization"}
         )
@@ -821,11 +827,18 @@ class TestGenerateROCrateAPI(BaseAPITestCase):
             "https://github.com/nfdi4plants/isa-ro-crate-profile/tree/release/profile",
             graph_ids,
         )
-        self.assertNotIn(f"#person-{self.user.id}", graph_ids)
+        person_entry = self._graph_entry(payload, person_id)
+        self.assertEqual(person_entry.get("@type"), "Person")
+        self.assertEqual(person_entry.get("name"), self.user.full_name)
+        self.assertEqual(person_entry.get("givenName"), self.user.first_name)
+        self.assertEqual(person_entry.get("familyName"), self.user.last_name)
+        self.assertEqual(person_entry.get("email"), self.user.email)
+        org_id = f"#organization-{organization.pk}"
+        self.assertEqual(person_entry.get("affiliation"), {"@id": org_id})
+        org_entry = self._graph_entry(payload, org_id)
+        self.assertEqual(org_entry.get("@type"), "Organization")
+        self.assertEqual(org_entry.get("name"), organization.name)
         self.assertNotIn("#role-request-submitter", graph_ids)
-        self.assertFalse(
-            any(str(entity_id).startswith("#organization-") for entity_id in graph_ids)
-        )
         self.assertFalse(
             any(
                 str(entity_id).startswith("#principal-investigator-")
@@ -1163,6 +1176,44 @@ class TestGenerateROCrateAPI(BaseAPITestCase):
             {"requests": self.request.name, "preview": "true"},
         )
         self._extract_preview_payload(response)
+
+    @patch("library.ro_crate.CompleteSampleData.objects")
+    @patch("library.ro_crate.CompleteLibraryData.objects")
+    def test_context_defines_every_assay_term_for_valid_jsonld_compaction(
+        self, mock_library_objects, mock_sample_objects
+    ):
+        """
+        Assay entities set variableMeasured/measurementMethod (see
+        _add_assay); an RO-Crate 1.1 validator (rocrate-validator) flagged
+        these as undefined JSON-LD terms because the crate's own @context
+        (SimpleROCrateBuilder._context) didn't map them, which makes the
+        file descriptor invalid compacted JSON-LD per the RO-Crate spec.
+        """
+        library = create_library("context-crate-library", status=5)
+        self.request.libraries.add(library)
+        self._set_ro_crate_complete_data_rows(
+            mock_library_objects,
+            mock_sample_objects,
+            libraries=[self._library_view_row(library)],
+        )
+
+        response = self.client.get(
+            reverse("generate-ro-crate-list"),
+            {"barcodes": library.barcode, "preview": "true"},
+        )
+        payload = self._extract_preview_payload(response)
+        context = payload["ro_crate"]["@context"][1]
+
+        assay_id = f"#library-assay-{library.pk}"
+        assay_entry = self._graph_entry(payload["ro_crate"], assay_id)
+        for term in ("variableMeasured", "measurementMethod"):
+            self.assertIn(term, assay_entry)
+            self.assertIn(
+                term,
+                context,
+                f"'{term}' is used on Assay entities but missing from @context, "
+                "making the file descriptor invalid compacted JSON-LD.",
+            )
 
     @patch("library.ro_crate.CompleteSampleData.objects")
     @patch("library.ro_crate.CompleteLibraryData.objects")
