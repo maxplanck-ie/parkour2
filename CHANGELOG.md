@@ -3,6 +3,7 @@
 Unreleased
 ==========
 
+- Add staff-only `GET /api/internal_pis/?organizations=<comma-separated names>`, returning the lowercased names of non-archived `PrincipalInvestigator`s in the given organization(s). This lets dissectBCL replace its static `Internals.PIs` config list with a Parkour-backed, organization-parameterized lookup — no schema changes required.
 - ...
 
 
