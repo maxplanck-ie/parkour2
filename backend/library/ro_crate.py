@@ -800,6 +800,27 @@ class SimpleROCrateBuilder:
     def _has_part(self, entity_id):
         self.has_part_refs.append(_ref(entity_id))
 
+    def _add_fastq_data_stub(self, owner, row, section):
+        fastq_data_id = f"#fastq-data-{row.barcode}"
+        self._add(
+            {
+                "@id": fastq_data_id,
+                "@type": "Dataset",
+                "name": f"Raw sequencing data for {row.name}",
+                "description": (
+                    "Raw fastq sequencing data, populated at data delivery "
+                    "time by dissectBCL."
+                ),
+                "identifier": _parkour_identifier("fastq-data", row.barcode),
+            },
+            section,
+        )
+        owner["hasPart"] = _unique_refs(
+            owner.get("hasPart", []) + [_ref(fastq_data_id)]
+        )
+        self._has_part(fastq_data_id)
+        return fastq_data_id
+
     def _record_checkpoint(self):
         return (len(self.graph), len(self.root_refs), len(self.has_part_refs))
 
@@ -1215,6 +1236,7 @@ class SimpleROCrateBuilder:
         pool_refs = self._index_pool_refs(model)
         if pool_refs:
             sample["associatedPool"] = pool_refs
+        self._add_fastq_data_stub(sample, row, "samples")
 
         self._add_process(
             process_id,
@@ -1305,6 +1327,7 @@ class SimpleROCrateBuilder:
         pool_refs = self._index_pool_refs(model)
         if pool_refs:
             library["associatedPool"] = pool_refs
+        self._add_fastq_data_stub(library, row, "libraries")
 
         library_mv_comments = _comments_from_mapping(
             _extract_model_fields(
