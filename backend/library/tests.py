@@ -1075,6 +1075,52 @@ class TestGenerateROCrateAPI(BaseAPITestCase):
 
     @patch("library.ro_crate.CompleteSampleData.objects")
     @patch("library.ro_crate.CompleteLibraryData.objects")
+    def test_sample_and_library_entities_link_a_fastq_data_stub(
+        self, mock_library_objects, mock_sample_objects
+    ):
+        library = create_library("fastq-stub-library", status=5)
+        sample = create_sample("fastq-stub-sample", status=5)
+        self.request.libraries.add(library)
+        self.request.samples.add(sample)
+        self._set_ro_crate_complete_data_rows(
+            mock_library_objects,
+            mock_sample_objects,
+            libraries=[self._library_view_row(library)],
+            samples=[self._sample_view_row(sample)],
+        )
+
+        response = self.client.get(
+            reverse("generate-ro-crate-list"),
+            {
+                "barcodes": f"{library.barcode},{sample.barcode}",
+                "preview": "true",
+            },
+        )
+        payload = self._extract_preview_payload(response)
+        ro_crate = payload["ro_crate"]
+        graph_ids = self._graph_ids(ro_crate)
+
+        library_fastq_id = f"#fastq-data-{library.barcode}"
+        sample_fastq_id = f"#fastq-data-{sample.barcode}"
+        self.assertIn(library_fastq_id, graph_ids)
+        self.assertIn(sample_fastq_id, graph_ids)
+
+        library_fastq_entry = self._graph_entry(ro_crate, library_fastq_id)
+        self.assertEqual(library_fastq_entry.get("@type"), "Dataset")
+        self.assertNotIn("contentUrl", library_fastq_entry)
+
+        library_entry = self._graph_entry(ro_crate, f"#library-material-{library.pk}")
+        self.assertIn({"@id": library_fastq_id}, library_entry.get("hasPart", []))
+
+        sample_entry = self._graph_entry(ro_crate, f"#sample-material-{sample.pk}")
+        self.assertIn({"@id": sample_fastq_id}, sample_entry.get("hasPart", []))
+
+        root_entry = self._graph_entry(ro_crate, "./")
+        self.assertIn({"@id": library_fastq_id}, root_entry.get("hasPart", []))
+        self.assertIn({"@id": sample_fastq_id}, root_entry.get("hasPart", []))
+
+    @patch("library.ro_crate.CompleteSampleData.objects")
+    @patch("library.ro_crate.CompleteLibraryData.objects")
     def test_multi_request_export_creates_one_isa_study_per_request(
         self, mock_library_objects, mock_sample_objects
     ):
