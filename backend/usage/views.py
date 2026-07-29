@@ -248,11 +248,15 @@ class InternalPIsView(APIView):
                 status=400,
             )
 
-        pi_names = (
+        pis = (
             PrincipalInvestigator.objects.filter(
                 archived=False, organization__name__in=organization_names
             )
-            .values_list("name", flat=True)
+            .values_list("name", "deliver_to")
             .distinct()
         )
-        return Response({"pis": sorted({name.lower() for name in pi_names})})
+        # Map lowercased PI name -> IT delivery-directory override (or None when
+        # the PI name already matches its /data directory).
+        return Response(
+            {"pis": {name.lower(): (deliver_to or None) for name, deliver_to in pis}}
+        )

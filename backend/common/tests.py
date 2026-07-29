@@ -3,6 +3,7 @@ import random
 import string
 
 from django.contrib.auth import get_user_model
+from django.core.exceptions import ValidationError
 from django.test import TestCase
 from django.urls import reverse
 from rest_framework.test import APITestCase
@@ -130,3 +131,29 @@ class NavigationTreeTest(TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(tabs, ["Libraries & Samples"])
+
+
+class PrincipalInvestigatorDeliverToTest(TestCase):
+    def setUp(self):
+        self.org = Organization.objects.create(name="MPI-IE")
+
+    def _pi(self, deliver_to):
+        return PrincipalInvestigator(
+            name="Cabezas-Wallscheid",
+            organization=self.org,
+            email="cabezas@test.io",
+            deliver_to=deliver_to,
+        )
+
+    def test_empty_deliver_to_is_valid(self):
+        self._pi("").full_clean()  # should not raise
+
+    def test_lowercase_alpha_deliver_to_is_valid(self):
+        self._pi("cabezas").full_clean()  # should not raise
+
+    def test_invalid_deliver_to_values_are_rejected(self):
+        for bad in ("Cabezas", "cabezas wallscheid", "cabezas-wallscheid", "cisse1"):
+            with self.subTest(bad=bad):
+                with self.assertRaises(ValidationError) as ctx:
+                    self._pi(bad).full_clean()
+                self.assertIn("deliver_to", ctx.exception.error_dict)
