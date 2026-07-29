@@ -11,6 +11,7 @@ Request = apps.get_model("request", "Request")
 LibraryType = apps.get_model("library_sample_shared", "LibraryType")
 Library = apps.get_model("library", "Library")
 Sample = apps.get_model("sample", "Sample")
+PrincipalInvestigator = apps.get_model("common", "PrincipalInvestigator")
 
 
 def get_date_range(request, format):
@@ -226,3 +227,32 @@ class LibraryTypesUsage(APIView):
 
         data = sorted(data, key=lambda x: x["name"])
         return Response(data)
+
+
+class InternalPIsView(APIView):
+    permission_classes = (IsAdminUser,)
+
+    def get(self, request):
+        raw_organizations = request.query_params.get("organizations", "")
+        organization_names = [
+            name.strip() for name in raw_organizations.split(",") if name.strip()
+        ]
+        if not organization_names:
+            return Response(
+                {
+                    "error": (
+                        "Provide at least one comma separated organization name "
+                        "via the 'organizations' query parameter."
+                    )
+                },
+                status=400,
+            )
+
+        pi_names = (
+            PrincipalInvestigator.objects.filter(
+                archived=False, organization__name__in=organization_names
+            )
+            .values_list("name", flat=True)
+            .distinct()
+        )
+        return Response({"pis": sorted({name.lower() for name in pi_names})})

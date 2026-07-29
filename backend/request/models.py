@@ -19,7 +19,8 @@ PREDEFINED_FILE_TYPES = (
 )
 DEFAULT_FILE_TYPE = "Other"
 FILE_TYPE_MAX_LENGTH = 100
-FILE_TYPE_PATTERN = re.compile(r"^[A-Za-z0-9]+(?:_[A-Za-z0-9]+)*$")
+FILE_TYPE_PATTERN = r"^[A-Za-z0-9]+(?:_[A-Za-z0-9]+)*$"
+FILE_TYPE_REGEX = re.compile(FILE_TYPE_PATTERN)
 file_type_validator = RegexValidator(
     regex=FILE_TYPE_PATTERN,
     message=(
@@ -33,7 +34,7 @@ def is_valid_file_type(value):
     return (
         isinstance(value, str)
         and len(value) <= FILE_TYPE_MAX_LENGTH
-        and bool(FILE_TYPE_PATTERN.fullmatch(value))
+        and bool(FILE_TYPE_REGEX.fullmatch(value))
     )
 
 
@@ -42,7 +43,7 @@ def get_sentinel_user():
 
 
 def filepaths_default():
-    return {"data": None, "metadata": None}
+    return []
 
 
 def metapaths_default():

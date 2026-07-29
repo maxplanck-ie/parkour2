@@ -403,7 +403,8 @@ class TestFlowcell(BaseTestCase):
     def test_create_flowcell_rejects_not_ready_pool(self):
         self.client.login(email="test@test.io", password="foo-bar")
 
-        # status=3 means pool is not ready for flowcell loading
+        # status=3 means pool is not ready for flowcell loading (still
+        # mid-workflow, not QC-failed) -- this must still be blocked.
         library = create_library(get_random_name(), 3)
         pool = create_pool(self.user, multiplier=1)
         pool.libraries.add(library)
@@ -428,6 +429,40 @@ class TestFlowcell(BaseTestCase):
             any(
                 "is not ready" in message
                 for message in response.json()["errors"]["lanes"]
+            )
+        )
+
+    def test_create_flowcell_loads_pool_with_failed_qc_sample_with_warning(self):
+        self.client.login(email="test@test.io", password="foo-bar")
+
+        # status=-1 means "Quality Check Failed". Pools containing such
+        # records are allowed to load, but a warning is returned instead of
+        # blocking the request.
+        library1 = create_library(get_random_name(), 4)
+        library2 = create_library(get_random_name(), -1)
+        pool = create_pool(self.user, multiplier=1)
+        pool.libraries.add(library1, library2)
+
+        sequencer = create_sequencer(get_random_name(), lanes=1)
+
+        response = self.client.post(
+            reverse("flowcells-list"),
+            {
+                "data": json.dumps(
+                    {
+                        "flowcell_id": get_random_name(),
+                        "sequencer": sequencer.pk,
+                        "lanes": [{"name": "Lane 1", "pool_id": pool.pk}],
+                    }
+                )
+            },
+        )
+
+        self.assertEqual(response.status_code, 201)
+        self.assertTrue(
+            any(
+                "was loaded even though" in message
+                for message in response.json()["warnings"]
             )
         )
 

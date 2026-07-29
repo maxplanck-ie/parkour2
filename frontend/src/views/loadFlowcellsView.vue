@@ -2020,10 +2020,17 @@ export default {
       };
 
       try {
-        await axiosRef.post(`${urlStringStart}/api/flowcells/`, {
-          data: JSON.stringify(payload)
-        });
+        const response = await axiosRef.post(
+          `${urlStringStart}/api/flowcells/`,
+          {
+            data: JSON.stringify(payload)
+          }
+        );
         showNotification("Flowcell has been successfully loaded.", "success");
+        const warnings = response?.data?.warnings;
+        if (Array.isArray(warnings) && warnings.length) {
+          showNotification(warnings.join(" "), "warning");
+        }
         this.closeLoadPopup();
         await this.getFlowcells();
       } catch (error) {

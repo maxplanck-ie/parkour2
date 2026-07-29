@@ -1,5 +1,22 @@
 > Versioning is by dates (in `yy.mm.dd` format).
 
+Unreleased
+==========
+
+- Add staff-only `GET /api/internal_pis/?organizations=<comma-separated names>`, returning the lowercased names of non-archived `PrincipalInvestigator`s in the given organization(s). This lets dissectBCL replace its static `Internals.PIs` config list with a Parkour-backed, organization-parameterized lookup — no schema changes required.
+- RO-Crate export: per-record error isolation (a failed sample/library no longer aborts the whole export), Person/Organization entities as creator/author, RO-Crate 1.1/ISA profile conformance fixes, and barcode-keyed `#fastq-data-{barcode}` stub entities so dissectBCL can attach the real fastq files at delivery time.
+- ...
+
+
+26.07.28
+========
+
+- Requests: `put_filepaths` (called by `wd40 rel .` per flowcell) now appends each ingested path entry instead of overwriting `filepaths`, deduplicating identical entries — a request split across flowcells or resequenced now retains all of its known data/metadata locations.
+- Deploy: fixed `misc/nginx-server.conf` to commit the prod Vite port (5173) instead of the dev one (5174), matching `Caddyfile`/`frontend.Dockerfile` — `make clean` always resets the frontend proxy port to prod regardless of a dev or prod deploy, so a dev port checked into git showed up as a spurious modification after every deploy.
+- Load Flowcells: pools containing only QC-failed (negative status) libraries/samples alongside fully-pooled (status 4) ones can now be loaded onto a flowcell; a warning is returned instead of a hard block. Pools with any other non-ready status (e.g. still mid-workflow) are still rejected.
+- Requests: file reference popup now labels the file hash "Checksum" instead of "MD5", since `wd40` computes it with BLAKE3 (`b3sum`), not MD5.
+
+
 26.07.16
 ========
 

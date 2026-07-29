@@ -612,7 +612,10 @@ class RequestViewSet(viewsets.ModelViewSet):
 
     @action(methods=["get"], detail=False)
     def download_RELACS_Pellets_Abs_form(self, request):
-        file_path = os.path.join(settings.STATIC_ROOT, "docs/RELACS.xlsx")
+        file_path = os.path.join(
+            settings.STATIC_ROOT,
+            "docs/RELACS_submission_form.xlsx",
+        )
 
         with open(file_path, "rb") as fh:
             response = HttpResponse(fh.read(), content_type="application/vnd.ms-excel")
@@ -880,7 +883,27 @@ class RequestViewSet(viewsets.ModelViewSet):
     @action(methods=["post"], detail=True, permission_classes=[IsAdminUser])
     def put_filepaths(self, request, pk=None):
         instance = self.get_object()
-        instance.filepaths = request.data
+        entry = dict(request.data)
+        existing = instance.filepaths
+        if isinstance(existing, dict):
+            # legacy single-entry shape from before filepaths became a list
+            existing = [existing] if any(existing.values()) else []
+        # Match on "data" (the release path) so a later call - e.g. an async
+        # checksum worker posting just {"data": ..., "md5": ...} - updates
+        # the existing entry in place instead of accumulating duplicates.
+        match = next(
+            (
+                e
+                for e in existing
+                if e.get("data") and e.get("data") == entry.get("data")
+            ),
+            None,
+        )
+        if match is not None:
+            match.update(entry)
+        elif entry not in existing:
+            existing = existing + [entry]
+        instance.filepaths = existing
         records = list(instance.libraries.all()) + list(instance.samples.all())
         for r in records:
             # 'Sequencing' -> 'Delivered'

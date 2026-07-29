@@ -1,8 +1,4 @@
-# Copilot Chat Instructions
-
-These instructions apply to **Copilot Chat** in VS Code for this repository.
-Path-specific rules live in `.github/instructions/` and are applied automatically
-based on the file you are editing (see [GitHub docs](https://docs.github.com/en/copilot/how-tos/configure-custom-instructions/add-repository-instructions)).
+# Instructions
 
 ## Principles
 
@@ -53,6 +49,17 @@ These prevent recurring regressions. Do not deviate without an explicit request.
 - Before adding any new CSS, search for an existing class or variable that already does
   the job and reuse it. New text/elements must inherit the surrounding look and feel.
 
+## Changelog
+
+- `CHANGELOG.md` uses date-based versioning (`yy.mm.dd`) for releases, but do NOT add
+  a date when recording a change. Every change (bug fix, feature, refactor with
+  user-visible or behavioral impact) MUST add a bullet under the `Unreleased` heading
+  at the top of the file. Create the `Unreleased` heading if it doesn't exist yet.
+- Dates are added manually, only at release time, by renaming `Unreleased` to the
+  `yy.mm.dd` release date. Never add or guess a date yourself.
+- Keep entries terse and specific (what changed and why it matters), matching the
+  style of existing entries — no filler.
+
 ## Commands
 
 - Run backend tests using Makefile rule: `djtest`.
@@ -66,3 +73,24 @@ These prevent recurring regressions. Do not deviate without an explicit request.
 - Validate and sanitize all user input.
 - Use Django ORM; avoid raw SQL unless strictly necessary.
 - Follow least-privilege and safe-default patterns.
+
+## Python / Django / DRF (`**/*.py`)
+
+- Use DRF serializers for input validation and response shaping.
+- Keep business logic out of views; place it in service modules or helpers consistent with the existing codebase.
+- Use the Django ORM; avoid raw SQL unless necessary and clearly justified.
+- Follow existing naming, module, and package conventions in the repo.
+- Add or adjust tests for behaviour changes; run with `python manage.py test --parallel`.
+- Use type hints where they improve clarity; avoid overly generic abstractions.
+
+## Vue.js frontend (`**/*.vue`, `**/*.ts`, `**/*.js`)
+
+- Use Vue 3 Composition API; be consistent with existing patterns in the repo.
+- Prefer `<script setup lang="ts">` for new components; keep props/emits explicitly typed.
+- Keep components focused; extract shared logic into composables or utilities only when it clearly reduces duplication.
+- Use the project's existing API client/wrappers; do not introduce new networking patterns.
+- Use Pinia for cross-component state (not every local interaction); do not mutate props; follow established store patterns.
+- Use `computed`/`watch` intentionally; avoid broad/deep watchers unless justified.
+- Handle loading, empty, success, and error states explicitly in UI flows.
+- Favor accessible, semantic HTML and keyboard-friendly patterns.
+- Rebuild the frontend with `npm run build`. If running under the `parkour2-vite` Docker container, prefer the Makefile rule `reload-ux` instead.

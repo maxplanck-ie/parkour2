@@ -1,23 +1,15 @@
 <template>
   <div class="rocrate-preview-page">
     <div class="rocrate-preview-shell">
-      <section
-        v-if="model"
-        class="preview-action-bar"
-      >
+      <section v-if="model" class="preview-action-bar">
         <div class="preview-action-copy">
-          <div class="preview-action-title">
-            RO-Crate export
-          </div>
+          <div class="preview-action-title">RO-Crate export</div>
           <div class="preview-action-subtitle">
             {{ labels.loadedSubtitle }}
           </div>
         </div>
         <div class="preview-actions">
-          <div
-            v-if="model?.source?.name"
-            class="preview-output-file"
-          >
+          <div v-if="model?.source?.name" class="preview-output-file">
             <span class="preview-output-file-label">ZIP output:</span>
             <span class="preview-output-file-name">
               {{ model.source.name }}
@@ -92,10 +84,7 @@
               <span>Selected Libraries &amp; Samples</span>
             </div>
           </div>
-          <div
-            v-if="visibleRequestGroups.length"
-            class="request-overview-list"
-          >
+          <div v-if="visibleRequestGroups.length" class="request-overview-list">
             <article
               v-for="request in visibleRequestGroups"
               :key="`overview-${request.id}`"
@@ -123,7 +112,7 @@
                         :search-tokens="searchTokens"
                       />
                     </span>
-                    <span class="record-chip-separator">:</span>
+                    <span class="record-chip-separator">: </span>
                   </template>
                   <ROCrateHighlightedText
                     :value="record.name"
@@ -210,7 +199,7 @@
                   class="detail-kicker-icon"
                   icon="fa-solid fa-folder-open"
                 />
-                <span>Request {{ index + 1 }}:</span>
+                <span>Request {{ index + 1 }}: </span>
                 <ROCrateHighlightedText
                   :value="request.name"
                   :search-tokens="searchTokens"
@@ -367,7 +356,11 @@ function uniqueSearchTokens(tokens) {
   return [
     ...new Set(
       (tokens || [])
-        .map((token) => String(token || "").trim().toLowerCase())
+        .map((token) =>
+          String(token || "")
+            .trim()
+            .toLowerCase()
+        )
         .filter(Boolean)
     )
   ];
@@ -433,10 +426,7 @@ const DisplayValue = {
       return value && typeof value === "object" && !Array.isArray(value);
     },
     renderPrimitive(value) {
-      return h(
-        "span",
-        highlightedTextNodes(value ?? "-", this.searchTokens)
-      );
+      return h("span", highlightedTextNodes(value ?? "-", this.searchTokens));
     },
     isTableList(values) {
       return (
@@ -959,9 +949,7 @@ export default {
       );
       const recordIds = this.previewRecordIds(this.studyRecordIds(study));
       const records = recordIds
-        .map((recordId, recordIndex) =>
-          this.buildRecord(recordId, recordIndex)
-        )
+        .map((recordId, recordIndex) => this.buildRecord(recordId, recordIndex))
         .filter(Boolean)
         .sort((left, right) => left.name.localeCompare(right.name));
 
@@ -1014,10 +1002,9 @@ export default {
       );
     },
     previewRecordIds(recordIds) {
-      return [...new Set(recordIds)]
-        .sort((left, right) =>
-          this.recordSortLabel(left).localeCompare(this.recordSortLabel(right))
-        );
+      return [...new Set(recordIds)].sort((left, right) =>
+        this.recordSortLabel(left).localeCompare(this.recordSortLabel(right))
+      );
     },
     recordSortLabel(recordId) {
       const entity = this.entityById(recordId);
@@ -1052,11 +1039,7 @@ export default {
         id: recordId,
         type,
         name: recordName,
-        barcode: this.formattedBarcode(
-          entity[fieldKeys.identifier],
-          type,
-          ""
-        ),
+        barcode: this.formattedBarcode(entity[fieldKeys.identifier], type, ""),
         sections: [
           {
             title: "Preparation",
@@ -1076,9 +1059,8 @@ export default {
       };
     },
     recordMaterializedViewMetadata(recordId, entity, type) {
-      const prefix = type === RO_CRATE_RECORD_TYPES.library
-        ? "library_mv_"
-        : "sample_mv_";
+      const prefix =
+        type === RO_CRATE_RECORD_TYPES.library ? "library_mv_" : "sample_mv_";
       const metadata = new Map();
       [entity, ...this.recordProcessEntities(recordId)].forEach(
         (sourceEntity) => {
@@ -1118,10 +1100,7 @@ export default {
         return entity?.[fieldKeys.name] || "-";
       }
       if (field === "barcode") {
-        return this.formattedBarcode(
-          entity?.[fieldKeys.identifier],
-          type
-        );
+        return this.formattedBarcode(entity?.[fieldKeys.identifier], type);
       }
       if (field === "well_position") {
         return this.plateCoordinate(recordIndex);
@@ -1154,10 +1133,7 @@ export default {
         return this.fixedCardNumber(rawValue, 1);
       }
       if (field === "concentration_library") {
-        return this.fixedCardNumber(
-          rawValue,
-          Number(rawValue) === 0 ? 1 : 3
-        );
+        return this.fixedCardNumber(rawValue, Number(rawValue) === 0 ? 1 : 3);
       }
       if (
         ["pcr_cycles", "average_fragment_size", "sequencing_depth"].includes(
@@ -1180,8 +1156,7 @@ export default {
     formattedBarcode(value, recordType, emptyValue = "-") {
       const barcode = String(value || "");
       if (!barcode) return emptyValue;
-      return recordType === RO_CRATE_RECORD_TYPES.sample &&
-        barcode[2] === "L"
+      return recordType === RO_CRATE_RECORD_TYPES.sample && barcode[2] === "L"
         ? `${barcode}*`
         : barcode;
     },
@@ -1414,9 +1389,7 @@ export default {
         .map((value) => JSON.stringify(value ?? ""))
         .join(" ")
         .toLowerCase();
-      return this.searchTokens.every((token) =>
-        searchableText.includes(token)
-      );
+      return this.searchTokens.every((token) => searchableText.includes(token));
     },
     idSuffix(entityId) {
       return String(entityId || "").match(/(\d+)$/)?.[1] || "";

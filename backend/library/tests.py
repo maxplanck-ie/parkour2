@@ -5,6 +5,7 @@ from unittest.mock import Mock, patch
 from django.core.files.base import ContentFile
 from request.models import FileRequest
 
+from common.models import Organization
 from common.tests import BaseAPITestCase, BaseTestCase
 from common.utils import get_random_name, timezone
 from django.contrib.auth import get_user_model
@@ -866,7 +867,7 @@ class TestGenerateROCrateAPI(BaseAPITestCase):
         self.assertIn(f"#sample-material-{sample.pk}", graph_ids)
         self.assertIn(f"#protocol-{sample.library_protocol_id}", graph_ids)
         self.assertIn(f"#organism-{sample.organism_id}", graph_ids)
-        self.assertIn(f"#index-type-{sample.index_type_id}", graph_ids)
+        self.assertNotIn(f"#index-type-{sample.index_type_id}", graph_ids)
 
     @patch("library.ro_crate.CompleteSampleData.objects")
     @patch("library.ro_crate.CompleteLibraryData.objects")
@@ -899,6 +900,9 @@ class TestGenerateROCrateAPI(BaseAPITestCase):
     ):
         """Exporting by request name should yield a structured RO-Crate."""
         self._set_ro_crate_complete_data_rows(mock_library_objects, mock_sample_objects)
+        organization = Organization.objects.create(name="Crate Institute")
+        self.user.organization = organization
+        self.user.save()
 
         response = self.client.get(
             reverse("generate-ro-crate-list"), {"requests": self.request.name}
@@ -938,7 +942,9 @@ class TestGenerateROCrateAPI(BaseAPITestCase):
             {"@id": f"#study-{self.request.id}"},
             dataset_entry.get("hasPart", []),
         )
-        self.assertEqual(dataset_entry.get("creator"), {"@id": "#parkour-software"})
+        person_id = f"#person-{self.user.id}"
+        self.assertEqual(dataset_entry.get("creator"), {"@id": person_id})
+        self.assertEqual(dataset_entry.get("author"), {"@id": person_id})
         self.assertEqual(
             dataset_entry.get("publisher"), {"@id": "#parkour-organization"}
         )
@@ -946,11 +952,18 @@ class TestGenerateROCrateAPI(BaseAPITestCase):
             "https://github.com/nfdi4plants/isa-ro-crate-profile/tree/release/profile",
             graph_ids,
         )
-        self.assertNotIn(f"#person-{self.user.id}", graph_ids)
+        person_entry = self._graph_entry(payload, person_id)
+        self.assertEqual(person_entry.get("@type"), "Person")
+        self.assertEqual(person_entry.get("name"), self.user.full_name)
+        self.assertEqual(person_entry.get("givenName"), self.user.first_name)
+        self.assertEqual(person_entry.get("familyName"), self.user.last_name)
+        self.assertEqual(person_entry.get("email"), self.user.email)
+        org_id = f"#organization-{organization.pk}"
+        self.assertEqual(person_entry.get("affiliation"), {"@id": org_id})
+        org_entry = self._graph_entry(payload, org_id)
+        self.assertEqual(org_entry.get("@type"), "Organization")
+        self.assertEqual(org_entry.get("name"), organization.name)
         self.assertNotIn("#role-request-submitter", graph_ids)
-        self.assertFalse(
-            any(str(entity_id).startswith("#organization-") for entity_id in graph_ids)
-        )
         self.assertFalse(
             any(
                 str(entity_id).startswith("#principal-investigator-")
@@ -1209,6 +1222,52 @@ class TestGenerateROCrateAPI(BaseAPITestCase):
 
     @patch("library.ro_crate.CompleteSampleData.objects")
     @patch("library.ro_crate.CompleteLibraryData.objects")
+    def test_sample_and_library_entities_link_a_fastq_data_stub(
+        self, mock_library_objects, mock_sample_objects
+    ):
+        library = create_library("fastq-stub-library", status=5)
+        sample = create_sample("fastq-stub-sample", status=5)
+        self.request.libraries.add(library)
+        self.request.samples.add(sample)
+        self._set_ro_crate_complete_data_rows(
+            mock_library_objects,
+            mock_sample_objects,
+            libraries=[self._library_view_row(library)],
+            samples=[self._sample_view_row(sample)],
+        )
+
+        response = self.client.get(
+            reverse("generate-ro-crate-list"),
+            {
+                "barcodes": f"{library.barcode},{sample.barcode}",
+                "preview": "true",
+            },
+        )
+        payload = self._extract_preview_payload(response)
+        ro_crate = payload["ro_crate"]
+        graph_ids = self._graph_ids(ro_crate)
+
+        library_fastq_id = f"#fastq-data-{library.barcode}"
+        sample_fastq_id = f"#fastq-data-{sample.barcode}"
+        self.assertIn(library_fastq_id, graph_ids)
+        self.assertIn(sample_fastq_id, graph_ids)
+
+        library_fastq_entry = self._graph_entry(ro_crate, library_fastq_id)
+        self.assertEqual(library_fastq_entry.get("@type"), "Dataset")
+        self.assertNotIn("contentUrl", library_fastq_entry)
+
+        library_entry = self._graph_entry(ro_crate, f"#library-material-{library.pk}")
+        self.assertIn({"@id": library_fastq_id}, library_entry.get("hasPart", []))
+
+        sample_entry = self._graph_entry(ro_crate, f"#sample-material-{sample.pk}")
+        self.assertIn({"@id": sample_fastq_id}, sample_entry.get("hasPart", []))
+
+        root_entry = self._graph_entry(ro_crate, "./")
+        self.assertIn({"@id": library_fastq_id}, root_entry.get("hasPart", []))
+        self.assertIn({"@id": sample_fastq_id}, root_entry.get("hasPart", []))
+
+    @patch("library.ro_crate.CompleteSampleData.objects")
+    @patch("library.ro_crate.CompleteLibraryData.objects")
     def test_multi_request_export_creates_one_isa_study_per_request(
         self, mock_library_objects, mock_sample_objects
     ):
@@ -1310,6 +1369,44 @@ class TestGenerateROCrateAPI(BaseAPITestCase):
             {"requests": self.request.name, "preview": "true"},
         )
         self._extract_preview_payload(response)
+
+    @patch("library.ro_crate.CompleteSampleData.objects")
+    @patch("library.ro_crate.CompleteLibraryData.objects")
+    def test_context_defines_every_assay_term_for_valid_jsonld_compaction(
+        self, mock_library_objects, mock_sample_objects
+    ):
+        """
+        Assay entities set variableMeasured/measurementMethod (see
+        _add_assay); an RO-Crate 1.1 validator (rocrate-validator) flagged
+        these as undefined JSON-LD terms because the crate's own @context
+        (SimpleROCrateBuilder._context) didn't map them, which makes the
+        file descriptor invalid compacted JSON-LD per the RO-Crate spec.
+        """
+        library = create_library("context-crate-library", status=5)
+        self.request.libraries.add(library)
+        self._set_ro_crate_complete_data_rows(
+            mock_library_objects,
+            mock_sample_objects,
+            libraries=[self._library_view_row(library)],
+        )
+
+        response = self.client.get(
+            reverse("generate-ro-crate-list"),
+            {"barcodes": library.barcode, "preview": "true"},
+        )
+        payload = self._extract_preview_payload(response)
+        context = payload["ro_crate"]["@context"][1]
+
+        assay_id = f"#library-assay-{library.pk}"
+        assay_entry = self._graph_entry(payload["ro_crate"], assay_id)
+        for term in ("variableMeasured", "measurementMethod"):
+            self.assertIn(term, assay_entry)
+            self.assertIn(
+                term,
+                context,
+                f"'{term}' is used on Assay entities but missing from @context, "
+                "making the file descriptor invalid compacted JSON-LD.",
+            )
 
     @patch("library.ro_crate.CompleteSampleData.objects")
     @patch("library.ro_crate.CompleteLibraryData.objects")
@@ -1526,6 +1623,55 @@ class TestGenerateROCrateAPI(BaseAPITestCase):
         self.assertIn(f"#library-material-{sequencing_library.pk}", graph_ids)
         self.assertNotIn(f"#library-material-{pooled_library.pk}", graph_ids)
         self.assertIn(f"#sample-material-{sequencing_sample.pk}", graph_ids)
+
+    @patch("library.ro_crate.CompleteSampleData.objects")
+    @patch("library.ro_crate.CompleteLibraryData.objects")
+    def test_sample_metadata_build_failure_is_isolated_and_recorded(
+        self, mock_library_objects, mock_sample_objects
+    ):
+        from library.ro_crate import SimpleROCrateBuilder
+
+        healthy_sample = create_sample("healthy-crate-sample", status=5)
+        broken_sample = create_sample("broken-crate-sample", status=5)
+        self.request.samples.add(healthy_sample, broken_sample)
+        self._set_ro_crate_complete_data_rows(
+            mock_library_objects,
+            mock_sample_objects,
+            samples=[
+                self._sample_view_row(healthy_sample),
+                self._sample_view_row(broken_sample),
+            ],
+        )
+
+        original_link_biology_terms = SimpleROCrateBuilder._link_biology_terms
+
+        def _link_biology_terms_side_effect(self, entity, model):
+            if model is not None and model.pk == broken_sample.pk:
+                raise ValueError("simulated metadata build failure")
+            return original_link_biology_terms(self, entity, model)
+
+        with patch.object(
+            SimpleROCrateBuilder,
+            "_link_biology_terms",
+            autospec=True,
+            side_effect=_link_biology_terms_side_effect,
+        ):
+            response = self.client.get(
+                reverse("generate-ro-crate-list"),
+                {
+                    "barcodes": (f"{healthy_sample.barcode},{broken_sample.barcode}"),
+                    "preview": "true",
+                },
+            )
+
+        payload = self._extract_preview_payload(response)
+        self.assertIn(
+            f"{broken_sample.barcode}: metadata build failed",
+            payload["skipped_records"],
+        )
+        graph_ids = self._graph_ids(payload["ro_crate"])
+        self.assertIn(f"#sample-material-{healthy_sample.pk}", graph_ids)
+        self.assertNotIn(f"#sample-material-{broken_sample.pk}", graph_ids)
 
     @patch("library.ro_crate.CompleteSampleData.objects")
     @patch("library.ro_crate.CompleteLibraryData.objects")

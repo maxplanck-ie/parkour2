@@ -259,10 +259,13 @@ class FlowcellSerializer(ModelSerializer):
                 }
             )
 
-        lane_errors = self._validate_lanes_for_sequencer(lanes, sequencer)
+        lane_errors, pool_warnings = self._validate_lanes_for_sequencer(
+            lanes, sequencer
+        )
         if lane_errors:
             raise ValidationError({"lanes": lane_errors})
 
+        self.pool_warnings = pool_warnings
         internal_value.update({"lanes": lanes})
 
         return internal_value
@@ -291,8 +294,21 @@ class FlowcellSerializer(ModelSerializer):
         statuses = list(libraries_statuses) + list(samples_statuses)
         return bool(statuses) and statuses.count(4) == len(statuses)
 
+    def _pool_has_blocking_status(self, pool):
+        """True if the pool contains a library/sample that is neither fully
+        pooled (status 4) nor QC-failed (negative status). Negative statuses
+        (e.g. -1 "Quality Check Failed") are allowed to be loaded anyway --
+        anything else mid-workflow is not."""
+        libraries_statuses = [x.status for x in pool.libraries.all()]
+        samples_statuses = [x.status for x in pool.samples.all()]
+        statuses = list(libraries_statuses) + list(samples_statuses)
+        if not statuses:
+            return True
+        return any(status != 4 and status >= 0 for status in statuses)
+
     def _validate_lanes_for_sequencer(self, lanes, sequencer):
         errors = []
+        warnings = []
 
         lane_names = [lane.get("name") for lane in lanes]
         if len(lane_names) != len(set(lane_names)):
@@ -301,7 +317,7 @@ class FlowcellSerializer(ModelSerializer):
         pool_ids = [lane.get("pool_id") for lane in lanes if lane.get("pool_id")]
         if len(pool_ids) != len(lanes):
             errors.append("Each lane must reference a pool.")
-            return errors
+            return errors, warnings
 
         pools_by_id = Pool.objects.filter(archived=False, pk__in=pool_ids).in_bulk()
         missing_pool_ids = sorted(set(pool_ids) - set(pools_by_id.keys()))
@@ -311,7 +327,7 @@ class FlowcellSerializer(ModelSerializer):
                 + ", ".join(map(str, missing_pool_ids))
                 + "."
             )
-            return errors
+            return errors, warnings
 
         pool_assignment_counts = Counter(pool_ids)
         read_length_names = set()
@@ -325,9 +341,15 @@ class FlowcellSerializer(ModelSerializer):
                 )
 
             if not self._is_pool_ready(pool):
-                errors.append(
-                    f"Pool '{pool.name}' is not ready and cannot be loaded on a flowcell."
-                )
+                if self._pool_has_blocking_status(pool):
+                    errors.append(
+                        f"Pool '{pool.name}' is not ready and cannot be loaded on a flowcell."
+                    )
+                else:
+                    warnings.append(
+                        f"Pool '{pool.name}' was loaded even though it contains "
+                        "QC-failed libraries/samples."
+                    )
 
             if pool.size and pool.size.size > sequencer.lane_capacity:
                 errors.append(
@@ -345,7 +367,7 @@ class FlowcellSerializer(ModelSerializer):
         if len(read_length_names) > 1:
             errors.append("Read Length must be the same for all pools on a flowcell.")
 
-        return errors
+        return errors, warnings
 
     def create(self, validated_data):
         lanes = validated_data.pop("lanes")

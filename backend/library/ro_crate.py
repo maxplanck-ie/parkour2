@@ -1,4 +1,5 @@
 import json
+import logging
 import math
 import mimetypes
 import os
@@ -33,6 +34,8 @@ LibraryPreparation = apps.get_model("library_preparation", "LibraryPreparation")
 Flowcell = apps.get_model("flowcell", "Flowcell")
 IndexPool = apps.get_model("index_generator", "Pool")
 IndexPair = apps.get_model("library_sample_shared", "IndexPair")
+
+logger = logging.getLogger(__name__)
 
 RO_CRATE_VERSION = "1.1"
 RO_CRATE_SPEC_URI = f"https://w3id.org/ro/crate/{RO_CRATE_VERSION}"
@@ -88,12 +91,8 @@ def _normalise_field_policy_key(value):
 def _load_shared_json(filename, description):
     module_dir = os.path.dirname(__file__)
     candidate_paths = [
-        os.path.abspath(
-            os.path.join(module_dir, "..", "shared", filename)
-        ),
-        os.path.abspath(
-            os.path.join(module_dir, "..", "..", "shared", filename)
-        ),
+        os.path.abspath(os.path.join(module_dir, "..", "shared", filename)),
+        os.path.abspath(os.path.join(module_dir, "..", "..", "shared", filename)),
     ]
     config_path = next(
         (path for path in candidate_paths if os.path.exists(path)),
@@ -109,9 +108,7 @@ def _load_shared_json(filename, description):
         with open(config_path, encoding="utf-8") as handle:
             return json.load(handle)
     except OSError as exc:
-        raise RuntimeError(
-            f"RO-Crate {description} file could not be loaded."
-        ) from exc
+        raise RuntimeError(f"RO-Crate {description} file could not be loaded.") from exc
     except ValueError as exc:
         raise RuntimeError(f"RO-Crate {description} is not valid JSON.") from exc
 
@@ -377,9 +374,8 @@ def _extract_model_fields(
             else field_name
         )
         target_name = f"{prefix}{export_name}"
-        if (
-            field_name not in include_hidden_fields
-            and _is_hidden_export_field(field_name, export_name, target_name)
+        if field_name not in include_hidden_fields and _is_hidden_export_field(
+            field_name, export_name, target_name
         ):
             continue
         try:
@@ -804,6 +800,40 @@ class SimpleROCrateBuilder:
     def _has_part(self, entity_id):
         self.has_part_refs.append(_ref(entity_id))
 
+    def _add_fastq_data_stub(self, owner, row, section):
+        fastq_data_id = f"#fastq-data-{row.barcode}"
+        self._add(
+            {
+                "@id": fastq_data_id,
+                "@type": "Dataset",
+                "name": f"Raw sequencing data for {row.name}",
+                "description": (
+                    "Raw fastq sequencing data, populated at data delivery "
+                    "time by dissectBCL."
+                ),
+                "identifier": _parkour_identifier("fastq-data", row.barcode),
+            },
+            section,
+        )
+        owner["hasPart"] = _unique_refs(
+            owner.get("hasPart", []) + [_ref(fastq_data_id)]
+        )
+        self._has_part(fastq_data_id)
+        return fastq_data_id
+
+    def _record_checkpoint(self):
+        return (len(self.graph), len(self.root_refs), len(self.has_part_refs))
+
+    def _rollback_to_checkpoint(self, checkpoint):
+        graph_length, root_refs_length, has_part_length = checkpoint
+        for entity in self.graph[graph_length:]:
+            entity_id = entity.get("@id")
+            if self.entities.get(entity_id) is entity:
+                del self.entities[entity_id]
+        del self.graph[graph_length:]
+        del self.root_refs[root_refs_length:]
+        del self.has_part_refs[has_part_length:]
+
     def _add_property_values(self, owner, property_name, values, section):
         owner_id = owner.get("@id")
         if not owner_id:
@@ -922,6 +952,37 @@ class SimpleROCrateBuilder:
             }
         )
 
+    def _add_person_entity(self, user):
+        if not user:
+            return None
+        person_id = f"#person-{user.pk}"
+        person = {
+            "@id": person_id,
+            "@type": "Person",
+            "name": user.full_name or user.email,
+            "givenName": user.first_name,
+            "familyName": user.last_name,
+            "email": user.email,
+            "identifier": _parkour_identifier("user", user.pk),
+        }
+        organization = getattr(user, "organization", None)
+        if organization:
+            org_id = f"#organization-{organization.pk}"
+            self._add(
+                {
+                    "@id": org_id,
+                    "@type": "Organization",
+                    "name": organization.name,
+                    "identifier": _parkour_identifier("organization", organization.pk),
+                },
+                "request",
+            )
+            self._mention(org_id)
+            person["affiliation"] = _ref(org_id)
+        self._add(person, "request")
+        self._mention(person_id)
+        return person_id
+
     def _add_root_dataset(self, root_request):
         is_multi = len(self.selection.target_request_ids) > 1
         root_name = (
@@ -944,6 +1005,7 @@ class SimpleROCrateBuilder:
                 "request",
             )
         )
+        person_id = self._add_person_entity(getattr(root_request, "user", None))
         root = self._add(
             {
                 "@id": RO_CRATE_ROOT_ID,
@@ -970,7 +1032,8 @@ class SimpleROCrateBuilder:
                 "conformsTo": [_ref(RO_CRATE_SPEC_URI)],
                 "additionalType": [_ref(ISA_INVESTIGATION_URI), "Investigation"],
                 "license": _ref(RO_CRATE_LICENSE_ID),
-                "creator": _ref(PARKOUR_SOFTWARE_ID),
+                "creator": _ref(person_id) if person_id else _ref(PARKOUR_SOFTWARE_ID),
+                "author": _ref(person_id) if person_id else _ref(PARKOUR_SOFTWARE_ID),
                 "publisher": _ref(PARKOUR_ORGANIZATION_ID),
                 "comments": comments,
                 "mentions": [],
@@ -1082,207 +1145,233 @@ class SimpleROCrateBuilder:
 
     def _add_sample_entities(self):
         for row in self.selection.sample_rows:
-            model = self.sample_models.get(row.sample_id)
-            source_id = f"#source-sample-{row.sample_id}"
-            sample_id = f"#sample-material-{row.sample_id}"
-            process_id = f"#sample-process-{row.sample_id}"
-            data_id = f"#sample-data-{row.sample_id}"
-            assay_id = f"#sample-assay-{row.sample_id}"
-
-            self._add(
-                {
-                    "@id": source_id,
-                    "@type": "Thing",
-                    "name": f"Source for {row.name}",
-                    "identifier": _parkour_identifier("source-sample", row.sample_id),
-                    "additionalType": [_ref(ISA_MATERIAL_URI)],
-                    "comments": _comments_from_mapping(
-                        {"source_request_identifier": row.request_name}, "samples"
-                    ),
-                },
-                "samples",
-            )
-
-            comments = []
-            if model:
-                comments.extend(
-                    _comments_from_mapping(
-                        _extract_model_fields(model, "sample_db_"), "samples"
-                    )
+            checkpoint = self._record_checkpoint()
+            try:
+                self._add_sample_entity(row)
+            except Exception:
+                logger.exception(
+                    "RO-Crate export: failed to build sample entity for barcode %s",
+                    row.barcode,
                 )
-                comments.extend(
-                    _comments_from_mapping(
-                        _record_property_metadata(model, "sample_db_"), "samples"
-                    )
+                self._rollback_to_checkpoint(checkpoint)
+                self.selection.skipped_records.append(
+                    f"{row.barcode}: metadata build failed"
                 )
-            sample_mv_comments = _comments_from_mapping(
-                _extract_model_fields(
-                    row,
-                    "sample_mv_",
-                    include_hidden_fields={"create_time"},
+
+    def _add_sample_entity(self, row):
+        model = self.sample_models.get(row.sample_id)
+        source_id = f"#source-sample-{row.sample_id}"
+        sample_id = f"#sample-material-{row.sample_id}"
+        process_id = f"#sample-process-{row.sample_id}"
+        data_id = f"#sample-data-{row.sample_id}"
+        assay_id = f"#sample-assay-{row.sample_id}"
+
+        self._add(
+            {
+                "@id": source_id,
+                "@type": "Thing",
+                "name": f"Source for {row.name}",
+                "identifier": _parkour_identifier("source-sample", row.sample_id),
+                "additionalType": [_ref(ISA_MATERIAL_URI)],
+                "comments": _comments_from_mapping(
+                    {"source_request_identifier": row.request_name}, "samples"
                 ),
-                "samples",
-            )
-            prep = self.library_preparations.get(row.sample_id)
-            if prep:
-                comments.extend(
-                    _comments_from_mapping(
-                        _extract_model_fields(prep, "library_preparation_"),
-                        "library_preparation",
-                    )
-                )
-            pooling = self.pooling_by_sample.get(row.sample_id)
-            if pooling:
-                comments.extend(
-                    _comments_from_mapping(
-                        _extract_model_fields(pooling, "pooling_"), "pooling"
-                    )
-                )
+            },
+            "samples",
+        )
 
-            sample = self._add(
-                {
-                    "@id": sample_id,
-                    "@type": "Thing",
-                    "name": row.name,
-                    "identifier": row.barcode,
-                    "additionalType": [
-                        _ref(ISA_MATERIAL_URI),
-                        _ref(ISA_SAMPLE_URI),
-                        _ref("https://bioschemas.org/Sample"),
-                    ],
-                    "derivedFrom": [_ref(source_id)],
-                    "comments": comments,
-                },
-                "samples",
+        comments = []
+        if model:
+            comments.extend(
+                _comments_from_mapping(
+                    _extract_model_fields(model, "sample_db_"), "samples"
+                )
             )
-            self._add_property_values(sample, "additionalProperty", comments, "samples")
-            self._link_biology_terms(sample, model)
-            self._link_index_metadata(sample, model, row, "samples")
-            pool_refs = self._index_pool_refs(model)
-            if pool_refs:
-                sample["associatedPool"] = pool_refs
+            comments.extend(
+                _comments_from_mapping(
+                    _record_property_metadata(model, "sample_db_"), "samples"
+                )
+            )
+        sample_mv_comments = _comments_from_mapping(
+            _extract_model_fields(
+                row,
+                "sample_mv_",
+                include_hidden_fields={"create_time"},
+            ),
+            "samples",
+        )
+        prep = self.library_preparations.get(row.sample_id)
+        if prep:
+            comments.extend(
+                _comments_from_mapping(
+                    _extract_model_fields(prep, "library_preparation_"),
+                    "library_preparation",
+                )
+            )
+        pooling = self.pooling_by_sample.get(row.sample_id)
+        if pooling:
+            comments.extend(
+                _comments_from_mapping(
+                    _extract_model_fields(pooling, "pooling_"), "pooling"
+                )
+            )
 
-            self._add_process(
-                process_id,
-                f"Sample metadata capture for {row.name}",
-                "sample-process",
-                row.sample_id,
-                [_ref(source_id)],
-                [_ref(sample_id), _ref(data_id)],
-                model,
-                "samples",
-                comments=sample_mv_comments,
-                parameter_values=sample_mv_comments,
-            )
-            self._add_data(
-                data_id,
-                f"Sample export metadata for {row.name}",
-                "sample-data",
-                row.sample_id,
-                "samples",
-            )
-            self._add_assay(
-                assay_id,
-                f"Assay for sample {row.name}",
-                sample_id,
-                process_id,
-                data_id,
-                "samples",
-            )
-            record_entity_ids = [source_id, sample_id, process_id, data_id, assay_id]
-            self._link_to_record_requests(
-                sample, model, row.request_id, record_entity_ids
-            )
+        sample = self._add(
+            {
+                "@id": sample_id,
+                "@type": "Thing",
+                "name": row.name,
+                "identifier": row.barcode,
+                "additionalType": [
+                    _ref(ISA_MATERIAL_URI),
+                    _ref(ISA_SAMPLE_URI),
+                    _ref("https://bioschemas.org/Sample"),
+                ],
+                "derivedFrom": [_ref(source_id)],
+                "comments": comments,
+            },
+            "samples",
+        )
+        self._add_property_values(sample, "additionalProperty", comments, "samples")
+        self._link_biology_terms(sample, model)
+        self._link_index_metadata(sample, model, row, "samples")
+        pool_refs = self._index_pool_refs(model)
+        if pool_refs:
+            sample["associatedPool"] = pool_refs
+        self._add_fastq_data_stub(sample, row, "samples")
+
+        self._add_process(
+            process_id,
+            f"Sample metadata capture for {row.name}",
+            "sample-process",
+            row.sample_id,
+            [_ref(source_id)],
+            [_ref(sample_id), _ref(data_id)],
+            model,
+            "samples",
+            comments=sample_mv_comments,
+            parameter_values=sample_mv_comments,
+        )
+        self._add_data(
+            data_id,
+            f"Sample export metadata for {row.name}",
+            "sample-data",
+            row.sample_id,
+            "samples",
+        )
+        self._add_assay(
+            assay_id,
+            f"Assay for sample {row.name}",
+            sample_id,
+            process_id,
+            data_id,
+            "samples",
+        )
+        record_entity_ids = [source_id, sample_id, process_id, data_id, assay_id]
+        self._link_to_record_requests(sample, model, row.request_id, record_entity_ids)
 
     def _add_library_entities(self):
         for row in self.selection.library_rows:
-            model = self.library_models.get(row.library_id)
-            library_id = f"#library-material-{row.library_id}"
-            process_id = f"#library-process-{row.library_id}"
-            data_id = f"#library-data-{row.library_id}"
-            assay_id = f"#library-assay-{row.library_id}"
-
-            comments = []
-            if model:
-                comments.extend(
-                    _comments_from_mapping(
-                        _extract_model_fields(model, "library_db_"), "libraries"
-                    )
+            checkpoint = self._record_checkpoint()
+            try:
+                self._add_library_entity(row)
+            except Exception:
+                logger.exception(
+                    "RO-Crate export: failed to build library entity for barcode %s",
+                    row.barcode,
                 )
-                comments.extend(
-                    _comments_from_mapping(
-                        _record_property_metadata(model, "library_db_"), "libraries"
-                    )
-                )
-            pooling = self.pooling_by_library.get(row.library_id)
-            if pooling:
-                comments.extend(
-                    _comments_from_mapping(
-                        _extract_model_fields(pooling, "pooling_"), "pooling"
-                    )
+                self._rollback_to_checkpoint(checkpoint)
+                self.selection.skipped_records.append(
+                    f"{row.barcode}: metadata build failed"
                 )
 
-            library = self._add(
-                {
-                    "@id": library_id,
-                    "@type": "Thing",
-                    "name": row.name,
-                    "identifier": row.barcode,
-                    "additionalType": [_ref(ISA_MATERIAL_URI), _ref(ISA_LIBRARY_URI)],
-                    "comments": comments,
-                },
-                "libraries",
-            )
-            self._add_property_values(
-                library, "additionalProperty", comments, "libraries"
-            )
-            self._link_biology_terms(library, model)
-            self._link_index_metadata(library, model, row, "libraries")
-            pool_refs = self._index_pool_refs(model)
-            if pool_refs:
-                library["associatedPool"] = pool_refs
+    def _add_library_entity(self, row):
+        model = self.library_models.get(row.library_id)
+        library_id = f"#library-material-{row.library_id}"
+        process_id = f"#library-process-{row.library_id}"
+        data_id = f"#library-data-{row.library_id}"
+        assay_id = f"#library-assay-{row.library_id}"
 
-            library_mv_comments = _comments_from_mapping(
-                _extract_model_fields(
-                    row,
-                    "library_mv_",
-                    include_hidden_fields={"create_time"},
-                ),
-                "libraries",
+        comments = []
+        if model:
+            comments.extend(
+                _comments_from_mapping(
+                    _extract_model_fields(model, "library_db_"), "libraries"
+                )
             )
-            self._add_process(
-                process_id,
-                f"Library metadata capture for {row.name}",
-                "library-process",
-                row.library_id,
-                [_ref(library_id)],
-                [_ref(data_id)],
-                model,
-                "libraries",
-                comments=library_mv_comments,
-                parameter_values=library_mv_comments,
+            comments.extend(
+                _comments_from_mapping(
+                    _record_property_metadata(model, "library_db_"), "libraries"
+                )
             )
-            self._add_data(
-                data_id,
-                f"Library export metadata for {row.name}",
-                "library-data",
-                row.library_id,
-                "libraries",
+        pooling = self.pooling_by_library.get(row.library_id)
+        if pooling:
+            comments.extend(
+                _comments_from_mapping(
+                    _extract_model_fields(pooling, "pooling_"), "pooling"
+                )
             )
-            self._add_assay(
-                assay_id,
-                f"Assay for library {row.name}",
-                library_id,
-                process_id,
-                data_id,
-                "libraries",
-            )
-            self._link_to_record_requests(
-                library,
-                model,
-                row.request_id,
-                [library_id, process_id, data_id, assay_id],
-            )
+
+        library = self._add(
+            {
+                "@id": library_id,
+                "@type": "Thing",
+                "name": row.name,
+                "identifier": row.barcode,
+                "additionalType": [_ref(ISA_MATERIAL_URI), _ref(ISA_LIBRARY_URI)],
+                "comments": comments,
+            },
+            "libraries",
+        )
+        self._add_property_values(library, "additionalProperty", comments, "libraries")
+        self._link_biology_terms(library, model)
+        self._link_index_metadata(library, model, row, "libraries")
+        pool_refs = self._index_pool_refs(model)
+        if pool_refs:
+            library["associatedPool"] = pool_refs
+        self._add_fastq_data_stub(library, row, "libraries")
+
+        library_mv_comments = _comments_from_mapping(
+            _extract_model_fields(
+                row,
+                "library_mv_",
+                include_hidden_fields={"create_time"},
+            ),
+            "libraries",
+        )
+        self._add_process(
+            process_id,
+            f"Library metadata capture for {row.name}",
+            "library-process",
+            row.library_id,
+            [_ref(library_id)],
+            [_ref(data_id)],
+            model,
+            "libraries",
+            comments=library_mv_comments,
+            parameter_values=library_mv_comments,
+        )
+        self._add_data(
+            data_id,
+            f"Library export metadata for {row.name}",
+            "library-data",
+            row.library_id,
+            "libraries",
+        )
+        self._add_assay(
+            assay_id,
+            f"Assay for library {row.name}",
+            library_id,
+            process_id,
+            data_id,
+            "libraries",
+        )
+        self._link_to_record_requests(
+            library,
+            model,
+            row.request_id,
+            [library_id, process_id, data_id, assay_id],
+        )
 
     def _add_process(
         self,
@@ -1940,6 +2029,8 @@ class SimpleROCrateBuilder:
             "sequencedOn": {"@id": "http://schema.org/isRelatedTo", "@type": "@id"},
             "requestContext": {"@id": "http://schema.org/isPartOf", "@type": "@id"},
             "fileType": "http://schema.org/additionalType",
+            "variableMeasured": "http://schema.org/variableMeasured",
+            "measurementMethod": "http://schema.org/measurementMethod",
         }
 
 
@@ -2054,9 +2145,7 @@ PDF_FIELD_IS_PART_OF = "isPartOf"
 PDF_FIELD_REQUEST_CONTEXT = "requestContext"
 PDF_FIELD_FILE_TYPE = "fileType"
 PDF_PREVIEW_TITLE = "RO Crate Preview"
-PDF_PREVIEW_SUBTITLE = (
-    "RO-Crate preview generated from Parkour metadata for selected libraries and samples."
-)
+PDF_PREVIEW_SUBTITLE = "RO-Crate preview generated from Parkour metadata for selected libraries and samples."
 
 PDF_PREPARATION_CARD_FIELDS = RO_CRATE_PREVIEW_FIELDS["preparation"]
 PDF_SEQUENCING_CARD_FIELDS = RO_CRATE_PREVIEW_FIELDS["sequencing"]
@@ -2191,9 +2280,9 @@ class ROCratePdfRenderer:
         request_entity = self.entity_by_id(f"#request-context-{request_number}")
         record_ids = sorted(
             self._study_record_ids(study),
-            key=lambda record_id: (
-                self.entity_by_id(record_id) or {}
-            ).get(PDF_FIELD_IDENTIFIER)
+            key=lambda record_id: (self.entity_by_id(record_id) or {}).get(
+                PDF_FIELD_IDENTIFIER
+            )
             or self.entity_label(self.entity_by_id(record_id)),
         )
         records = sorted(
@@ -2314,13 +2403,9 @@ class ROCratePdfRenderer:
                 *self.reference_values(
                     source_entity.get(PDF_FIELD_ADDITIONAL_PROPERTY)
                 ),
-                *self.reference_values(
-                    source_entity.get(PDF_FIELD_PARAMETER_VALUE)
-                ),
+                *self.reference_values(source_entity.get(PDF_FIELD_PARAMETER_VALUE)),
             ]
-            for prop in (
-                self.resolve_reference(reference) for reference in refs
-            ):
+            for prop in (self.resolve_reference(reference) for reference in refs):
                 if not isinstance(prop, dict):
                     continue
                 name = str(prop.get(PDF_FIELD_NAME) or "")
@@ -2328,9 +2413,7 @@ class ROCratePdfRenderer:
                     values[name] = prop.get(PDF_FIELD_VALUE)
         return {"prefix": prefix, "values": values}
 
-    def _record_card_rows(
-        self, fields, entity, metadata, record_type, record_index
-    ):
+    def _record_card_rows(self, fields, entity, metadata, record_type, record_index):
         return [
             {
                 "key": label,
@@ -2345,9 +2428,7 @@ class ROCratePdfRenderer:
             for label, field in fields
         ]
 
-    def _record_card_value(
-        self, field, entity, metadata, record_type, record_index
-    ):
+    def _record_card_value(self, field, entity, metadata, record_type, record_index):
         def read_value(key):
             return metadata["values"].get(f"{metadata['prefix']}{key}")
 
@@ -2396,9 +2477,7 @@ class ROCratePdfRenderer:
         displayed_unit = self._card_display_value(unit, "")
         if not displayed_value and not displayed_unit:
             return "-"
-        return " ".join(
-            part for part in (displayed_value, displayed_unit) if part
-        )
+        return " ".join(part for part in (displayed_value, displayed_unit) if part)
 
     def _formatted_barcode(self, value, record_type, empty_value="-"):
         barcode = str(value or "")
@@ -2665,9 +2744,7 @@ class ROCratePdfRenderer:
             self.pdf.multi_cell(
                 0,
                 5,
-                self.pdf.safe_text(
-                    request_group.get("name") or "Selected request"
-                ),
+                self.pdf.safe_text(request_group.get("name") or "Selected request"),
                 new_x=XPos.LMARGIN,
                 new_y=YPos.NEXT,
             )

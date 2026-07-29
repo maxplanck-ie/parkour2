@@ -184,7 +184,11 @@ class FlowcellViewSet(MultiEditMixin, viewsets.ReadOnlyModelViewSet):
         serializer = FlowcellSerializer(data=post_data)
         if serializer.is_valid():
             serializer.save()
-            return Response({"success": True}, 201)
+            response_data = {"success": True}
+            pool_warnings = getattr(serializer, "pool_warnings", [])
+            if pool_warnings:
+                response_data["warnings"] = pool_warnings
+            return Response(response_data, 201)
 
         else:
             return Response(
