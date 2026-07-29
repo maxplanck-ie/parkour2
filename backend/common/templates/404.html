@@ -2,23 +2,26 @@
 {% load static %}
 
 {% block css %}
-    <style>
-        body {
-            background-image: url("{% static 'images/error-page-background.jpg' %}");
-            background-size: cover;
-            color: #fff;
-        }
-    </style>
+<style>
+    body {
+        background:
+            linear-gradient(rgba(5, 24, 28, 0.58), rgba(5, 24, 28, 0.58)),
+            url("{% static 'images/error-page-background.jpg' %}") no-repeat center center fixed;
+        background-size: cover;
+    }
+</style>
 {% endblock css %}
 
-{% block title %}Page Not Found{% endblock title %}
+{% block title %}Parkour LIMS | Page Not Found{% endblock title %}
 
 {% block content %}
-    <div id="block-404">
-        <h1>404</h1>
-        <p>
-            Seems you've hit a wall!<br />
-            Try going back to the <a href="{% url 'index' %}">Home page</a>.
-        </p>
-    </div>
-{% endblock %}
+<main class="error-page">
+    <section class="error-card">
+        <img class="error-logo" src="{% static 'images/parkour-logo.svg' %}" alt="">
+        <div class="error-code">404</div>
+        <h1>Page not found</h1>
+        <p>The page you requested does not exist or may have moved.</p>
+        <a class="django-button django-button-primary" href="{% url 'index' %}">Return home</a>
+    </section>
+</main>
+{% endblock content %}

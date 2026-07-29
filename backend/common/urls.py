@@ -1,7 +1,7 @@
 from common import models, views
 from django.conf import settings
 from django.contrib.auth import views as auth_views
-from django.urls import include, path
+from django.urls import include, path, reverse_lazy
 from rest_framework.routers import DefaultRouter
 
 router = DefaultRouter()
@@ -60,18 +60,36 @@ urlpatterns = [
     path(
         "password_reset/",
         auth_views.PasswordResetView.as_view(
-            success_url="/password_reset/done/",
+            template_name="registration/password_reset_form.html",
+            success_url=reverse_lazy("password_reset_done"),
             from_email=settings.SERVER_EMAIL,
             subject_template_name="email/password_reset_subject.txt",
-            email_template_name="email/password_reset_email.html",
+            email_template_name="email/password_reset_email.txt",
+            html_email_template_name="email/password_reset_email.html",
         ),
         name="password_reset",
     ),
-    path("password_reset/done/", auth_views.PasswordResetDoneView.as_view()),
+    path(
+        "password_reset/done/",
+        auth_views.PasswordResetDoneView.as_view(
+            template_name="registration/password_reset_done.html"
+        ),
+        name="password_reset_done",
+    ),
     path(
         "password_reset/<uidb64>/<token>/",
-        auth_views.PasswordResetConfirmView.as_view(success_url="/login/"),
+        auth_views.PasswordResetConfirmView.as_view(
+            template_name="registration/password_reset_confirm.html",
+            success_url=reverse_lazy("password_reset_complete"),
+        ),
         name="password_reset_confirm",
+    ),
+    path(
+        "password_reset/complete/",
+        auth_views.PasswordResetCompleteView.as_view(
+            template_name="registration/password_reset_complete.html"
+        ),
+        name="password_reset_complete",
     ),
     path("api/", include(router.urls)),
 ]

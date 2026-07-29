@@ -2,34 +2,31 @@
 {% load static %}
 
 {% block css %}
-    <style>
+<style>
     body {
         background:
-        linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)),
-        url("{% static 'images/danke.jpg' %}") no-repeat center center fixed;
-        -webkit-background-size: cover;
-        -moz-background-size: cover;
+            linear-gradient(rgba(5, 24, 28, 0.52), rgba(5, 24, 28, 0.52)),
+            url("{% static 'images/danke.jpg' %}") no-repeat center center fixed;
         background-size: cover;
     }
-    div {
-      color: white;
-      text-align: center;
-      background: linear-gradient(to top, transparent 0%, black 100%);
-    }
-    </style>
+</style>
 {% endblock css %}
 
-{% block title %}
-    Parkour LIMS | Seq. Request Approved!
-{% endblock title %}
+{% block title %}Parkour LIMS | Request Approved{% endblock title %}
 
 {% block content %}
-    <div>
-    <br /><br /><br /><br /><br />
-    <h2>Thank you!</h2>
-    <h3>The request was approved successfully. <br/>
-        Sequencing will start as soon as possible, and notification e-mails were sent. <br/>
-        <br />If you didn't intend to approve it, please contact: DeepSeq@ie-freiburg.mpg.de</h3>
-    <br /><br /><br /><br /><br /><br /><br />
-    </div>
-{% endblock %}
+<main class="approval-page">
+    <section class="approval-card">
+        <div class="approval-mark" aria-hidden="true">✓</div>
+        <h1>Thank you!</h1>
+        <p class="approval-lead">The request was approved successfully.</p>
+        <p>
+            Sequencing will start as soon as possible, and notification emails were sent.
+        </p>
+        <div class="approval-note">
+            If you did not intend to approve this request, contact
+            <a href="mailto:DeepSeq@ie-freiburg.mpg.de">DeepSeq@ie-freiburg.mpg.de</a>.
+        </div>
+    </section>
+</main>
+{% endblock content %}

@@ -1,38 +1,65 @@
 {% extends "base.html" %}
-<p>{% block content %}</p>
-    <h3>Export Sequencing Request</h3>
-    {% if success %}
-    <div class="alert alert-success" role="alert">
-        Export successful!
-    </div>
-    {% endif %}
-    {% if errors %}
-    <div class="alert alert-danger" role="alert">
-        {{ errors }}
-    </div>
-    {% endif %}
-    <p>Use the obtained file as a template for swiftly submitting your next sequencing request.</p>
-    <form method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        <tr>
-            <td>Provide a project ID:</td>
-            <td>
-                <input type="text"
-                       class="form-control"
-                       name="project-id"
-                       pattern="[0-9]+"
-                       title="Integer number, most probably 4 digits"
-                       required>
-            </td>
-        </tr>
-        <p> Select format of file.</p>
-        <p>
-            <select name="file-format" class="form-control my-3">
-                <option selected>CSV</option>
-                <option disabled>JSON</option>
-            </select>
-            <button class="btn btn-primary" type="submit">Export</button>
-        </form>
-    </p>
-    <a href="{% url 'index' %}">Go back.</a>
+{% load static %}
+
+{% block title %}Parkour LIMS | Export Request{% endblock %}
+
+{% block content %}
+<main class="django-page">
+    <section class="django-page-card django-form-card">
+        <header class="django-page-header">
+            <img src="{% static 'images/parkour-logo.svg' %}" alt="">
+            <div>
+                <h1>Export Sequencing Request</h1>
+                <p>Download request data for reuse outside Parkour.</p>
+            </div>
+        </header>
+
+        <div class="django-page-body">
+            {% if success %}
+            <div class="django-message django-message-success" role="alert">
+                Export successful!
+            </div>
+            {% endif %}
+            {% if errors %}
+            <div class="django-message django-message-error" role="alert">
+                {{ errors }}
+            </div>
+            {% endif %}
+
+            <p class="django-page-intro">
+                Use the exported file as a template when submitting your next sequencing request.
+            </p>
+
+            <form class="django-form" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="django-form-field">
+                    <label for="project-id">Project ID</label>
+                    <input
+                        id="project-id"
+                        type="text"
+                        name="project-id"
+                        pattern="[0-9]+"
+                        inputmode="numeric"
+                        title="Integer number, most probably 4 digits"
+                        placeholder="Enter a project ID"
+                        required
+                    >
+                </div>
+
+                <div class="django-form-field">
+                    <label for="export-file-format">File format</label>
+                    <select id="export-file-format" name="file-format">
+                        <option selected>CSV</option>
+                        <option disabled>JSON</option>
+                    </select>
+                </div>
+
+                <div class="django-form-actions">
+                    <a class="django-button django-button-secondary" href="{% url 'index' %}">Go back</a>
+                    <button class="django-button django-button-primary" type="submit">Export</button>
+                </div>
+            </form>
+        </div>
+    </section>
+</main>
 {% endblock content %}

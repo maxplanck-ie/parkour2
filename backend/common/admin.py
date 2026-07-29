@@ -299,8 +299,9 @@ class UserAdmin(NamedUserAdmin):
                     request=request,
                     from_email=settings.SERVER_EMAIL,
                     use_https=request.is_secure(),
-                    subject_template_name="registration/" + "user_creation_subject.txt",
-                    email_template_name="registration/" + "user_creation_email.html",
+                    subject_template_name="registration/user_creation_subject.txt",
+                    email_template_name="registration/user_creation_email.txt",
+                    html_email_template_name="registration/user_creation_email.html",
                 )
 
 

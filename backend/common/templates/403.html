@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
 {% load static %}
 
 {% block css %}
@@ -12,15 +12,15 @@
 </style>
 {% endblock css %}
 
-{% block title %}Parkour LIMS | Internal Server Error{% endblock title %}
+{% block title %}Parkour LIMS | Access Denied{% endblock title %}
 
 {% block content %}
 <main class="error-page">
     <section class="error-card">
-        <img class="error-logo" src="{% static 'images/parkour-logo.svg' %}" alt="">
-        <div class="error-code">500</div>
-        <h1>Something went wrong</h1>
-        <p>The server could not process your request. Please try again or contact the administrator.</p>
+        <img class="error-logo" src="{% static 'images/parkour-logo.svg' %}" width="42" height="42" alt="">
+        <div class="error-code">403</div>
+        <h1>Access denied</h1>
+        <p>You do not have permission to access this page or perform this action.</p>
         <a class="django-button django-button-primary" href="{% url 'index' %}">Return home</a>
     </section>
 </main>

@@ -30,22 +30,22 @@ def test_login_page(page: Page):
     passwordInput = page.locator("input#id_password")
     loginButton = page.locator("input#login_button")
     forgotPasswordLink = page.get_by_role("link", name="Forgot password?")
-    forgotPasswordEmailInput = page.get_by_label("Email address:")
+    forgotPasswordEmailInput = page.get_by_label("Email address", exact=True)
     forgotPasswordEmailSubmitButton = page.get_by_role(
-        "button", name="Reset my password"
+        "button", name="Send reset link"
     )
 
     utilities.visit_login_page(page)
     expect(page.locator("h2.form-signin-heading")).to_have_text(
-        re.compile(r"Parkour2?\s+[0-9][0-9]\.[0-9][0-9]\.[0-9][0-9]")
+        re.compile(r"Parkour LIMS\s+[0-9][0-9]\.[0-9][0-9]\.[0-9][0-9]")
     )
     forgotPasswordLink.click()
     forgotPasswordEmailInput.fill(forgotPasswordEmailId)
     forgotPasswordEmailSubmitButton.click()
-    expect(page.get_by_text("Password reset sent")).to_be_visible()
+    expect(page.get_by_role("heading", name="Check your email")).to_be_visible()
     expect(
-        page.locator(
-            "text=/We.?ve emailed you instructions for setting your password/i"
+        page.get_by_text(
+            re.compile(r"If an active account matches the address you entered", re.I)
         )
     ).to_be_visible()
     utilities.visit_login_page(page)

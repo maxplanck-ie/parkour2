@@ -22,8 +22,17 @@ Parkour LIMS | Login
 <div id="login-form">
     <form class="form-signin" method="post" action="{% url 'login' %}">
         {% csrf_token %}
-        <h2 class="form-signin-heading">{{ INSTANCE_NAME }}{% if INSTANCE_VERSION %}
-            <span class="form-signin-version">{{ INSTANCE_VERSION }}</span>{% endif %}</h2>
+        <h2 class="form-signin-heading">
+            <span class="form-signin-brand">
+                <img class="form-signin-logo" src="{% static 'images/parkour-logo.svg' %}" alt="">
+                <span class="form-signin-brand-copy">
+                    <span class="form-signin-title">Parkour LIMS</span>
+                    {% if INSTANCE_VERSION %}
+                    <span class="form-signin-version">{{ INSTANCE_VERSION }}</span>
+                    {% endif %}
+                </span>
+            </span>
+        </h2>
         <input type="text" class="form-control" id="id_username" name="username" placeholder="Email" required=""
             autofocus="" />
         <input type="password" class="form-control" id="id_password" name="password" placeholder="Password"

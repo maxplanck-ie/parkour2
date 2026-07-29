@@ -1,119 +1,858 @@
 #login-form {
   font-family:
-    "Open Sans", "Helvetica Neue", Helvetica, Arial, Verdana, sans-serif;
-  position: absolute;
+    "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+  position: fixed;
   top: 50%;
   left: 50%;
-  margin-top: -175px;
-  margin-left: -210px;
-  width: 420px;
-  height: 350px;
+  transform: translate(-50%, -50%);
+  width: min(420px, calc(100% - 32px));
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 .form-signin {
-  padding: 15px 35px 45px;
+  padding: 32px 36px 36px;
   margin: 0 auto;
-  background-color: #fff;
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  opacity: 0.9;
+  background-color: rgba(255, 255, 255, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  border-radius: 12px;
+  box-shadow: 0 18px 42px rgba(0, 0, 0, 0.24);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
 }
-.form-signin .form-signin-heading,
-.form-signin .checkbox {
-  margin-bottom: 30px;
+
+.form-signin .form-signin-heading {
+  margin: 0 0 28px;
+  color: #13415b;
+  font-size: 28px;
+  line-height: 1.2;
 }
-.form-signin .checkbox {
-  font-weight: normal;
+
+.form-signin .form-signin-brand {
+  display: flex;
+  align-items: flex-start;
+  gap: 11px;
 }
+
+.form-signin .form-signin-logo {
+  width: 40px;
+  height: 40px;
+  flex: 0 0 40px;
+  margin-top: -3px;
+}
+
+.form-signin .form-signin-brand-copy {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.form-signin .form-signin-title {
+  font-weight: 600;
+}
+
 .form-signin .form-signin-version {
-  display: block;
-  font-size: 60%;
-  font-weight: normal;
-  color: #888;
+  margin: 5px 0 0;
+  color: #697987;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.1px;
 }
+
 .form-signin .form-control {
   position: relative;
-  font-size: 16px;
-  height: auto;
-  padding: 10px;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
+  height: 46px;
+  padding: 11px 13px;
+  color: #333;
+  background-color: #fff;
+  border: 1px solid #d7dee3;
+  border-radius: 8px;
+  box-shadow: none;
+  font-size: 14px;
   box-sizing: border-box;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background-color 0.2s ease;
 }
+
+.form-signin .form-control::placeholder {
+  color: #9aa0a6;
+}
+
 .form-signin .form-control:focus {
   z-index: 2;
+  background-color: #f8fbfb;
+  border-color: #0b7f78;
+  box-shadow: 0 0 0 3px rgba(11, 127, 120, 0.14);
 }
+
 .form-signin input[type="text"] {
-  margin-bottom: -1px;
-  border-bottom-left-radius: 0;
-  border-bottom-right-radius: 0;
+  margin-bottom: 12px;
 }
+
 .form-signin input[type="password"] {
-  margin-bottom: 10px;
-  border-top-left-radius: 0;
-  border-top-right-radius: 0;
+  margin-bottom: 0;
 }
 
 .form-signin .link-forgot-password {
-  margin-bottom: 10px;
+  margin: 15px 0 16px;
 }
 
 .form-signin .link-forgot-password a {
-  color: #35baf6;
+  color: #006c66;
   font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.form-signin .link-forgot-password a:hover,
+.form-signin .link-forgot-password a:focus {
+  color: #005b59;
+  text-decoration: underline;
 }
 
 #login-form input[type="submit"] {
-  background-color: #9cc96b;
-  border: 1px solid #90c258;
-  border-radius: 3px;
+  height: 46px;
+  padding: 10px 20px;
+  color: #fff;
+  background: linear-gradient(180deg, #0b7f78 0%, #006c66 100%);
+  border: 1px solid #005b59;
+  border-radius: 8px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.22);
+  font-size: 15px;
+  font-weight: 600;
+  text-shadow: none;
+  transition:
+    background 0.2s ease,
+    transform 0.12s ease,
+    box-shadow 0.2s ease;
 }
 
 #login-form input[type="submit"]:hover {
-  background-color: #90c258;
+  background: linear-gradient(180deg, #0f8a82 0%, #05736d 100%);
+  border-color: #00504c;
+  transform: translateY(-1px);
 }
 
-#block-404,
-#block-500 {
-  text-align: center;
+#login-form input[type="submit"]:active {
+  transform: translateY(0);
+}
+
+#login-form input[type="submit"]:focus {
+  outline: none;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.22),
+    0 0 0 3px rgba(11, 127, 120, 0.18);
+}
+
+@media (max-width: 480px) {
+  .form-signin {
+    padding: 28px 24px 30px;
+  }
+}
+
+.password-reset-page {
+  display: flex;
+  min-height: 100vh;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 20px;
   font-family:
-    "Open Sans", "Helvetica Neue", Helvetica, Arial, Verdana, sans-serif;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  margin-top: -135px;
-  margin-left: -275px;
-  width: 550px;
-  height: 270px;
+    "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#block-404 h1,
-#block-500 h1 {
-  font-size: 150px;
-  font-weight: normal;
-  line-height: 150px;
+.password-reset-page * {
+  box-sizing: border-box;
 }
 
-#block-404 p,
-#block-500 p {
-  line-height: 24px;
-  font-size: 18px;
+.password-reset-card {
+  width: min(460px, 100%);
+  padding: 32px 36px 34px;
+  color: #27313b;
+  background: rgba(255, 255, 255, 0.96);
+  border: 1px solid rgba(255, 255, 255, 0.72);
+  border-radius: 12px;
+  box-shadow: 0 18px 42px rgba(0, 0, 0, 0.24);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
 }
 
-#block-404 p a,
-#block-404 p a:visited,
-#block-404 p a:focus,
-#block-500 p a,
-#block-500 p a:visited,
-#block-500 p a:focus {
-  color: #35baf6;
+.password-reset-card-centered {
+  text-align: center;
+}
+
+.password-reset-brand {
+  display: flex;
+  align-items: flex-start;
+  gap: 11px;
+  margin-bottom: 26px;
+}
+
+.password-reset-card-centered .password-reset-brand {
+  justify-content: center;
+  text-align: left;
+}
+
+.password-reset-brand img {
+  width: 40px;
+  height: 40px;
+  flex: 0 0 40px;
+  margin-top: -3px;
+}
+
+.password-reset-brand-copy {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.password-reset-brand-title {
+  color: #13415b;
+  font-size: 28px;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.password-reset-brand-version {
+  margin-top: 5px;
+  color: #697987;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.1px;
+}
+
+.password-reset-card h1 {
+  margin: 0;
+  color: #13415b;
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.password-reset-intro {
+  margin: 9px 0 22px;
+  color: #5f6d78;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.password-reset-form {
+  gap: 18px;
+}
+
+.password-reset-form .django-message {
+  margin-bottom: 0;
+}
+
+.password-reset-submit {
+  width: 100%;
+  min-height: 46px;
+}
+
+.django-field-errors {
+  color: #9b2f2f;
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.password-reset-help ul {
+  margin: 5px 0 0;
+  padding-left: 18px;
+}
+
+.password-reset-note {
+  margin: -4px 0 22px;
+  padding: 12px 14px;
+  color: #5f6d78;
+  background: #f3f7f7;
+  border: 1px solid #dbe6e7;
+  border-radius: 8px;
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+.password-reset-status-mark {
+  display: inline-flex;
+  width: 52px;
+  height: 52px;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 16px;
+  color: #ffffff;
+  background: linear-gradient(135deg, #0a8a82, #006c66);
+  border-radius: 50%;
+  box-shadow: 0 8px 20px rgba(0, 108, 102, 0.25);
+  font-size: 25px;
+  font-weight: 700;
+}
+
+.password-reset-status-mark-error {
+  color: #8a2c2c;
+  background: #fff1f1;
+  border: 1px solid #f0b8b8;
+  box-shadow: none;
+}
+
+.password-reset-footer {
+  margin-top: 18px;
+  text-align: center;
+}
+
+.password-reset-footer a {
+  color: #006c66;
+  font-size: 13px;
+  font-weight: 600;
   text-decoration: none;
 }
 
-#block-404 p a:hover,
-#block-500 p a:hover {
+.password-reset-footer a:hover,
+.password-reset-footer a:focus {
+  color: #005b59;
   text-decoration: underline;
+}
+
+@media (max-width: 480px) {
+  .password-reset-page {
+    padding: 20px 12px;
+  }
+
+  .password-reset-card {
+    padding: 28px 24px 30px;
+  }
+
+  .password-reset-brand-title {
+    font-size: 25px;
+  }
+}
+
+.django-page,
+.approval-page,
+.error-page {
+  font-family:
+    "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.django-page *,
+.approval-page *,
+.error-page * {
+  box-sizing: border-box;
+}
+
+.django-page {
+  min-height: 100vh;
+  padding: 40px 24px;
+  color: #27313b;
+  background:
+    radial-gradient(circle at top left, rgba(10, 138, 130, 0.09), transparent 34%),
+    #f3f6f7;
+}
+
+.django-page-wide {
+  padding: 30px 24px;
+}
+
+.django-page-card {
+  width: 100%;
+  max-width: 760px;
+  margin: 0 auto;
+  overflow: hidden;
+  background: #ffffff;
+  border: 1px solid #dbe4e8;
+  border-radius: 12px;
+  box-shadow: 0 16px 38px rgba(32, 54, 64, 0.12);
+}
+
+.django-page-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-height: 82px;
+  padding: 18px 24px;
+  color: #ffffff;
+  background: linear-gradient(135deg, #0a8a82 0%, #006c66 50%, #00504c 100%);
+}
+
+.django-page-header img {
+  width: 42px;
+  height: 42px;
+  flex: 0 0 42px;
+  padding: 6px;
+  background: rgba(255, 255, 255, 0.96);
+  border-radius: 10px;
+  box-shadow: inset 0 0 0 1px rgba(0, 80, 76, 0.08);
+}
+
+.django-page-header h1 {
+  margin: 0;
+  color: inherit;
+  font-size: 22px;
+  font-weight: 600;
+  line-height: 1.25;
+}
+
+.django-page-header p {
+  margin: 4px 0 0;
+  color: rgba(255, 255, 255, 0.82);
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.django-page-body {
+  padding: 26px;
+}
+
+.django-page-intro {
+  margin: 0 0 22px;
+  color: #5f6d78;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.django-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.django-form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.django-form-field label {
+  margin: 0;
+  color: #13415b;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.django-form-field input,
+.django-form-field select {
+  width: 100%;
+  min-height: 44px;
+  padding: 10px 12px;
+  color: #27313b;
+  background: #ffffff;
+  border: 1px solid #d7dee3;
+  border-radius: 8px;
+  box-shadow: none;
+  font-size: 14px;
+  outline: none;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background-color 0.2s ease;
+}
+
+.django-form-field input[type="file"] {
+  padding: 7px;
+}
+
+.django-form-field input[type="file"]::file-selector-button {
+  margin-right: 12px;
+  padding: 7px 12px;
+  color: #006c66;
+  background: #e8f2f1;
+  border: 0;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.django-form-field input:hover,
+.django-form-field select:hover {
+  border-color: #aab9c1;
+  background-color: #f8fbfb;
+}
+
+.django-form-field input:focus,
+.django-form-field select:focus {
+  background-color: #f8fbfb;
+  border-color: #0b7f78;
+  box-shadow: 0 0 0 3px rgba(11, 127, 120, 0.14);
+}
+
+.django-field-help {
+  color: #74828d;
+  font-size: 12px;
+}
+
+.django-form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  padding-top: 4px;
+}
+
+.django-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  min-height: 42px;
+  padding: 9px 18px;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  box-shadow: none;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.2;
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.12s ease;
+}
+
+.django-button:hover,
+.django-button:focus {
+  text-decoration: none;
+}
+
+.django-button-primary,
+.django-button-primary:visited {
+  color: #ffffff;
+  background: linear-gradient(180deg, #0b7f78 0%, #006c66 100%);
+  border-color: #005b59;
+}
+
+.django-button-primary:hover,
+.django-button-primary:focus {
+  color: #ffffff;
+  background: linear-gradient(180deg, #0f8a82 0%, #05736d 100%);
+  border-color: #00504c;
+  transform: translateY(-1px);
+}
+
+.django-button-secondary,
+.django-button-secondary:visited {
+  color: #006c66;
+  background: #ffffff;
+  border-color: #0b7f78;
+}
+
+.django-button-secondary:hover,
+.django-button-secondary:focus {
+  color: #005b59;
+  background: #e8f2f1;
+  border-color: #005b59;
+}
+
+.django-message {
+  margin-bottom: 20px;
+  padding: 12px 14px;
+  border: 1px solid;
+  border-radius: 8px;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.django-message-success {
+  color: #176b38;
+  background: #ecf8f0;
+  border-color: #a8dfb8;
+}
+
+.django-message-error {
+  color: #8a2c2c;
+  background: #fff1f1;
+  border-color: #f0b8b8;
+}
+
+.approval-page,
+.error-page {
+  display: flex;
+  min-height: 100vh;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 20px;
+}
+
+.approval-card,
+.error-card {
+  width: min(520px, 100%);
+  padding: 40px;
+  color: #27313b;
+  text-align: center;
+  background: rgba(255, 255, 255, 0.96);
+  border: 1px solid rgba(255, 255, 255, 0.72);
+  border-radius: 14px;
+  box-shadow: 0 20px 48px rgba(0, 0, 0, 0.28);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.approval-mark {
+  display: inline-flex;
+  width: 58px;
+  height: 58px;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 18px;
+  color: #ffffff;
+  background: linear-gradient(135deg, #0a8a82, #006c66);
+  border-radius: 50%;
+  font-size: 29px;
+  font-weight: 700;
+  box-shadow: 0 8px 20px rgba(0, 108, 102, 0.25);
+}
+
+.approval-card h1,
+.error-card h1 {
+  margin: 0;
+  color: #13415b;
+  font-size: 28px;
+  font-weight: 600;
+}
+
+.approval-card p,
+.error-card p {
+  margin: 12px 0 0;
+  color: #5f6d78;
+  font-size: 15px;
+  line-height: 1.65;
+}
+
+.approval-card .approval-lead {
+  color: #27313b;
+  font-size: 17px;
+  font-weight: 600;
+}
+
+.approval-note {
+  margin-top: 24px;
+  padding: 14px;
+  color: #5f6d78;
+  background: #f3f7f7;
+  border: 1px solid #dbe6e7;
+  border-radius: 8px;
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+.approval-note a {
+  color: #006c66;
+  font-weight: 600;
+}
+
+.error-logo {
+  width: 42px;
+  height: 42px;
+  margin-bottom: 8px;
+}
+
+.error-code {
+  color: #006c66;
+  font-size: 88px;
+  font-weight: 700;
+  letter-spacing: -5px;
+  line-height: 1;
+}
+
+.error-card p {
+  max-width: 380px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.error-card .django-button {
+  margin-top: 24px;
+}
+
+.django-report-card,
+.django-database-card {
+  max-width: 1200px;
+}
+
+.report-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-bottom: 28px;
+}
+
+.daterange {
+  position: relative;
+  width: min(290px, 100%);
+}
+
+.daterange input {
+  width: 100%;
+  height: 42px;
+  padding: 9px 42px 9px 12px;
+  color: #27313b;
+  background: #ffffff;
+  border: 1px solid #d7dee3;
+  border-radius: 8px;
+  outline: none;
+}
+
+.daterange input:focus {
+  border-color: #0b7f78;
+  box-shadow: 0 0 0 3px rgba(11, 127, 120, 0.14);
+}
+
+.daterange i {
+  position: absolute;
+  top: 50%;
+  right: 14px;
+  color: #006c66;
+  pointer-events: none;
+  transform: translateY(-50%);
+}
+
+.report-tables .table {
+  width: 100%;
+  margin: 0 0 26px;
+  background: #ffffff;
+  border-color: #dbe4e8;
+  font-size: 13px;
+}
+
+.report-tables .table caption {
+  padding: 0 0 9px;
+  color: #13415b;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.report-tables .table > thead > tr > th {
+  padding: 10px;
+  color: #334653;
+  background: #f0f5f5;
+  border-color: #dbe4e8;
+  font-weight: 600;
+  vertical-align: middle;
+}
+
+.report-tables .table > tbody > tr > td {
+  padding: 9px 10px;
+  color: #50606c;
+  border-color: #e1e8eb;
+}
+
+.report-tables .table-hover > tbody > tr:hover {
+  background-color: #f3f8f7;
+}
+
+.report-table-scroll {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.report-table-scroll .table {
+  min-width: 900px;
+}
+
+.django-loader {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 180px;
+  color: #5f6d78;
+  font-size: 14px;
+}
+
+.django-loader-spinner {
+  width: 24px;
+  height: 24px;
+  border: 3px solid #d7e7e5;
+  border-top-color: #006c66;
+  border-radius: 50%;
+  animation: django-loader-spin 0.8s linear infinite;
+}
+
+@keyframes django-loader-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.django-database-card .dataTables_wrapper {
+  color: #50606c;
+  font-size: 13px;
+}
+
+.django-database-card .dataTables_length,
+.django-database-card .dataTables_filter,
+.django-database-card .dt-buttons {
+  margin-bottom: 14px;
+}
+
+.django-database-card .dataTables_filter input,
+.django-database-card .dataTables_length select {
+  min-height: 36px;
+  padding: 6px 9px;
+  border: 1px solid #d7dee3;
+  border-radius: 7px;
+  outline: none;
+}
+
+.django-database-card button.dt-button {
+  min-height: 36px;
+  padding: 7px 12px;
+  color: #006c66;
+  background: #ffffff;
+  border: 1px solid #0b7f78;
+  border-radius: 7px;
+}
+
+.django-database-card table.dataTable thead th {
+  color: #334653;
+  background: #f0f5f5;
+  border-color: #dbe4e8;
+}
+
+@media (max-width: 700px) {
+  .django-page {
+    padding: 20px 12px;
+  }
+
+  .django-page-header,
+  .django-page-body {
+    padding: 20px;
+  }
+
+  .django-page-header h1 {
+    font-size: 19px;
+  }
+
+  .django-page-header p {
+    display: none;
+  }
+
+  .django-form-actions,
+  .report-toolbar {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .django-form-actions .django-button,
+  .report-toolbar .django-button,
+  .daterange {
+    width: 100%;
+  }
+
+  .approval-card,
+  .error-card {
+    padding: 32px 22px;
+  }
+
+  .error-code {
+    font-size: 72px;
+  }
 }

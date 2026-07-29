@@ -1,0 +1,11 @@
+{% load i18n %}{% autoescape off %}
+{% blocktrans %}An account was created for you at {{ site_name }}. Set your password to finish activating your Parkour LIMS account.{% endblocktrans %}
+
+{% trans "Your username is:" %} {{ user.get_username }}
+
+{% trans "Set your password:" %}
+{{ protocol }}://{{ domain }}{% url 'password_reset_confirm' uidb64=uid token=token %}
+
+--
+{% trans "Parkour LIMS Support" %}
+{% endautoescape %}

@@ -6,48 +6,32 @@
 
 {% block css %}
 <link rel="stylesheet" href="{% static 'js/daterangepicker/daterangepicker.css' %}">
-
-<style>
-    #report {
-        margin: 50px auto 75px;
-        width: 50%;
-        min-width: 750px;
-    }
-
-    .daterange {
-        position: relative;
-    }
-
-    .daterange i {
-        position: absolute;
-        bottom: 10px;
-        right: 24px;
-        top: auto;
-        cursor: pointer;
-    }
-
-    table caption {
-        font-size: 1.3em;
-    }
-
-    #download-xlsx {
-        min-width: 150px;
-        white-space: nowrap;
-        padding: 6px 20px;
-    }
-</style>
 {% endblock css %}
 
 {% block content %}
-<div id="report">
-    <div>
-    <div class="col-md-4 col-md-offset-4 daterange">
-        <div style="display:flex; gap:12px; align-items:center;">
-            <input type="text" name="daterange" class="form-control"/>
-            <a id="download-xlsx" class="btn btn-default" href="#">Download XLS</a>
-        </div>
-        <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
-    </div>
+<main class="django-page django-page-wide">
+    <section id="report" class="django-page-card django-report-card">
+        <header class="django-page-header">
+            <img src="{% static 'images/parkour-logo.svg' %}" alt="">
+            <div>
+                <h1>Sequencing Report</h1>
+                <p>Review request volumes and sequencing activity by date range.</p>
+            </div>
+        </header>
+
+        <div class="django-page-body">
+            <div class="report-toolbar">
+                <div class="daterange">
+                    <input type="text" name="daterange" aria-label="Report date range">
+                    <i class="glyphicon glyphicon-calendar" aria-hidden="true"></i>
+                </div>
+                <a id="download-xlsx" class="django-button django-button-secondary" href="#">
+                    <span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span>
+                    Download XLSX
+                </a>
+            </div>
+
+            <div class="report-tables">
 
     <table class="table table-bordered table-hover">
         <caption>Total Counts</caption>
@@ -147,29 +131,29 @@
         </tbody>
     </table>
 
-    <table class="table table-bordered table-hover">
-        <caption>Libraries on Devices</caption>
-        <thead>
-            <tr>
-                <th>Principal Investigator</th>
-                {% for sequencer in sequencers_list %}
-                    <th>{{ sequencer }}</th>
-                {% endfor %}
-            </tr>
-        </thead>
-        <tbody>
-            {% for pi, counts in libraries_on_sequencers_count.items %}
-            <tr>
-                <td>{{ pi }}</td>
-                {% for sequencer in sequencers_list %}
-                    <td>{{ counts|get_count:sequencer }}</td>
-                {% endfor %}
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-
-    <hr/>
+                <div class="report-table-scroll">
+                    <table class="table table-bordered table-hover">
+                        <caption>Libraries on Devices</caption>
+                        <thead>
+                            <tr>
+                                <th>Principal Investigator</th>
+                                {% for sequencer in sequencers_list %}
+                                    <th>{{ sequencer }}</th>
+                                {% endfor %}
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for pi, counts in libraries_on_sequencers_count.items %}
+                            <tr>
+                                <td>{{ pi }}</td>
+                                {% for sequencer in sequencers_list %}
+                                    <td>{{ counts|get_count:sequencer }}</td>
+                                {% endfor %}
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
 
     <!-- table class="table table-bordered table-hover">
         <caption>Turnaround (all-time)</caption>
@@ -189,9 +173,11 @@
             </tr>
             {% endfor %}
         </tbody>
-    </table -->
-
-</div>
+                </table -->
+            </div>
+        </div>
+    </section>
+</main>
 {% endblock %}
 
 {% block js %}
