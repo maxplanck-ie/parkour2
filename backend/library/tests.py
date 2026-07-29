@@ -1026,6 +1026,21 @@ class TestGenerateROCrateAPI(BaseAPITestCase):
             request_file_entry.get("fileType"),
             "Experimental_Design",
         )
+        renderer = self._pdf_renderer_for_graph(payload["@graph"])
+        rendered_files = renderer.attachments_for_request(
+            f"#request-context-{self.request.pk}"
+        )
+        self.assertEqual(
+            rendered_files,
+            [
+                {
+                    "name": "req.txt",
+                    "contentUrl": request_file_entry["contentUrl"],
+                    "fileType": "Experimental_Design",
+                }
+            ],
+        )
+        self.assertTrue(renderer.render().startswith(b"%PDF"))
         self.assertEqual(
             request_file_entry.get("isPartOf"),
             {"@id": "./"},

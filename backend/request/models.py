@@ -18,6 +18,7 @@ PREDEFINED_FILE_TYPES = (
     "Experimental_Design",
 )
 DEFAULT_FILE_TYPE = "Other"
+FILE_TYPE_MAX_LENGTH = 100
 FILE_TYPE_PATTERN = re.compile(r"^[A-Za-z0-9]+(?:_[A-Za-z0-9]+)*$")
 file_type_validator = RegexValidator(
     regex=FILE_TYPE_PATTERN,
@@ -29,7 +30,11 @@ file_type_validator = RegexValidator(
 
 
 def is_valid_file_type(value):
-    return isinstance(value, str) and bool(FILE_TYPE_PATTERN.fullmatch(value))
+    return (
+        isinstance(value, str)
+        and len(value) <= FILE_TYPE_MAX_LENGTH
+        and bool(FILE_TYPE_PATTERN.fullmatch(value))
+    )
 
 
 def get_sentinel_user():
@@ -64,7 +69,7 @@ class FileRequest(models.Model):
     file = models.FileField(upload_to="request_files/%Y/%m/%d/")
     file_type = models.CharField(
         "File Type",
-        max_length=100,
+        max_length=FILE_TYPE_MAX_LENGTH,
         default=DEFAULT_FILE_TYPE,
         validators=[file_type_validator],
     )

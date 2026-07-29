@@ -112,6 +112,7 @@ class FileRequestTest(TestCase):
         self.assertTrue(is_valid_file_type("Custom_Quality_Report"))
         self.assertFalse(is_valid_file_type("Custom Quality Report"))
         self.assertFalse(is_valid_file_type("Custom__Quality_Report"))
+        self.assertFalse(is_valid_file_type("A" * 101))
 
 
 class RequestMilestoneSignalsTest(TestCase):

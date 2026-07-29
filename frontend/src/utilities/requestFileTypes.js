@@ -10,9 +10,14 @@ export const REQUEST_FILE_TYPE_OPTIONS = [
 ];
 
 const REQUEST_FILE_TYPE_PATTERN = /^[A-Za-z0-9]+(?:_[A-Za-z0-9]+)*$/;
+const REQUEST_FILE_TYPE_MAX_LENGTH = 100;
 
 export function isValidRequestFileType(value) {
-  return REQUEST_FILE_TYPE_PATTERN.test(String(value || ""));
+  const text = String(value || "");
+  return (
+    text.length <= REQUEST_FILE_TYPE_MAX_LENGTH &&
+    REQUEST_FILE_TYPE_PATTERN.test(text)
+  );
 }
 
 export function normaliseRequestFile(file = {}) {

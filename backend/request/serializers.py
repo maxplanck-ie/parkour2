@@ -120,8 +120,8 @@ class RequestSerializer(ModelSerializer):
                     {
                         "file_types": [
                             (
-                                f"Invalid file type for file {file_id}. Use letters and "
-                                "numbers separated by single underscores."
+                                f"Invalid file type for file {file_id}. Use at most 100 "
+                                "letters and numbers separated by single underscores."
                             )
                         ]
                     }

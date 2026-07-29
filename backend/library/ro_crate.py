@@ -2052,6 +2052,7 @@ PDF_FIELD_OTHER_MATERIALS = "otherMaterials"
 PDF_FIELD_CONTENT_URL = "contentUrl"
 PDF_FIELD_IS_PART_OF = "isPartOf"
 PDF_FIELD_REQUEST_CONTEXT = "requestContext"
+PDF_FIELD_FILE_TYPE = "fileType"
 PDF_PREVIEW_TITLE = "RO Crate Preview"
 PDF_PREVIEW_SUBTITLE = (
     "RO-Crate preview generated from Parkour metadata for selected libraries and samples."
@@ -2503,7 +2504,7 @@ class ROCratePdfRenderer:
                     or entity.get(PDF_FIELD_CONTENT_URL)
                     or entity.get(PDF_FIELD_ID),
                     "contentUrl": entity.get(PDF_FIELD_CONTENT_URL),
-                    "fileType": entity.get("fileType") or "Other",
+                    "fileType": entity.get(PDF_FIELD_FILE_TYPE) or "Other",
                 }
             )
         return files
