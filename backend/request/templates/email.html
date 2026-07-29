@@ -1,45 +1,77 @@
-{% load i18n %}{% autoescape off %}
-<p>Dear {{ full_name }},</p>
+{% load i18n %}
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% trans "Message from the Deep Sequencing Facility" %}</title>
+</head>
+<body style="margin:0; padding:0; background:#f3f6f7; color:#27313b; font-family:Inter,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;">
+    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="width:100%; background:#f3f6f7;">
+        <tr>
+            <td align="center" style="padding:36px 16px;">
+                <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="width:100%; max-width:680px; overflow:hidden; background:#ffffff; border:1px solid #dbe4e8; border-radius:12px;">
+                    <tr>
+                        <td style="padding:24px 30px; background:#006c66; color:#ffffff;">
+                            <div style="font-size:22px; font-weight:700; line-height:1.2;">Parkour LIMS</div>
+                            <div style="margin-top:5px; color:#d8efed; font-size:13px; line-height:1.5;">{% trans "Deep Sequencing Facility" %}</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="padding:34px 30px;">
+                            <h1 style="margin:0 0 16px; color:#13415b; font-size:24px; font-weight:700; line-height:1.3;">
+                                {% trans "New message" %}
+                            </h1>
+                            <p style="margin:0 0 14px; color:#50606c; font-size:15px; line-height:1.65;">
+                                {% blocktrans %}Dear {{ full_name }},{% endblocktrans %}
+                            </p>
+                            <div style="margin:0 0 24px; padding:14px 16px; color:#50606c; background:#f8fafb; border-left:3px solid #0b7f78; font-size:15px; line-height:1.65;">
+                                {{ message|linebreaksbr }}
+                            </div>
 
-<p>{{ message }}</p>
+                            {% if records %}
+                            <p style="margin:0 0 10px; color:#13415b; font-size:15px; font-weight:700; line-height:1.5;">
+                                {% trans "Failed libraries and samples" %}
+                            </p>
+                            <table width="100%" cellspacing="0" cellpadding="0" border="0" style="width:100%; border-collapse:collapse; font-size:12px; line-height:1.45;">
+                                <thead>
+                                    <tr style="background:#eef4f4;">
+                                        <th align="left" style="padding:9px 8px; color:#334653; border:1px solid #dbe4e8;">{% trans "Name" %}</th>
+                                        <th align="left" style="padding:9px 8px; color:#334653; border:1px solid #dbe4e8;">{% trans "Barcode" %}</th>
+                                        <th align="left" style="padding:9px 8px; color:#334653; border:1px solid #dbe4e8;">{% trans "Protocol" %}</th>
+                                        <th align="left" style="padding:9px 8px; color:#334653; border:1px solid #dbe4e8;">{% trans "Facility comment" %}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for record in records %}
+                                    <tr>
+                                        <td style="padding:9px 8px; color:#50606c; border:1px solid #e1e8eb;">{{ record.name }}</td>
+                                        <td style="padding:9px 8px; color:#50606c; border:1px solid #e1e8eb;">{{ record.barcode }}</td>
+                                        <td style="padding:9px 8px; color:#50606c; border:1px solid #e1e8eb;">{{ record.library_protocol.name }}</td>
+                                        <td style="padding:9px 8px; color:#50606c; border:1px solid #e1e8eb;">{{ record.comments_facility|default:"" }}</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                            {% endif %}
 
-{% if records %}
-<hr/>
-<p>The list of failed libraries/samples:</p>
-<table style="width:100%;">
-    <thead>
-        <tr style="font-weight:bold;">
-            <td>Name</td>
-            <td>Barcode</td>
-            <td>Protocol</td>
-            <td>Facility Comment</td>
+                            <p style="margin:24px 0 0; color:#50606c; font-size:14px; line-height:1.65;">
+                                {% trans "Kind regards," %}<br>
+                                <strong style="color:#13415b;">{% trans "Deep Sequencing Team" %}</strong>
+                            </p>
+                            <div style="margin-top:18px; padding:12px 14px; color:#5f6d78; background:#f3f7f7; border:1px solid #dbe6e7; border-radius:8px; font-size:13px; line-height:1.55;">
+                                {% trans "For discussion or sample submission, visit us daily between 11:00 and 12:00." %}
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="padding:20px 30px; background:#eef4f4; color:#74828d; font-size:12px; line-height:1.5;">
+                            {% blocktrans %}This message was sent via {{ instance_title }}.{% endblocktrans %}
+                        </td>
+                    </tr>
+                </table>
+            </td>
         </tr>
-    </thead>
-    <tbody>
-        {% for record in records %}
-            <tr>
-                <td>{{ record.name }}</td>
-                <td>{{ record.barcode }}</td>
-                <td>{{ record.library_protocol.name }}</td>
-                {% if record.comments_facility %}
-                    <td>{{ record.comments_facility }}</td>
-                {% else %}
-                    <td></td>
-                {% endif %}
-            </tr>
-        {% endfor %}
-    </tbody>
-</table>
-<hr/>
-{% endif %}
-
-<p>
-    <i>
-        --<br/>
-        Kind regards,<br/>
-        Deep Sequencing Team<br/>
-        <b>For discussion or sample submission see us daily between 11-12 am</b><br/>
-        This e-mail was sent via {{ instance_title }}.
-    </i>
-</p>
-{% endautoescape %}
+    </table>
+</body>
+</html>

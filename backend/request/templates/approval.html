@@ -1,58 +1,103 @@
 {% load i18n %}
-{% autoescape off %}
-    <style>
-    table {
-        width: 100%;
-      }
-    td.center{
-        text-align:center;
-        font-weight:bold;
-      }
-    </style>
-    <p>Dear {{ pi_name }},</p>
-    <p>
-        &emsp; {{ full_name }} requested your approval on this experiment. <b>Please treat <a href={{ token_url }}>this link</a> as a one-time password, scoped for the authorization of this particular sequencing request.</b> Click on it to approve.
-        <br />
-        &emsp; If you are unable to reach Parkour2 now (e.g. using mobile phone on a train without VPN access), consider forwarding this email to anyone else within the Institute's network, they can click on it (even without an account).
-        <br />
-        &emsp; <b>If you don't want to approve the sequencing request, ignore this email.</b> Ask {{ full_name }} for any changes, and the re-sending of a new e-mail just like this one (there's going to be a new link, invalidating the current one).
-    </p>
-    <hr />
-    <p>{{ full_name }} wrote:</p>
-    <p>&emsp; {{ message }}</p>
-    <br />
-    {% if records %}
-        <hr />
-        <table>
-            <thead>
-                <tr>
-                    <td>Name</td>
-                    <td>Barcode</td>
-                    <td>Input Type</td>
-                    <td>Protocol</td>
-                    <td>Length</td>
-                    <td>Depth (M)</td>
-                </tr>
-            </thead>
-            <tbody>
-                {% for record in records %}
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% trans "Sequencing request approval" %}</title>
+</head>
+<body style="margin:0; padding:0; background:#f3f6f7; color:#27313b; font-family:Inter,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;">
+    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="width:100%; background:#f3f6f7;">
+        <tr>
+            <td align="center" style="padding:36px 16px;">
+                <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="width:100%; max-width:680px; overflow:hidden; background:#ffffff; border:1px solid #dbe4e8; border-radius:12px;">
                     <tr>
-                        <td>{{ record.name }}</td>
-                        <td>{{ record.barcode }}</td>
-                        <td>{{ record.nucleic_acid_type.name }}</td>
-                        <td>{{ record.library_protocol.name }}</td>
-                        <td>{{ record.read_length }}</td>
-                        <td>{{ record.sequencing_depth }}</td>
+                        <td style="padding:24px 30px; background:#006c66; color:#ffffff;">
+                            <div style="font-size:22px; font-weight:700; line-height:1.2;">Parkour LIMS</div>
+                            <div style="margin-top:5px; color:#d8efed; font-size:13px; line-height:1.5;">{% trans "Sequencing request management" %}</div>
+                        </td>
                     </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-        <hr />
-    {% endif %}
-    <p>
-        --
-        <br />
-        <i>This e-mail was sent via {{ instance_title }}.</i>
-        <br />
-    </p>
-{% endautoescape %}
+                    <tr>
+                        <td style="padding:34px 30px;">
+                            <h1 style="margin:0 0 16px; color:#13415b; font-size:24px; font-weight:700; line-height:1.3;">
+                                {% trans "Approval requested" %}
+                            </h1>
+                            <p style="margin:0 0 14px; color:#50606c; font-size:15px; line-height:1.65;">
+                                {% blocktrans %}Dear {{ pi_name }},{% endblocktrans %}
+                            </p>
+                            <p style="margin:0 0 22px; color:#50606c; font-size:15px; line-height:1.65;">
+                                {% blocktrans %}{{ full_name }} requested your approval for a sequencing experiment.{% endblocktrans %}
+                            </p>
+
+                            <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="width:100%; margin-bottom:22px;">
+                                <tr>
+                                    <td style="padding:14px 16px; color:#5f6d78; background:#f3f7f7; border:1px solid #dbe6e7; border-radius:8px; font-size:13px; line-height:1.55;">
+                                        <strong style="color:#13415b;">{% trans "Security notice:" %}</strong>
+                                        {% trans "This approval link is a one-time credential for this request. Only share it with an authorized person within the Institute network." %}
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin-bottom:26px;">
+                                <tr>
+                                    <td style="border-radius:8px; background:#006c66;">
+                                        <a href="{{ token_url }}" style="display:inline-block; padding:13px 22px; color:#ffffff; font-size:14px; font-weight:700; line-height:1.2; text-decoration:none;">
+                                            {% trans "Approve request" %}
+                                        </a>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <p style="margin:0 0 8px; color:#13415b; font-size:13px; font-weight:700; line-height:1.5;">
+                                {% blocktrans %}Message from {{ full_name }}{% endblocktrans %}
+                            </p>
+                            <div style="margin:0 0 24px; padding:14px 16px; color:#50606c; background:#f8fafb; border-left:3px solid #0b7f78; font-size:14px; line-height:1.65;">
+                                {{ message|linebreaksbr }}
+                            </div>
+
+                            {% if records %}
+                            <p style="margin:0 0 10px; color:#13415b; font-size:15px; font-weight:700; line-height:1.5;">
+                                {% trans "Libraries and samples" %}
+                            </p>
+                            <table width="100%" cellspacing="0" cellpadding="0" border="0" style="width:100%; border-collapse:collapse; font-size:12px; line-height:1.45;">
+                                <thead>
+                                    <tr style="background:#eef4f4;">
+                                        <th align="left" style="padding:9px 7px; color:#334653; border:1px solid #dbe4e8;">{% trans "Name" %}</th>
+                                        <th align="left" style="padding:9px 7px; color:#334653; border:1px solid #dbe4e8;">{% trans "Barcode" %}</th>
+                                        <th align="left" style="padding:9px 7px; color:#334653; border:1px solid #dbe4e8;">{% trans "Input type" %}</th>
+                                        <th align="left" style="padding:9px 7px; color:#334653; border:1px solid #dbe4e8;">{% trans "Protocol" %}</th>
+                                        <th align="left" style="padding:9px 7px; color:#334653; border:1px solid #dbe4e8;">{% trans "Length" %}</th>
+                                        <th align="left" style="padding:9px 7px; color:#334653; border:1px solid #dbe4e8;">{% trans "Depth (M)" %}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for record in records %}
+                                    <tr>
+                                        <td style="padding:9px 7px; color:#50606c; border:1px solid #e1e8eb;">{{ record.name }}</td>
+                                        <td style="padding:9px 7px; color:#50606c; border:1px solid #e1e8eb;">{{ record.barcode }}</td>
+                                        <td style="padding:9px 7px; color:#50606c; border:1px solid #e1e8eb;">{{ record.nucleic_acid_type.name }}</td>
+                                        <td style="padding:9px 7px; color:#50606c; border:1px solid #e1e8eb;">{{ record.library_protocol.name }}</td>
+                                        <td style="padding:9px 7px; color:#50606c; border:1px solid #e1e8eb;">{{ record.read_length }}</td>
+                                        <td style="padding:9px 7px; color:#50606c; border:1px solid #e1e8eb;">{{ record.sequencing_depth }}</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                            {% endif %}
+
+                            <p style="margin:24px 0 0; color:#74828d; font-size:13px; line-height:1.55;">
+                                {% trans "If you do not want to approve this request, ignore this email and ask the requester to make any necessary changes." %}
+                            </p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="padding:20px 30px; background:#eef4f4; color:#74828d; font-size:12px; line-height:1.5;">
+                            {% blocktrans %}This message was sent automatically via {{ instance_title }}.{% endblocktrans %}
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>
