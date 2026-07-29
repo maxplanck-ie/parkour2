@@ -502,20 +502,55 @@
             >
               <thead>
                 <tr>
-                  <th style="width: 60%">Name</th>
-                  <th style="width: 14%">Size</th>
-                  <th style="width: 26%"></th>
+                  <th class="file-col-name">Name</th>
+                  <th class="file-col-type">File Type</th>
+                  <th class="file-col-size">Size</th>
+                  <th class="file-col-actions"></th>
                 </tr>
               </thead>
               <tbody>
                 <tr v-if="!attachmentsFiles.length">
-                  <td colspan="3" class="empty-cell">No files uploaded yet.</td>
+                  <td colspan="4" class="empty-cell">No files uploaded yet.</td>
                 </tr>
                 <tr v-for="file in attachmentsFiles" :key="file.id">
                   <td class="file-name-cell">
                     <span class="file-name-text" :title="file.name">{{
                       file.name
                     }}</span>
+                  </td>
+                  <td class="file-type-cell">
+                    <select
+                      v-model="file.fileTypeChoice"
+                      class="file-type-select"
+                      :disabled="!canEditAttachments || attachmentsBusy"
+                      :aria-label="`File type for ${file.name}`"
+                      @change="handleAttachmentFileTypeChoice(file)"
+                    >
+                      <option
+                        v-for="option in requestFileTypeOptions"
+                        :key="option"
+                        :value="option"
+                      >
+                        {{ option }}
+                      </option>
+                    </select>
+                    <input
+                      v-if="file.fileTypeChoice === requestFileTypeOther"
+                      :value="file.customFileType"
+                      class="file-type-custom-input"
+                      :class="{
+                        invalid:
+                          file.customFileType &&
+                          !isValidRequestFileType(file.customFileType)
+                      }"
+                      :disabled="!canEditAttachments || attachmentsBusy"
+                      maxlength="100"
+                      placeholder="Custom_File_Type"
+                      :aria-label="`Custom file type for ${file.name}`"
+                      @input="handleCustomAttachmentFileType(file, $event)"
+                      @blur="saveCustomAttachmentFileType(file)"
+                      @keyup.enter="saveCustomAttachmentFileType(file)"
+                    />
                   </td>
                   <td class="file-size-cell" :title="formatFileSize(file.size)">
                     {{ formatFileSize(file.size) }}
@@ -573,6 +608,14 @@ import {
   createAxiosObject,
   urlStringStartsWith
 } from "../utilities/utilityFunctions";
+import {
+  REQUEST_FILE_TYPE_OPTIONS,
+  REQUEST_FILE_TYPE_OTHER,
+  isValidRequestFileType,
+  normaliseRequestFile,
+  requestFileTypesPayload,
+  resolveRequestFileType
+} from "../utilities/requestFileTypes";
 
 const axiosRef = createAxiosObject();
 const urlStringStart = urlStringStartsWith();
@@ -714,6 +757,8 @@ export default {
       deleteBusy: false,
       attachmentsFiles: [],
       attachmentsFileIds: [],
+      requestFileTypeOptions: REQUEST_FILE_TYPE_OPTIONS,
+      requestFileTypeOther: REQUEST_FILE_TYPE_OTHER,
       attachmentsBusy: false,
       isAttachmentsDragOver: false,
       attachmentsRequestDetails: {
@@ -1320,11 +1365,12 @@ export default {
 
       if (meta) {
         const filesList = Array.isArray(meta?.files) ? meta.files : [];
-        this.attachmentsFiles = filesList.map((file) => ({
+        this.attachmentsFiles = filesList.map((file) => normaliseRequestFile({
           id: file?.id ?? file?.pk,
           name: file?.name,
           size: file?.size ?? null,
-          path: file?.path
+          path: file?.path,
+          file_type: file?.file_type
         }));
         this.attachmentsFileIds = this.attachmentsFiles
           .map((file) => file?.id)
@@ -1383,11 +1429,12 @@ export default {
           const filesList = Array.isArray(requestData?.files)
             ? requestData.files
             : [];
-          this.attachmentsFiles = filesList.map((file) => ({
+          this.attachmentsFiles = filesList.map((file) => normaliseRequestFile({
             id: file?.id ?? file?.pk,
             name: file?.name,
             size: file?.size ?? null,
-            path: file?.path
+            path: file?.path,
+            file_type: file?.file_type
           }));
           this.attachmentsFileIds = this.attachmentsFiles
             .map((file) => file?.id)
@@ -1523,11 +1570,12 @@ export default {
         );
         if (response?.data?.success) {
           const data = response.data.data || [];
-          this.attachmentsFiles = data.map((file) => ({
+          this.attachmentsFiles = data.map((file) => normaliseRequestFile({
             id: file?.id,
             name: file?.name,
             size: file?.size ?? null,
-            path: file?.path
+            path: file?.path,
+            file_type: file?.file_type
           }));
         }
       } catch (error) {
@@ -1545,6 +1593,36 @@ export default {
       );
       this.saveAttachmentsToRequest();
     },
+    isValidRequestFileType,
+    async handleAttachmentFileTypeChoice(file) {
+      file.file_type = resolveRequestFileType(file);
+      await this.saveAttachmentsToRequest();
+    },
+    handleCustomAttachmentFileType(file, event) {
+      const value = String(event?.target?.value || "").replace(
+        /[^A-Za-z0-9_]/g,
+        ""
+      );
+      file.customFileType = value;
+      file.file_type = value || REQUEST_FILE_TYPE_OTHER;
+      if (event?.target && event.target.value !== value) {
+        event.target.value = value;
+      }
+    },
+    async saveCustomAttachmentFileType(file) {
+      if (
+        file.customFileType &&
+        !isValidRequestFileType(file.customFileType)
+      ) {
+        showNotification(
+          "Custom file types must use words separated by single underscores.",
+          NOTIFICATION_TYPES.warning
+        );
+        return;
+      }
+      file.file_type = resolveRequestFileType(file);
+      await this.saveAttachmentsToRequest();
+    },
     async saveAttachmentsToRequest() {
       if (!this.requestContext?.id) return;
       const requestId = this.requestContext.id;
@@ -1557,7 +1635,8 @@ export default {
           ""
         ).trim(),
         records: this.attachmentsRecords,
-        files: this.attachmentsFileIds
+        files: this.attachmentsFileIds,
+        file_types: requestFileTypesPayload(this.attachmentsFiles)
       };
       const formData = new FormData();
       formData.append(FORM_FIELDS.data, JSON.stringify(payload));
@@ -1697,7 +1776,7 @@ export default {
   border: 1px solid #d0d0d0;
   border-radius: 8px;
   overflow-y: auto;
-  overflow-x: hidden;
+  overflow-x: auto;
   margin-top: 8px;
   flex: 1;
   min-height: 0;
@@ -1708,10 +1787,27 @@ export default {
 
 .files-table {
   width: 100%;
+  min-width: 720px;
   border-collapse: separate;
   border-spacing: 0;
   table-layout: fixed;
   font-size: 12px;
+}
+
+.files-table .file-col-name {
+  width: 30%;
+}
+
+.files-table .file-col-type {
+  width: 38%;
+}
+
+.files-table .file-col-size {
+  width: 14%;
+}
+
+.files-table .file-col-actions {
+  width: 18%;
 }
 
 .files-table.files-table-empty {
@@ -1765,6 +1861,31 @@ export default {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.file-type-cell {
+  min-width: 250px;
+}
+
+.file-type-select,
+.file-type-custom-input {
+  width: 100%;
+  min-height: 30px;
+  border: 1px solid #c9d2d6;
+  border-radius: 6px;
+  background: #ffffff;
+  color: #173f53;
+  font-size: 11px;
+  padding: 5px 7px;
+}
+
+.file-type-custom-input {
+  margin-top: 5px;
+}
+
+.file-type-custom-input.invalid {
+  border-color: #c43d43;
+  box-shadow: 0 0 0 1px rgba(196, 61, 67, 0.12);
 }
 
 .icon-action {

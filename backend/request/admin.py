@@ -1,8 +1,17 @@
 from common.admin import ArchivedFilter
 from django.contrib import admin
 from django_admin_listfilter_dropdown.filters import RelatedDropdownFilter
-from request.models import Request
+from request.models import FileRequest, Request
 from simple_history.admin import SimpleHistoryAdmin
+
+
+@admin.register(FileRequest)
+class FileRequestAdmin(admin.ModelAdmin):
+    list_display = ("id", "name", "file_type", "file")
+    list_editable = ("file_type",)
+    search_fields = ("name", "file_type", "file")
+    list_filter = ("file_type",)
+    ordering = ("-id",)
 
 
 @admin.register(Request)

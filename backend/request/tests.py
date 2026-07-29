@@ -14,7 +14,7 @@ from django.utils import timezone
 from library.tests import create_library
 from sample.tests import create_sample
 
-from .models import FileRequest, Request
+from .models import FileRequest, Request, is_valid_file_type
 
 User = get_user_model()
 
@@ -106,6 +106,12 @@ class FileRequestTest(TestCase):
     def test_file_name(self):
         self.assertTrue(isinstance(self.file, FileRequest))
         self.assertEqual(self.file.__str__(), self.file.name)
+
+    def test_file_type_defaults_and_validation(self):
+        self.assertEqual(self.file.file_type, "Other")
+        self.assertTrue(is_valid_file_type("Custom_Quality_Report"))
+        self.assertFalse(is_valid_file_type("Custom Quality Report"))
+        self.assertFalse(is_valid_file_type("Custom__Quality_Report"))
 
 
 class RequestMilestoneSignalsTest(TestCase):
@@ -386,6 +392,62 @@ class TestRequests(BaseTestCase):
         updated_request = Request.objects.get(pk=request.pk)
         self.assertEqual(updated_request.description, new_description)
         self.assertIn(sample, updated_request.samples.all())
+
+    def test_update_request_persists_file_type(self):
+        request = create_request(self.user)
+        library = create_library(get_random_name())
+        request.libraries.add(library)
+        request_file = FileRequest.objects.create(name="fragment-qc.pdf")
+
+        response = self.client.post(
+            f"/api/requests/{request.pk}/edit/",
+            {
+                "data": json.dumps(
+                    {
+                        "description": request.description,
+                        "records": [
+                            {"pk": library.pk, "record_type": "Library"},
+                        ],
+                        "files": [request_file.pk],
+                        "file_types": {
+                            str(request_file.pk): "RNA_FragmentSize_QC",
+                        },
+                    }
+                )
+            },
+        )
+
+        self.assertEqual(response.status_code, 200)
+        request_file.refresh_from_db()
+        self.assertEqual(request_file.file_type, "RNA_FragmentSize_QC")
+
+    def test_update_request_rejects_invalid_file_type(self):
+        request = create_request(self.user)
+        library = create_library(get_random_name())
+        request.libraries.add(library)
+        request_file = FileRequest.objects.create(name="custom.txt")
+
+        response = self.client.post(
+            f"/api/requests/{request.pk}/edit/",
+            {
+                "data": json.dumps(
+                    {
+                        "description": request.description,
+                        "records": [
+                            {"pk": library.pk, "record_type": "Library"},
+                        ],
+                        "files": [request_file.pk],
+                        "file_types": {
+                            str(request_file.pk): "Custom File Type",
+                        },
+                    }
+                )
+            },
+        )
+
+        self.assertEqual(response.status_code, 400)
+        request_file.refresh_from_db()
+        self.assertEqual(request_file.file_type, "Other")
 
     def test_update_request_reassign_user_as_staff(self):
         """Ensure staff can reassign request ownership and PI."""

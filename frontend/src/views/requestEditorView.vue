@@ -818,13 +818,14 @@
                     <thead>
                       <tr>
                         <th class="file-col-name">Name</th>
+                        <th class="file-col-type">File Type</th>
                         <th class="file-col-size">Size</th>
                         <th class="file-col-actions"></th>
                       </tr>
                     </thead>
                     <tbody>
                       <tr v-if="!uploadedRequestFiles.length">
-                        <td colspan="3" class="empty-cell">
+                        <td colspan="4" class="empty-cell">
                           No files uploaded yet.
                         </td>
                       </tr>
@@ -833,6 +834,38 @@
                           <span class="file-name-text" :title="file.name">{{
                             file.name
                           }}</span>
+                        </td>
+                        <td class="file-type-cell">
+                          <select
+                            v-model="file.fileTypeChoice"
+                            class="file-type-select"
+                            :disabled="!canEditRequest"
+                            :aria-label="`File type for ${file.name}`"
+                            @change="handleRequestFileTypeChoice(file)"
+                          >
+                            <option
+                              v-for="option in requestFileTypeOptions"
+                              :key="option"
+                              :value="option"
+                            >
+                              {{ option }}
+                            </option>
+                          </select>
+                          <input
+                            v-if="file.fileTypeChoice === requestFileTypeOther"
+                            :value="file.customFileType"
+                            class="file-type-custom-input"
+                            :class="{
+                              invalid:
+                                file.customFileType &&
+                                !isValidRequestFileType(file.customFileType)
+                            }"
+                            :disabled="!canEditRequest"
+                            maxlength="100"
+                            placeholder="Custom_File_Type"
+                            :aria-label="`Custom file type for ${file.name}`"
+                            @input="handleCustomRequestFileType(file, $event)"
+                          />
                         </td>
                         <td
                           class="file-size-cell"
@@ -1105,6 +1138,14 @@ import {
   LIBRARY_REQUIRED_FIELDS,
   SAMPLE_REQUIRED_FIELDS
 } from "../constants/requestEditorConsts";
+import {
+  REQUEST_FILE_TYPE_OPTIONS,
+  REQUEST_FILE_TYPE_OTHER,
+  isValidRequestFileType,
+  normaliseRequestFile,
+  requestFileTypesPayload,
+  resolveRequestFileType
+} from "../utilities/requestFileTypes";
 
 const axiosRef = createAxiosObject();
 const urlStringStart = urlStringStartsWith();
@@ -1220,6 +1261,7 @@ export default {
         cost_unit: "",
         description: "",
         fileIds: [],
+        fileTypes: {},
         related_request_ids: []
       },
       requestName: "",
@@ -1249,6 +1291,8 @@ export default {
       requestUsers: [],
       uploadedRequestFiles: [],
       uploadedRequestFileIds: [],
+      requestFileTypeOptions: REQUEST_FILE_TYPE_OPTIONS,
+      requestFileTypeOther: REQUEST_FILE_TYPE_OTHER,
       protocolsList: [],
       analysisTypesList: [],
       readLengthsList: [],
@@ -1907,6 +1951,10 @@ export default {
         const filesChanged =
           currentFileIds.length !== baseFileIds.length ||
           currentFileIds.some((id) => !baseFileIds.includes(id));
+        const currentFileTypes = this.requestFileTypesPayload();
+        const baseFileTypes = snapshot.fileTypes || {};
+        const fileTypesChanged =
+          JSON.stringify(currentFileTypes) !== JSON.stringify(baseFileTypes);
         const relatedRequestsChanged =
           currentRelatedRequestIds.length !== baseRelatedRequestIds.length ||
           currentRelatedRequestIds.some(
@@ -1916,7 +1964,8 @@ export default {
           costUnit !== baseCostUnit ||
           description !== baseDescription ||
           relatedRequestsChanged ||
-          filesChanged
+          filesChanged ||
+          fileTypesChanged
         );
       }
       if (costUnitRaw || description) return true;
@@ -2106,6 +2155,7 @@ export default {
         cost_unit: "",
         description: "",
         fileIds: [],
+        fileTypes: {},
         related_request_ids: []
       };
       this.requestName = "";
@@ -2325,11 +2375,12 @@ export default {
         const files = Array.isArray(filesRes?.data)
           ? filesRes.data
           : requestData.files || [];
-        this.uploadedRequestFiles = files.map((file) => ({
+        this.uploadedRequestFiles = files.map((file) => normaliseRequestFile({
           id: file.id ?? file.pk,
           name: file.name,
           size: file.size ?? null,
-          path: file.path ?? file.file_path ?? ""
+          path: file.path ?? file.file_path ?? "",
+          file_type: file.file_type
         }));
         this.uploadedRequestFileIds = this.uploadedRequestFiles
           .map((file) => file.id)
@@ -2338,6 +2389,7 @@ export default {
           cost_unit: this.newRequest.cost_unit || "",
           description: this.newRequest.description || "",
           fileIds: [...this.uploadedRequestFileIds],
+          fileTypes: requestFileTypesPayload(this.uploadedRequestFiles),
           related_request_ids: this.relatedProjectsSelection.map(
             (project) => project.id
           )
@@ -3843,7 +3895,13 @@ export default {
           }
         );
         if (response?.data?.success) {
-          this.uploadedRequestFiles = response.data.data || [];
+          const currentFiles = new Map(
+            this.uploadedRequestFiles.map((file) => [String(file.id), file])
+          );
+          this.uploadedRequestFiles = (response.data.data || []).map((file) => {
+            const current = currentFiles.get(String(file.id));
+            return current || normaliseRequestFile(file);
+          });
         }
       } catch (error) {
         handleError(error);
@@ -3856,6 +3914,38 @@ export default {
       this.uploadedRequestFiles = this.uploadedRequestFiles.filter(
         (f) => f.id !== fileId
       );
+    },
+    isValidRequestFileType,
+    handleRequestFileTypeChoice(file) {
+      file.file_type = resolveRequestFileType(file);
+    },
+    handleCustomRequestFileType(file, event) {
+      const value = String(event?.target?.value || "").replace(
+        /[^A-Za-z0-9_]/g,
+        ""
+      );
+      file.customFileType = value;
+      file.file_type = value || REQUEST_FILE_TYPE_OTHER;
+      if (event?.target && event.target.value !== value) {
+        event.target.value = value;
+      }
+    },
+    requestFileTypesAreValid() {
+      const invalidFile = this.uploadedRequestFiles.find(
+        (file) =>
+          file.fileTypeChoice === REQUEST_FILE_TYPE_OTHER &&
+          file.customFileType &&
+          !isValidRequestFileType(file.customFileType)
+      );
+      if (!invalidFile) return true;
+      showNotification(
+        `File type for "${invalidFile.name}" must use words separated by single underscores.`,
+        "warning"
+      );
+      return false;
+    },
+    requestFileTypesPayload() {
+      return requestFileTypesPayload(this.uploadedRequestFiles);
     },
     requestRemoveUploadedFile(file) {
       if (!file?.id) return;
@@ -4393,6 +4483,7 @@ export default {
         showNotification("Request has no libraries or samples.", "warning");
         return;
       }
+      if (!this.requestFileTypesAreValid()) return;
       const validationStatus = this.validateEditRecordsForSave();
       if (validationStatus.currentModeHasErrors) {
         showNotification(
@@ -4485,7 +4576,8 @@ export default {
             (project) => project.id
           ),
           records: allRecords,
-          files: this.uploadedRequestFileIds
+          files: this.uploadedRequestFileIds,
+          file_types: this.requestFileTypesPayload()
         };
         if (this.isStaffUser && this.requestOwnerId) {
           payload.user = this.requestOwnerId;
@@ -4555,7 +4647,8 @@ export default {
             pk: record.pk,
             record_type: record.record_type
           })),
-          files: this.editSnapshot.fileIds || []
+          files: this.editSnapshot.fileIds || [],
+          file_types: this.editSnapshot.fileTypes || {}
         };
         const formData = new FormData();
         formData.append("data", JSON.stringify(payload));
@@ -4616,6 +4709,7 @@ export default {
         showNotification("Required fields are missing.", "warning");
         return;
       }
+      if (!this.requestFileTypesAreValid()) return;
       const { rowCount } = this.revalidateDraftRows();
       if (!rowCount) {
         showNotification("Add at least one record before saving.", "warning");
@@ -4641,7 +4735,8 @@ export default {
           (project) => project.id
         ),
         records: [],
-        files: this.uploadedRequestFileIds
+        files: this.uploadedRequestFileIds,
+        file_types: this.requestFileTypesPayload()
       };
       try {
         this.isRequestSaving = true;
@@ -5862,7 +5957,7 @@ export default {
   border: 1px solid #d0d0d0;
   border-radius: 8px;
   overflow-y: auto;
-  overflow-x: hidden;
+  overflow-x: auto;
   margin-top: 8px;
   flex: 1 1 auto;
   min-height: 220px;
@@ -5873,19 +5968,23 @@ export default {
 
 .files-table {
   width: 100%;
+  min-width: 720px;
   border-collapse: separate;
   border-spacing: 0;
   table-layout: fixed;
   font-size: 12px;
 }
 .files-table .file-col-name {
-  width: 58%;
+  width: 30%;
+}
+.files-table .file-col-type {
+  width: 38%;
 }
 .files-table .file-col-size {
-  width: 22%;
+  width: 14%;
 }
 .files-table .file-col-actions {
-  width: 20%;
+  width: 18%;
 }
 
 .files-table.files-table-empty {
@@ -5953,6 +6052,31 @@ export default {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.file-type-cell {
+  min-width: 250px;
+}
+
+.file-type-select,
+.file-type-custom-input {
+  width: 100%;
+  min-height: 30px;
+  border: 1px solid #c9d2d6;
+  border-radius: 6px;
+  background: #ffffff;
+  color: #173f53;
+  font-size: 11px;
+  padding: 5px 7px;
+}
+
+.file-type-custom-input {
+  margin-top: 5px;
+}
+
+.file-type-custom-input.invalid {
+  border-color: #c43d43;
+  box-shadow: 0 0 0 1px rgba(196, 61, 67, 0.12);
 }
 
 .icon-action {

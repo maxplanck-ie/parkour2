@@ -1060,12 +1060,14 @@ class SimpleROCrateBuilder:
                     "encodingFormat": _guess_encoding_format(
                         getattr(file_field, "name", None) or request_file.name
                     ),
+                    "fileType": request_file.file_type,
                     "isPartOf": _ref(RO_CRATE_ROOT_ID),
                     "about": _ref(f"#study-{request_obj.id}"),
                     "requestContext": _ref(f"#request-context-{request_obj.id}"),
                     "comments": _comments_from_mapping(
                         {
                             "request_file_name": request_file.name,
+                            "request_file_type": request_file.file_type,
                             "request_file_storage_path": getattr(
                                 file_field, "name", None
                             ),
@@ -1937,6 +1939,7 @@ class SimpleROCrateBuilder:
             "associatedPool": {"@id": "http://schema.org/isRelatedTo", "@type": "@id"},
             "sequencedOn": {"@id": "http://schema.org/isRelatedTo", "@type": "@id"},
             "requestContext": {"@id": "http://schema.org/isPartOf", "@type": "@id"},
+            "fileType": "http://schema.org/additionalType",
         }
 
 
@@ -2500,6 +2503,7 @@ class ROCratePdfRenderer:
                     or entity.get(PDF_FIELD_CONTENT_URL)
                     or entity.get(PDF_FIELD_ID),
                     "contentUrl": entity.get(PDF_FIELD_CONTENT_URL),
+                    "fileType": entity.get("fileType") or "Other",
                 }
             )
         return files
@@ -2694,12 +2698,7 @@ class ROCratePdfRenderer:
             self._write_rows(request_group["requestRows"])
         if request_group["attachments"]:
             self._write_section("Attached Files")
-            self._write_numbered_list(
-                [
-                    file.get("name") or file.get("contentUrl")
-                    for file in request_group["attachments"]
-                ]
-            )
+            self._write_attachment_list(request_group["attachments"])
         for record in request_group["records"]:
             self._write_record(record)
 
@@ -2790,6 +2789,26 @@ class ROCratePdfRenderer:
             self.pdf.multi_cell(
                 0, 4.5, self.pdf.safe_text(f"{index}. {self._value_text(value)}")
             )
+
+    def _write_attachment_list(self, files):
+        for index, file in enumerate(files, start=1):
+            if self.pdf.get_y() > self.pdf.page_break_trigger - 14:
+                self.pdf.add_page()
+            file_name = file.get("name") or file.get("contentUrl") or "Attached file"
+            file_type = file.get("fileType") or "Other"
+            self.pdf.set_x(self.pdf.l_margin + 6)
+            self.pdf.set_font(self.pdf.font_family, "B", 8.5)
+            self.pdf.set_text_color(11, 127, 120)
+            self.pdf.multi_cell(
+                0,
+                4.5,
+                self.pdf.safe_text(f"{index}. {self._value_text(file_type)}"),
+            )
+            self.pdf.set_x(self.pdf.l_margin + 11)
+            self.pdf.set_font(self.pdf.font_family, "", 8.5)
+            self.pdf.set_text_color(16, 36, 47)
+            self.pdf.multi_cell(0, 4.5, self.pdf.safe_text(file_name))
+            self.pdf.ln(1)
 
     def _write_table(self, title, rows):
         self._write_key_value(title, "")

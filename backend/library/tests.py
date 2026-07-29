@@ -910,7 +910,10 @@ class TestGenerateROCrateAPI(BaseAPITestCase):
         sample.removed_rna_quality = 7.3
         sample.save()
         self.request.samples.add(sample)
-        request_file = FileRequest.objects.create(name="req.txt")
+        request_file = FileRequest.objects.create(
+            name="req.txt",
+            file_type="Experimental_Design",
+        )
         request_file.file.save("req.txt", ContentFile(b"ro-crate test file"), save=True)
         self.request.files.add(request_file)
         LibraryPreparation.objects.create(
@@ -1019,6 +1022,10 @@ class TestGenerateROCrateAPI(BaseAPITestCase):
         self.assertIsNotNone(request_file_entity_id)
         request_file_entry = self._graph_entry(payload, request_file_entity_id)
         self.assertIn("MediaObject", request_file_entry.get("@type", []))
+        self.assertEqual(
+            request_file_entry.get("fileType"),
+            "Experimental_Design",
+        )
         self.assertEqual(
             request_file_entry.get("isPartOf"),
             {"@id": "./"},

@@ -311,11 +311,21 @@
                 :key="file.id"
                 class="attachment-item"
               >
-                <font-awesome-icon icon="fa-solid fa-file-lines" />
-                <ROCrateHighlightedText
-                  :value="file.name"
-                  :search-tokens="searchTokens"
-                />
+                <div class="attachment-icon">
+                  <font-awesome-icon icon="fa-solid fa-file-lines" />
+                </div>
+                <div class="attachment-content">
+                  <span class="attachment-type">
+                    <ROCrateHighlightedText
+                      :value="file.fileType"
+                      :search-tokens="searchTokens"
+                    />
+                  </span>
+                  <ROCrateHighlightedText
+                    :value="file.name"
+                    :search-tokens="searchTokens"
+                  />
+                </div>
               </div>
             </div>
           </section>
@@ -610,6 +620,7 @@ export default {
             this.matchesSearch([
               request.name,
               file.name,
+              file.fileType,
               file.contentUrl
             ])
           )
@@ -1248,7 +1259,8 @@ export default {
             entity[fieldKeys.name] ||
             entity[fieldKeys.contentUrl] ||
             entity[fieldKeys.id],
-          contentUrl: entity[fieldKeys.contentUrl]
+          contentUrl: entity[fieldKeys.contentUrl],
+          fileType: entity[fieldKeys.fileType] || "Other"
         }));
     },
     isRecordEntity(entity) {
@@ -2010,14 +2022,46 @@ export default {
 
 .attachment-item {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   gap: 10px;
+  border-left: 3px solid #0b7f78;
+}
+
+.attachment-icon {
+  width: 28px;
+  height: 28px;
+  border-radius: 7px;
+  background: #e4f4f2;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
 }
 
 .attachment-item svg {
-  margin-top: 2px;
   color: #0b7f78;
   flex-shrink: 0;
+}
+
+.attachment-content {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  overflow-wrap: anywhere;
+}
+
+.attachment-type {
+  width: fit-content;
+  max-width: 100%;
+  padding: 2px 7px;
+  border-radius: 999px;
+  background: #d9efec;
+  color: #076d67;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
 }
 
 .empty-inline {

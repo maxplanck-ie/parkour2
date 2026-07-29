@@ -1,12 +1,35 @@
 import itertools
+import re
 
 from common.models import CostUnit, DateTimeMixin
 from django.conf import settings
 from django.contrib.auth import get_user_model
+from django.core.validators import RegexValidator
 from django.db import models
 from library.models import Library
 from sample.models import Sample
 from simple_history.models import HistoricalRecords
+
+PREDEFINED_FILE_TYPES = (
+    "RNA_FragmentSize_QC",
+    "DNA_FragmentSize_QC",
+    "Library_FragmentSize_QC",
+    "Sample_Barcodes",
+    "Experimental_Design",
+)
+DEFAULT_FILE_TYPE = "Other"
+FILE_TYPE_PATTERN = re.compile(r"^[A-Za-z0-9]+(?:_[A-Za-z0-9]+)*$")
+file_type_validator = RegexValidator(
+    regex=FILE_TYPE_PATTERN,
+    message=(
+        "Use letters and numbers separated by single underscores; spaces are not "
+        "allowed."
+    ),
+)
+
+
+def is_valid_file_type(value):
+    return isinstance(value, str) and bool(FILE_TYPE_PATTERN.fullmatch(value))
 
 
 def get_sentinel_user():
@@ -39,6 +62,12 @@ def approval_default():
 class FileRequest(models.Model):
     name = models.CharField("Name", max_length=200)
     file = models.FileField(upload_to="request_files/%Y/%m/%d/")
+    file_type = models.CharField(
+        "File Type",
+        max_length=100,
+        default=DEFAULT_FILE_TYPE,
+        validators=[file_type_validator],
+    )
 
     def __str__(self):
         return self.name

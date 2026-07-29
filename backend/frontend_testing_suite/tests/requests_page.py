@@ -138,6 +138,7 @@ def _ro_crate_preview_payload():
                         {"@id": "#request-context-102"},
                         {"@id": "#study-101"},
                         {"@id": "#study-102"},
+                        {"@id": "#request-file-701"},
                     ],
                 },
                 {
@@ -155,6 +156,15 @@ def _ro_crate_preview_payload():
                     "@type": "PropertyValue",
                     "name": "request_name",
                     "value": "101_ROCrate Request",
+                },
+                {
+                    "@id": "#request-file-701",
+                    "@type": ["File", "MediaObject"],
+                    "name": "experimental-design.csv",
+                    "contentUrl": "request-files/101/experimental-design.csv",
+                    "fileType": "Experimental_Design",
+                    "isPartOf": {"@id": "./"},
+                    "requestContext": {"@id": "#request-context-101"},
                 },
                 {
                     "@id": "#request-101-qc-completed-at",
@@ -488,6 +498,13 @@ def test_ro_crate_preview_opens_with_expected_api_params(page: Page):
     expect(preview_overlay.get_by_text("2x150", exact=True)).to_be_visible()
     expect(preview_overlay.get_by_text("Flowcell IDs", exact=True)).to_be_visible()
     expect(preview_overlay.get_by_text("FC001", exact=True)).to_be_visible()
+    expect(preview_overlay.get_by_text("Attached Files", exact=True)).to_be_visible()
+    expect(
+        preview_overlay.get_by_text("Experimental_Design", exact=True)
+    ).to_be_visible()
+    expect(
+        preview_overlay.get_by_text("experimental-design.csv", exact=True)
+    ).to_be_visible()
     expect(
         preview_overlay.get_by_text("Library 1: Delivered library")
     ).not_to_be_visible()

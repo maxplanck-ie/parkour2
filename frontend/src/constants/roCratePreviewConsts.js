@@ -31,6 +31,7 @@ export const RO_CRATE_FIELD_KEYS = {
   otherMaterials: "otherMaterials",
   requestContext: "requestContext",
   contentUrl: "contentUrl",
+  fileType: "fileType",
   isPartOf: "isPartOf"
 };
 

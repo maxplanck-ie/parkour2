@@ -593,6 +593,7 @@ class RequestViewSet(viewsets.ModelViewSet):
                     "name": file.name,
                     "size": file.file.size,
                     "path": settings.MEDIA_URL + file.file.name,
+                    "file_type": file.file_type,
                 }
                 for file in files
             ]
