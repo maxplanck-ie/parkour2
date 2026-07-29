@@ -279,6 +279,12 @@ class TestPooling(BaseTestCase):
     def test_quality_check_failed(self):
         """Ensure quality check has failed behaves correctly."""
         pooling_object = create_pooling_object(self.user, add_sample=True)
+        library_preparation = pooling_object.sample.librarypreparation
+        library_preparation.starting_amount = 8.0
+        library_preparation.pcr_cycles = 10
+        library_preparation.concentration_library = 3.25
+        library_preparation.mean_fragment_size = 280
+        library_preparation.save()
 
         response = self.client.post(
             "/api/pooling/edit/",
@@ -299,6 +305,11 @@ class TestPooling(BaseTestCase):
         self.assertTrue(response.json()["success"])
         updated_obj = Pooling.objects.get(sample=pooling_object.sample)
         self.assertEqual(updated_obj.sample.status, -1)
+        retained_preparation = updated_obj.sample.librarypreparation
+        self.assertEqual(retained_preparation.starting_amount, 8.0)
+        self.assertEqual(retained_preparation.pcr_cycles, 10)
+        self.assertEqual(retained_preparation.concentration_library, 3.25)
+        self.assertEqual(retained_preparation.mean_fragment_size, 280)
 
     def test_invalid_json(self):
         """Ensure error is thrown if the JSON object is empty."""

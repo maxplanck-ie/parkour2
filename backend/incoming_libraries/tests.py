@@ -187,11 +187,15 @@ class TestIncomingLibraries(BaseTestCase):
                             "pk": sample1.pk,
                             "record_type": "Sample",
                             "quality_check": "failed",
+                            "measured_value_facility": 12.5,
+                            "measuring_unit_facility": "ng/µl",
                         },
                         {
                             "pk": sample2.pk,
                             "record_type": "Sample",
                             "quality_check": "compromised",
+                            "measured_value_facility": 8.0,
+                            "measuring_unit_facility": "ng/µl",
                         },
                     ]
                 )
@@ -199,8 +203,14 @@ class TestIncomingLibraries(BaseTestCase):
         )
         self.assertEqual(response.status_code, 200)
         self.assertTrue(response.json()["success"])
-        self.assertEqual(Sample.objects.get(pk=sample1.pk).status, -1)
-        self.assertEqual(Sample.objects.get(pk=sample2.pk).status, -2)
+        failed_sample = Sample.objects.get(pk=sample1.pk)
+        compromised_sample = Sample.objects.get(pk=sample2.pk)
+        self.assertEqual(failed_sample.status, -1)
+        self.assertEqual(failed_sample.measured_value_facility, 12.5)
+        self.assertEqual(failed_sample.measuring_unit_facility, "ng/µl")
+        self.assertEqual(compromised_sample.status, -2)
+        self.assertEqual(compromised_sample.measured_value_facility, 8.0)
+        self.assertEqual(compromised_sample.measuring_unit_facility, "ng/µl")
 
     def test_invalid_json(self):
         """Ensure error is thrown if the JSON object is empty."""

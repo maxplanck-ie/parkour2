@@ -1,13 +1,14 @@
 import json
 from io import BytesIO
 from zipfile import ZipFile
-from unittest.mock import patch
+from unittest.mock import Mock, patch
 from django.core.files.base import ContentFile
 from request.models import FileRequest
 
 from common.tests import BaseAPITestCase, BaseTestCase
 from common.utils import get_random_name, timezone
 from django.contrib.auth import get_user_model
+from django.db.models import Q
 from django.test import TestCase
 from django.urls import reverse
 from flowcell.models import Flowcell, Lane, Sequencer
@@ -17,6 +18,12 @@ from library.ro_crate import (
     ROCratePdfRenderer,
     _ro_crate_archive_name,
     _ro_crate_pdf_name,
+)
+from library.views import (
+    SEQUENCING_STATUSES,
+    apply_stage_data_visibility,
+    build_search_term_query,
+    filter_by_sequencer,
 )
 from library_preparation.models import LibraryPreparation
 from library_sample_shared.models import (
@@ -153,6 +160,124 @@ class TestLibrarySampleTree(BaseTestCase):
             self.assertIn("organism_name", record)
             self.assertIn("measuring_unit_facility", record)
             self.assertIn("measured_value_facility", record)
+
+    def test_sample_stage_data_visibility_status_matrix(self):
+        """Stage data remains visible after failure and is otherwise gated."""
+        cases = (
+            (-2, True, False, False),
+            (-1, True, True, False),
+            (0, False, False, False),
+            (1, False, False, False),
+            (2, True, False, False),
+            (3, True, True, False),
+            (4, True, True, False),
+            (5, True, True, True),
+            (6, True, True, True),
+        )
+
+        for status, show_facility, show_preparation, show_sequencing in cases:
+            with self.subTest(status=status):
+                record = {
+                    "status": status,
+                    "measured_value_facility": 12.5,
+                    "measuring_unit_facility": "ng/µl",
+                    "starting_amount": 8.0,
+                    "pcr_cycles": 10,
+                    "concentration_library": 3.25,
+                    "average_fragment_size": 280,
+                    "flowcell_ids": ["FC001"],
+                    "sequencer_ids": [7],
+                    "sequencer_names": ["NovaSeq"],
+                }
+
+                apply_stage_data_visibility(record, "Sample")
+
+                self.assertEqual(
+                    record["measured_value_facility"],
+                    12.5 if show_facility else None,
+                )
+                self.assertEqual(
+                    record["measuring_unit_facility"],
+                    "ng/µl" if show_facility else None,
+                )
+                for field, value in (
+                    ("starting_amount", 8.0),
+                    ("pcr_cycles", 10),
+                    ("concentration_library", 3.25),
+                    ("average_fragment_size", 280),
+                ):
+                    self.assertEqual(
+                        record[field],
+                        value if show_preparation else None,
+                    )
+                self.assertEqual(
+                    record["flowcell_ids"],
+                    ["FC001"] if show_sequencing else None,
+                )
+                self.assertEqual(
+                    record["sequencer_ids"],
+                    [7] if show_sequencing else None,
+                )
+                self.assertEqual(
+                    record["sequencer_names"],
+                    ["NovaSeq"] if show_sequencing else None,
+                )
+
+    def test_library_stage_data_visibility(self):
+        """Library measurements survive failure while sample-only fields stay hidden."""
+        failed_record = {
+            "status": -1,
+            "measured_value_facility": 2.5,
+            "measuring_unit_facility": "ng/µl",
+            "starting_amount": 8.0,
+            "pcr_cycles": 10,
+            "concentration_library": 2.5,
+            "average_fragment_size": 320,
+            "flowcell_ids": ["FC001"],
+            "sequencer_ids": [7],
+            "sequencer_names": ["NovaSeq"],
+        }
+
+        apply_stage_data_visibility(failed_record, "Library")
+
+        self.assertEqual(failed_record["measured_value_facility"], 2.5)
+        self.assertEqual(failed_record["measuring_unit_facility"], "ng/µl")
+        self.assertIsNone(failed_record["starting_amount"])
+        self.assertIsNone(failed_record["pcr_cycles"])
+        self.assertEqual(failed_record["concentration_library"], 2.5)
+        self.assertEqual(failed_record["average_fragment_size"], 320)
+        self.assertIsNone(failed_record["flowcell_ids"])
+        self.assertIsNone(failed_record["sequencer_ids"])
+        self.assertIsNone(failed_record["sequencer_names"])
+
+    def test_flowcell_search_is_limited_to_sequencing_statuses(self):
+        """Flowcell text matches cannot expose records before sequencing."""
+        query = build_search_term_query("FC001")
+        gated_flowcell_queries = [
+            child
+            for child in query.children
+            if isinstance(child, Q)
+            and ("flowcell_ids__icontains", "FC001") in child.children
+        ]
+
+        self.assertEqual(len(gated_flowcell_queries), 1)
+        self.assertIn(
+            ("status__in", SEQUENCING_STATUSES),
+            gated_flowcell_queries[0].children,
+        )
+
+    def test_sequencer_filter_is_limited_to_sequencing_statuses(self):
+        """Sequencer filtering applies the same status gate as displayed data."""
+        queryset = Mock()
+        filtered_queryset = queryset.filter.return_value
+
+        result = filter_by_sequencer(queryset, 7)
+
+        self.assertIs(result, filtered_queryset)
+        queryset.filter.assert_called_once_with(
+            status__in=SEQUENCING_STATUSES,
+            sequencer_ids__contains=[7],
+        )
 
 
 class TestLibraries(BaseTestCase):

@@ -272,6 +272,10 @@ class TestLibraryPreparation(BaseTestCase):
                         {
                             "pk": obj.pk,
                             "quality_check": "failed",
+                            "starting_amount": 8.0,
+                            "pcr_cycles": 10,
+                            "concentration_library": 3.25,
+                            "mean_fragment_size": 280,
                         }
                     ]
                 )
@@ -281,6 +285,10 @@ class TestLibraryPreparation(BaseTestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTrue(response.json()["success"])
         self.assertEqual(updated_obj.sample.status, -1)
+        self.assertEqual(updated_obj.starting_amount, 8.0)
+        self.assertEqual(updated_obj.pcr_cycles, 10)
+        self.assertEqual(updated_obj.concentration_library, 3.25)
+        self.assertEqual(updated_obj.mean_fragment_size, 280)
 
     def test_invalid_json(self):
         """Ensure error is thrown if the JSON object is empty."""

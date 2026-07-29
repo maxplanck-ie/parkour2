@@ -12,6 +12,7 @@ const backendPaths = [
   "/api_user_details",
   "/admin",
   "/media",
+  "/static",
   "/login",
   "/logout",
   "/get_navigation_tree",

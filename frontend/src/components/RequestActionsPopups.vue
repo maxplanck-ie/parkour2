@@ -476,7 +476,7 @@
             </div>
             <button
               v-if="canEditAttachments"
-              class="header-button ghost"
+              class="header-button ghost attachment-file-add-button"
               type="button"
               :disabled="attachmentsBusy"
               @click="triggerAttachmentsUpload"
@@ -1762,13 +1762,46 @@ export default {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  flex-wrap: wrap;
   gap: 12px;
+}
+
+.files-header > div {
+  flex: 1 1 150px;
+  min-width: 0;
 }
 
 .files-header small {
   display: block;
   font-size: 11px;
   color: #6b7280;
+}
+
+.attachment-file-add-button {
+  flex: 0 0 auto;
+  width: auto;
+  min-width: 112px;
+  max-width: none;
+  height: 32px;
+  min-height: 32px;
+  margin-left: auto;
+  padding: 0 14px;
+  gap: 7px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1;
+}
+
+.attachment-file-add-button span {
+  overflow: visible;
+  text-overflow: clip;
+  line-height: 1;
+}
+
+.attachment-file-add-button svg {
+  width: 13px;
+  height: 13px;
 }
 
 .files-table-wrapper {

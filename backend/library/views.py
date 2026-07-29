@@ -21,6 +21,85 @@ from .utils import get_accessible_requests
 CompleteLibraryData = apps.get_model("library", "CompleteLibraryData")
 CompleteSampleData = apps.get_model("sample", "CompleteSampleData")
 
+FACILITY_INPUT_FIELDS = (
+    "measured_value_facility",
+    "measuring_unit_facility",
+)
+SAMPLE_PREPARATION_FIELDS = (
+    "starting_amount",
+    "pcr_cycles",
+    "concentration_library",
+    "average_fragment_size",
+)
+LIBRARY_MEASURE_FIELDS = ("concentration_library", "average_fragment_size")
+SAMPLE_ONLY_FIELDS = ("starting_amount", "pcr_cycles")
+SEQUENCING_FIELDS = ("flowcell_ids", "sequencer_ids", "sequencer_names")
+
+POST_INCOMING_STATUSES = (-2, -1, 2, 3, 4, 5, 6)
+POST_PREPARATION_STATUSES = (-1, 3, 4, 5, 6)
+SEQUENCING_STATUSES = (5, 6)
+
+
+def apply_stage_data_visibility(record, record_type):
+    """Mask values until their workflow stage has completed."""
+    try:
+        status_value = int(record.get("status"))
+    except (TypeError, ValueError):
+        return record
+
+    is_sample = record_type == "Sample"
+
+    if status_value not in POST_INCOMING_STATUSES:
+        for field in FACILITY_INPUT_FIELDS:
+            if field in record:
+                record[field] = None
+
+    if is_sample:
+        if status_value not in POST_PREPARATION_STATUSES:
+            for field in SAMPLE_PREPARATION_FIELDS:
+                if field in record:
+                    record[field] = None
+    else:
+        for field in SAMPLE_ONLY_FIELDS:
+            if field in record:
+                record[field] = None
+        if status_value not in POST_INCOMING_STATUSES:
+            for field in LIBRARY_MEASURE_FIELDS:
+                if field in record:
+                    record[field] = None
+
+    if status_value not in SEQUENCING_STATUSES:
+        for field in SEQUENCING_FIELDS:
+            if field in record:
+                record[field] = None
+
+    return record
+
+
+def build_search_term_query(term):
+    """Build a text-search query without exposing pre-sequencing flowcells."""
+    search_fields = [
+        "name__icontains",
+        "comment_input__icontains",
+        "organism_name__icontains",
+        "barcode__icontains",
+        "request_name__icontains",
+        "pool_names__icontains",
+    ]
+    field_queries = [Q(**{field: term}) for field in search_fields]
+    field_queries.append(
+        Q(status__in=SEQUENCING_STATUSES, flowcell_ids__icontains=term)
+    )
+    return reduce(or_, field_queries)
+
+
+def filter_by_sequencer(queryset, sequencer_id):
+    """Restrict sequencer filtering to records that reached sequencing."""
+    return queryset.filter(
+        status__in=SEQUENCING_STATUSES,
+        sequencer_ids__contains=[sequencer_id],
+    )
+
 
 class LibrarySampleTree(viewsets.ViewSet):
     def list(self, request):
@@ -75,18 +154,7 @@ class LibrarySampleTree(viewsets.ViewSet):
                 terms = [term.strip() for term in group.split(",") if term.strip()]
                 and_qs = []
                 for term in terms:
-                    search_fields = [
-                        "name__icontains",
-                        "comment_input__icontains",
-                        "organism_name__icontains",
-                        "barcode__icontains",
-                        "request_name__icontains",
-                        "flowcell_ids__icontains",
-                        "pool_names__icontains",
-                    ]
-                    field_qs = [Q(**{field: term}) for field in search_fields]
-                    combined_or_for_term = reduce(or_, field_qs)
-                    and_qs.append(combined_or_for_term)
+                    and_qs.append(build_search_term_query(term))
 
                 if and_qs:
                     combined_and_group = reduce(lambda a, b: a & b, and_qs)
@@ -119,8 +187,8 @@ class LibrarySampleTree(viewsets.ViewSet):
 
         if sequencer_filter:
             seq_id = int(sequencer_filter)
-            library_queryset = library_queryset.filter(sequencer_ids__contains=[seq_id])
-            sample_queryset = sample_queryset.filter(sequencer_ids__contains=[seq_id])
+            library_queryset = filter_by_sequencer(library_queryset, seq_id)
+            sample_queryset = filter_by_sequencer(sample_queryset, seq_id)
 
         changed_ownership_filter = request.GET.get("changed_ownership")
 
@@ -189,60 +257,14 @@ class LibrarySampleTree(viewsets.ViewSet):
             .values()
         )
 
-        facility_input_fields = (
-            "measured_value_facility",
-            "measuring_unit_facility",
-        )
-        sample_preparation_fields = (
-            "starting_amount",
-            "pcr_cycles",
-            "concentration_library",
-            "average_fragment_size",
-        )
-        library_measure_fields = ("concentration_library", "average_fragment_size")
-        sample_only_fields = ("starting_amount", "pcr_cycles")
-        post_incoming_statuses = {-2, 2, 3, 4, 5, 6}
-        preparation_passed_statuses = {3, 4, 5, 6}
-
-        def apply_status_masks(record, record_type):
-            """Hide stage-specific values until the item advances to the next step."""
-            status_value = record.get("status")
-            try:
-                status_value = int(status_value)
-            except (TypeError, ValueError):
-                return
-
-            is_sample = record_type == "Sample"
-            show_post_incoming = status_value in post_incoming_statuses
-            show_preparation_values = status_value in preparation_passed_statuses
-
-            if not show_post_incoming:
-                for field in facility_input_fields:
-                    if field in record:
-                        record[field] = None
-
-            if is_sample:
-                if not show_preparation_values:
-                    for field in sample_preparation_fields:
-                        if field in record:
-                            record[field] = None
-            else:
-                for field in sample_only_fields:
-                    if field in record:
-                        record[field] = None
-                if not show_post_incoming:
-                    for field in library_measure_fields:
-                        if field in record:
-                            record[field] = None
-
         combined_data = []
         for lib in libraries:
-            apply_status_masks(lib, "Library")
+            apply_stage_data_visibility(lib, "Library")
             lib["record_type"] = "Library"
             combined_data.append(lib)
 
         for sample in samples:
-            apply_status_masks(sample, "Sample")
+            apply_stage_data_visibility(sample, "Sample")
             sample["record_type"] = "Sample"
             combined_data.append(sample)
 

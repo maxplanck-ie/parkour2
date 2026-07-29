@@ -5919,10 +5919,12 @@ export default {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  flex-wrap: wrap;
   gap: 12px;
 }
 
 .files-header > div {
+  flex: 1 1 150px;
   min-width: 0;
 }
 
@@ -5936,13 +5938,16 @@ export default {
   display: inline-flex;
   flex: 0 0 auto;
   width: auto;
-  min-width: 104px;
+  min-width: 112px;
   max-width: none;
-  height: 28px;
-  min-height: 28px;
+  height: 32px;
+  min-height: 32px;
+  margin-left: auto;
   gap: 7px;
-  padding: 0 12px;
+  padding: 0 14px;
   border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
   line-height: 1;
 }
 
@@ -5950,6 +5955,11 @@ export default {
   overflow: visible;
   text-overflow: clip;
   line-height: 1;
+}
+
+.request-file-add-button svg {
+  width: 13px;
+  height: 13px;
 }
 
 .files-table-wrapper {
