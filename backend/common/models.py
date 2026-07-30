@@ -1,5 +1,6 @@
 from authtools.models import AbstractEmailUser
 from django.conf import settings
+from django.core.validators import RegexValidator
 from django.db import models
 from django.utils import timezone
 from simple_history.models import HistoricalRecords
@@ -28,6 +29,23 @@ class PrincipalInvestigator(models.Model):
         Organization, on_delete=models.SET(get_deleted_org)
     )
     email = models.EmailField("E-Mail Address", default="Unset")
+    deliver_to = models.CharField(
+        "Delivery directory",
+        max_length=100,
+        blank=True,
+        default="",
+        validators=[
+            RegexValidator(
+                r"^[a-z]+$",
+                "Only lowercase a-z characters are allowed, or leave empty.",
+            )
+        ],
+        help_text=(
+            "IT filesystem directory token to deliver to when it differs from "
+            "the PI name (e.g. 'cisse' for PI 'Cissé'). Leave empty to use the "
+            "PI name."
+        ),
+    )
     archived = models.BooleanField("Archived", default=False)
     history = HistoricalRecords()
 

@@ -84,7 +84,7 @@ class CostUnitInline(admin.TabularInline):
 
 @admin.register(PrincipalInvestigator)
 class PrincipalInvestigatorAdmin(SimpleHistoryAdmin):
-    list_display = ("name", "organization", "archived")
+    list_display = ("name", "organization", "deliver_to", "archived")
     search_fields = (
         "name",
         "organization__name",

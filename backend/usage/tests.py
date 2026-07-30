@@ -18,7 +18,9 @@ class TestInternalPIsAPI(APITestCase):
         self.internal_org = Organization.objects.create(name="MPI-IE")
         self.external_org = Organization.objects.create(name="External University")
         PrincipalInvestigator.objects.create(
-            name="Cabezas-Wallscheid", organization=self.internal_org
+            name="Cabezas-Wallscheid",
+            organization=self.internal_org,
+            deliver_to="cabezas",
         )
         PrincipalInvestigator.objects.create(
             name="Manke", organization=self.internal_org
@@ -39,6 +41,14 @@ class TestInternalPIsAPI(APITestCase):
         self.assertEqual(
             sorted(response.data["pis"]),
             ["cabezas-wallscheid", "manke"],
+        )
+
+    def test_pis_is_dict_mapping_name_to_deliver_to(self):
+        self.client.login(email="staff@test.io", password="foo-bar")
+        response = self.client.get(reverse("internal-pis"), {"organizations": "MPI-IE"})
+        self.assertEqual(
+            response.data["pis"],
+            {"cabezas-wallscheid": "cabezas", "manke": None},
         )
 
     def test_excludes_archived_pis(self):
@@ -68,7 +78,7 @@ class TestInternalPIsAPI(APITestCase):
             reverse("internal-pis"), {"organizations": "Nonexistent Org"}
         )
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.data["pis"], [])
+        self.assertEqual(response.data["pis"], {})
 
     def test_missing_organizations_param_returns_400(self):
         self.client.login(email="staff@test.io", password="foo-bar")
