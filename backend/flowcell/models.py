@@ -2,6 +2,7 @@ from common.models import DateTimeMixin
 from django.db import models
 from index_generator.models import Pool
 from request.models import Request
+from simple_history.models import HistoricalRecords
 
 
 class Sequencer(models.Model):
@@ -49,6 +50,7 @@ class Flowcell(DateTimeMixin):
     matrix = models.JSONField("Flowcell Matrix", blank=True, null=True)
     sequences = models.JSONField("Sequences", blank=True, null=True)
     archived = models.BooleanField("Archived", default=False)
+    history = HistoricalRecords()
 
     def __str__(self):
         return self.flowcell_id
