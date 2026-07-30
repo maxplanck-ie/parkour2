@@ -2,95 +2,95 @@
 
 ## Principles
 
-- **KISS**: prefer the simplest solution that meets the requirements.
-- Prefer small, focused changes; avoid speculative refactors.
-- Do not introduce new dependencies unless explicitly requested.
-- If requirements or existing patterns are unclear, ask up to 3 clarifying questions instead of guessing.
+- **KISS**: simplest solution meet requirements.
+- Small, focused changes; skip speculative refactors.
+- No new dependencies unless explicit ask.
+- Requirements/patterns unclear? Ask up to 3 clarifying questions, don't guess.
 
 ## Architecture
 
 - **Backend**: Django + Django REST Framework (DRF).
 - **Frontend**: Vue 3 with Vite.
-- Reuse existing utilities and components before creating new ones.
-- Keep business logic out of views (backend) and out of UI components (frontend).
+- Reuse existing utilities/components before new ones.
+- Business logic out of views (backend) and UI components (frontend).
 
 ## Frontend UI — non-negotiable rules
 
-These prevent recurring regressions. Do not deviate without an explicit request.
+Prevent recurring regressions. No deviate without explicit ask.
 
 ### Tables MUST use Tabulator
 
-- The Tabulator library (`tabulator-tables`) is the ONLY approved table implementation.
-  Never hand-roll `<table>`/`<tr>`/`<td>` markup, and never introduce another grid
+- Tabulator library (`tabulator-tables`) only approved table impl.
+  Never hand-roll `<table>`/`<tr>`/`<td>` markup, never new grid
   library (ag-grid, DataTables, PrimeVue tables, etc.) for new tables.
-- Render tables through the existing wrapper components — do not instantiate Tabulator
-  directly and do not duplicate their logic:
+- Render tables through existing wrapper components — don't instantiate Tabulator
+  directly, don't duplicate their logic:
   - `frontend/src/components/TabulatorTableLite.vue` — optimized for large record sets.
   - `frontend/src/components/TabulatorTableFull.vue` — full-featured tables.
-- Configure a table via the wrapper's `columnDefs`, `rowData`, and `tableOptions` props.
-  Column definitions belong in the relevant `frontend/src/constants/*Consts.js` file,
-  following the existing patterns there. Do not inline ad-hoc column configs in views.
-- See existing usages for reference: `views/librariesAndSamplesView.vue`,
+- Configure table via wrapper's `columnDefs`, `rowData`, `tableOptions` props.
+  Column definitions belong in relevant `frontend/src/constants/*Consts.js` file,
+  follow existing patterns there. No inline ad-hoc column configs in views.
+- Reference: `views/librariesAndSamplesView.vue`,
   `views/poolingView.vue`, `views/requestEditorView.vue`, `views/runStatisticsView.vue`.
 
 ### Preserve existing styling (DRY)
 
-- Do NOT introduce new styling systems, ad-hoc inline `style="..."`, or hard-coded
-  colors/fonts/spacing. Reuse what already exists.
-- Styling sources, in order of preference:
-  1. Existing Bootstrap 5 classes (the project depends on `bootstrap` 5.x).
-  2. Shared CSS variables and rules in `frontend/src/assets/css/css_base.css` and
-     `css_main.css` (e.g. `var(--app-font-family)`). Add a variable there rather than
-     repeating a literal value.
-  3. Existing component-scoped styles — extend the patterns already in the component.
-- Tabulator tables use the Bootstrap 5 theme
-  (`tabulator-tables/dist/css/tabulator_bootstrap5.min.css`) plus the shared overrides
-  already defined in the wrapper components. Match those; never restyle a table inline.
-- Before adding any new CSS, search for an existing class or variable that already does
-  the job and reuse it. New text/elements must inherit the surrounding look and feel.
+- No new styling systems, ad-hoc inline `style="..."`, hard-coded
+  colors/fonts/spacing. Reuse what exists.
+- Styling sources, preference order:
+  1. Existing Bootstrap 5 classes (project depends on `bootstrap` 5.x).
+  2. Shared CSS variables/rules in `frontend/src/assets/css/css_base.css` and
+     `css_main.css` (e.g. `var(--app-font-family)`). Add variable there rather than
+     repeat literal value.
+  3. Existing component-scoped styles — extend patterns already in component.
+- Tabulator tables use Bootstrap 5 theme
+  (`tabulator-tables/dist/css/tabulator_bootstrap5.min.css`) plus shared overrides
+  already in wrapper components. Match those; never restyle table inline.
+- Before new CSS, search existing class/variable that already does
+  job, reuse it. New text/elements inherit surrounding look and feel.
 
 ## Changelog
 
 - `CHANGELOG.md` uses date-based versioning (`yy.mm.dd`) for releases, but do NOT add
-  a date when recording a change. Every change (bug fix, feature, refactor with
-  user-visible or behavioral impact) MUST add a bullet under the `Unreleased` heading
-  at the top of the file. Create the `Unreleased` heading if it doesn't exist yet.
-- Dates are added manually, only at release time, by renaming `Unreleased` to the
-  `yy.mm.dd` release date. Never add or guess a date yourself.
-- Keep entries terse and specific (what changed and why it matters), matching the
+  date when recording change. Every change (bug fix, feature, refactor with
+  user-visible/behavioral impact) MUST add bullet under `Unreleased` heading
+  at top of file. Create `Unreleased` heading if missing.
+- Dates added manually, only at release time, by renaming `Unreleased` to
+  `yy.mm.dd` release date. Never add or guess date yourself.
+- Keep entries terse, specific (what changed, why matters), match
   style of existing entries — no filler.
 
 ## Commands
 
-- Run backend tests using Makefile rule: `djtest`.
-- Run frontend tests using Makefile rule: `playwright`.
-- Build frontend using Makefile rule: `reload-ux`.
-- If a command fails with a permission error (e.g. built output files are owned by root), the app is likely running inside Docker. Run the command inside the appropriate container instead `parkour2-django` for backend or `parkour2-vite` for frontend.
+- Run backend tests: Makefile rule `djtest`.
+- Run frontend tests: Makefile rule `playwright`.
+- Build frontend: Makefile rule `reload-ux`.
+- Command fails w/ permission error (e.g. built output files owned by root) → app likely inside Docker. Run command inside appropriate container instead `parkour2-django` for backend or `parkour2-vite` for frontend.
 
 ## Security
 
-- Never log secrets or sensitive data.
-- Validate and sanitize all user input.
-- Use Django ORM; avoid raw SQL unless strictly necessary.
-- Follow least-privilege and safe-default patterns.
+- Never log secrets/sensitive data.
+- Validate, sanitize all user input.
+- Use Django ORM; skip raw SQL unless strictly necessary.
+- Follow least-privilege, safe-default patterns.
 
 ## Python / Django / DRF (`**/*.py`)
 
-- Use DRF serializers for input validation and response shaping.
-- Keep business logic out of views; place it in service modules or helpers consistent with the existing codebase.
-- Use the Django ORM; avoid raw SQL unless necessary and clearly justified.
-- Follow existing naming, module, and package conventions in the repo.
-- Add or adjust tests for behaviour changes; run with `python manage.py test --parallel`.
-- Use type hints where they improve clarity; avoid overly generic abstractions.
+- Use DRF serializers for input validation, response shaping.
+- Business logic out of views; place in service modules/helpers consistent w/ existing codebase.
+- Use Django ORM; skip raw SQL unless necessary, clearly justified.
+- Follow existing naming, module, package conventions in repo.
+- Add/adjust tests for behaviour changes; run with `python manage.py test --parallel`.
+- Type hints where they improve clarity; skip overly generic abstractions.
 
 ## Vue.js frontend (`**/*.vue`, `**/*.ts`, `**/*.js`)
 
-- Use Vue 3 Composition API; be consistent with existing patterns in the repo.
-- Prefer `<script setup lang="ts">` for new components; keep props/emits explicitly typed.
-- Keep components focused; extract shared logic into composables or utilities only when it clearly reduces duplication.
-- Use the project's existing API client/wrappers; do not introduce new networking patterns.
-- Use Pinia for cross-component state (not every local interaction); do not mutate props; follow established store patterns.
-- Use `computed`/`watch` intentionally; avoid broad/deep watchers unless justified.
-- Handle loading, empty, success, and error states explicitly in UI flows.
-- Favor accessible, semantic HTML and keyboard-friendly patterns.
-- Rebuild the frontend with `npm run build`. If running under the `parkour2-vite` Docker container, prefer the Makefile rule `reload-ux` instead.
+- Use Vue 3 Composition API; stay consistent w/ existing patterns in repo.
+- Prefer `<script setup lang="ts">` for new components; props/emits explicitly typed.
+- Keep components focused; extract shared logic into composables/utilities only when clearly reduces duplication.
+- Use project's existing API client/wrappers; no new networking patterns.
+- Use Pinia for cross-component state (not every local interaction); don't mutate props; follow established store patterns.
+- Use `computed`/`watch` intentionally; skip broad/deep watchers unless justified.
+- Handle loading, empty, success, error states explicitly in UI flows.
+- Favor accessible, semantic HTML, keyboard-friendly patterns.
+- Rebuild frontend with `npm run build`. If running under `parkour2-vite` Docker container, prefer Makefile rule `reload-ux` instead.
