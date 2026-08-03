@@ -4,11 +4,9 @@ from django.db import migrations
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('common', '0022_historicalprincipalinvestigator_deliver_to_and_more'),
-        ('common', '0022_invoicingtemplate'),
+        ("common", "0022_historicalprincipalinvestigator_deliver_to_and_more"),
+        ("common", "0022_invoicingtemplate"),
     ]
 
-    operations = [
-    ]
+    operations = []
