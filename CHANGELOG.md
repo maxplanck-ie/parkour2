@@ -6,7 +6,7 @@ Unreleased
 - Infrastructure: use Debian 12 as the shared backend base image, including Playwright, so Firefox dependencies can be installed.
 - Add staff-only `GET /api/internal_pis/?organizations=<comma-separated names>`, returning the lowercased names of non-archived `PrincipalInvestigator`s in the given organization(s). This lets dissectBCL replace its static `Internals.PIs` config list with a Parkour-backed, organization-parameterized lookup — no schema changes required.
 - RO-Crate export: per-record error isolation (a failed sample/library no longer aborts the whole export), Person/Organization entities as creator/author, RO-Crate 1.1/ISA profile conformance fixes, and barcode-keyed `#fastq-data-{barcode}` stub entities so dissectBCL can attach the real fastq files at delivery time.
-- ...
+- Add/Edit Request Index I7/I5 dropdowns: fixed wrong index pair shown for index kits where several `IndexType` positions share an identical sequence (e.g. single-fixed-i5 ATAC adapter lists) — label/editor lookup resolved by sequence, so duplicate sequences always displayed the first matching position regardless of the admin-defined `IndexPair`. Now disambiguated using the row's already-selected partner index.
 
 
 26.07.28

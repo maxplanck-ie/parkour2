@@ -3411,12 +3411,60 @@ export default {
     getLibraryIndexI7Options(rowData = {}) {
       const typeKey = rowData?.index_type ? String(rowData.index_type) : "";
       if (!typeKey) return [];
-      return this.indexI7OptionsByType[typeKey] || [];
+      const options = this.indexI7OptionsByType[typeKey] || [];
+      return this.reorderIndexOptionsForPairing(
+        options,
+        "i7",
+        typeKey,
+        rowData
+      );
     },
     getLibraryIndexI5Options(rowData = {}) {
       const typeKey = rowData?.index_type ? String(rowData.index_type) : "";
       if (!typeKey) return [];
-      return this.indexI5OptionsByType[typeKey] || [];
+      const options = this.indexI5OptionsByType[typeKey] || [];
+      return this.reorderIndexOptionsForPairing(
+        options,
+        "i5",
+        typeKey,
+        rowData
+      );
+    },
+    // Some index kits (e.g. single-i5 ATAC adapter lists) reuse the same
+    // sequence across many index_id positions. Since the dropdown label/value
+    // lookup resolves by sequence (the value actually saved to the backend),
+    // duplicate sequences resolve to whichever option happens to come first.
+    // Move the option that matches this row's already-selected partner index
+    // (per the admin-defined IndexPair) to the front so label/editor lookups
+    // pick the correct one instead of an arbitrary duplicate.
+    reorderIndexOptionsForPairing(options, side, typeKey, rowData) {
+      if (!options.length) return options;
+      const pairsMap = this.indexPairsByType[typeKey];
+      if (!pairsMap) return options;
+      const partnerValue =
+        side === "i7" ? rowData?.index_i5 : rowData?.index_i7;
+      if (!this.fieldHasValue(partnerValue)) return options;
+      const partnerOptions =
+        side === "i7"
+          ? this.indexI5OptionsByType[typeKey] || []
+          : this.indexI7OptionsByType[typeKey] || [];
+      const partner = this.findIndexOptionByValue(partnerOptions, partnerValue);
+      if (!partner || !partner.index_id) return options;
+      const targetIndexId =
+        side === "i7"
+          ? Object.keys(pairsMap).find(
+              (key) => pairsMap[key] === partner.index_id
+            )
+          : pairsMap[partner.index_id];
+      if (!targetIndexId) return options;
+      const targetIdx = options.findIndex(
+        (option) => option.index_id === targetIndexId
+      );
+      if (targetIdx <= 0) return options;
+      const reordered = [...options];
+      const [target] = reordered.splice(targetIdx, 1);
+      reordered.unshift(target);
+      return reordered;
     },
     isOtherIndexType(rowData = {}) {
       const typeId = rowData?.index_type;
