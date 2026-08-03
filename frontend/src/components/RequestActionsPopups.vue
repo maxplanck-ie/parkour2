@@ -1373,13 +1373,15 @@ export default {
 
       if (meta) {
         const filesList = Array.isArray(meta?.files) ? meta.files : [];
-        this.attachmentsFiles = filesList.map((file) => normaliseRequestFile({
-          id: file?.id ?? file?.pk,
-          name: file?.name,
-          size: file?.size ?? null,
-          path: file?.path,
-          file_type: file?.file_type
-        }));
+        this.attachmentsFiles = filesList.map((file) =>
+          normaliseRequestFile({
+            id: file?.id ?? file?.pk,
+            name: file?.name,
+            size: file?.size ?? null,
+            path: file?.path,
+            file_type: file?.file_type
+          })
+        );
         this.attachmentsFileIds = this.attachmentsFiles
           .map((file) => file?.id)
           .filter((id) => id !== undefined && id !== null);
@@ -1437,13 +1439,15 @@ export default {
           const filesList = Array.isArray(requestData?.files)
             ? requestData.files
             : [];
-          this.attachmentsFiles = filesList.map((file) => normaliseRequestFile({
-            id: file?.id ?? file?.pk,
-            name: file?.name,
-            size: file?.size ?? null,
-            path: file?.path,
-            file_type: file?.file_type
-          }));
+          this.attachmentsFiles = filesList.map((file) =>
+            normaliseRequestFile({
+              id: file?.id ?? file?.pk,
+              name: file?.name,
+              size: file?.size ?? null,
+              path: file?.path,
+              file_type: file?.file_type
+            })
+          );
           this.attachmentsFileIds = this.attachmentsFiles
             .map((file) => file?.id)
             .filter((id) => id !== undefined && id !== null);
@@ -1578,13 +1582,15 @@ export default {
         );
         if (response?.data?.success) {
           const data = response.data.data || [];
-          this.attachmentsFiles = data.map((file) => normaliseRequestFile({
-            id: file?.id,
-            name: file?.name,
-            size: file?.size ?? null,
-            path: file?.path,
-            file_type: file?.file_type
-          }));
+          this.attachmentsFiles = data.map((file) =>
+            normaliseRequestFile({
+              id: file?.id,
+              name: file?.name,
+              size: file?.size ?? null,
+              path: file?.path,
+              file_type: file?.file_type
+            })
+          );
         }
       } catch (error) {
         handleError(error);
@@ -1618,10 +1624,7 @@ export default {
       }
     },
     async saveCustomAttachmentFileType(file) {
-      if (
-        file.customFileType &&
-        !isValidRequestFileType(file.customFileType)
-      ) {
+      if (file.customFileType && !isValidRequestFileType(file.customFileType)) {
         showNotification(
           "Custom file types must use words separated by single underscores.",
           NOTIFICATION_TYPES.warning

@@ -2375,13 +2375,15 @@ export default {
         const files = Array.isArray(filesRes?.data)
           ? filesRes.data
           : requestData.files || [];
-        this.uploadedRequestFiles = files.map((file) => normaliseRequestFile({
-          id: file.id ?? file.pk,
-          name: file.name,
-          size: file.size ?? null,
-          path: file.path ?? file.file_path ?? "",
-          file_type: file.file_type
-        }));
+        this.uploadedRequestFiles = files.map((file) =>
+          normaliseRequestFile({
+            id: file.id ?? file.pk,
+            name: file.name,
+            size: file.size ?? null,
+            path: file.path ?? file.file_path ?? "",
+            file_type: file.file_type
+          })
+        );
         this.uploadedRequestFileIds = this.uploadedRequestFiles
           .map((file) => file.id)
           .filter((id) => id !== undefined && id !== null);

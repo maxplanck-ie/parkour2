@@ -31,9 +31,7 @@ def test_login_page(page: Page):
     loginButton = page.locator("input#login_button")
     forgotPasswordLink = page.get_by_role("link", name="Forgot password?")
     forgotPasswordEmailInput = page.get_by_label("Email address", exact=True)
-    forgotPasswordEmailSubmitButton = page.get_by_role(
-        "button", name="Send reset link"
-    )
+    forgotPasswordEmailSubmitButton = page.get_by_role("button", name="Send reset link")
 
     utilities.visit_login_page(page)
     expect(page.locator("h2.form-signin-heading")).to_have_text(
