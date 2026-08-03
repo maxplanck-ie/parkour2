@@ -28,7 +28,7 @@ django-admin-list-filter-dropdown==1.0.3
     # via -r backend/requirements/base.in
 django-authtools @ git+https://github.com/adRn-s/django-authtools@a3284c976719bd26f085fdac9951009acda804dc
     # via -r backend/requirements/base.in
-django-error-mail-dedup @ git+https://github.com/adRn-s/django-error-mail-dedup@2e9be2bb1056ca6ed7a5dc606af38e3c9d594482
+django-error-mail-dedup @ git+https://github.com/adRn-s/django-error-mail-dedup@b95b90889a8e147b0b7e015b26a2b706d7e36907
     # via -r backend/requirements/base.in
 django-extensions==4.1
     # via -r backend/requirements/base.in
@@ -108,7 +108,7 @@ six==1.17.0
     # via python-dateutil
 sqlparse==0.5.5
     # via django
-tablib==3.9.0
+tablib==3.10.0
     # via django-import-export
 tblib==3.2.2
     # via -r backend/requirements/base.in
