@@ -1,5 +1,5 @@
 ARG PyVersion=3.12  # to be repeated after FROM, docker syntax is at fault.
-FROM python:${PyVersion}-bullseye AS pk2_base
+FROM python:${PyVersion}-bookworm AS pk2_base
 ARG PyVersion=3.12
 
 ENV \
