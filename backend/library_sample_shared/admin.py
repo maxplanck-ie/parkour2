@@ -107,7 +107,11 @@ class IndexTypeAdmin(ImportExportModelAdmin):
 
     list_filter = (ArchivedFilter,)
 
-    filter_horizontal = (
+    # filter_horizontal used to render every IndexI7/IndexI5 row as an
+    # <option>, which becomes unusable once labs have 1000+ indices in
+    # their catalog. autocomplete_fields loads matches on demand via
+    # IndexI7Admin/IndexI5Admin.search_fields instead.
+    autocomplete_fields = (
         "indices_i7",
         "indices_i5",
     )
