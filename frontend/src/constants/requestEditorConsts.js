@@ -586,12 +586,13 @@ export function getRequestEditorLibraryColumns(
       )
     },
     {
-      title: "Read Length",
+      title: "Minimum Read Length",
       field: "read_length",
       width: 100,
       minWidth: 100,
       headerVertical: false,
-      headerTooltip: "Choose the Read Length",
+      headerTooltip:
+        "Please indicate in the description if a specific read length or device is mandatory.",
       visible: true,
       cssClass: "regular-column",
       editor: "input",
@@ -1081,12 +1082,13 @@ export function getRequestEditorSampleColumns(
       )
     },
     {
-      title: "Read Length",
+      title: "Minimum Read Length",
       field: "read_length",
       width: 100,
       minWidth: 100,
       headerVertical: false,
-      headerTooltip: "Choose the Read Length",
+      headerTooltip:
+        "Please indicate in the description if a specific read length or device is mandatory.",
       visible: true,
       cssClass: "regular-column",
       editor: "input",

@@ -698,7 +698,7 @@
                   :placeholder="
                     isEditMode
                       ? 'Description not provided'
-                      : 'Provide a brief description of your project, including any details important for handling and documentation. Indicate whether you have a backup of your study material (Yes/No).'
+                      : 'Provide a brief description of your project and indicate whether you have a backup of your study materials. To ensure timely processing and maintain overall throughput, the Deep Sequencing Facility may adjust sequencing parameters, including read length and sequencing device, unless your project requires a fixed configuration.'
                   "
                   :class="{ 'input-error': descriptionError }"
                   :readonly="!canEditRequest"
