@@ -116,7 +116,7 @@
           type="button"
           aria-haspopup="dialog"
           :aria-expanded="showCostsPanel"
-          @click="openCostsPanel"
+          @click.stop="openCostsPanel"
         >
           <font-awesome-icon
             icon="fa-solid fa-money-bill"
@@ -152,7 +152,6 @@
         :enableDefaultFilters="false"
         :tableOptions="{
           ...tableOptions,
-          clipboardPasteParser: handleReadOnlyPaste,
           fakeLoadingStart,
           fakeLoadingStop,
           handleColumnResized,
@@ -486,7 +485,8 @@ export default {
       previouslyFocusedElement: null,
       tableOptions: {
         index: "request",
-        placeholder: "No invoicing items to show."
+        placeholder: "No invoicing items to show.",
+        clipboard: "copy"
       }
     };
   },
@@ -605,13 +605,6 @@ export default {
       setTimeout(() => {
         this.fakeLoading = false;
       }, 300);
-    },
-    handleReadOnlyPaste() {
-      showNotification(
-        "Invoicing is read-only. Copy is available, but pasting is disabled.",
-        "warning"
-      );
-      return [];
     },
     toggleSelectColumns() {
       if (this.showSelectColumns) {

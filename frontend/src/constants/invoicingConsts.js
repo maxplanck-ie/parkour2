@@ -124,14 +124,13 @@ const NUMERIC_FILTER_HELP =
   "=0  exact      100-200  range";
 
 // Shared config that turns a column's header filter into the numeric
-// comparison-expression filter, with a syntax tooltip on both the header
-// title and the filter input.
+// comparison-expression filter, with one Tabulator tooltip for the header.
+// Do not add a native title to the input: it overlaps Tabulator's tooltip.
 function numericFilterConfig(extract) {
   return {
     headerFilter: "input",
     headerFilterPlaceholder: NUMERIC_FILTER_PLACEHOLDER,
     headerFilterFunc: numericHeaderFilter(extract),
-    headerFilterParams: { elementAttributes: { title: NUMERIC_FILTER_HELP } },
     headerTooltip: NUMERIC_FILTER_HELP
   };
 }

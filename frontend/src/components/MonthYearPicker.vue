@@ -148,10 +148,11 @@ export default {
 }
 
 .month-year-picker select {
-  padding: 6px 6px;
+  padding: 3px 6px;
   border: 1px solid rgba(0, 0, 0, 0.18);
   border-radius: 5px;
   height: 28px;
+  line-height: 18px;
   color: #333;
   font-family: var(--app-font-family);
   font-size: 13px;
@@ -162,7 +163,7 @@ export default {
 }
 
 .month-year-picker-month {
-  width: 62px;
+  width: 64px;
 }
 
 .month-year-picker-year {
