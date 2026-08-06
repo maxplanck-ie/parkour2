@@ -368,3 +368,49 @@ export function applyValueToAllRows(cell, getTabulatorInstance, options = {}) {
     row.update({ [field]: value });
   });
 }
+
+const FOCUSABLE_DIALOG_SELECTOR = [
+  "a[href]",
+  "button:not([disabled])",
+  "input:not([disabled])",
+  "select:not([disabled])",
+  "textarea:not([disabled])",
+  '[tabindex]:not([tabindex="-1"])'
+].join(",");
+
+function getFocusableDialogElements(container) {
+  if (!container) return [];
+  return Array.from(
+    container.querySelectorAll(FOCUSABLE_DIALOG_SELECTOR)
+  ).filter(
+    (element) =>
+      !element.hidden && element.getAttribute("aria-hidden") !== "true"
+  );
+}
+
+export function focusFirstElement(container) {
+  const [first] = getFocusableDialogElements(container);
+  (first || container)?.focus?.();
+}
+
+export function trapFocus(event, container) {
+  if (event.key !== "Tab" || !container) return false;
+
+  const focusable = getFocusableDialogElements(container);
+  if (!focusable.length) {
+    event.preventDefault();
+    container.focus?.();
+    return true;
+  }
+
+  const first = focusable[0];
+  const last = focusable[focusable.length - 1];
+  if (event.shiftKey && document.activeElement === first) {
+    event.preventDefault();
+    last.focus();
+  } else if (!event.shiftKey && document.activeElement === last) {
+    event.preventDefault();
+    first.focus();
+  }
+  return true;
+}

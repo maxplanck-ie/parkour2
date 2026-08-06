@@ -30,20 +30,39 @@ function textFormatter(align = "left", bold = false) {
   return (cell) => ellipsisContainer(cell.getValue(), align, bold);
 }
 
+const deEuroFormatter = new Intl.NumberFormat("de-DE", {
+  style: "currency",
+  currency: "EUR",
+  minimumFractionDigits: 2,
+  maximumFractionDigits: 2
+});
+
+export function formatInvoicingCurrency(value) {
+  if (value === null || value === undefined || value === "") return "";
+  const number = Number(value);
+  if (!Number.isFinite(number)) return String(value);
+
+  // In production the Vue page is hosted by MainHub. Prefer its configured
+  // money formatter so both the ExtJS shell and Vue use the same convention.
+  try {
+    const systemFormatter = window.parent?.Ext?.util?.Format?.deMoney;
+    if (typeof systemFormatter === "function") {
+      return systemFormatter(number);
+    }
+  } catch {
+    // A standalone or cross-origin host cannot expose the ExtJS formatter.
+  }
+
+  return deEuroFormatter.format(number);
+}
+
 function moneyFormatter() {
   return (cell) => {
     const value = cell.getValue();
     if (value === null || value === undefined || value === "") {
       return ellipsisContainer("", "right");
     }
-    const number = Number(value);
-    const display = Number.isFinite(number)
-      ? `${number.toLocaleString("de-DE", {
-          minimumFractionDigits: 2,
-          maximumFractionDigits: 2
-        })} €`
-      : value;
-    return ellipsisContainer(display, "right");
+    return ellipsisContainer(formatInvoicingCurrency(value), "right");
   };
 }
 

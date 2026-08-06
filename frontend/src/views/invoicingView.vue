@@ -24,12 +24,26 @@
       <!-- Sticky right section for filters and report actions -->
       <div class="sticky-actions">
         <div class="search-bar">
-          <input v-model="searchQuery" type="text" placeholder="Search" />
+          <input
+            ref="searchInput"
+            v-model="searchQuery"
+            type="text"
+            placeholder="Search"
+            aria-label="Search all invoicing history"
+            :aria-busy="allInvoicingLoading"
+          />
           <font-awesome-icon
             icon="fa-solid fa-magnifying-glass"
             style="color: darkgrey"
           />
         </div>
+        <span
+          v-if="allInvoicingLoading"
+          class="invoicing-history-loading"
+          role="status"
+        >
+          Searching history...
+        </span>
 
         <!-- Billing-month filter: always exactly one whole month, present or
              past — never a range. -->
@@ -45,7 +59,65 @@
           </div>
         </div>
 
-        <button class="header-button" @click="showCostsPanel = true">
+        <div class="button-popup-wrapper">
+          <button
+            id="toggleInvoicingColumnsButton"
+            class="header-button"
+            type="button"
+            aria-haspopup="dialog"
+            :aria-expanded="showSelectColumns"
+            @click="toggleSelectColumns"
+          >
+            <font-awesome-icon
+              icon="fa-solid fa-columns"
+              style="color: white"
+            />
+            <span>Select Columns</span>
+          </button>
+          <div
+            v-if="showSelectColumns"
+            id="invoicingColumnsDialog"
+            ref="columnsDialog"
+            class="button-popup-container invoicing-columns-dialog"
+            role="dialog"
+            aria-modal="false"
+            aria-labelledby="invoicing-columns-title"
+            tabindex="-1"
+          >
+            <div id="invoicing-columns-title" class="visually-hidden">
+              Select invoicing columns
+            </div>
+            <ul class="invoicing-columns-list">
+              <li v-for="column in columnsList" :key="column.field">
+                <label>
+                  <input
+                    v-model="column.visible"
+                    type="checkbox"
+                    @change="setColumnVisibility(column)"
+                  />
+                  <span>{{ column.title }}</span>
+                </label>
+              </li>
+            </ul>
+            <div class="invoicing-columns-actions">
+              <button class="reset-button" @click="resetColumnVisibility">
+                Reset Visibility Settings
+              </button>
+              <button class="reset-button" @click="resetColumnWidths">
+                Reset Width Settings
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <button
+          id="openCostsPanelButton"
+          class="header-button"
+          type="button"
+          aria-haspopup="dialog"
+          :aria-expanded="showCostsPanel"
+          @click="openCostsPanel"
+        >
           <font-awesome-icon
             icon="fa-solid fa-money-bill"
             style="color: white"
@@ -55,6 +127,10 @@
         <button
           class="header-button"
           id="openInvoicingExportPopupButton"
+          type="button"
+          aria-haspopup="dialog"
+          :aria-expanded="showExportPopup"
+          :disabled="allInvoicingLoading"
           @click="handleExportClick"
         >
           <font-awesome-icon
@@ -74,7 +150,14 @@
         :rowData="tableRowData"
         :columnDefs="columnsList"
         :enableDefaultFilters="false"
-        :tableOptions="tableOptions"
+        :tableOptions="{
+          ...tableOptions,
+          clipboardPasteParser: handleReadOnlyPaste,
+          fakeLoadingStart,
+          fakeLoadingStop,
+          handleColumnResized,
+          handleColumnVisibilityChanged
+        }"
       />
     </div>
 
@@ -108,11 +191,18 @@
       </div>
       <div
         v-if="!isDragOver"
+        ref="exportDialog"
         class="popup-container export-popup"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="invoicing-export-title"
+        tabindex="-1"
         :style="{ width: '670px', height: '500px' }"
       >
         <div class="popup-header">
-          <span class="popup-title">Export Options</span>
+          <span id="invoicing-export-title" class="popup-title">
+            Export Options
+          </span>
           <span
             class="popup-info-button"
             @mouseover="showExportHelpTooltip = true"
@@ -155,7 +245,12 @@
               </div>
             </div>
           </span>
-          <button class="popup-close-button" @click="closeExportPopup">
+          <button
+            class="popup-close-button"
+            type="button"
+            aria-label="Close export options"
+            @click="closeExportPopup"
+          >
             &times;
           </button>
         </div>
@@ -271,18 +366,14 @@
               style="display: none"
             />
           </div>
-          <button class="popup-button yes-button" @click="handleExport">
+          <button
+            class="popup-button yes-button"
+            :disabled="allInvoicingLoading"
+            @click="handleExport"
+          >
             OK
           </button>
-          <button
-            class="popup-button"
-            @click="
-              showExportPopup = false;
-              selectedFile = 'without-file';
-            "
-          >
-            Cancel
-          </button>
+          <button class="popup-button" @click="closeExportPopup">Cancel</button>
         </div>
       </div>
     </div>
@@ -302,14 +393,16 @@ import {
   createExcelExportBlob,
   buildExcelExportFilename,
   buildExcelDownloadFilename,
-  isSupportedExcelTemplateFile
+  isSupportedExcelTemplateFile,
+  focusFirstElement,
+  trapFocus
 } from "../utilities/utilityFunctions";
 import {
   invoicingColumnDefs,
   invoicingExportColumns
 } from "../constants/invoicingConsts";
 import { isValidMonth, formatDateForInput } from "../utilities/dateUtils";
-import iconHeader from "../assets/icons/header_statistics.svg";
+import iconHeader from "../assets/icons/header_invoicing.svg";
 import iconExportTemplateFile from "../assets/icons/export_template.svg";
 import iconExportTemplateFileLines from "../assets/icons/export_template_lines.svg";
 import iconExportDownload from "../assets/icons/export_download.svg";
@@ -321,6 +414,17 @@ const urlStringStart = urlStringStartsWith();
 // Wide enough to cover every request ever loaded, without needing a
 // dedicated "give me everything" endpoint from the backend.
 const FULL_HISTORY_START_MONTH = "2000-01";
+const COLUMN_VISIBILITY_KEY = "invoicingColumnVisibility";
+const COLUMN_WIDTHS_KEY = "invoicingColumnWidths";
+
+function readStoredObject(key) {
+  try {
+    return JSON.parse(localStorage.getItem(key) || "{}");
+  } catch {
+    localStorage.removeItem(key);
+    return {};
+  }
+}
 
 function todayString() {
   return formatDateForInput(new Date());
@@ -371,12 +475,15 @@ export default {
       maxMonth: currentMonthString(),
       billingMonthValid: true,
       dateChangeTimer: null,
+      invoicingRequestId: 0,
       showCostsPanel: false,
+      showSelectColumns: false,
       showExportPopup: false,
       showExportHelpTooltip: false,
       isDragOver: false,
       fetchedInvoicingTemplates: [],
       selectedFile: "without-file",
+      previouslyFocusedElement: null,
       tableOptions: {
         index: "request",
         placeholder: "No invoicing items to show."
@@ -412,7 +519,9 @@ export default {
     }
   },
   async mounted() {
-    this.columnsList = invoicingColumnDefs();
+    this.setColumns();
+    document.addEventListener("click", this.handleOutsideClick);
+    document.addEventListener("keydown", this.handleKeyDown);
     await this.fetchLookups();
     await this.getInvoicing();
     this.fetchExportTemplates();
@@ -421,8 +530,74 @@ export default {
     if (this.dateChangeTimer) {
       clearTimeout(this.dateChangeTimer);
     }
+    this.invoicingRequestId += 1;
+    document.removeEventListener("click", this.handleOutsideClick);
+    document.removeEventListener("keydown", this.handleKeyDown);
   },
   methods: {
+    setColumns() {
+      const storedVisibility = readStoredObject(COLUMN_VISIBILITY_KEY);
+      const storedWidths = readStoredObject(COLUMN_WIDTHS_KEY);
+      this.columnsList = invoicingColumnDefs().map((column) => ({
+        ...column,
+        width: storedWidths[column.field] || column.width,
+        visible: storedVisibility[column.field] ?? column.visible ?? true
+      }));
+    },
+    rememberFocus() {
+      this.previouslyFocusedElement = document.activeElement;
+    },
+    restoreRememberedFocus() {
+      const returnFocusTo = this.previouslyFocusedElement;
+      this.previouslyFocusedElement = null;
+      this.$nextTick(() => returnFocusTo?.focus?.());
+    },
+    handleOutsideClick(event) {
+      const columnsDialog = this.$refs.columnsDialog;
+      const columnsButton = this.$el.querySelector(
+        "#toggleInvoicingColumnsButton"
+      );
+      const exportDialog = this.$refs.exportDialog;
+      const exportButton = this.$el.querySelector(
+        "#openInvoicingExportPopupButton"
+      );
+
+      if (
+        this.showSelectColumns &&
+        columnsDialog &&
+        !columnsDialog.contains(event.target) &&
+        !columnsButton?.contains(event.target)
+      ) {
+        this.closeSelectColumns();
+      }
+      if (
+        this.showExportPopup &&
+        exportDialog &&
+        !exportDialog.contains(event.target) &&
+        !exportButton?.contains(event.target)
+      ) {
+        this.closeExportPopup();
+      }
+    },
+    handleKeyDown(event) {
+      if (this.showExportPopup) {
+        if (event.key === "Escape") {
+          event.preventDefault();
+          this.closeExportPopup();
+          return;
+        }
+        trapFocus(event, this.$refs.exportDialog);
+        return;
+      }
+      if (this.showSelectColumns) {
+        if (event.key === "Escape") {
+          event.preventDefault();
+          this.closeSelectColumns();
+          return;
+        }
+        trapFocus(event, this.$refs.columnsDialog);
+      }
+    },
     fakeLoadingStart() {
       this.fakeLoading = true;
     },
@@ -430,6 +605,81 @@ export default {
       setTimeout(() => {
         this.fakeLoading = false;
       }, 300);
+    },
+    handleReadOnlyPaste() {
+      showNotification(
+        "Invoicing is read-only. Copy is available, but pasting is disabled.",
+        "warning"
+      );
+      return [];
+    },
+    toggleSelectColumns() {
+      if (this.showSelectColumns) {
+        this.closeSelectColumns();
+        return;
+      }
+      this.rememberFocus();
+      this.showExportPopup = false;
+      this.showSelectColumns = true;
+      this.$nextTick(() => focusFirstElement(this.$refs.columnsDialog));
+    },
+    closeSelectColumns() {
+      if (!this.showSelectColumns) return;
+      this.showSelectColumns = false;
+      this.restoreRememberedFocus();
+    },
+    openCostsPanel() {
+      this.showSelectColumns = false;
+      this.showExportPopup = false;
+      this.previouslyFocusedElement = null;
+      this.showCostsPanel = true;
+    },
+    setColumnVisibility(column) {
+      const table = this.$refs.tabulatorTableRef?.getTable?.();
+      if (column.visible) {
+        table?.showColumn?.(column.field);
+      } else {
+        table?.hideColumn?.(column.field);
+      }
+    },
+    handleColumnResized(column) {
+      const field = column?.getField?.();
+      if (!field) return;
+      localStorage.setItem(
+        COLUMN_WIDTHS_KEY,
+        JSON.stringify({
+          ...readStoredObject(COLUMN_WIDTHS_KEY),
+          [field]: column.getWidth()
+        })
+      );
+      this.fakeLoadingStart();
+      setTimeout(() => this.fakeLoadingStop(), 50);
+    },
+    handleColumnVisibilityChanged(field, visible) {
+      if (!field) return;
+      localStorage.setItem(
+        COLUMN_VISIBILITY_KEY,
+        JSON.stringify({
+          ...readStoredObject(COLUMN_VISIBILITY_KEY),
+          [field]: visible
+        })
+      );
+      const column = this.columnsList.find((item) => item.field === field);
+      if (column) column.visible = visible;
+      this.fakeLoadingStart();
+      setTimeout(() => this.fakeLoadingStop(), 50);
+    },
+    resetColumnWidths() {
+      localStorage.removeItem(COLUMN_WIDTHS_KEY);
+      this.setColumns();
+      this.fakeLoadingStart();
+      setTimeout(() => this.fakeLoadingStop(), 300);
+    },
+    resetColumnVisibility() {
+      localStorage.removeItem(COLUMN_VISIBILITY_KEY);
+      this.setColumns();
+      this.fakeLoadingStart();
+      setTimeout(() => this.fakeLoadingStop(), 300);
     },
     async fetchLookups() {
       try {
@@ -527,24 +777,32 @@ export default {
         return;
       }
       this.billingMonthValid = true;
+      const requestId = ++this.invoicingRequestId;
+      const requestedMonth = this.billingMonth;
       this.loading = true;
+      this.invoicingList = [];
       try {
         const response = await axiosRef.get(
           urlStringStart + "/api/invoicing/",
           {
             params: {
-              start: this.billingMonth,
-              end: this.billingMonth
+              start: requestedMonth,
+              end: requestedMonth
             }
           }
         );
+        if (requestId !== this.invoicingRequestId) return;
         this.invoicingList = (response.data || [])
           .filter((element) => element.library_protocol !== "")
           .map((element) => this.mapInvoicingElement(element));
       } catch (error) {
+        if (requestId !== this.invoicingRequestId) return;
+        this.invoicingList = [];
         handleError(error);
       } finally {
-        this.loading = false;
+        if (requestId === this.invoicingRequestId) {
+          this.loading = false;
+        }
       }
     },
     // Lazily loads every request ever loaded into the sequencer, so the
@@ -639,30 +897,42 @@ export default {
       }
     },
     handleExportClick() {
+      if (this.allInvoicingLoading) return;
+      this.rememberFocus();
+      this.showSelectColumns = false;
       this.showExportHelpTooltip = false;
       this.isDragOver = false;
       this.showExportPopup = true;
+      this.$nextTick(() => focusFirstElement(this.$refs.exportDialog));
     },
     closeExportPopup() {
+      if (!this.showExportPopup) return;
       this.showExportPopup = false;
       this.showExportHelpTooltip = false;
       this.isDragOver = false;
       this.selectedFile = "without-file";
+      this.restoreRememberedFocus();
     },
-    // Mirrors whatever is currently visible in the table: the active search
-    // filter (if any) applied on top of the current month/full-history
-    // dataset, without needing to read Tabulator's internal filtered state.
+    // Tabulator's active rows include both the global search filter and every
+    // per-column header filter, so the export matches the visible table.
     getDisplayedRows() {
-      const query = this.searchQuery.trim().toLowerCase();
-      if (!query) return this.tableRowData;
-      return this.tableRowData.filter((row) =>
-        [row.request, row.cost_unit, row.sequencer, row.library_protocol]
-          .join(" ")
-          .toLowerCase()
-          .includes(query)
-      );
+      const table = this.$refs.tabulatorTableRef?.getTable?.();
+      if (!table) return this.tableRowData;
+      const activeRows = table.getRows?.("active");
+      if (Array.isArray(activeRows)) {
+        return activeRows.map((row) => row.getData());
+      }
+      const activeData = table.getData?.("active");
+      return Array.isArray(activeData) ? activeData : this.tableRowData;
     },
     async handleExport() {
+      if (this.allInvoicingLoading) {
+        showNotification(
+          "Please wait until the invoicing history search has finished.",
+          "warning"
+        );
+        return;
+      }
       const exportRows = this.getDisplayedRows();
       if (!exportRows.length) {
         showNotification("No invoicing rows available for export.", "warning");
@@ -782,5 +1052,54 @@ body,
   border: 1px solid #ccc;
   border-radius: 4px;
   font-size: 13px;
+}
+
+.invoicing-columns-dialog {
+  left: -50px;
+  width: 260px;
+  max-height: 475px;
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+}
+
+.invoicing-columns-list {
+  margin: 0;
+  padding: 0 4px 8px;
+  overflow-y: auto;
+}
+
+.invoicing-columns-list li {
+  list-style: none;
+}
+
+.invoicing-columns-list label {
+  cursor: pointer;
+}
+
+.invoicing-columns-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding-top: 8px;
+  border-top: 1px solid #eee;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.invoicing-history-loading {
+  color: white;
+  font-size: 12px;
+  white-space: nowrap;
 }
 </style>
