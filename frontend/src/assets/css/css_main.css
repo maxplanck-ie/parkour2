@@ -31,7 +31,8 @@
 .app-tooltip {
   position: fixed;
   z-index: 3000;
-  max-width: 260px;
+  max-width: min(420px, calc(100vw - 24px));
+  box-sizing: border-box;
   padding: 6px 8px;
   background: #404a57;
   color: #ffffff;
@@ -39,7 +40,9 @@
   box-shadow: none;
   font-size: 12px;
   line-height: 1.4;
-  white-space: pre-line;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  word-break: break-word;
   pointer-events: none;
   opacity: 0;
   transform: translateZ(0);
@@ -463,11 +466,38 @@ input[type="radio"]:checked::after {
   font-size: 12px;
 }
 
+.file-type-selection-controls select {
+  appearance: none;
+  padding-right: 28px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5 6 6.5l5-5' fill='none' stroke='%23173f53' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 9px center;
+  background-size: 12px 8px;
+}
+
 .file-type-selection-controls select:focus,
 .file-type-selection-controls input:focus {
   border-color: #006c66;
   outline: none;
   box-shadow: 0 0 0 2px rgba(0, 108, 102, 0.14);
+}
+
+.file-type-selection-controls input.invalid {
+  border-color: #c43d43;
+  box-shadow: 0 0 0 1px rgba(196, 61, 67, 0.12);
+}
+
+.file-type-selection-error {
+  color: #c43d43;
+  font-size: 11px;
+}
+
+.file-type-required-error {
+  display: block;
+  margin-top: 4px;
+  color: #c43d43;
+  font-size: 11px;
+  line-height: 1.25;
 }
 
 .file-type-selection-modal .popup-button:disabled,

@@ -785,7 +785,9 @@
                 <div class="files-header">
                   <div>
                     <span>Files</span>
-                    <small>Upload request related documents.</small>
+                    <small title="Upload request related documents.">
+                      Upload request related documents.
+                    </small>
                   </div>
                   <button
                     v-if="canEditRequest"
@@ -818,14 +820,12 @@
                     <thead>
                       <tr>
                         <th class="file-col-name">Name</th>
-                        <th class="file-col-type">File Type</th>
-                        <th class="file-col-size">Size</th>
                         <th class="file-col-actions"></th>
                       </tr>
                     </thead>
                     <tbody>
                       <tr v-if="!uploadedRequestFiles.length">
-                        <td colspan="4" class="empty-cell">
+                        <td colspan="2" class="empty-cell">
                           No files uploaded yet.
                         </td>
                       </tr>
@@ -834,44 +834,79 @@
                           <span class="file-name-text" :title="file.name">{{
                             file.name
                           }}</span>
-                        </td>
-                        <td class="file-type-cell">
-                          <select
-                            v-model="file.fileTypeChoice"
-                            class="file-type-select"
-                            :disabled="!canEditRequest"
-                            :aria-label="`File type for ${file.name}`"
-                            @change="handleRequestFileTypeChoice(file)"
-                          >
-                            <option
-                              v-for="option in requestFileTypeOptions"
-                              :key="option"
-                              :value="option"
+                          <div class="request-file-type-control">
+                            <select
+                              v-model="file.fileTypeChoice"
+                              class="file-type-select"
+                              :class="{
+                                'has-custom-input':
+                                  file.fileTypeChoice === requestFileTypeOther
+                              }"
+                              :disabled="!canEditRequest"
+                              :aria-label="`File type for ${file.name}`"
+                              @change="handleRequestFileTypeChoice(file)"
                             >
-                              {{ option }}
-                            </option>
-                          </select>
-                          <input
-                            v-if="file.fileTypeChoice === requestFileTypeOther"
-                            :value="file.customFileType"
-                            class="file-type-custom-input"
-                            :class="{
-                              invalid:
-                                file.customFileType &&
+                              <option
+                                v-for="option in requestFileTypeOptions"
+                                :key="option"
+                                :value="option"
+                              >
+                                {{ option }}
+                              </option>
+                            </select>
+                            <div
+                              v-if="file.fileTypeChoice === requestFileTypeOther"
+                              class="file-type-custom-input-wrapper"
+                            >
+                              <input
+                                :value="file.customFileType"
+                                class="file-type-custom-input"
+                                :class="{
+                                  invalid:
+                                    file.customFileTypeTouched &&
+                                    !isValidRequestFileType(
+                                      file.customFileType
+                                    ),
+                                  'has-save-button': file.customFileTypeDirty
+                                }"
+                                :disabled="!canEditRequest"
+                                maxlength="100"
+                                placeholder="Custom_File_Type"
+                                :aria-label="`Custom file type for ${file.name}`"
+                                @focus="markCustomFileTypeTouched(file)"
+                                @input="
+                                  handleCustomRequestFileType(file, $event)
+                                "
+                                @keyup.enter="saveCustomRequestFileType(file)"
+                              />
+                              <button
+                                v-if="file.customFileTypeDirty"
+                                class="file-type-inline-save"
+                                type="button"
+                                title="Apply custom file type"
+                                :aria-label="`Apply custom file type for ${file.name}`"
+                                :disabled="
+                                  !isValidRequestFileType(file.customFileType)
+                                "
+                                @mousedown.prevent
+                                @click="saveCustomRequestFileType(file)"
+                              >
+                                <font-awesome-icon
+                                  icon="fa-solid fa-floppy-disk"
+                                />
+                              </button>
+                            </div>
+                            <small
+                              v-if="
+                                file.fileTypeChoice === requestFileTypeOther &&
+                                file.customFileTypeTouched &&
                                 !isValidRequestFileType(file.customFileType)
-                            }"
-                            :disabled="!canEditRequest"
-                            maxlength="100"
-                            placeholder="Custom_File_Type"
-                            :aria-label="`Custom file type for ${file.name}`"
-                            @input="handleCustomRequestFileType(file, $event)"
-                          />
-                        </td>
-                        <td
-                          class="file-size-cell"
-                          :title="formatFileSize(file.size)"
-                        >
-                          {{ formatFileSize(file.size) }}
+                              "
+                              class="file-type-required-error"
+                            >
+                              A file type name is required.
+                            </small>
+                          </div>
                         </td>
                         <td class="actions-cell">
                           <button
@@ -1167,11 +1202,23 @@
                 <input
                   v-if="file.fileTypeChoice === requestFileTypeOther"
                   :value="file.customFileType"
+                  :class="{
+                    invalid: !isValidRequestFileType(file.customFileType)
+                  }"
                   :disabled="pendingFileUploadBusy"
                   maxlength="100"
                   placeholder="Custom_File_Type"
                   @input="handleCustomRequestFileType(file, $event)"
                 />
+                <small
+                  v-if="
+                    file.fileTypeChoice === requestFileTypeOther &&
+                    !isValidRequestFileType(file.customFileType)
+                  "
+                  class="file-type-selection-error"
+                >
+                  A file type name is required.
+                </small>
               </div>
             </div>
           </div>
@@ -4058,24 +4105,43 @@ export default {
     },
     isValidRequestFileType,
     handleRequestFileTypeChoice(file) {
+      if (file.fileTypeChoice === REQUEST_FILE_TYPE_OTHER) {
+        this.markCustomFileTypeTouched(file);
+      }
       file.file_type = resolveRequestFileType(file);
     },
     handleCustomRequestFileType(file, event) {
+      this.markCustomFileTypeTouched(file);
       const value = String(event?.target?.value || "").replace(
         /[^A-Za-z0-9_]/g,
         ""
       );
       file.customFileType = value;
+      file.customFileTypeDirty = true;
       file.file_type = value || REQUEST_FILE_TYPE_OTHER;
       if (event?.target && event.target.value !== value) {
         event.target.value = value;
       }
     },
+    saveCustomRequestFileType(file) {
+      if (!isValidRequestFileType(file.customFileType)) {
+        showNotification(
+          "Enter a custom file type using words separated by single underscores.",
+          "warning"
+        );
+        return;
+      }
+      file.file_type = resolveRequestFileType(file);
+      file.customFileTypeDirty = false;
+    },
+    markCustomFileTypeTouched(file) {
+      file.customFileTypeTouched = true;
+    },
     requestFileTypesAreValid() {
       const invalidFile = this.uploadedRequestFiles.find(
         (file) =>
           file.fileTypeChoice === REQUEST_FILE_TYPE_OTHER &&
-          file.customFileType &&
+          (file.customFileTypeTouched || file.customFileType) &&
           !isValidRequestFileType(file.customFileType)
       );
       if (!invalidFile) return true;
@@ -6110,32 +6176,35 @@ export default {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 12px;
+  flex-wrap: nowrap;
+  gap: 8px;
 }
 
 .files-header > div {
-  flex: 1 1 150px;
+  flex: 1 1 auto;
   min-width: 0;
 }
 
 .files-header small {
   display: block;
+  overflow: hidden;
   font-size: 11px;
   color: #6b7280;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .request-file-add-button {
   display: inline-flex;
   flex: 0 0 auto;
   width: auto;
-  min-width: 112px;
+  min-width: 105px;
   max-width: none;
   height: 32px;
   min-height: 32px;
   margin-left: auto;
   gap: 7px;
-  padding: 0 14px;
+  padding: 0 10px;
   border-radius: 8px;
   font-size: 13px;
   font-weight: 600;
@@ -6158,7 +6227,7 @@ export default {
   border: 1px solid #d0d0d0;
   border-radius: 8px;
   overflow-y: auto;
-  overflow-x: auto;
+  overflow-x: hidden;
   margin-top: 8px;
   flex: 1 1 auto;
   min-height: 220px;
@@ -6169,23 +6238,17 @@ export default {
 
 .files-table {
   width: 100%;
-  min-width: 720px;
+  min-width: 0;
   border-collapse: separate;
   border-spacing: 0;
   table-layout: fixed;
   font-size: 12px;
 }
 .files-table .file-col-name {
-  width: 30%;
-}
-.files-table .file-col-type {
-  width: 38%;
-}
-.files-table .file-col-size {
-  width: 14%;
+  width: 66%;
 }
 .files-table .file-col-actions {
-  width: 18%;
+  width: 34%;
 }
 
 .files-table.files-table-empty {
@@ -6212,16 +6275,19 @@ export default {
   border-bottom: 1px solid #d0d0d0;
 }
 
+.files-table tbody tr:not(:last-child) td {
+  border-bottom: 1px solid #e1e5e8;
+}
+
 .files-table .empty-cell {
   text-align: center;
   color: #7b7f89;
 }
 
 .files-table td.actions-cell {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 3px;
+  display: table-cell;
+  text-align: center;
+  white-space: nowrap;
 }
 .owner-change-action-container {
   display: flex;
@@ -6235,33 +6301,59 @@ export default {
 }
 
 .file-name-cell {
-  max-width: 220px;
-  display: flex;
-  align-items: center;
+  min-width: 0;
+  max-width: none;
 }
 
 .file-name-text {
   display: inline-block;
+  width: 100%;
   max-width: 100%;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-.file-size-cell {
-  max-width: 140px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+.request-file-type-control {
+  margin-top: 7px;
 }
 
-.file-type-cell {
-  min-width: 250px;
+.file-type-custom-input-wrapper {
+  position: relative;
+}
+
+.file-type-custom-input.has-save-button {
+  padding-right: 34px;
+}
+
+.file-type-inline-save {
+  position: absolute;
+  right: 6px;
+  top: 50%;
+  width: 22px;
+  height: 22px;
+  padding: 0;
+  border: 0;
+  border-radius: 5px;
+  background: transparent;
+  color: #006c66;
+  cursor: pointer;
+  transform: translateY(-50%);
+}
+
+.file-type-inline-save:hover:not(:disabled) {
+  background: #e8f2f1;
+}
+
+.file-type-inline-save:disabled {
+  color: #9aa6ad;
+  cursor: not-allowed;
 }
 
 .file-type-select,
 .file-type-custom-input {
   width: 100%;
+  box-sizing: border-box;
   min-height: 30px;
   border: 1px solid #c9d2d6;
   border-radius: 6px;
@@ -6271,8 +6363,24 @@ export default {
   padding: 5px 7px;
 }
 
+.file-type-select {
+  appearance: none;
+  padding-right: 26px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5 6 6.5l5-5' fill='none' stroke='%23173f53' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 8px center;
+  background-size: 12px 8px;
+}
+
 .file-type-custom-input {
-  margin-top: 5px;
+  margin-top: -1px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
+.file-type-select.has-custom-input {
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
 }
 
 .file-type-custom-input.invalid {
@@ -6291,6 +6399,7 @@ export default {
   align-items: center;
   justify-content: center;
   cursor: pointer;
+  vertical-align: middle;
 }
 
 .icon-action:disabled {

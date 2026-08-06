@@ -43,7 +43,7 @@ from rest_framework.permissions import AllowAny, IsAdminUser
 from rest_framework.response import Response
 from tablib import Dataset
 
-from .models import FileRequest, Request, is_valid_file_type
+from .models import DEFAULT_FILE_TYPE, FileRequest, Request, is_valid_file_type
 from .resources import LibrariesResource, SamplesResource
 from .serializers import RequestFileSerializer, RequestSerializer
 
@@ -584,7 +584,10 @@ class RequestViewSet(viewsets.ModelViewSet):
         if (
             not isinstance(file_types, list)
             or len(file_types) != len(files)
-            or not all(is_valid_file_type(value) for value in file_types)
+            or not all(
+                is_valid_file_type(value) and value != DEFAULT_FILE_TYPE
+                for value in file_types
+            )
         ):
             return JsonResponse(
                 {

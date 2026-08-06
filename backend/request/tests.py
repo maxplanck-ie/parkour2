@@ -298,7 +298,7 @@ class TestRequests(BaseTestCase):
         self.assertEqual(response.status_code, 400)
         self.assertFalse(response.json()["success"])
 
-    def test_upload_files_accepts_explicit_other_type(self):
+    def test_upload_files_rejects_other_without_a_custom_name(self):
         response = self.client.post(
             "/api/requests/upload_files/",
             {
@@ -307,9 +307,8 @@ class TestRequests(BaseTestCase):
             },
         )
 
-        self.assertEqual(response.status_code, 200)
-        uploaded = FileRequest.objects.get(pk=response.json()["fileIds"][0])
-        self.assertEqual(uploaded.file_type, "Other")
+        self.assertEqual(response.status_code, 400)
+        self.assertFalse(response.json()["success"])
 
     def test_request_list_non_existing_page(self):
         request = create_request(self.user)

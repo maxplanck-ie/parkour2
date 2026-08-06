@@ -19,9 +19,7 @@ export function areRequestFileTypesSelected(files = []) {
     files.every((file) => {
       if (!file.fileTypeChoice) return false;
       if (file.fileTypeChoice !== REQUEST_FILE_TYPE_OTHER) return true;
-      return (
-        !file.customFileType || isValidRequestFileType(file.customFileType)
-      );
+      return isValidRequestFileType(file.customFileType);
     })
   );
 }
@@ -52,6 +50,8 @@ export function normaliseRequestFile(
     file_type: storedType,
     fileTypeChoice: isKnownType ? storedType : REQUEST_FILE_TYPE_OTHER,
     customFileType: isKnownType ? "" : storedType,
+    customFileTypeTouched: false,
+    customFileTypeDirty: false,
   };
 }
 
