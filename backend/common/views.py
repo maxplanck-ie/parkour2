@@ -31,6 +31,7 @@ from .models import (
     PoolingTemplate,
     RunStatisticsTemplate,
     SequencesStatisticsTemplate,
+    InvoicingTemplate,
 )
 from .serializers import (
     AttachmentFileTypeSerializer,
@@ -44,6 +45,7 @@ from .serializers import (
     PoolingTemplateSerializer,
     RunStatisticsTemplateSerializer,
     SequencesStatisticsTemplateSerializer,
+    InvoicingTemplateSerializer,
 )
 
 User = get_user_model()
@@ -125,7 +127,7 @@ def get_navigation_tree(request):
             {
                 "text": "Invoicing",
                 "iconCls": "x-fa fa-eur",
-                "viewType": "invoicing",
+                "viewType": "invoicing-vue",
                 "leaf": True,
             },
             {
@@ -443,3 +445,8 @@ class RunStatisticsTemplateViewSet(BaseTemplateViewSet):
 class SequencesStatisticsTemplateViewSet(BaseTemplateViewSet):
     model = SequencesStatisticsTemplate
     serializer_class = SequencesStatisticsTemplateSerializer
+
+
+class InvoicingTemplateViewSet(BaseTemplateViewSet):
+    model = InvoicingTemplate
+    serializer_class = InvoicingTemplateSerializer

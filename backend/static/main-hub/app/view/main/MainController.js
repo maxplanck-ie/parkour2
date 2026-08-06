@@ -27,7 +27,8 @@ Ext.define("MainHub.view.main.MainController", {
     pooling: "pooling-vue",
     flowcells: "flowcells-vue",
     "run-statistics": "run-statistics-vue",
-    "sequences-statistics": "sequences-statistics-vue"
+    "sequences-statistics": "sequences-statistics-vue",
+    invoicing: "invoicing-vue"
   },
 
   onMainViewRender: function () {

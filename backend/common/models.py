@@ -325,3 +325,17 @@ class SequencesStatisticsTemplate(models.Model):
     class Meta:
         verbose_name = "Sequenced Samples Statistics Template"
         verbose_name_plural = "Templates -> Sequenced Samples Statistics"
+
+
+class InvoicingTemplate(models.Model):
+    name = models.CharField("File Name", max_length=200)
+    file = models.FileField(upload_to="templates/invoicing/")
+    uploaded_at = models.DateTimeField("Uploaded At", auto_now_add=True)
+    history = HistoricalRecords()
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = "Invoicing Template"
+        verbose_name_plural = "Templates -> Invoicing"

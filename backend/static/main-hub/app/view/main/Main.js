@@ -17,6 +17,7 @@ Ext.define("MainHub.view.main.Main", {
     "MainHub.view.statisticsvue.RunStatisticsVue",
     "MainHub.view.statisticsvue.SequencesStatisticsVue",
     "MainHub.view.invoicing.Invoicing",
+    "MainHub.view.invoicingvue.InvoicingVue",
     "MainHub.view.usage.Usage"
   ],
 

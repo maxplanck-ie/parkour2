@@ -9,6 +9,7 @@ import loadFlowcells from "../views/loadFlowcellsView.vue";
 import IndexGeneratorView from "../views/indexGeneratorView.vue";
 import notFoundView from "../views/notFoundView.vue";
 import runStatisticsView from "../views/runStatisticsView.vue";
+import invoicingView from "../views/invoicingView.vue";
 import sequencesStatisticsView from "../views/sequencesStatisticsView.vue";
 
 const router = createRouter({
@@ -57,6 +58,11 @@ const router = createRouter({
           path: "run_statistics",
           name: "Runs Statistics",
           component: runStatisticsView
+        },
+        {
+          path: "invoicing",
+          name: "Invoicing",
+          component: invoicingView
         },
         {
           path: "sequences_statistics",
