@@ -51,7 +51,10 @@ set-prod: hardreset-caddyfile-prod hardreset-nginx-server-prod
 		echo "INSTANCE_VERSION=$$ver" >> ./misc/parkour.env; \
 	}
 
-deploy-webapp:
+ensure-media-dir:  ## Create ./media if missing (plain dir locally; a pre-made symlink on the VMs)
+	@[[ -e media ]] || mkdir -p media
+
+deploy-webapp: ensure-media-dir
 	@docker compose build
 	@docker compose --project-name=parkour2 up -d
 	@git checkout docker-compose.yml
@@ -187,12 +190,14 @@ convert-backup:  ## Convert xxxly.0's pgdb to ./misc/*.sqldump (updating symlink
 		docker compose -f misc/convert-backup.yml down
 	@ln -sf db_$(stamp).sqldump misc/latest.sqldump
 
-load-media:  ## Copy all media files into running instance
-	@[[ -d media_dump ]] && \
-		find $$PWD/media_dump/ -maxdepth 1 -mindepth 1 -type d | \
-			xargs -I {} docker cp {} parkour2-django:/usr/src/app/media/ && \
-		echo "Info: Loaded media file(s)." || \
-		echo 'ERROR: Folder media_dump not found!'
+## Deprecated: media now lives on a host bind mount (./media), nothing to load.
+## Kept commented out for reference; remove once nobody expects this target.
+# load-media:
+# 	@[[ -d media_dump ]] && \
+# 		find $$PWD/media_dump/ -maxdepth 1 -mindepth 1 -type d | \
+# 			xargs -I {} docker cp {} parkour2-django:/usr/src/app/media/ && \
+# 		echo "Info: Loaded media file(s)." || \
+# 		echo 'ERROR: Folder media_dump not found!'
 
 load-postgres:  ## Restore instant snapshot (sqldump) on running instance
 	@[[ -f misc/latest.sqldump ]] && \
@@ -229,19 +234,20 @@ drop-db:  ## Drop all tables (public schema) from the running database
 
 reset-fixtures: drop-db load-fixtures  ## Drop DB then reload fixtures (for reusing running containers)
 
-load-backup: load-postgres load-media
+load-backup: load-postgres  ## media is now a host bind mount; nothing to load alongside postgres
 
-save-media:
-	@rm -rf media_dump && docker cp parkour2-django:/usr/src/app/media/ . && mv media media_dump
+## Deprecated: media now lives on a host bind mount (./media), nothing to extract.
+## Kept commented out for reference; remove once nobody expects this target.
+# save-media:
+# 	@rm -rf media_dump && docker cp parkour2-django:/usr/src/app/media/ . && mv media media_dump
 
 save-postgres:  ## Create instant snapshot (latest.sqldump) of running database instance
 	@docker exec parkour2-postgres pg_dump -Fc postgres -U postgres -f tmp_parkour_dump && \
 		docker cp parkour2-postgres:/tmp_parkour_dump misc/db_$(stamp).sqldump
 	@ln -sf db_$(stamp).sqldump misc/latest.sqldump
 
-import-media:
-	@ssh -i ~/.ssh/parkour2 root@parkour -t "make --directory ~/parkour2 save-media"
-	@rsync -rauL -vhP -e "ssh -i ~/.ssh/parkour2" root@parkour:~/parkour2/media_dump .
+import-media:  ## Mirror production media onto this host's ./media directory
+	@rsync -raul -vhP -e "ssh -i ~/.ssh/parkour2" root@parkour:/root/pk2media/ media/
 
 import-pgdb:
 	@ssh -i ~/.ssh/parkour2 root@parkour -t "make --directory ~/parkour2 save-postgres"
