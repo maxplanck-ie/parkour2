@@ -2,6 +2,7 @@ misc/
 misc/ollama/
 *_dump/
 *_dumps/
+/media
 *.swp
 env/
 env_*/

@@ -52,7 +52,12 @@ set-prod: hardreset-caddyfile-prod hardreset-nginx-server-prod
 	}
 
 ensure-media-dir:  ## Create ./media if missing (plain dir locally; a pre-made symlink on the VMs)
-	@[[ -e media ]] || mkdir -p media
+	@if [[ -L media && ! -e media ]]; then \
+		echo "ERROR: ./media is a dangling symlink -> $$(readlink media)"; exit 1; \
+	elif [[ ! -e media ]]; then \
+		echo "Warning: ./media absent; creating a local directory. On the VMs this must be a symlink to /root/pk2media!"; \
+		mkdir -p media; \
+	fi
 
 deploy-webapp: ensure-media-dir
 	@docker compose build
@@ -98,7 +103,7 @@ rm-volumes:
 	@VOLUMES=$$(docker volume ls -q | grep "^parkour2_") || :
 	@test $${#VOLUMES[@]} -gt 1 && docker volume rm -f $$VOLUMES > /dev/null || :
 
-down: clean  ## Turn off running instance (persisting media & staticfiles' volumes)
+down: clean  ## Turn off running instance (persisting staticfiles' volume and the media bind mount)
 	@CONTAINERS=$$(docker ps -a -f status=exited | awk '/^parkour2_parkour2-/ { print $$7 }') || :
 	@test $${#CONTAINERS[@]} -gt 1 && docker rm $$CONTAINERS > /dev/null || :
 	@docker compose -f docker-compose.yml -f misc/caddy.yml -f misc/nginx.yml -f misc/rsnapshot.yml down
@@ -173,10 +178,10 @@ hardreset-caddyfile-dev:
 hardreset-envfile:
 	@echo -e "INSTANCE_NAME=Parkour2\nTIME_ZONE=Europe/Berlin\nADMIN_NAME=admin\nADMIN_EMAIL=your@mail.server.tld\nEMAIL_HOST=mail.server.tld\nEMAIL_SUBJECT_PREFIX=[Parkour2]\nSERVER_EMAIL=errors@mail.server.tld\nCSRF_TRUSTED_ORIGINS=http://127.0.0.1,https://*.server.tld,http://localhost:5174\nPOSTGRES_DB=postgres\nPOSTGRES_USER=postgres\nPOSTGRES_PASSWORD=change_me__stay_safe\nDATABASE_URL=postgres://postgres:change_me__stay_safe@parkour2-postgres:5432/postgres\nREADONLY_USER=ropg\nREADONLY_PASSWORD=change_me__stay_safe2\nREADONLY_DATABASE_URL=postgres://ropg:change_me__stay_safe2@parkour2-postgres:5432/postgres\nOPENROUTER_API_KEY=aaaaaaaaaaaaaaaaa\nSECRET_KEY=generate__one__with__openssl__rand__DASH_hex__32" > misc/parkour.env
 
-deploy-caddy:
+deploy-caddy: ensure-media-dir
 	@docker compose -f misc/caddy.yml --project-name=parkour2 up -d
 
-deploy-nginx:
+deploy-nginx: ensure-media-dir
 	@test -e ./misc/key.pem && test -e ./misc/cert.pem || \
 		{ echo "ERROR: TLS certificates not found!"; exit 1; }
 	@docker compose -f misc/nginx.yml --project-name=parkour2 up -d
@@ -234,7 +239,7 @@ drop-db:  ## Drop all tables (public schema) from the running database
 
 reset-fixtures: drop-db load-fixtures  ## Drop DB then reload fixtures (for reusing running containers)
 
-load-backup: load-postgres  ## media is now a host bind mount; nothing to load alongside postgres
+load-backup: load-postgres  ## Restore instant snapshot (postgres only; media lives on the ./media bind mount)
 
 ## Deprecated: media now lives on a host bind mount (./media), nothing to extract.
 ## Kept commented out for reference; remove once nobody expects this target.
@@ -265,7 +270,7 @@ import-pgdb:
 # 	@echo git checkout develop
 # 	@echo gh release create --generate-notes
 
-deploy-rsnapshot:
+deploy-rsnapshot: ensure-media-dir
 	@docker compose -f misc/rsnapshot.yml --project-name=parkour2 up -d && \
 		sleep 1m && \
 		docker exec parkour2-rsnapshot rsnapshot halfy
