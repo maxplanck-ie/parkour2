@@ -50,12 +50,41 @@
         <div class="date-filters">
           <div class="date-filter">
             <label for="invoicingMonth">Month</label>
-            <MonthYearPicker
-              id="invoicingMonth"
-              v-model="billingMonth"
-              :max="maxMonth"
-              :invalid="!billingMonthValid"
-            />
+            <div
+              class="month-year-picker"
+              :class="{ 'invalid-date': !billingMonthValid }"
+            >
+              <select
+                id="invoicingMonth"
+                class="month-year-picker-month"
+                :value="monthPickerMonth"
+                @change="onBillingMonthChange($event.target.value)"
+              >
+                <option
+                  v-for="option in billingMonthOptions"
+                  :key="option.value"
+                  :value="option.value"
+                  :disabled="option.disabled"
+                >
+                  {{ option.label }}
+                </option>
+              </select>
+              <select
+                class="month-year-picker-year"
+                aria-label="Billing year"
+                :value="monthPickerYear"
+                @change="onBillingYearChange($event.target.value)"
+              >
+                <option
+                  v-for="option in billingYearOptions"
+                  :key="option.value"
+                  :value="option.value"
+                  :disabled="option.disabled"
+                >
+                  {{ option.label }}
+                </option>
+              </select>
+            </div>
           </div>
         </div>
 
@@ -161,7 +190,66 @@
     </div>
 
     <!-- Costs side panel -->
-    <CostsPanel v-model="showCostsPanel" />
+    <div
+      v-if="showCostsPanel"
+      class="costs-panel-overlay"
+      @click.self.stop="closeCostsPanel"
+    >
+      <div
+        ref="costsDialog"
+        class="costs-panel"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="costs-panel-title"
+        tabindex="-1"
+      >
+        <div class="costs-panel-header">
+          <span id="costs-panel-title" class="costs-panel-title">Costs</span>
+          <button
+            class="popup-close-button"
+            type="button"
+            aria-label="Close costs"
+            @click="closeCostsPanel"
+          >
+            &times;
+          </button>
+        </div>
+
+        <div class="costs-panel-body">
+          <div
+            v-for="section in costsSections"
+            :key="section.key"
+            class="costs-section"
+          >
+            <div class="costs-section-title">{{ section.title }}</div>
+            <div v-if="section.loading" class="costs-section-loading">
+              Loading...
+            </div>
+            <table v-else class="costs-table">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Price</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="row in section.items" :key="row.id">
+                  <td class="costs-name-cell" :title="row.name">
+                    {{ row.name }}
+                  </td>
+                  <td class="costs-price-cell">
+                    {{ formatInvoicingCurrency(row.price) }}
+                  </td>
+                </tr>
+                <tr v-if="section.items.length === 0">
+                  <td colspan="2" class="costs-empty-row">No entries.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
 
     <!-- Export to Excel popup: reuses the template-append pattern from the other tabs -->
     <div
@@ -381,8 +469,6 @@
 
 <script>
 import TabulatorTable from "../components/TabulatorTableFull.vue";
-import MonthYearPicker from "../components/MonthYearPicker.vue";
-import CostsPanel from "../components/CostsPanel.vue";
 import { saveAs } from "file-saver";
 import {
   showNotification,
@@ -398,7 +484,8 @@ import {
 } from "../utilities/utilityFunctions";
 import {
   invoicingColumnDefs,
-  invoicingExportColumns
+  invoicingExportColumns,
+  formatInvoicingCurrency
 } from "../constants/invoicingConsts";
 import { isValidMonth, formatDateForInput } from "../utilities/dateUtils";
 import iconHeader from "../assets/icons/header_invoicing.svg";
@@ -415,6 +502,37 @@ const urlStringStart = urlStringStartsWith();
 const FULL_HISTORY_START_MONTH = "2000-01";
 const COLUMN_VISIBILITY_KEY = "invoicingColumnVisibility";
 const COLUMN_WIDTHS_KEY = "invoicingColumnWidths";
+const MONTH_NAMES = [
+  "Jan",
+  "Feb",
+  "Mar",
+  "Apr",
+  "May",
+  "Jun",
+  "Jul",
+  "Aug",
+  "Sep",
+  "Oct",
+  "Nov",
+  "Dec"
+];
+const COST_SECTION_DEFS = [
+  { key: "fixed_costs", title: "Fixed Costs", endpoint: "fixed_costs" },
+  {
+    key: "preparation_costs",
+    title: "Preparation Costs",
+    endpoint: "library_preparation_costs"
+  },
+  {
+    key: "sequencing_costs",
+    title: "Sequencing Costs",
+    endpoint: "sequencing_costs"
+  }
+];
+
+function pad2(value) {
+  return String(value).padStart(2, "0");
+}
 
 function readStoredObject(key) {
   try {
@@ -440,9 +558,7 @@ function currentMonthString() {
 export default {
   name: "InvoicingView",
   components: {
-    TabulatorTable,
-    MonthYearPicker,
-    CostsPanel
+    TabulatorTable
   },
   data() {
     return {
@@ -476,6 +592,12 @@ export default {
       dateChangeTimer: null,
       invoicingRequestId: 0,
       showCostsPanel: false,
+      costsPreviouslyFocusedElement: null,
+      costsSections: COST_SECTION_DEFS.map((definition) => ({
+        ...definition,
+        items: [],
+        loading: false
+      })),
       showSelectColumns: false,
       showExportPopup: false,
       showExportHelpTooltip: false,
@@ -500,6 +622,42 @@ export default {
       return this.searchQuery.trim() && this.allInvoicingLoaded
         ? this.allInvoicingList
         : this.invoicingList;
+    },
+    monthPickerYear() {
+      return Number(this.billingMonth.slice(0, 4)) || new Date().getFullYear();
+    },
+    monthPickerMonth() {
+      return this.billingMonth.slice(5, 7) || pad2(new Date().getMonth() + 1);
+    },
+    maxBillingYear() {
+      return Number(this.maxMonth.slice(0, 4));
+    },
+    maxBillingMonth() {
+      return this.maxMonth.slice(5, 7);
+    },
+    billingYearOptions() {
+      const options = [];
+      const topYear = Math.max(this.maxBillingYear, this.monthPickerYear);
+      for (let year = 2000; year <= topYear; year += 1) {
+        options.push({
+          value: String(year),
+          label: String(year),
+          disabled: year > this.maxBillingYear
+        });
+      }
+      return options;
+    },
+    billingMonthOptions() {
+      return MONTH_NAMES.map((label, index) => {
+        const value = pad2(index + 1);
+        return {
+          value,
+          label,
+          disabled:
+            this.monthPickerYear === this.maxBillingYear &&
+            value > this.maxBillingMonth
+        };
+      });
     }
   },
   watch: {
@@ -561,6 +719,8 @@ export default {
       const exportButton = this.$el.querySelector(
         "#openInvoicingExportPopupButton"
       );
+      const costsDialog = this.$refs.costsDialog;
+      const costsButton = this.$el.querySelector("#openCostsPanelButton");
 
       if (
         this.showSelectColumns &&
@@ -578,8 +738,25 @@ export default {
       ) {
         this.closeExportPopup();
       }
+      if (
+        this.showCostsPanel &&
+        costsDialog &&
+        !costsDialog.contains(event.target) &&
+        !costsButton?.contains(event.target)
+      ) {
+        this.closeCostsPanel();
+      }
     },
     handleKeyDown(event) {
+      if (this.showCostsPanel) {
+        if (event.key === "Escape") {
+          event.preventDefault();
+          this.closeCostsPanel();
+          return;
+        }
+        trapFocus(event, this.$refs.costsDialog);
+        return;
+      }
       if (this.showExportPopup) {
         if (event.key === "Escape") {
           event.preventDefault();
@@ -625,7 +802,49 @@ export default {
       this.showSelectColumns = false;
       this.showExportPopup = false;
       this.previouslyFocusedElement = null;
+      this.costsPreviouslyFocusedElement = document.activeElement;
       this.showCostsPanel = true;
+      this.fetchAllCostSections();
+      this.$nextTick(() => focusFirstElement(this.$refs.costsDialog));
+    },
+    closeCostsPanel() {
+      if (!this.showCostsPanel) return;
+      this.showCostsPanel = false;
+      const returnFocusTo = this.costsPreviouslyFocusedElement;
+      this.costsPreviouslyFocusedElement = null;
+      this.$nextTick(() => returnFocusTo?.focus?.());
+    },
+    async fetchAllCostSections() {
+      await Promise.all(
+        this.costsSections.map((section) => this.fetchCostSection(section))
+      );
+    },
+    async fetchCostSection(section) {
+      section.loading = true;
+      try {
+        const response = await axiosRef.get(
+          `${urlStringStart}/api/${section.endpoint}/`
+        );
+        section.items = response.data || [];
+      } catch (error) {
+        handleError(error);
+      } finally {
+        section.loading = false;
+      }
+    },
+    formatInvoicingCurrency,
+    onBillingMonthChange(value) {
+      this.billingMonth = `${this.monthPickerYear}-${value}`;
+    },
+    onBillingYearChange(value) {
+      let month = this.monthPickerMonth;
+      if (
+        Number(value) === this.maxBillingYear &&
+        month > this.maxBillingMonth
+      ) {
+        month = this.maxBillingMonth;
+      }
+      this.billingMonth = `${value}-${month}`;
     },
     setColumnVisibility(column) {
       const table = this.$refs.tabulatorTableRef?.getTable?.();
@@ -1094,5 +1313,141 @@ body,
   color: white;
   font-size: 12px;
   white-space: nowrap;
+}
+
+.month-year-picker {
+  display: flex;
+  flex-direction: row;
+  gap: 4px;
+}
+
+.month-year-picker select {
+  height: 28px;
+  padding: 3px 6px;
+  border: 1px solid rgba(0, 0, 0, 0.18);
+  border-radius: 5px;
+  background: #fff;
+  color: #333;
+  font-family: var(--app-font-family);
+  font-size: 13px;
+  line-height: 18px;
+  box-sizing: border-box;
+  cursor: pointer;
+  outline: none;
+}
+
+.month-year-picker-month {
+  width: 64px;
+}
+
+.month-year-picker-year {
+  width: 68px;
+}
+
+.month-year-picker.invalid-date select {
+  border-color: #ff6b6b;
+  background-color: #fff0f0;
+}
+
+.costs-panel-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  justify-content: flex-end;
+  background: rgba(0, 0, 0, 0.25);
+}
+
+.costs-panel {
+  display: flex;
+  width: 420px;
+  max-width: 90vw;
+  height: 100%;
+  flex-direction: column;
+  background: #fff;
+  box-shadow: -4px 0 12px rgba(0, 0, 0, 0.2);
+  animation: costs-panel-slide-in 0.2s ease-out;
+}
+
+@keyframes costs-panel-slide-in {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+.costs-panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 16px;
+  border-bottom: 1px solid #e0e0e0;
+  background: linear-gradient(180deg, #0b7f78 0%, #006c66 100%);
+}
+
+.costs-panel-title {
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.costs-panel-body {
+  flex: 1;
+  padding: 16px;
+  overflow-y: auto;
+}
+
+.costs-section {
+  margin-bottom: 20px;
+}
+
+.costs-section-title {
+  margin-bottom: 8px;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.costs-section-loading {
+  color: #888;
+  font-size: 13px;
+}
+
+.costs-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.costs-table th {
+  padding: 4px 6px;
+  border-bottom: 1px solid #ddd;
+  color: #666;
+  font-weight: 600;
+  text-align: left;
+}
+
+.costs-table td {
+  padding: 6px;
+  border-bottom: 1px solid #f0f0f0;
+  vertical-align: middle;
+}
+
+.costs-name-cell {
+  max-width: 190px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.costs-price-cell {
+  width: 90px;
+}
+
+.costs-empty-row {
+  padding: 10px;
+  color: #888;
+  text-align: center;
 }
 </style>
