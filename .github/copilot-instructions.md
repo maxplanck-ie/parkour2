@@ -6,6 +6,10 @@
 - Small, focused changes; skip speculative refactors.
 - No new dependencies unless explicit ask.
 - Requirements/patterns unclear? Ask up to 3 clarifying questions, don't guess.
+- New write/edit UI (inline editing, save/confirm flows hitting an API): confirm
+  the write path is actually in scope before building it. Read-only display first;
+  add editing only once product intent is explicit — building then discarding an
+  editor is wasted work.
 
 ## Architecture
 
@@ -48,6 +52,23 @@ Prevent recurring regressions. No deviate without explicit ask.
   already in wrapper components. Match those; never restyle table inline.
 - Before new CSS, search existing class/variable that already does
   job, reuse it. New text/elements inherit surrounding look and feel.
+
+### Icons: FontAwesome + Scarlab Duotone Line only
+
+- Two approved icon sources, no others (no new icon packs/libraries):
+  1. **FontAwesome** (`@fortawesome/*`, registered via `library.add` in `main.js`)
+     for small inline/action icons — via `<font-awesome-icon icon="fa-solid fa-..." />`.
+  2. **SVG files** in `frontend/src/assets/icons/`, sourced from the
+     [Scarlab Duotone Line](https://www.svgrepo.com/collection/scarlab-duotone-line-vectors/)
+     collection on SVGRepo, for header/action/export-style icons — imported as
+     ES modules (e.g. `import iconFoo from "../assets/icons/foo.svg"`), not inlined.
+- Before adding a new icon, check `frontend/src/assets/icons/` and the registered
+  FontAwesome set in `main.js` for one that already fits.
+- When adding a new SVG (e.g. a header icon for a new view), pick one from the
+  Scarlab Duotone Line collection and adjust its colors/sizing/styles to match
+  the existing icons of the same kind (e.g. other `header_*` icons) rather than
+  using it as-is. Follow the existing filename convention: `header_*`, `action_*`,
+  `export_*`, `alert_*`.
 
 ## Changelog
 
@@ -93,4 +114,43 @@ Prevent recurring regressions. No deviate without explicit ask.
 - Use `computed`/`watch` intentionally; skip broad/deep watchers unless justified.
 - Handle loading, empty, success, error states explicitly in UI flows.
 - Favor accessible, semantic HTML, keyboard-friendly patterns.
+- Date formatting/validation: use `frontend/src/utilities/dateUtils.js`
+  (`formatDateForInput`, `formatDisplayDate`, `isValidDate`) instead of hand-rolled
+  `new Date()`/`toLocaleDateString` calls.
 - Rebuild frontend with `npm run build`. If running under `parkour2-vite` Docker container, prefer Makefile rule `reload-ux` instead.
+
+### Modals/popups/dialogs
+
+- Reuse `focusFirstElement`/`trapFocus` from `frontend/src/utilities/utilityFunctions.js`
+  for any new modal, popup, or dialog — don't hand-roll focus logic per component.
+- Every dialog needs: `role="dialog"`, `aria-modal`, `aria-labelledby` pointing at
+  its heading, focus moved in on open, Tab-trapped focus, Escape to close,
+  click-outside to close, and focus restored to the opener on close.
+  Reference: `CostsPanel.vue`, `invoicingView.vue` (export popup, columns dialog).
+
+### Async fetches triggered by user-changeable filters
+
+- Date/month pickers, search boxes, or any input that can re-fire a request
+  before the previous one resolves need a stale-response guard (incrementing
+  request-id checked before applying the response, or an `AbortController`).
+  Without it, a slow earlier request can overwrite a newer one's data.
+  Reference: `invoicingView.vue` `getInvoicing()` (`invoicingRequestId`).
+
+### Tabulator: derive "displayed/exported rows" from the table, not a reimplementation
+
+- When exporting or otherwise acting on "what the user currently sees" in a
+  Tabulator table, read the table's own filtered state
+  (`table.getRows("active")` / `table.getData("active")`) instead of
+  re-filtering `rowData` by hand — a hand-rolled filter drifts from Tabulator's
+  actual active filters (search + per-column) and silently exports the wrong rows.
+
+### Views embedded in the ExtJS main-hub shell (iframe)
+
+- Some Vue views are loaded inside an ExtJS iframe wrapper in production. For
+  formatting that must match the surrounding ExtJS shell (e.g. currency), prefer
+  the shell's own utility via `window.parent.Ext.util.Format.*`, guarded in a
+  try/catch, with a local fallback for standalone/cross-origin use.
+  Reference: `formatInvoicingCurrency` in `frontend/src/constants/invoicingConsts.js`.
+- Synthetic DOM events dispatched for the parent frame to observe must not set
+  `view: window` in their init — the iframe's `window` can be a foreign object
+  to the parent and throw under cross-origin conditions.
