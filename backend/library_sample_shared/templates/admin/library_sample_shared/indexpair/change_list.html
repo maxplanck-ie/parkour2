@@ -16,6 +16,11 @@
       #changelist table thead th:first-child {width: inherit}
     </style>
   {% endif %}
+  <style>
+    .object-tools a {
+      border-radius: 8px;
+    }
+  </style>
 {% endblock %}
 
 {% block extrahead %}
@@ -45,8 +50,7 @@
             {% change_list_object_tools %}
           {% endblock %}
           <li>
-            <a 
-            href='import_plate_pairs'>
+            <a href="import_plate_pairs">
             {% blocktrans with cl.opts.verbose_name_plural as name_plural %}Import Plate {{ name_plural }}{% endblocktrans %}
             </a>
         </li>

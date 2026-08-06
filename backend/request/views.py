@@ -43,7 +43,7 @@ from rest_framework.permissions import AllowAny, IsAdminUser
 from rest_framework.response import Response
 from tablib import Dataset
 
-from .models import FileRequest, Request
+from .models import FileRequest, Request, is_valid_file_type
 from .resources import LibrariesResource, SamplesResource
 from .serializers import RequestFileSerializer, RequestSerializer
 
@@ -565,14 +565,37 @@ class RequestViewSet(viewsets.ModelViewSet):
     )
     def upload_files(self, request):
         file_ids = []
+        files = request.FILES.getlist("files")
 
-        if not any(request.FILES):
+        if not files:
             return JsonResponse(
                 {"success": False, "message": "No files provided."}, status=400
             )
 
-        for file in request.FILES.getlist("files"):
-            f = FileRequest(name=file.name, file=file)
+        raw_file_types = request.POST.get("file_types")
+        if raw_file_types is not None:
+            try:
+                file_types = json.loads(raw_file_types)
+            except (TypeError, json.JSONDecodeError):
+                file_types = None
+        else:
+            file_types = None
+
+        if (
+            not isinstance(file_types, list)
+            or len(file_types) != len(files)
+            or not all(is_valid_file_type(value) for value in file_types)
+        ):
+            return JsonResponse(
+                {
+                    "success": False,
+                    "message": "Select a valid file type for every file.",
+                },
+                status=400,
+            )
+
+        for file, file_type in zip(files, file_types, strict=True):
+            f = FileRequest(name=file.name, file=file, file_type=file_type)
             f.save()
             file_ids.append(f.id)
 

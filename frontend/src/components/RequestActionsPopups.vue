@@ -599,6 +599,82 @@
       </div>
     </div>
   </div>
+  <div
+    v-if="pendingAttachmentFiles.length"
+    class="popup-overlay file-type-selection-overlay"
+    tabindex="0"
+    @keydown.esc.prevent.stop="cancelAttachmentUpload"
+  >
+    <div class="popup-container file-type-selection-modal">
+      <div class="popup-header">
+        <div class="popup-title">Select File Types</div>
+        <button
+          class="popup-close-button"
+          type="button"
+          :disabled="attachmentsBusy"
+          aria-label="Close file type selection"
+          @click="cancelAttachmentUpload"
+        >
+          &times;
+        </button>
+      </div>
+      <div class="popup-body file-type-selection-body">
+        <p>Select a file type for each file before uploading.</p>
+        <div class="file-type-selection-list">
+          <div
+            v-for="file in pendingAttachmentFiles"
+            :key="file.pendingId"
+            class="file-type-selection-row"
+          >
+            <span class="file-type-selection-name" :title="file.name">
+              {{ file.name }}
+            </span>
+            <div class="file-type-selection-controls">
+              <select v-model="file.fileTypeChoice" :disabled="attachmentsBusy">
+                <option value="" disabled>Select file type</option>
+                <option
+                  v-for="option in requestFileTypeOptions"
+                  :key="option"
+                  :value="option"
+                >
+                  {{ option }}
+                </option>
+              </select>
+              <input
+                v-if="file.fileTypeChoice === requestFileTypeOther"
+                :value="file.customFileType"
+                :disabled="attachmentsBusy"
+                maxlength="100"
+                placeholder="Custom_File_Type"
+                @input="handleCustomAttachmentFileType(file, $event)"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="popup-footer">
+        <button
+          class="popup-button secondary"
+          type="button"
+          :disabled="attachmentsBusy"
+          @click="cancelAttachmentUpload"
+        >
+          Cancel
+        </button>
+        <button
+          class="popup-button yes-button"
+          type="button"
+          :disabled="
+            attachmentsBusy ||
+            !areRequestFileTypesSelected(pendingAttachmentFiles)
+          "
+          @click="confirmAttachmentUpload"
+        >
+          {{ attachmentsBusy ? "Uploading..." : "Save" }}
+        </button>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -611,6 +687,7 @@ import {
 import {
   REQUEST_FILE_TYPE_OPTIONS,
   REQUEST_FILE_TYPE_OTHER,
+  areRequestFileTypesSelected,
   isValidRequestFileType,
   normaliseRequestFile,
   requestFileTypeOptionsFromResponse,
@@ -758,6 +835,7 @@ export default {
       deleteBusy: false,
       attachmentsFiles: [],
       attachmentsFileIds: [],
+      pendingAttachmentFiles: [],
       requestFileTypeOptions: REQUEST_FILE_TYPE_OPTIONS,
       requestFileTypeOther: REQUEST_FILE_TYPE_OTHER,
       attachmentsBusy: false,
@@ -878,6 +956,7 @@ export default {
     }
   },
   methods: {
+    areRequestFileTypesSelected,
     async prepareAttachments() {
       await this.fetchRequestFileTypeOptions();
       await this.loadAttachments();
@@ -949,6 +1028,7 @@ export default {
       this.deleteBusy = false;
       this.attachmentsFiles = [];
       this.attachmentsFileIds = [];
+      this.pendingAttachmentFiles = [];
       this.attachmentsBusy = false;
       this.isAttachmentsDragOver = false;
       this.attachmentsRequestDetails = {
@@ -1511,14 +1591,9 @@ export default {
     },
     async handleAttachmentsSelection(event) {
       const files = Array.from(event.target.files || []);
-      try {
-        await this.uploadAttachments(files);
-      } catch (error) {
-        handleError(error);
-      } finally {
-        if (event?.target) {
-          event.target.value = "";
-        }
+      this.promptForAttachmentFileTypes(files);
+      if (event?.target) {
+        event.target.value = "";
       }
     },
     handleAttachmentsDragOver() {
@@ -1554,15 +1629,37 @@ export default {
         showNotification("No files selected.", NOTIFICATION_TYPES.warning);
         return;
       }
-      this.uploadAttachments(files);
+      this.promptForAttachmentFileTypes(files);
     },
-    async uploadAttachments(files = []) {
+    promptForAttachmentFileTypes(files = []) {
       if (!files.length) {
         showNotification("No files selected.", NOTIFICATION_TYPES.warning);
         return;
       }
+      const batchId = Date.now();
+      this.pendingAttachmentFiles = files.map((localFile, index) => ({
+        pendingId: `${batchId}-${index}`,
+        localFile,
+        name: localFile.name,
+        size: localFile.size,
+        fileTypeChoice: "",
+        customFileType: ""
+      }));
+    },
+    cancelAttachmentUpload() {
+      this.pendingAttachmentFiles = [];
+    },
+    async confirmAttachmentUpload() {
+      const pendingFiles = [...this.pendingAttachmentFiles];
+      if (!pendingFiles.length) return;
       const formData = new FormData();
-      files.forEach((file) => formData.append(FORM_FIELDS.files, file));
+      pendingFiles.forEach((file) =>
+        formData.append(FORM_FIELDS.files, file.localFile)
+      );
+      formData.append(
+        "file_types",
+        JSON.stringify(pendingFiles.map((file) => resolveRequestFileType(file)))
+      );
       try {
         this.attachmentsBusy = true;
         const response = await axiosRef.post(
@@ -1573,6 +1670,21 @@ export default {
         if (response?.data?.success) {
           const ids = response.data.fileIds || [];
           this.attachmentsFileIds = [...this.attachmentsFileIds, ...ids];
+          this.attachmentsFiles = [
+            ...this.attachmentsFiles,
+            ...ids.map((id, index) =>
+              normaliseRequestFile(
+                {
+                  id,
+                  name: pendingFiles[index]?.name,
+                  size: pendingFiles[index]?.size,
+                  file_type: resolveRequestFileType(pendingFiles[index])
+                },
+                this.requestFileTypeOptions
+              )
+            )
+          ];
+          this.pendingAttachmentFiles = [];
           await this.fetchUploadedFilesDetails();
           await this.saveAttachmentsToRequest();
           await this.loadAttachments({ force: true });
@@ -1605,18 +1717,19 @@ export default {
         );
         if (response?.data?.success) {
           const data = response.data.data || [];
-          this.attachmentsFiles = data.map((file) =>
-            normaliseRequestFile(
+          const currentFiles = new Map(
+            this.attachmentsFiles.map((file) => [String(file.id), file])
+          );
+          this.attachmentsFiles = data.map((file) => {
+            const current = currentFiles.get(String(file?.id));
+            return normaliseRequestFile(
               {
-                id: file?.id,
-                name: file?.name,
-                size: file?.size ?? null,
-                path: file?.path,
-                file_type: file?.file_type
+                ...file,
+                file_type: current?.file_type || file.file_type
               },
               this.requestFileTypeOptions
-            )
-          );
+            );
+          });
         }
       } catch (error) {
         handleError(error);

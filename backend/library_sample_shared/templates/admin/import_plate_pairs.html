@@ -12,6 +12,55 @@
 {% block extrastyle %}{{ block.super }}
 <link rel="stylesheet" type="text/css" href="{% static "admin/css/forms.css" %}" />
 <link rel="stylesheet" type="text/css" href="{% static "admin/css/spinner_loader.css" %}">
+<style>
+  .parkour-admin-import {
+    max-width: 880px;
+    padding: 24px;
+    background: var(--body-bg);
+    border: 1px solid var(--hairline-color);
+    border-radius: 12px;
+  }
+
+  .parkour-admin-import h2 {
+    margin-top: 22px;
+  }
+
+  .parkour-admin-import-note {
+    margin: 20px 0;
+    padding: 12px 14px;
+    background: var(--darkened-bg);
+    border: 1px solid var(--hairline-color);
+    border-radius: 8px;
+    font-weight: 600;
+  }
+
+  .parkour-admin-import-field {
+    display: flex;
+    max-width: 560px;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 18px;
+  }
+
+  .parkour-admin-import-field input[type="file"] {
+    padding: 8px;
+    background: var(--body-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+  }
+
+  .parkour-admin-import input[type="submit"] {
+    min-height: 40px;
+    padding: 9px 18px;
+    border-radius: 8px;
+  }
+
+  @media (max-width: 767px) {
+    .parkour-admin-import {
+      padding: 18px;
+    }
+  }
+</style>
 {% endblock %}
 
 {% block coltype %}colM{% endblock %}
@@ -28,11 +77,13 @@
 {% endblock %}
 
 {% block content %}
-
-<div>Use the form below to import new <b>Indices</b> AND <b>{{opts.verbose_name_plural|capfirst}}</b> in the database using a properly formatted 
-  Excel file. An example of such file can be downloaded from
-  <a download href="{% static "docs/example_import_index_pairs_columnwise.xlsx" %}">here</a>.
- <h2>Conditions</h2>
+<div class="parkour-admin-import">
+  <p>
+    Use the form below to import new <strong>Indices</strong> and
+    <strong>{{ opts.verbose_name_plural|capfirst }}</strong> into the database using a properly formatted Excel file.
+    Download an <a download href="{% static "docs/example_import_index_pairs_columnwise.xlsx" %}">example file</a>.
+  </p>
+  <h2>Conditions</h2>
   <ul>
     <li>The file must contain only one sheet</li>
     <li>The first row in the sheet must contain the following column headers: index1_prefix, index1_name, index1_sequence, 
@@ -42,14 +93,17 @@
     <li>Coordinates must conform to the schema [A-H][1-12], <i>e.g.</i> A1, B8, F11, <i>etc</i>.</li>
     <li>All fields must be filled for a record</li>
   </ul>
-  <br>
-  <div style="font-weight: bold;">N.B.: After hitting the "Import" button below, it may take a few seconds to import all records, please be patient!
-</div><br>
-<form method="post" enctype="multipart/form-data">
-  {% csrf_token %}
-  <input type="file" name="file">
-  <br><br>
-  <input id="submit" type="submit" value="Import">
-</form>
+  <div class="parkour-admin-import-note">
+    After selecting Import, processing all records may take a few seconds. Please keep this page open until it finishes.
+  </div>
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="parkour-admin-import-field">
+      <label for="id_import_file">Excel file</label>
+      <input id="id_import_file" type="file" name="file" accept=".xlsx" required>
+    </div>
+    <input id="submit" type="submit" value="Import">
+  </form>
+</div>
 
 {% endblock %}

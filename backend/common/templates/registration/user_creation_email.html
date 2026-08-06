@@ -10,9 +10,9 @@
     <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="width:100%; background:#f3f6f7;">
         <tr>
             <td align="center" style="padding:24px 12px;">
-                <table role="presentation" width="600" cellspacing="0" cellpadding="0" border="0" bgcolor="#ffffff" style="width:100%; max-width:600px; background:#ffffff; border:1px solid #dbe4e8;">
+                <table role="presentation" width="600" cellspacing="0" cellpadding="0" border="0" bgcolor="#ffffff" style="width:100%; max-width:600px; background:#ffffff; border:1px solid #dbe4e8; border-radius:8px; overflow:hidden;">
                     <tr>
-                        <td bgcolor="#006c66" style="padding:18px 28px; background:#006c66; color:#ffffff;">
+                        <td bgcolor="#006c66" style="padding:18px 28px; background:#006c66; color:#ffffff; border-radius:8px 8px 0 0;">
                             <table role="presentation" cellspacing="0" cellpadding="0" border="0"><tr>
                                 <td width="28" valign="middle" style="width:28px; padding-right:12px;"><img src="{{ protocol }}://{{ domain }}/static/main-hub/resources/images/logo.png" width="17" height="26" alt="" style="display:block; width:17px; height:26px; border:0;"></td>
                                 <td valign="middle"><div style="font-size:20px; font-weight:700; line-height:24px;">Parkour LIMS</div><div style="color:#d8efed; font-size:12px; line-height:18px;">Sequencing request management</div></td>
@@ -33,14 +33,24 @@
                             </p>
                             <table role="presentation" cellspacing="0" cellpadding="0" border="0">
                                 <tr>
-                                    <td width="176" height="44" align="center" valign="middle" bgcolor="#006c66" style="width:176px; height:44px; background:#006c66; border:1px solid #005b56;">
+                                    <td width="176" height="44" align="center" valign="middle">
+                                        <!--[if mso]>
+                                        <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="{{ protocol }}://{{ domain }}{% url 'password_reset_confirm' uidb64=uid token=token %}" style="height:44px; v-text-anchor:middle; width:176px;" arcsize="18%" strokecolor="#005b56" fillcolor="#006c66">
+                                            <w:anchorlock/>
+                                            <center style="color:#ffffff; font-family:'Segoe UI',Arial,sans-serif; font-size:14px; font-weight:700;">{% trans "Set your password" %}</center>
+                                        </v:roundrect>
+                                        <![endif]-->
+                                        <!--[if !mso]><!-->
+                                        <table role="presentation" width="176" cellspacing="0" cellpadding="0" border="0"><tr><td width="176" height="44" align="center" valign="middle" bgcolor="#006c66" style="width:176px; height:44px; background:#006c66; border:1px solid #005b56; border-radius:8px;">
                                         <a href="{{ protocol }}://{{ domain }}{% url 'password_reset_confirm' uidb64=uid token=token %}" style="display:block; width:176px; color:#ffffff; font-size:14px; font-weight:700; line-height:44px; text-align:center; text-decoration:none;">
                                             {% trans "Set your password" %}
                                         </a>
+                                        </td></tr></table>
+                                        <!--<![endif]-->
                                     </td>
                                 </tr>
                             </table>
-                            <div style="margin-top:26px; padding:14px 16px; background:#f3f7f7; border:1px solid #dbe6e7;">
+                            <div style="margin-top:26px; padding:14px 16px; background:#f3f7f7; border:1px solid #dbe6e7; border-radius:6px;">
                                 <p style="margin:0; color:#697987; font-size:12px; line-height:19px;">
                                     {% trans "If the button does not work, copy and paste this link into your browser:" %}<br>
                                     <a href="{{ protocol }}://{{ domain }}{% url 'password_reset_confirm' uidb64=uid token=token %}" style="color:#006c66; word-break:break-all;">{{ protocol }}://{{ domain }}{% url 'password_reset_confirm' uidb64=uid token=token %}</a>
@@ -49,7 +59,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td bgcolor="#eef4f4" style="padding:16px 28px; background:#eef4f4; color:#74828d; font-size:12px; line-height:18px;">
+                        <td bgcolor="#eef4f4" style="padding:16px 28px; background:#eef4f4; color:#74828d; border-radius:0 0 8px 8px; font-size:12px; line-height:18px;">
                             {% trans "This message was sent automatically by Parkour LIMS." %}<br>
                             <strong style="color:#50606c;">{% trans "Parkour LIMS Support" %}</strong>
                         </td>

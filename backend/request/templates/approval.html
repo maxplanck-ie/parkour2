@@ -10,9 +10,9 @@
     <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" bgcolor="#f3f6f7" style="width:100%; background:#f3f6f7;">
         <tr>
             <td align="center" style="padding:24px 12px;">
-                <table role="presentation" width="680" cellspacing="0" cellpadding="0" border="0" bgcolor="#ffffff" style="width:100%; max-width:680px; background:#ffffff; border:1px solid #dbe4e8;">
+                <table role="presentation" width="680" cellspacing="0" cellpadding="0" border="0" bgcolor="#ffffff" style="width:100%; max-width:680px; background:#ffffff; border:1px solid #dbe4e8; border-radius:8px; overflow:hidden;">
                     <tr>
-                        <td bgcolor="#006c66" style="padding:18px 28px; background:#006c66; color:#ffffff;">
+                        <td bgcolor="#006c66" style="padding:18px 28px; background:#006c66; color:#ffffff; border-radius:8px 8px 0 0;">
                             <table role="presentation" cellspacing="0" cellpadding="0" border="0">
                                 <tr>
                                     <td width="28" valign="middle" style="width:28px; padding-right:12px;"><img src="{{ logo_url }}" width="17" height="26" alt="" style="display:block; width:17px; height:26px; border:0;"></td>
@@ -32,7 +32,7 @@
 
                             <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="width:100%; margin-bottom:24px;">
                                 <tr>
-                                    <td bgcolor="#f3f7f7" style="padding:13px 15px; color:#5f6d78; background:#f3f7f7; border:1px solid #dbe6e7; font-size:13px; line-height:20px;">
+                                    <td bgcolor="#f3f7f7" style="padding:13px 15px; color:#5f6d78; background:#f3f7f7; border:1px solid #dbe6e7; border-radius:6px; font-size:13px; line-height:20px;">
                                         <strong style="color:#173f55;">{% trans "Security notice:" %}</strong>
                                         {% trans "This approval link is a one-time credential for this request. Parkour must be accessed from the Institute network or through VPN. If you cannot connect, you may forward this email to an authorized colleague on the Institute network; they do not need a Parkour account to approve the request." %}
                                     </td>
@@ -41,15 +41,25 @@
 
                             <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin-bottom:28px;">
                                 <tr>
-                                    <td width="176" height="44" align="center" valign="middle" bgcolor="#006c66" style="width:176px; height:44px; background:#006c66; border:1px solid #005b56;">
+                                    <td width="176" height="44" align="center" valign="middle">
+                                        <!--[if mso]>
+                                        <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="{{ token_url }}" style="height:44px; v-text-anchor:middle; width:176px;" arcsize="18%" strokecolor="#005b56" fillcolor="#006c66">
+                                            <w:anchorlock/>
+                                            <center style="color:#ffffff; font-family:'Segoe UI',Arial,sans-serif; font-size:14px; font-weight:700;">{% trans "Approve request" %}</center>
+                                        </v:roundrect>
+                                        <![endif]-->
+                                        <!--[if !mso]><!-->
+                                        <table role="presentation" width="176" cellspacing="0" cellpadding="0" border="0"><tr><td width="176" height="44" align="center" valign="middle" bgcolor="#006c66" style="width:176px; height:44px; background:#006c66; border:1px solid #005b56; border-radius:8px;">
                                         <a href="{{ token_url }}" style="display:block; width:176px; color:#ffffff; font-size:14px; font-weight:700; line-height:44px; text-align:center; text-decoration:none;">{% trans "Approve request" %}</a>
+                                        </td></tr></table>
+                                        <!--<![endif]-->
                                     </td>
                                 </tr>
                             </table>
 
                             <p style="margin:0 0 8px; color:#173f55; font-size:13px; font-weight:700; line-height:20px;">{% blocktrans %}Message from {{ full_name }}{% endblocktrans %}</p>
                             <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="width:100%; margin-bottom:24px;">
-                                <tr><td bgcolor="#f8fafb" style="padding:13px 15px; color:#50606c; background:#f8fafb; border-left:3px solid #0b7f78; font-size:14px; line-height:22px;">{{ message|linebreaksbr }}</td></tr>
+                                <tr><td bgcolor="#f8fafb" style="padding:13px 15px; color:#50606c; background:#f8fafb; border-left:3px solid #0b7f78; border-radius:6px; font-size:14px; line-height:22px;">{{ message|linebreaksbr }}</td></tr>
                             </table>
 
                             {% if records %}
@@ -84,7 +94,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td bgcolor="#eef4f4" style="padding:16px 28px; background:#eef4f4; color:#74828d; font-size:12px; line-height:18px;">{% blocktrans %}This message was sent automatically via {{ instance_title }}.{% endblocktrans %}</td>
+                        <td bgcolor="#eef4f4" style="padding:16px 28px; background:#eef4f4; color:#74828d; border-radius:0 0 8px 8px; font-size:12px; line-height:18px;">{% blocktrans %}This message was sent automatically via {{ instance_title }}.{% endblocktrans %}</td>
                     </tr>
                 </table>
             </td>

@@ -13,6 +13,19 @@ export function isValidRequestFileType(value) {
   );
 }
 
+export function areRequestFileTypesSelected(files = []) {
+  return (
+    files.length > 0 &&
+    files.every((file) => {
+      if (!file.fileTypeChoice) return false;
+      if (file.fileTypeChoice !== REQUEST_FILE_TYPE_OTHER) return true;
+      return (
+        !file.customFileType || isValidRequestFileType(file.customFileType)
+      );
+    })
+  );
+}
+
 export function requestFileTypeOptionsFromResponse(data = []) {
   const names = Array.isArray(data)
     ? data.map((item) => String(item?.name || "").trim())
