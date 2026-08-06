@@ -24,3 +24,4 @@ backend/frontend_testing_suite/results/**/trace.zip
 node_modules/
 .aider*
 db.sqlite3
+/media
