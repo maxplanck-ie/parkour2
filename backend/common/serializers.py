@@ -1,5 +1,6 @@
 from rest_framework.serializers import ModelSerializer
 from .models import (
+    AttachmentFileType,
     LoadFlowcellsTemplate,
     LibrariesAndSamplesTemplate,
     IncomingLibrariesSamplesTemplate,
@@ -10,6 +11,12 @@ from .models import (
 )
 
 from .models import CostUnit, Duty, User
+
+
+class AttachmentFileTypeSerializer(ModelSerializer):
+    class Meta:
+        model = AttachmentFileType
+        fields = ("id", "name")
 
 
 class CostUnitSerializer(ModelSerializer):

@@ -8,7 +8,7 @@ from django.test import TestCase
 from django.urls import reverse
 from rest_framework.test import APITestCase
 
-from .models import CostUnit, Organization, PrincipalInvestigator
+from .models import AttachmentFileType, CostUnit, Organization, PrincipalInvestigator
 
 User = get_user_model()
 
@@ -94,6 +94,22 @@ class IndexViewTest(TestCase):
         self.client.login(email="foo@bar.io", password="foo-foo")
         response = self.client.get(reverse("index"), follow=True)
         self.assertEqual(response.status_code, 200)
+
+
+class AttachmentFileTypeViewTest(BaseAPITestCase):
+    def setUp(self):
+        self.create_user()
+        self.login()
+
+    def test_only_active_file_types_are_returned(self):
+        AttachmentFileType.objects.create(name="Active_Report")
+        AttachmentFileType.objects.create(name="Archived_Report", archived=True)
+
+        response = self.client.get(reverse("attachment-file-types-list"))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertIn("Active_Report", [item["name"] for item in response.data])
+        self.assertNotIn("Archived_Report", [item["name"] for item in response.data])
 
 
 class NavigationTreeTest(TestCase):

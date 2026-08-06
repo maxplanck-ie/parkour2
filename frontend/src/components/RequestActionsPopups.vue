@@ -613,6 +613,7 @@ import {
   REQUEST_FILE_TYPE_OTHER,
   isValidRequestFileType,
   normaliseRequestFile,
+  requestFileTypeOptionsFromResponse,
   requestFileTypesPayload,
   resolveRequestFileType
 } from "../utilities/requestFileTypes";
@@ -852,7 +853,7 @@ export default {
         this.clearApprovalErrors();
       }
       if (newVal === REQUEST_ACTIONS.attachments) {
-        this.loadAttachments();
+        this.prepareAttachments();
       }
 
       this.$nextTick(() => {
@@ -872,11 +873,27 @@ export default {
         this.clearApprovalFieldError("subject");
       }
       if (this.activeAction === REQUEST_ACTIONS.attachments) {
-        this.loadAttachments();
+        this.prepareAttachments();
       }
     }
   },
   methods: {
+    async prepareAttachments() {
+      await this.fetchRequestFileTypeOptions();
+      await this.loadAttachments();
+    },
+    async fetchRequestFileTypeOptions() {
+      try {
+        const response = await axiosRef.get(
+          apiUrl("/api/attachment_file_types/")
+        );
+        this.requestFileTypeOptions = requestFileTypeOptionsFromResponse(
+          response?.data
+        );
+      } catch (error) {
+        handleError(error);
+      }
+    },
     handleGlobalKeydown(event) {
       if (!this.activeAction) return;
       if (event.key !== "Escape") return;
@@ -1374,13 +1391,16 @@ export default {
       if (meta) {
         const filesList = Array.isArray(meta?.files) ? meta.files : [];
         this.attachmentsFiles = filesList.map((file) =>
-          normaliseRequestFile({
-            id: file?.id ?? file?.pk,
-            name: file?.name,
-            size: file?.size ?? null,
-            path: file?.path,
-            file_type: file?.file_type
-          })
+          normaliseRequestFile(
+            {
+              id: file?.id ?? file?.pk,
+              name: file?.name,
+              size: file?.size ?? null,
+              path: file?.path,
+              file_type: file?.file_type
+            },
+            this.requestFileTypeOptions
+          )
         );
         this.attachmentsFileIds = this.attachmentsFiles
           .map((file) => file?.id)
@@ -1440,13 +1460,16 @@ export default {
             ? requestData.files
             : [];
           this.attachmentsFiles = filesList.map((file) =>
-            normaliseRequestFile({
-              id: file?.id ?? file?.pk,
-              name: file?.name,
-              size: file?.size ?? null,
-              path: file?.path,
-              file_type: file?.file_type
-            })
+            normaliseRequestFile(
+              {
+                id: file?.id ?? file?.pk,
+                name: file?.name,
+                size: file?.size ?? null,
+                path: file?.path,
+                file_type: file?.file_type
+              },
+              this.requestFileTypeOptions
+            )
           );
           this.attachmentsFileIds = this.attachmentsFiles
             .map((file) => file?.id)
@@ -1583,13 +1606,16 @@ export default {
         if (response?.data?.success) {
           const data = response.data.data || [];
           this.attachmentsFiles = data.map((file) =>
-            normaliseRequestFile({
-              id: file?.id,
-              name: file?.name,
-              size: file?.size ?? null,
-              path: file?.path,
-              file_type: file?.file_type
-            })
+            normaliseRequestFile(
+              {
+                id: file?.id,
+                name: file?.name,
+                size: file?.size ?? null,
+                path: file?.path,
+                file_type: file?.file_type
+              },
+              this.requestFileTypeOptions
+            )
           );
         }
       } catch (error) {

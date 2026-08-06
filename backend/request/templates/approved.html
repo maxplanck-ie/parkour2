@@ -6,38 +6,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{% trans "Sequencing request approved" %}</title>
 </head>
-<body style="margin:0; padding:0; background:#f3f6f7; color:#27313b; font-family:Inter,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;">
-    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="width:100%; background:#f3f6f7;">
+<body style="margin:0; padding:0; background:#f3f6f7; color:#27313b; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;">
+    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" bgcolor="#f3f6f7" style="width:100%; background:#f3f6f7;">
         <tr>
-            <td align="center" style="padding:36px 16px;">
-                <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="width:100%; max-width:600px; overflow:hidden; background:#ffffff; border:1px solid #dbe4e8; border-radius:12px;">
+            <td align="center" style="padding:24px 12px;">
+                <table role="presentation" width="600" cellspacing="0" cellpadding="0" border="0" bgcolor="#ffffff" style="width:100%; max-width:600px; background:#ffffff; border:1px solid #dbe4e8;">
                     <tr>
-                        <td style="padding:24px 30px; background:#006c66; color:#ffffff;">
-                            <div style="font-size:22px; font-weight:700; line-height:1.2;">Parkour LIMS</div>
-                            <div style="margin-top:5px; color:#d8efed; font-size:13px; line-height:1.5;">{% trans "Sequencing request management" %}</div>
+                        <td bgcolor="#006c66" style="padding:18px 28px; background:#006c66; color:#ffffff;">
+                            <table role="presentation" cellspacing="0" cellpadding="0" border="0"><tr>
+                                <td width="28" valign="middle" style="width:28px; padding-right:12px;"><img src="{{ logo_url }}" width="17" height="26" alt="" style="display:block; width:17px; height:26px; border:0;"></td>
+                                <td valign="middle"><div style="font-size:20px; font-weight:700; line-height:24px;">Parkour LIMS</div><div style="color:#d8efed; font-size:12px; line-height:18px;">{% trans "Sequencing request management" %}</div></td>
+                            </tr></table>
                         </td>
                     </tr>
                     <tr>
-                        <td align="center" style="padding:34px 30px;">
-                            <div style="display:inline-block; width:52px; height:52px; color:#ffffff; background:#006c66; border-radius:50%; font-size:28px; font-weight:700; line-height:52px; text-align:center;">✓</div>
-                            <h1 style="margin:18px 0 14px; color:#13415b; font-size:24px; font-weight:700; line-height:1.3;">
-                                {% trans "Request approved" %}
-                            </h1>
-                            <p style="margin:0 0 14px; color:#50606c; font-size:15px; line-height:1.65; text-align:left;">
-                                {% blocktrans %}Dear {{ full_name }},{% endblocktrans %}
-                            </p>
-                            <p style="margin:0; color:#50606c; font-size:15px; line-height:1.65; text-align:left;">
-                                {% blocktrans %}{{ pi_name }} approved your sequencing experiment. Please bring your samples to the Deep Sequencing Facility during the daily 11:00–12:00 sample-submission window. Processing will begin as soon as possible.{% endblocktrans %}
-                            </p>
-                            <div style="margin-top:24px; padding:14px 16px; color:#5f6d78; background:#f3f7f7; border:1px solid #dbe6e7; border-radius:8px; font-size:13px; line-height:1.55; text-align:left;">
-                                {% trans "If this approval was not intended, contact the Deep Sequencing Facility immediately." %}
-                            </div>
+                        <td align="center" style="padding:30px 28px 32px;">
+                            <table role="presentation" cellspacing="0" cellpadding="0" border="0"><tr><td width="42" height="42" align="center" valign="middle" bgcolor="#006c66" style="width:42px; height:42px; color:#ffffff; background:#006c66; font-size:24px; font-weight:700; line-height:42px;">&#10003;</td></tr></table>
+                            <h1 style="margin:18px 0 14px; color:#173f55; font-size:22px; font-weight:700; line-height:29px;">{% trans "Request approved" %}</h1>
+                            <p style="margin:0 0 14px; color:#50606c; font-size:15px; line-height:24px; text-align:left;">{% blocktrans %}Dear {{ full_name }},{% endblocktrans %}</p>
+                            <p style="margin:0; color:#50606c; font-size:15px; line-height:24px; text-align:left;">{% blocktrans %}{{ pi_name }} approved your sequencing experiment. Please bring your samples to the Deep Sequencing Facility during the daily 11:00&ndash;12:00 sample-submission window. Processing will begin as soon as possible.{% endblocktrans %}</p>
+                            <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="width:100%; margin-top:24px;"><tr><td bgcolor="#f3f7f7" style="padding:13px 15px; color:#5f6d78; background:#f3f7f7; border:1px solid #dbe6e7; font-size:13px; line-height:20px; text-align:left;">{% trans "If this approval was not intended, contact the Deep Sequencing Facility immediately." %}</td></tr></table>
                         </td>
                     </tr>
                     <tr>
-                        <td style="padding:20px 30px; background:#eef4f4; color:#74828d; font-size:12px; line-height:1.5;">
-                            {% blocktrans %}This message was sent automatically via {{ instance_title }}.{% endblocktrans %}
-                        </td>
+                        <td bgcolor="#eef4f4" style="padding:16px 28px; background:#eef4f4; color:#74828d; font-size:12px; line-height:18px;">{% blocktrans %}This message was sent automatically via {{ instance_title }}.{% endblocktrans %}</td>
                     </tr>
                 </table>
             </td>

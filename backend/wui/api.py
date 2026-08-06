@@ -1,4 +1,4 @@
-from common.views import CostUnitsViewSet, DutyViewSet
+from common.views import AttachmentFileTypeViewSet, CostUnitsViewSet, DutyViewSet
 from flowcell.views import (
     FlowcellAnalysisViewSet,
     FlowcellViewSet,
@@ -44,6 +44,11 @@ router.register(r"duties", DutyViewSet, basename="duties")
 router.register(r"requests", RequestViewSet, basename="request")
 router.register(r"approve", ApproveViewSet, basename="approve")
 router.register(r"cost_units", CostUnitsViewSet, basename="cost-units")
+router.register(
+    r"attachment_file_types",
+    AttachmentFileTypeViewSet,
+    basename="attachment-file-types",
+)
 router.register(r"organisms", OrganismViewSet, basename="organism")
 router.register(r"read_lengths", ReadLengthViewSet, basename="read-length")
 router.register(

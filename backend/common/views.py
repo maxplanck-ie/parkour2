@@ -21,6 +21,7 @@ from rest_framework.response import Response
 from rest_framework.parsers import MultiPartParser, FormParser
 
 from .models import (
+    AttachmentFileType,
     CostUnit,
     Duty,
     LoadFlowcellsTemplate,
@@ -32,6 +33,7 @@ from .models import (
     SequencesStatisticsTemplate,
 )
 from .serializers import (
+    AttachmentFileTypeSerializer,
     CostUnitSerializer,
     DutySerializer,
     UserSerializer,
@@ -217,6 +219,13 @@ class CostUnitsViewSet(viewsets.ReadOnlyModelViewSet):
         except Exception:
             pass
         return queryset
+
+
+class AttachmentFileTypeViewSet(viewsets.ReadOnlyModelViewSet):
+    """Return file types that are available for attachment uploads."""
+
+    serializer_class = AttachmentFileTypeSerializer
+    queryset = AttachmentFileType.objects.filter(archived=False).order_by("name")
 
 
 class CsrfExemptSessionAuthentication(SessionAuthentication):

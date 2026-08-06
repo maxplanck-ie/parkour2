@@ -1,13 +1,6 @@
 export const REQUEST_FILE_TYPE_OTHER = "Other";
 
-export const REQUEST_FILE_TYPE_OPTIONS = [
-  "RNA_FragmentSize_QC",
-  "DNA_FragmentSize_QC",
-  "Library_FragmentSize_QC",
-  "Sample_Barcodes",
-  "Experimental_Design",
-  REQUEST_FILE_TYPE_OTHER
-];
+export const REQUEST_FILE_TYPE_OPTIONS = [REQUEST_FILE_TYPE_OTHER];
 
 const REQUEST_FILE_TYPE_PATTERN = /^[A-Za-z0-9]+(?:_[A-Za-z0-9]+)*$/;
 const REQUEST_FILE_TYPE_MAX_LENGTH = 100;
@@ -20,14 +13,32 @@ export function isValidRequestFileType(value) {
   );
 }
 
-export function normaliseRequestFile(file = {}) {
+export function requestFileTypeOptionsFromResponse(data = []) {
+  const names = Array.isArray(data)
+    ? data.map((item) => String(item?.name || "").trim())
+    : [];
+  return [
+    ...new Set(
+      names.filter(
+        (name) =>
+          name !== REQUEST_FILE_TYPE_OTHER && isValidRequestFileType(name),
+      ),
+    ),
+    REQUEST_FILE_TYPE_OTHER,
+  ];
+}
+
+export function normaliseRequestFile(
+  file = {},
+  options = REQUEST_FILE_TYPE_OPTIONS,
+) {
   const storedType = String(file.file_type || REQUEST_FILE_TYPE_OTHER);
-  const isKnownType = REQUEST_FILE_TYPE_OPTIONS.includes(storedType);
+  const isKnownType = options.includes(storedType);
   return {
     ...file,
     file_type: storedType,
     fileTypeChoice: isKnownType ? storedType : REQUEST_FILE_TYPE_OTHER,
-    customFileType: isKnownType ? "" : storedType
+    customFileType: isKnownType ? "" : storedType,
   };
 }
 
@@ -42,6 +53,6 @@ export function requestFileTypesPayload(files = []) {
   return Object.fromEntries(
     files
       .filter((file) => file?.id !== undefined && file?.id !== null)
-      .map((file) => [String(file.id), resolveRequestFileType(file)])
+      .map((file) => [String(file.id), resolveRequestFileType(file)]),
   );
 }

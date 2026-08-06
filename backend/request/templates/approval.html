@@ -6,62 +6,57 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{% trans "Sequencing request approval" %}</title>
 </head>
-<body style="margin:0; padding:0; background:#f3f6f7; color:#27313b; font-family:Inter,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;">
-    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="width:100%; background:#f3f6f7;">
+<body style="margin:0; padding:0; background:#f3f6f7; color:#27313b; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;">
+    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" bgcolor="#f3f6f7" style="width:100%; background:#f3f6f7;">
         <tr>
-            <td align="center" style="padding:36px 16px;">
-                <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="width:100%; max-width:680px; overflow:hidden; background:#ffffff; border:1px solid #dbe4e8; border-radius:12px;">
+            <td align="center" style="padding:24px 12px;">
+                <table role="presentation" width="680" cellspacing="0" cellpadding="0" border="0" bgcolor="#ffffff" style="width:100%; max-width:680px; background:#ffffff; border:1px solid #dbe4e8;">
                     <tr>
-                        <td style="padding:24px 30px; background:#006c66; color:#ffffff;">
-                            <div style="font-size:22px; font-weight:700; line-height:1.2;">Parkour LIMS</div>
-                            <div style="margin-top:5px; color:#d8efed; font-size:13px; line-height:1.5;">{% trans "Sequencing request management" %}</div>
+                        <td bgcolor="#006c66" style="padding:18px 28px; background:#006c66; color:#ffffff;">
+                            <table role="presentation" cellspacing="0" cellpadding="0" border="0">
+                                <tr>
+                                    <td width="28" valign="middle" style="width:28px; padding-right:12px;"><img src="{{ logo_url }}" width="17" height="26" alt="" style="display:block; width:17px; height:26px; border:0;"></td>
+                                    <td valign="middle">
+                                        <div style="font-size:20px; font-weight:700; line-height:24px;">Parkour LIMS</div>
+                                        <div style="color:#d8efed; font-size:12px; line-height:18px;">{% trans "Sequencing request management" %}</div>
+                                    </td>
+                                </tr>
+                            </table>
                         </td>
                     </tr>
                     <tr>
-                        <td style="padding:34px 30px;">
-                            <h1 style="margin:0 0 16px; color:#13415b; font-size:24px; font-weight:700; line-height:1.3;">
-                                {% trans "Approval requested" %}
-                            </h1>
-                            <p style="margin:0 0 14px; color:#50606c; font-size:15px; line-height:1.65;">
-                                {% blocktrans %}Dear {{ pi_name }},{% endblocktrans %}
-                            </p>
-                            <p style="margin:0 0 22px; color:#50606c; font-size:15px; line-height:1.65;">
-                                {% blocktrans %}{{ full_name }} requested your approval for a sequencing experiment.{% endblocktrans %}
-                            </p>
+                        <td style="padding:30px 28px 32px;">
+                            <h1 style="margin:0 0 18px; color:#173f55; font-size:22px; font-weight:700; line-height:29px;">{% trans "Approval requested" %}</h1>
+                            <p style="margin:0 0 14px; color:#50606c; font-size:15px; line-height:24px;">{% blocktrans %}Dear {{ pi_name }},{% endblocktrans %}</p>
+                            <p style="margin:0 0 22px; color:#50606c; font-size:15px; line-height:24px;">{% blocktrans %}{{ full_name }} requested your approval for a sequencing experiment.{% endblocktrans %}</p>
 
-                            <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="width:100%; margin-bottom:22px;">
+                            <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="width:100%; margin-bottom:24px;">
                                 <tr>
-                                    <td style="padding:14px 16px; color:#5f6d78; background:#f3f7f7; border:1px solid #dbe6e7; border-radius:8px; font-size:13px; line-height:1.55;">
-                                        <strong style="color:#13415b;">{% trans "Security notice:" %}</strong>
-                                        {% trans "This approval link is a one-time credential for this request. Only share it with an authorized person within the Institute network." %}
+                                    <td bgcolor="#f3f7f7" style="padding:13px 15px; color:#5f6d78; background:#f3f7f7; border:1px solid #dbe6e7; font-size:13px; line-height:20px;">
+                                        <strong style="color:#173f55;">{% trans "Security notice:" %}</strong>
+                                        {% trans "This approval link is a one-time credential for this request. Parkour must be accessed from the Institute network or through VPN. If you cannot connect, you may forward this email to an authorized colleague on the Institute network; they do not need a Parkour account to approve the request." %}
                                     </td>
                                 </tr>
                             </table>
 
-                            <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin-bottom:26px;">
+                            <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin-bottom:28px;">
                                 <tr>
-                                    <td style="border-radius:8px; background:#006c66;">
-                                        <a href="{{ token_url }}" style="display:inline-block; padding:13px 22px; color:#ffffff; font-size:14px; font-weight:700; line-height:1.2; text-decoration:none;">
-                                            {% trans "Approve request" %}
-                                        </a>
+                                    <td width="176" height="44" align="center" valign="middle" bgcolor="#006c66" style="width:176px; height:44px; background:#006c66; border:1px solid #005b56;">
+                                        <a href="{{ token_url }}" style="display:block; width:176px; color:#ffffff; font-size:14px; font-weight:700; line-height:44px; text-align:center; text-decoration:none;">{% trans "Approve request" %}</a>
                                     </td>
                                 </tr>
                             </table>
 
-                            <p style="margin:0 0 8px; color:#13415b; font-size:13px; font-weight:700; line-height:1.5;">
-                                {% blocktrans %}Message from {{ full_name }}{% endblocktrans %}
-                            </p>
-                            <div style="margin:0 0 24px; padding:14px 16px; color:#50606c; background:#f8fafb; border-left:3px solid #0b7f78; font-size:14px; line-height:1.65;">
-                                {{ message|linebreaksbr }}
-                            </div>
+                            <p style="margin:0 0 8px; color:#173f55; font-size:13px; font-weight:700; line-height:20px;">{% blocktrans %}Message from {{ full_name }}{% endblocktrans %}</p>
+                            <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="width:100%; margin-bottom:24px;">
+                                <tr><td bgcolor="#f8fafb" style="padding:13px 15px; color:#50606c; background:#f8fafb; border-left:3px solid #0b7f78; font-size:14px; line-height:22px;">{{ message|linebreaksbr }}</td></tr>
+                            </table>
 
                             {% if records %}
-                            <p style="margin:0 0 10px; color:#13415b; font-size:15px; font-weight:700; line-height:1.5;">
-                                {% trans "Libraries and samples" %}
-                            </p>
-                            <table width="100%" cellspacing="0" cellpadding="0" border="0" style="width:100%; border-collapse:collapse; font-size:12px; line-height:1.45;">
+                            <p style="margin:0 0 10px; color:#173f55; font-size:15px; font-weight:700; line-height:22px;">{% trans "Libraries and samples" %}</p>
+                            <table width="100%" cellspacing="0" cellpadding="0" border="0" style="width:100%; border-collapse:collapse; font-size:12px; line-height:18px;">
                                 <thead>
-                                    <tr style="background:#eef4f4;">
+                                    <tr bgcolor="#eef4f4" style="background:#eef4f4;">
                                         <th align="left" style="padding:9px 7px; color:#334653; border:1px solid #dbe4e8;">{% trans "Name" %}</th>
                                         <th align="left" style="padding:9px 7px; color:#334653; border:1px solid #dbe4e8;">{% trans "Barcode" %}</th>
                                         <th align="left" style="padding:9px 7px; color:#334653; border:1px solid #dbe4e8;">{% trans "Input type" %}</th>
@@ -85,15 +80,11 @@
                             </table>
                             {% endif %}
 
-                            <p style="margin:24px 0 0; color:#74828d; font-size:13px; line-height:1.55;">
-                                {% trans "If you do not want to approve this request, ignore this email and ask the requester to make any necessary changes." %}
-                            </p>
+                            <p style="margin:24px 0 0; color:#74828d; font-size:13px; line-height:20px;">{% trans "If you do not want to approve this request, ignore this email and ask the requester to make any necessary changes. A new approval email will contain a new link and invalidate this one." %}</p>
                         </td>
                     </tr>
                     <tr>
-                        <td style="padding:20px 30px; background:#eef4f4; color:#74828d; font-size:12px; line-height:1.5;">
-                            {% blocktrans %}This message was sent automatically via {{ instance_title }}.{% endblocktrans %}
-                        </td>
+                        <td bgcolor="#eef4f4" style="padding:16px 28px; background:#eef4f4; color:#74828d; font-size:12px; line-height:18px;">{% blocktrans %}This message was sent automatically via {{ instance_title }}.{% endblocktrans %}</td>
                     </tr>
                 </table>
             </td>

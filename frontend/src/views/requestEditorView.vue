@@ -1143,6 +1143,7 @@ import {
   REQUEST_FILE_TYPE_OTHER,
   isValidRequestFileType,
   normaliseRequestFile,
+  requestFileTypeOptionsFromResponse,
   requestFileTypesPayload,
   resolveRequestFileType
 } from "../utilities/requestFileTypes";
@@ -2376,13 +2377,16 @@ export default {
           ? filesRes.data
           : requestData.files || [];
         this.uploadedRequestFiles = files.map((file) =>
-          normaliseRequestFile({
-            id: file.id ?? file.pk,
-            name: file.name,
-            size: file.size ?? null,
-            path: file.path ?? file.file_path ?? "",
-            file_type: file.file_type
-          })
+          normaliseRequestFile(
+            {
+              id: file.id ?? file.pk,
+              name: file.name,
+              size: file.size ?? null,
+              path: file.path ?? file.file_path ?? "",
+              file_type: file.file_type
+            },
+            this.requestFileTypeOptions
+          )
         );
         this.uploadedRequestFileIds = this.uploadedRequestFiles
           .map((file) => file.id)
@@ -2408,7 +2412,8 @@ export default {
         this.fetchFilterOptions(),
         this.fetchIndexTypesList(),
         this.fetchNucleicAcidTypes(),
-        this.fetchOrganismsList()
+        this.fetchOrganismsList(),
+        this.fetchRequestFileTypeOptions()
       ]);
     },
     loadEditRecordsForMode(mode) {
@@ -3950,7 +3955,10 @@ export default {
           );
           this.uploadedRequestFiles = (response.data.data || []).map((file) => {
             const current = currentFiles.get(String(file.id));
-            return current || normaliseRequestFile(file);
+            return (
+              current ||
+              normaliseRequestFile(file, this.requestFileTypeOptions)
+            );
           });
         }
       } catch (error) {
@@ -4869,6 +4877,18 @@ export default {
       this.selectedDraftRowIds = [];
       this.persistDraftRowsToEditRecords(this.requestEditorMode);
       this.$nextTick(() => this.revalidateDraftRows());
+    },
+    async fetchRequestFileTypeOptions() {
+      try {
+        const response = await axiosRef.get(
+          `${urlStringStart}/api/attachment_file_types/`
+        );
+        this.requestFileTypeOptions = requestFileTypeOptionsFromResponse(
+          response?.data
+        );
+      } catch (error) {
+        handleError(error);
+      }
     },
     async fetchFilterOptions() {
       if (this.filterOptionsLoaded) return;
