@@ -855,7 +855,9 @@
                               </option>
                             </select>
                             <div
-                              v-if="file.fileTypeChoice === requestFileTypeOther"
+                              v-if="
+                                file.fileTypeChoice === requestFileTypeOther
+                              "
                               class="file-type-custom-input-wrapper"
                             >
                               <input

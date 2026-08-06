@@ -2137,7 +2137,7 @@ export default {
    recreates a default one (at cell 0,0) the instant we remove it on build —
    which can end up with real bounds and get painted before the user ever
    interacts with the table. Suppress the paint until a real click/keypress
-   happens, so no cell looks pre-selected on load. */
+   happens, so no cell looks preselected on load. */
 .normal-tabulator-table
   .pending-range-interaction
   .tabulator-cell.tabulator-range-selected {

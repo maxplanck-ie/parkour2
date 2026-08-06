@@ -32,16 +32,16 @@ export function requestFileTypeOptionsFromResponse(data = []) {
     ...new Set(
       names.filter(
         (name) =>
-          name !== REQUEST_FILE_TYPE_OTHER && isValidRequestFileType(name),
-      ),
+          name !== REQUEST_FILE_TYPE_OTHER && isValidRequestFileType(name)
+      )
     ),
-    REQUEST_FILE_TYPE_OTHER,
+    REQUEST_FILE_TYPE_OTHER
   ];
 }
 
 export function normaliseRequestFile(
   file = {},
-  options = REQUEST_FILE_TYPE_OPTIONS,
+  options = REQUEST_FILE_TYPE_OPTIONS
 ) {
   const storedType = String(file.file_type || REQUEST_FILE_TYPE_OTHER);
   const isKnownType = options.includes(storedType);
@@ -51,7 +51,7 @@ export function normaliseRequestFile(
     fileTypeChoice: isKnownType ? storedType : REQUEST_FILE_TYPE_OTHER,
     customFileType: isKnownType ? "" : storedType,
     customFileTypeTouched: false,
-    customFileTypeDirty: false,
+    customFileTypeDirty: false
   };
 }
 
@@ -66,6 +66,6 @@ export function requestFileTypesPayload(files = []) {
   return Object.fromEntries(
     files
       .filter((file) => file?.id !== undefined && file?.id !== null)
-      .map((file) => [String(file.id), resolveRequestFileType(file)]),
+      .map((file) => [String(file.id), resolveRequestFileType(file)])
   );
 }
