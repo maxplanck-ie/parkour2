@@ -37,7 +37,7 @@ services:
     volumes:
       - ./backend:/usr/src/app
       - ./shared:/usr/src/shared:ro
-      - media:/usr/src/app/media
+      - ./media:/usr/src/app/media
       - staticfiles:/usr/src/app/staticfiles
     depends_on:
       parkour2-postgres:
@@ -47,7 +47,6 @@ services:
 
 volumes:
   pgdb:
-  media:
   staticfiles:
 
 

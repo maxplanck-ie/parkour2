@@ -51,7 +51,15 @@ set-prod: hardreset-caddyfile-prod hardreset-nginx-server-prod
 		echo "INSTANCE_VERSION=$$ver" >> ./misc/parkour.env; \
 	}
 
-deploy-webapp:
+ensure-media-dir:  ## Create ./media if missing (plain dir locally; a pre-made symlink on the VMs)
+	@if [[ -L media && ! -e media ]]; then \
+		echo "ERROR: ./media is a dangling symlink -> $$(readlink media)"; exit 1; \
+	elif [[ ! -e media ]]; then \
+		echo "Warning: ./media absent; creating a local directory. On the VMs this must be a symlink to /root/pk2media!"; \
+		mkdir -p media; \
+	fi
+
+deploy-webapp: ensure-media-dir
 	@docker compose build
 	@docker compose --project-name=parkour2 up -d
 	@git checkout docker-compose.yml
@@ -95,7 +103,7 @@ rm-volumes:
 	@VOLUMES=$$(docker volume ls -q | grep "^parkour2_") || :
 	@test $${#VOLUMES[@]} -gt 1 && docker volume rm -f $$VOLUMES > /dev/null || :
 
-down: clean  ## Turn off running instance (persisting media & staticfiles' volumes)
+down: clean  ## Turn off running instance (persisting staticfiles' volume and the media bind mount)
 	@CONTAINERS=$$(docker ps -a -f status=exited | awk '/^parkour2_parkour2-/ { print $$7 }') || :
 	@test $${#CONTAINERS[@]} -gt 1 && docker rm $$CONTAINERS > /dev/null || :
 	@docker compose -f docker-compose.yml -f misc/caddy.yml -f misc/nginx.yml -f misc/rsnapshot.yml down
@@ -170,10 +178,10 @@ hardreset-caddyfile-dev:
 hardreset-envfile:
 	@echo -e "INSTANCE_NAME=Parkour2\nTIME_ZONE=Europe/Berlin\nADMIN_NAME=admin\nADMIN_EMAIL=your@mail.server.tld\nEMAIL_HOST=mail.server.tld\nEMAIL_SUBJECT_PREFIX=[Parkour2]\nSERVER_EMAIL=errors@mail.server.tld\nCSRF_TRUSTED_ORIGINS=http://127.0.0.1,https://*.server.tld,http://localhost:5174\nPOSTGRES_DB=postgres\nPOSTGRES_USER=postgres\nPOSTGRES_PASSWORD=change_me__stay_safe\nDATABASE_URL=postgres://postgres:change_me__stay_safe@parkour2-postgres:5432/postgres\nREADONLY_USER=ropg\nREADONLY_PASSWORD=change_me__stay_safe2\nREADONLY_DATABASE_URL=postgres://ropg:change_me__stay_safe2@parkour2-postgres:5432/postgres\nOPENROUTER_API_KEY=aaaaaaaaaaaaaaaaa\nSECRET_KEY=generate__one__with__openssl__rand__DASH_hex__32" > misc/parkour.env
 
-deploy-caddy:
+deploy-caddy: ensure-media-dir
 	@docker compose -f misc/caddy.yml --project-name=parkour2 up -d
 
-deploy-nginx:
+deploy-nginx: ensure-media-dir
 	@test -e ./misc/key.pem && test -e ./misc/cert.pem || \
 		{ echo "ERROR: TLS certificates not found!"; exit 1; }
 	@docker compose -f misc/nginx.yml --project-name=parkour2 up -d
@@ -187,12 +195,14 @@ convert-backup:  ## Convert xxxly.0's pgdb to ./misc/*.sqldump (updating symlink
 		docker compose -f misc/convert-backup.yml down
 	@ln -sf db_$(stamp).sqldump misc/latest.sqldump
 
-load-media:  ## Copy all media files into running instance
-	@[[ -d media_dump ]] && \
-		find $$PWD/media_dump/ -maxdepth 1 -mindepth 1 -type d | \
-			xargs -I {} docker cp {} parkour2-django:/usr/src/app/media/ && \
-		echo "Info: Loaded media file(s)." || \
-		echo 'ERROR: Folder media_dump not found!'
+## Deprecated: media now lives on a host bind mount (./media), nothing to load.
+## Kept commented out for reference; remove once nobody expects this target.
+# load-media:
+# 	@[[ -d media_dump ]] && \
+# 		find $$PWD/media_dump/ -maxdepth 1 -mindepth 1 -type d | \
+# 			xargs -I {} docker cp {} parkour2-django:/usr/src/app/media/ && \
+# 		echo "Info: Loaded media file(s)." || \
+# 		echo 'ERROR: Folder media_dump not found!'
 
 load-postgres:  ## Restore instant snapshot (sqldump) on running instance
 	@[[ -f misc/latest.sqldump ]] && \
@@ -229,19 +239,20 @@ drop-db:  ## Drop all tables (public schema) from the running database
 
 reset-fixtures: drop-db load-fixtures  ## Drop DB then reload fixtures (for reusing running containers)
 
-load-backup: load-postgres load-media
+load-backup: load-postgres  ## Restore instant snapshot (postgres only; media lives on the ./media bind mount)
 
-save-media:
-	@rm -rf media_dump && docker cp parkour2-django:/usr/src/app/media/ . && mv media media_dump
+## Deprecated: media now lives on a host bind mount (./media), nothing to extract.
+## Kept commented out for reference; remove once nobody expects this target.
+# save-media:
+# 	@rm -rf media_dump && docker cp parkour2-django:/usr/src/app/media/ . && mv media media_dump
 
 save-postgres:  ## Create instant snapshot (latest.sqldump) of running database instance
 	@docker exec parkour2-postgres pg_dump -Fc postgres -U postgres -f tmp_parkour_dump && \
 		docker cp parkour2-postgres:/tmp_parkour_dump misc/db_$(stamp).sqldump
 	@ln -sf db_$(stamp).sqldump misc/latest.sqldump
 
-import-media:
-	@ssh -i ~/.ssh/parkour2 root@parkour -t "make --directory ~/parkour2 save-media"
-	@rsync -rauL -vhP -e "ssh -i ~/.ssh/parkour2" root@parkour:~/parkour2/media_dump .
+import-media:  ## Mirror production media onto this host's ./media directory
+	@rsync -raul -vhP -e "ssh -i ~/.ssh/parkour2" root@parkour:/root/pk2media/ media/
 
 import-pgdb:
 	@ssh -i ~/.ssh/parkour2 root@parkour -t "make --directory ~/parkour2 save-postgres"
@@ -259,7 +270,7 @@ import-pgdb:
 # 	@echo git checkout develop
 # 	@echo gh release create --generate-notes
 
-deploy-rsnapshot:
+deploy-rsnapshot: ensure-media-dir
 	@docker compose -f misc/rsnapshot.yml --project-name=parkour2 up -d && \
 		sleep 1m && \
 		docker exec parkour2-rsnapshot rsnapshot halfy

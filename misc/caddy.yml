@@ -11,7 +11,7 @@ services:
       - ./Caddyfile:/etc/caddy/Caddyfile
       - caddy_data:/data
       - caddy_config:/config
-      - parkour2_media:/parkour2/media
+      - ../media:/parkour2/media
       - parkour2_staticfiles:/parkour2/static
       # ./cert.pem:/etc/ssl/cert.pem:ro
       # ./key.pem:/etc/ssl/key.pem:ro
@@ -20,8 +20,6 @@ services:
 volumes:
   caddy_data:
   caddy_config:
-  parkour2_media:
-    external: true
   parkour2_staticfiles:
     external: true
 
