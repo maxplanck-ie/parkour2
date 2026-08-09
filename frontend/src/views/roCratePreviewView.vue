@@ -228,6 +228,37 @@
             </div>
           </section>
 
+          <section
+            v-if="request.attachments.length"
+            class="record-group"
+            data-testid="ro-crate-attachments"
+          >
+            <div class="record-group-title">Attached Files</div>
+            <div class="attachment-list">
+              <div
+                v-for="file in request.attachments"
+                :key="file.id"
+                class="attachment-item"
+              >
+                <div class="attachment-icon">
+                  <font-awesome-icon icon="fa-solid fa-file-lines" />
+                </div>
+                <div class="attachment-content">
+                  <span class="attachment-type">
+                    <ROCrateHighlightedText
+                      :value="file.fileType"
+                      :search-tokens="searchTokens"
+                    />
+                  </span>
+                  <ROCrateHighlightedText
+                    :value="file.name"
+                    :search-tokens="searchTokens"
+                  />
+                </div>
+              </div>
+            </div>
+          </section>
+
           <section class="record-group">
             <div class="record-group-title">Libraries/Samples</div>
             <div v-if="request.records.length" class="record-table-list">
@@ -290,33 +321,6 @@
               </article>
             </div>
             <div v-else class="empty-inline">{{ labels.noRecords }}</div>
-          </section>
-
-          <section v-if="request.attachments.length" class="record-group">
-            <div class="record-group-title">Attached Files</div>
-            <div class="attachment-list">
-              <div
-                v-for="file in request.attachments"
-                :key="file.id"
-                class="attachment-item"
-              >
-                <div class="attachment-icon">
-                  <font-awesome-icon icon="fa-solid fa-file-lines" />
-                </div>
-                <div class="attachment-content">
-                  <span class="attachment-type">
-                    <ROCrateHighlightedText
-                      :value="file.fileType"
-                      :search-tokens="searchTokens"
-                    />
-                  </span>
-                  <ROCrateHighlightedText
-                    :value="file.name"
-                    :search-tokens="searchTokens"
-                  />
-                </div>
-              </div>
-            </div>
           </section>
         </section>
       </section>
