@@ -303,7 +303,9 @@ class LibrarySampleBaseViewSet(viewsets.ModelViewSet):
         else:
             # Try to create valid records
             valid_data = [
-                item[1] for item in zip(serializer.errors, post_data) if not item[0]
+                item
+                for index, item in enumerate(post_data)
+                if index not in serializer.errors
             ]
 
             if any(valid_data):
@@ -365,7 +367,9 @@ class LibrarySampleBaseViewSet(viewsets.ModelViewSet):
         else:
             # Try to update valid records
             valid_data = [
-                item[1] for item in zip(serializer.errors, post_data) if not item[0]
+                item
+                for index, item in enumerate(post_data)
+                if index not in serializer.errors
             ]
 
             if any(valid_data):
