@@ -3,6 +3,7 @@
 Unreleased
 ==========
 
+- Fix bulk create/update endpoints (libraries, samples, flowcell lanes, incoming libraries, library preparation, pooling) silently accepting invalid records or rejecting valid ones after the DRF 3.18 upgrade, which changed `ListSerializer.errors` from a positional list to a sparse dict.
 - Keep ExtJS header navigation labels visible at narrower widths, truncating individual buttons with ellipses as needed.
 - New VueJS/Tabulator user interface for Invoicing, replacing the ExtJS grid: month-only From/To filters (always defaulting to the current month, never a custom saved range), search across the entire Invoicing History, Download/Upload/View Reports actions, and Excel export with reusable templates.
 - Infrastructure: use Debian 12 as the shared backend base image, including Playwright, so Firefox dependencies can be installed.
