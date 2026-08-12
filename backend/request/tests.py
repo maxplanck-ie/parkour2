@@ -7,6 +7,7 @@ from common.models import Organization, PrincipalInvestigator
 from common.tests import BaseTestCase
 from common.utils import get_random_name
 from django.contrib.auth import get_user_model
+from django.core import mail
 
 # from django.core.files.base import ContentFile
 from django.test import TestCase
@@ -907,6 +908,146 @@ class TestRequests(BaseTestCase):
     def test_get_files(self):
         """Ensure get request's files behaves correctly."""
         pass
+
+
+class RequestEmailFlowsTest(BaseTestCase):
+    """Covers the QA sections left unfinished on Vikunja #418: approval
+    email without records, general user email (with/without failed
+    records), and the message-safety/HTML-escaping check."""
+
+    def setUp(self):
+        self.org = Organization(name=get_random_name())
+        self.org.save()
+        self.pi = PrincipalInvestigator(
+            name="Approving PI", organization=self.org, email="pi@test.io"
+        )
+        self.pi.save()
+        self.user = User.objects.create_user(
+            email="requester@test.io",
+            password="foo-foo",
+            first_name="Req",
+            last_name="Uester",
+            organization=self.org,
+            pi=self.pi,
+            is_staff=True,
+        )
+        self.user.save()
+        self.login("requester@test.io", "foo-foo")
+
+        self.request = create_request(self.user)
+        self.library = create_library(get_random_name())
+        self.request.libraries.add(self.library)
+        mail.outbox = []
+
+    def test_solicit_approval_without_records(self):
+        """XLS 'REQUEST-APPROVAL EMAIL FLOW' / 'APPROVAL EMAIL WITHOUT RECORDS'."""
+        response = self.client.post(
+            f"/api/requests/{self.request.pk}/solicit_approval/",
+            {
+                "subject": "please approve",
+                "message": "kindly approve this",
+                "include_records": "false",
+            },
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(response.json()["success"])
+        self.assertEqual(len(mail.outbox), 1)
+        body = mail.outbox[0].alternatives[0][0]
+        self.assertIn("Security notice", body)
+        self.assertIn("Approve request", body)
+        self.assertIn("kindly approve this", body)
+        self.assertNotIn("Libraries and samples", body)
+
+    def test_solicit_approval_with_records(self):
+        """Sanity check: records table still renders when included."""
+        response = self.client.post(
+            f"/api/requests/{self.request.pk}/solicit_approval/",
+            {
+                "subject": "please approve",
+                "message": "kindly approve this",
+                "include_records": "true",
+            },
+        )
+        self.assertEqual(response.status_code, 200)
+        body = mail.outbox[0].alternatives[0][0]
+        self.assertIn("Libraries and samples", body)
+        self.assertIn(self.library.name, body)
+
+    def test_send_email_general_message(self):
+        """XLS 'GENERAL USER EMAIL FLOW'."""
+        response = self.client.post(
+            f"/api/requests/{self.request.pk}/send_email/",
+            {
+                "subject": "hello",
+                "message": "just checking in",
+                "include_failed_records": "false",
+            },
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(response.json()["success"])
+        body = mail.outbox[0].alternatives[0][0]
+        self.assertIn("New message", body)
+        self.assertIn(self.user.full_name, body)
+        self.assertIn("just checking in", body)
+        self.assertNotIn("Failed libraries and samples", body)
+
+    def test_send_email_with_failed_records(self):
+        """XLS 'GENERAL EMAIL WITH FAILED RECORDS'."""
+        failed_library = create_library(get_random_name(), status=-1)
+        self.request.libraries.add(failed_library)
+        response = self.client.post(
+            f"/api/requests/{self.request.pk}/send_email/",
+            {
+                "subject": "issue found",
+                "message": "please check the failed library",
+                "include_failed_records": "true",
+            },
+        )
+        self.assertEqual(response.status_code, 200)
+        body = mail.outbox[0].alternatives[0][0]
+        self.assertIn("Failed libraries and samples", body)
+        self.assertIn(failed_library.name, body)
+        self.assertIn(failed_library.barcode, body)
+        # Only the failed record should be listed, not the status=0 one.
+        self.assertNotIn(self.library.name, body)
+        # Empty facility comments render as an empty cell, not "None".
+        self.assertNotIn("None</td>", body)
+
+    def test_send_email_message_html_is_escaped(self):
+        """XLS 'MESSAGE-SAFETY CHECK' (general email)."""
+        unsafe_message = "First line\n<b>Formatting test</b>\nLast line"
+        response = self.client.post(
+            f"/api/requests/{self.request.pk}/send_email/",
+            {
+                "subject": "safety check",
+                "message": unsafe_message,
+                "include_failed_records": "false",
+            },
+        )
+        self.assertEqual(response.status_code, 200)
+        body = mail.outbox[0].alternatives[0][0]
+        self.assertIn("&lt;b&gt;Formatting test&lt;/b&gt;", body)
+        self.assertNotIn("<b>Formatting test</b>", body)
+        self.assertIn("First line", body)
+        self.assertIn("Last line", body)
+
+    def test_solicit_approval_message_html_is_escaped(self):
+        """XLS 'MESSAGE-SAFETY CHECK' (approval-request email)."""
+        unsafe_message = "First line\n<b>Formatting test</b>\nLast line"
+        response = self.client.post(
+            f"/api/requests/{self.request.pk}/solicit_approval/",
+            {
+                "subject": "please approve",
+                "message": unsafe_message,
+                "include_records": "false",
+            },
+        )
+        self.assertEqual(response.status_code, 200)
+        body = mail.outbox[0].alternatives[0][0]
+        self.assertIn("&lt;b&gt;Formatting test&lt;/b&gt;", body)
+        self.assertNotIn("<b>Formatting test</b>", body)
+        self.assertIn("First line", body)
+        self.assertIn("Last line", body)
 
 
 # class GenerateDeepSeqRequestTest(TestCase):
