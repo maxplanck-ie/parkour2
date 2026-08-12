@@ -25,6 +25,7 @@ from rest_framework.response import Response
 from rest_framework.parsers import MultiPartParser, FormParser
 
 from .models import (
+    AttachmentFileType,
     CostUnit,
     Duty,
     LoadFlowcellsTemplate,
@@ -34,8 +35,10 @@ from .models import (
     PoolingTemplate,
     RunStatisticsTemplate,
     SequencesStatisticsTemplate,
+    InvoicingTemplate,
 )
 from .serializers import (
+    AttachmentFileTypeSerializer,
     CostUnitSerializer,
     DutySerializer,
     UserSerializer,
@@ -46,6 +49,7 @@ from .serializers import (
     PoolingTemplateSerializer,
     RunStatisticsTemplateSerializer,
     SequencesStatisticsTemplateSerializer,
+    InvoicingTemplateSerializer,
 )
 
 User = get_user_model()
@@ -127,7 +131,7 @@ def get_navigation_tree(request):
             {
                 "text": "Invoicing",
                 "iconCls": "x-fa fa-eur",
-                "viewType": "invoicing",
+                "viewType": "invoicing-vue",
                 "leaf": True,
             },
             {
@@ -221,6 +225,13 @@ class CostUnitsViewSet(viewsets.ReadOnlyModelViewSet):
         except Exception:
             pass
         return queryset
+
+
+class AttachmentFileTypeViewSet(viewsets.ReadOnlyModelViewSet):
+    """Return file types that are available for attachment uploads."""
+
+    serializer_class = AttachmentFileTypeSerializer
+    queryset = AttachmentFileType.objects.filter(archived=False).order_by("name")
 
 
 class CsrfExemptSessionAuthentication(SessionAuthentication):
@@ -348,8 +359,6 @@ class PasswordSetConfirmView(auth_views.PasswordResetConfirmView):
         response = super().form_valid(form)
         user = form.user
         if user.email:
-            url_scheme = self.request.is_secure() and "https" or "http"
-            url_domain = get_current_site(self.request).domain
             send_mail(
                 subject="[Parkour LIMS] Password Changed",
                 message="",
@@ -357,8 +366,10 @@ class PasswordSetConfirmView(auth_views.PasswordResetConfirmView):
                     "email/password_changed_email.html",
                     {
                         "user": user,
-                        "protocol": url_scheme,
-                        "domain": url_domain,
+                        "domain": get_current_site(self.request).domain,
+                        "logo_url": self.request.build_absolute_uri(
+                            f"{settings.STATIC_URL}main-hub/resources/images/logo.png"
+                        ),
                     },
                 ),
                 from_email=settings.SERVER_EMAIL,
@@ -464,3 +475,8 @@ class RunStatisticsTemplateViewSet(BaseTemplateViewSet):
 class SequencesStatisticsTemplateViewSet(BaseTemplateViewSet):
     model = SequencesStatisticsTemplate
     serializer_class = SequencesStatisticsTemplateSerializer
+
+
+class InvoicingTemplateViewSet(BaseTemplateViewSet):
+    model = InvoicingTemplate
+    serializer_class = InvoicingTemplateSerializer

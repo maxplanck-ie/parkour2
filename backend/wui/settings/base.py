@@ -72,6 +72,14 @@ INSTALLED_APPS = [
 
 IMPORT_EXPORT_USE_TRANSACTIONS = True
 
+# Django's default (1000) is exceeded when saving an IndexType with a large
+# number of selected IndexI7/IndexI5, or running an admin bulk action with
+# "select all" over a large IndexI5/IndexI7 changelist (one POST field per
+# selected row). Labs can have several thousand indices in their catalog,
+# so raise the cap well above that; see ErrorMiddleware for the friendlier
+# error message shown if it's ever exceeded anyway.
+DATA_UPLOAD_MAX_NUMBER_FIELDS = 10000
+
 MIDDLEWARE = [
     "django.middleware.common.CommonMiddleware",
     "django.middleware.security.SecurityMiddleware",

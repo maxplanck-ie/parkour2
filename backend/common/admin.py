@@ -1,6 +1,7 @@
 from authtools.admin import NamedUserAdmin
 from authtools.forms import UserCreationForm
 from common.models import (
+    AttachmentFileType,
     CostUnit,
     Duty,
     Organization,
@@ -75,6 +76,23 @@ class ArchivedFilter(DefaultListFilter):
 
     def default_value(self):
         return False
+
+
+@admin.register(AttachmentFileType)
+class AttachmentFileTypeAdmin(SimpleHistoryAdmin):
+    list_display = ("name", "archived")
+    list_editable = ("archived",)
+    search_fields = ("name",)
+    list_filter = (ArchivedFilter,)
+    actions = ("mark_as_archived", "mark_as_non_archived")
+
+    @admin.action(description="Mark as archived")
+    def mark_as_archived(self, request, queryset):
+        queryset.update(archived=True)
+
+    @admin.action(description="Mark as non-archived")
+    def mark_as_non_archived(self, request, queryset):
+        queryset.update(archived=False)
 
 
 class CostUnitInline(admin.TabularInline):

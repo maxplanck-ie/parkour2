@@ -6,6 +6,12 @@ from django.utils import timezone
 from simple_history.models import HistoricalRecords
 
 
+attachment_file_type_validator = RegexValidator(
+    r"^[A-Za-z0-9]+(?:_[A-Za-z0-9]+)*$",
+    "Use letters and numbers separated by single underscores; spaces are not allowed.",
+)
+
+
 def get_deleted_org():
     return Organization.objects.get_or_create(name="deleted ORG")[0]
 
@@ -75,6 +81,26 @@ class CostUnit(models.Model):
 
     def __str__(self):
         return f"{self.name} ({self.pi.organization.name}: {self.pi.name})"
+
+
+class AttachmentFileType(models.Model):
+    name = models.CharField(
+        "Name",
+        max_length=100,
+        unique=True,
+        validators=[attachment_file_type_validator],
+        help_text="Use letters and numbers separated by single underscores.",
+    )
+    archived = models.BooleanField("Archived", default=False)
+    history = HistoricalRecords()
+
+    class Meta:
+        verbose_name = "Attachment File Type"
+        verbose_name_plural = "Attachment File Types"
+        ordering = ["name"]
+
+    def __str__(self):
+        return self.name
 
 
 class User(AbstractEmailUser):
@@ -299,3 +325,17 @@ class SequencesStatisticsTemplate(models.Model):
     class Meta:
         verbose_name = "Sequenced Samples Statistics Template"
         verbose_name_plural = "Templates -> Sequenced Samples Statistics"
+
+
+class InvoicingTemplate(models.Model):
+    name = models.CharField("File Name", max_length=200)
+    file = models.FileField(upload_to="templates/invoicing/")
+    uploaded_at = models.DateTimeField("Uploaded At", auto_now_add=True)
+    history = HistoricalRecords()
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = "Invoicing Template"
+        verbose_name_plural = "Templates -> Invoicing"

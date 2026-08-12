@@ -47,6 +47,12 @@ router.register(
     basename="sequences_statistics_template",
 )
 
+router.register(
+    r"invoicing-templates",
+    views.InvoicingTemplateViewSet,
+    basename="invoicing_template",
+)
+
 urlpatterns = [
     path("", views.index, name="index"),
     path("get_navigation_tree/", views.get_navigation_tree, name="get_navigation_tree"),

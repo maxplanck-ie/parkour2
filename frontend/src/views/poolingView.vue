@@ -527,6 +527,7 @@ export default {
       tableOptions: {
         index: "barcode",
         placeholder: "No Libraries and Samples to show.",
+        clipboard: "copy",
         initialSort: [
           {
             column: "request_name",

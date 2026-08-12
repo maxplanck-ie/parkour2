@@ -2280,10 +2280,10 @@ class ROCratePdfRenderer:
         request_entity = self.entity_by_id(f"#request-context-{request_number}")
         record_ids = sorted(
             self._study_record_ids(study),
-            key=lambda record_id: (self.entity_by_id(record_id) or {}).get(
-                PDF_FIELD_IDENTIFIER
-            )
-            or self.entity_label(self.entity_by_id(record_id)),
+            key=lambda record_id: (
+                (self.entity_by_id(record_id) or {}).get(PDF_FIELD_IDENTIFIER)
+                or self.entity_label(self.entity_by_id(record_id))
+            ),
         )
         records = sorted(
             [
@@ -2310,9 +2310,9 @@ class ROCratePdfRenderer:
     def _build_fallback_request_group(self):
         record_entities = sorted(
             [entity for entity in self.graph if self.is_record_entity(entity)],
-            key=lambda entity: entity.get(PDF_FIELD_IDENTIFIER)
-            or entity.get(PDF_FIELD_NAME)
-            or "",
+            key=lambda entity: (
+                entity.get(PDF_FIELD_IDENTIFIER) or entity.get(PDF_FIELD_NAME) or ""
+            ),
         )
         records = sorted(
             [

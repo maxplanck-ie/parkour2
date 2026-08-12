@@ -42,7 +42,7 @@ repos:
       - id: check-merge-conflict
         types: [python]
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.12.9
+    rev: v0.16.1
     hooks:
       - id: ruff-format
         args: [--target-version, py312] # 3.12
@@ -57,7 +57,7 @@ repos:
       - id: pyupgrade
         args: [--py312-plus] # 3.12
   - repo: https://github.com/adamchainz/django-upgrade
-    rev: 1.25.0
+    rev: 1.31.1
     hooks:
       - id: django-upgrade
         args: [--target-version, "5.2"]
@@ -69,7 +69,7 @@ repos:
         types_or: [json, css, javascript, vue]
         language_version: 20.11.0
   - repo: https://github.com/codespell-project/codespell
-    rev: v2.4.1
+    rev: v2.4.3
     hooks:
       - id: codespell
         args: [--skip, "backend/static/*,backend/**/tests.py,backend/**/fixtures/*.json,misc/demo-dump.json", --write-changes]

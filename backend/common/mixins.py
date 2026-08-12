@@ -43,7 +43,9 @@ class MultiEditMixin:
         else:
             # Try to update valid lanes
             valid_data = [
-                item[1] for item in zip(serializer.errors, post_data) if not item[0]
+                item
+                for index, item in enumerate(post_data)
+                if index not in serializer.errors
             ]
 
             if any(valid_data):
@@ -181,7 +183,9 @@ class LibrarySampleMultiEditMixin:
         else:
             # Try to update valid objects
             valid_data = [
-                item[1] for item in zip(serializer.errors, data) if not item[0]
+                item
+                for index, item in enumerate(data)
+                if index not in serializer.errors
             ]
 
             if any(valid_data):

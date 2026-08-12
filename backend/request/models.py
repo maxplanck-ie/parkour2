@@ -10,13 +10,6 @@ from library.models import Library
 from sample.models import Sample
 from simple_history.models import HistoricalRecords
 
-PREDEFINED_FILE_TYPES = (
-    "RNA_FragmentSize_QC",
-    "DNA_FragmentSize_QC",
-    "Library_FragmentSize_QC",
-    "Sample_Barcodes",
-    "Experimental_Design",
-)
 DEFAULT_FILE_TYPE = "Other"
 FILE_TYPE_MAX_LENGTH = 100
 FILE_TYPE_PATTERN = r"^[A-Za-z0-9]+(?:_[A-Za-z0-9]+)*$"

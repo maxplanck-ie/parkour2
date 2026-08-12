@@ -26,11 +26,11 @@ attrs==26.1.0
     #   -c backend/requirements/3.11/dev.txt
     #   jsonschema
     #   referencing
-boto3==1.43.56
+boto3==1.43.67
     # via
     #   -c backend/requirements/3.11/dev.txt
     #   -r backend/requirements/dev.in
-botocore==1.43.56
+botocore==1.43.67
     # via
     #   -c backend/requirements/3.11/dev.txt
     #   boto3
@@ -41,7 +41,7 @@ certifi==2026.7.22
     #   httpcore
     #   httpx
     #   requests
-cffi==2.1.0 ; platform_python_implementation != 'PyPy'
+cffi==2.1.1 ; platform_python_implementation != 'PyPy'
     # via
     #   -c backend/requirements/3.11/dev.txt
     #   cryptography
@@ -59,9 +59,9 @@ contourpy==1.3.3
     # via
     #   -c backend/requirements/3.11/dev.txt
     #   matplotlib
-coverage==7.15.2
+coverage==7.15.4
     # via pytest-cov
-cryptography==49.0.0
+cryptography==50.0.0
     # via
     #   -c backend/requirements/3.11/dev.txt
     #   django-cryptography-django5
@@ -74,7 +74,6 @@ decorator==5.3.1
     # via
     #   -c backend/requirements/3.11/dev.txt
     #   ipdb
-    #   ipython
 defusedxml==0.7.1
     # via
     #   -c backend/requirements/3.11/dev.txt
@@ -91,7 +90,7 @@ dj-database-url==3.1.2
     # via
     #   -c backend/requirements/3.11/dev.txt
     #   -r backend/requirements/base.in
-django==5.2.16
+django==5.2.17
     # via
     #   -c backend/requirements/3.11/dev.txt
     #   -r backend/requirements/base.in
@@ -130,7 +129,7 @@ django-debug-toolbar==7.0.0
     # via
     #   -c backend/requirements/3.11/dev.txt
     #   -r backend/requirements/dev.in
-django-error-mail-dedup @ git+https://github.com/adRn-s/django-error-mail-dedup@2e9be2bb1056ca6ed7a5dc606af38e3c9d594482
+django-error-mail-dedup @ git+https://github.com/adRn-s/django-error-mail-dedup@b95b90889a8e147b0b7e015b26a2b706d7e36907
     # via
     #   -c backend/requirements/3.11/dev.txt
     #   -r backend/requirements/base.in
@@ -166,7 +165,7 @@ django-sql-explorer==5.3
     # via
     #   -c backend/requirements/3.11/dev.txt
     #   -r backend/requirements/dev.in
-djangorestframework==3.17.1
+djangorestframework==3.18.0
     # via
     #   -c backend/requirements/3.11/dev.txt
     #   -r backend/requirements/base.in
@@ -190,7 +189,7 @@ fonttools==4.63.0
     #   -c backend/requirements/3.11/dev.txt
     #   fpdf2
     #   matplotlib
-fpdf2==2.8.7
+fpdf2==2.8.8
     # via
     #   -c backend/requirements/3.11/dev.txt
     #   -r backend/requirements/base.in
@@ -228,7 +227,7 @@ ipdb==0.13.13
     # via
     #   -c backend/requirements/3.11/dev.txt
     #   -r backend/requirements/dev.in
-ipython==9.15.0
+ipython==9.16.1
     # via
     #   -c backend/requirements/3.11/dev.txt
     #   ipdb
@@ -292,14 +291,14 @@ numpy==1.25.2 ; python_full_version < '3.12'
     #   contourpy
     #   matplotlib
     #   pandas
-numpy==2.5.1 ; python_full_version >= '3.12'
+numpy==2.5.2 ; python_full_version >= '3.12'
     # via
     #   -c backend/requirements/3.11/dev.txt
     #   -r backend/requirements/base.in
     #   contourpy
     #   matplotlib
     #   pandas
-openai==2.48.0
+openai==2.53.0
     # via
     #   -c backend/requirements/3.11/dev.txt
     #   -r backend/requirements/dev.in
@@ -307,7 +306,7 @@ openpyxl==3.1.5
     # via
     #   -c backend/requirements/3.11/dev.txt
     #   -r backend/requirements/base.in
-packaging==26.2
+packaging==26.3
     # via
     #   -c backend/requirements/3.11/dev.txt
     #   gunicorn
@@ -336,7 +335,7 @@ pillow==12.3.0
     #   -c backend/requirements/3.11/dev.txt
     #   fpdf2
     #   matplotlib
-playwright==1.61.0
+playwright==1.62.0
     # via pytest-playwright
 pluggy==1.6.0
     # via
@@ -398,7 +397,7 @@ pytest-base-url==2.1.0
     # via pytest-playwright
 pytest-cov==7.1.0
     # via -r backend/requirements/testing.in
-pytest-django==4.12.0
+pytest-django==4.13.0
     # via -r backend/requirements/testing.in
 pytest-playwright==0.8.0
     # via -r backend/requirements/testing.in
@@ -470,7 +469,7 @@ sql-metadata==3.0.1
     # via
     #   -c backend/requirements/3.11/dev.txt
     #   -r backend/requirements/dev.in
-sqlglot==30.13.0
+sqlglot==30.15.0
     # via
     #   -c backend/requirements/3.11/dev.txt
     #   sql-metadata
@@ -484,7 +483,7 @@ stack-data==0.6.3
     # via
     #   -c backend/requirements/3.11/dev.txt
     #   ipython
-tablib==3.9.0
+tablib==3.10.0
     # via
     #   -c backend/requirements/3.11/dev.txt
     #   django-import-export
@@ -504,11 +503,11 @@ toml==0.10.2
     #   django-migration-linter
 tomli==2.4.1 ; python_full_version <= '3.11'
     # via coverage
-tqdm==4.69.1
+tqdm==4.70.0
     # via
     #   -c backend/requirements/3.11/dev.txt
     #   openai
-traitlets==5.15.1
+traitlets==5.16.1
     # via
     #   -c backend/requirements/3.11/dev.txt
     #   ipython

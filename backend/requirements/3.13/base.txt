@@ -12,7 +12,7 @@ diff-match-patch==20241021
     # via django-import-export
 dj-database-url==3.1.2
     # via -r backend/requirements/base.in
-django==5.2.16
+django==5.2.17
     # via
     #   -r backend/requirements/base.in
     #   dj-database-url
@@ -28,7 +28,7 @@ django-admin-list-filter-dropdown==1.0.3
     # via -r backend/requirements/base.in
 django-authtools @ git+https://github.com/adRn-s/django-authtools@a3284c976719bd26f085fdac9951009acda804dc
     # via -r backend/requirements/base.in
-django-error-mail-dedup @ git+https://github.com/adRn-s/django-error-mail-dedup@2e9be2bb1056ca6ed7a5dc606af38e3c9d594482
+django-error-mail-dedup @ git+https://github.com/adRn-s/django-error-mail-dedup@b95b90889a8e147b0b7e015b26a2b706d7e36907
     # via -r backend/requirements/base.in
 django-extensions==4.1
     # via -r backend/requirements/base.in
@@ -40,7 +40,7 @@ django-monthfield==0.1.4
     # via -r backend/requirements/base.in
 django-simple-history==3.13.0
     # via -r backend/requirements/base.in
-djangorestframework==3.17.1
+djangorestframework==3.18.0
     # via
     #   -r backend/requirements/base.in
     #   drf-spectacular
@@ -50,7 +50,7 @@ et-xmlfile==2.0.0
     # via openpyxl
 fonttools==4.63.0
     # via fpdf2
-fpdf2==2.8.7
+fpdf2==2.8.8
     # via -r backend/requirements/base.in
 gunicorn==26.0.0
     # via -r backend/requirements/base.in
@@ -62,13 +62,13 @@ jsonschema-specifications==2025.9.1
     # via jsonschema
 lxml==6.1.1
     # via python-docx
-numpy==2.5.1
+numpy==2.5.2
     # via
     #   -r backend/requirements/base.in
     #   pandas
 openpyxl==3.1.5
     # via -r backend/requirements/base.in
-packaging==26.2
+packaging==26.3
     # via gunicorn
 pandas==3.0.5
     # via -r backend/requirements/base.in
@@ -96,7 +96,7 @@ six==1.17.0
     # via python-dateutil
 sqlparse==0.5.5
     # via django
-tablib==3.9.0
+tablib==3.10.0
     # via django-import-export
 tblib==3.2.2
     # via -r backend/requirements/base.in

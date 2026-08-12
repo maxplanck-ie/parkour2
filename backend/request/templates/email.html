@@ -1,4 +1,4 @@
-{% load i18n static %}
+{% load i18n %}
 <!doctype html>
 <html lang="en">
 <head>
@@ -9,26 +9,25 @@
 <body style="margin:0; padding:0; background:#f3f6f7; color:#27313b; font-family:Inter,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;">
     <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="width:100%; background:#f3f6f7;">
         <tr>
-            <td align="center" style="padding:36px 16px;">
-                <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="width:100%; max-width:680px; overflow:hidden; background:#ffffff; border:1px solid #dbe4e8; border-radius:12px;">
+            <td align="center" style="padding:24px 12px;">
+                <table role="presentation" width="680" cellspacing="0" cellpadding="0" border="0" bgcolor="#ffffff" style="width:100%; max-width:680px; background:#ffffff; border:1px solid #dbe4e8; border-radius:8px; overflow:hidden;">
                     <tr>
-                        <td bgcolor="#006c66" style="padding:24px 30px; background:#006c66; color:#ffffff;">
-                            <img src="{{ protocol }}://{{ domain }}{% static 'images/parkour-logo-email.png' %}" width="28" height="28" alt="" style="display:inline-block; vertical-align:middle; margin-right:10px;">
-                            <span style="color:#ffffff; font-size:22px; font-weight:700; line-height:1.2; vertical-align:middle;">Parkour LIMS</span>
-                            <div style="margin-top:5px; color:#d8efed; font-size:13px; line-height:1.5;">{% trans "Deep Sequencing Facility" %}</div>
+                        <td bgcolor="#006c66" style="padding:18px 28px; background:#006c66; color:#ffffff; border-radius:8px 8px 0 0;">
+                            <table role="presentation" cellspacing="0" cellpadding="0" border="0"><tr>
+                                <td width="28" valign="middle" style="width:28px; padding-right:12px;"><img src="{{ logo_url }}" width="17" height="26" alt="" style="display:block; width:17px; height:26px; border:0;"></td>
+                                <td valign="middle"><div style="font-size:20px; font-weight:700; line-height:24px;">Parkour LIMS</div><div style="color:#d8efed; font-size:12px; line-height:18px;">{% trans "Deep Sequencing Facility" %}</div></td>
+                            </tr></table>
                         </td>
                     </tr>
                     <tr>
-                        <td style="padding:34px 30px;">
+                        <td style="padding:30px 28px 32px;">
                             <h1 style="margin:0 0 16px; color:#13415b; font-size:24px; font-weight:700; line-height:1.3;">
                                 {% trans "New message" %}
                             </h1>
                             <p style="margin:0 0 14px; color:#50606c; font-size:15px; line-height:1.65;">
                                 {% blocktrans %}Dear {{ full_name }},{% endblocktrans %}
                             </p>
-                            <div style="margin:0 0 24px; padding:14px 16px; color:#50606c; background:#f8fafb; border-left:3px solid #0b7f78; font-size:15px; line-height:1.65;">
-                                {{ message|linebreaksbr }}
-                            </div>
+                            <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="width:100%; margin-bottom:24px;"><tr><td bgcolor="#f8fafb" style="padding:13px 15px; color:#50606c; background:#f8fafb; border-left:3px solid #0b7f78; border-radius:6px; font-size:15px; line-height:24px;">{{ message|linebreaksbr }}</td></tr></table>
 
                             {% if records %}
                             <p style="margin:0 0 10px; color:#13415b; font-size:15px; font-weight:700; line-height:1.5;">
@@ -60,13 +59,11 @@
                                 {% trans "Kind regards," %}<br>
                                 <strong style="color:#13415b;">{% trans "Deep Sequencing Team" %}</strong>
                             </p>
-                            <div style="margin-top:18px; padding:12px 14px; color:#5f6d78; background:#f3f7f7; border:1px solid #dbe6e7; border-radius:8px; font-size:13px; line-height:1.55;">
-                                {% trans "For discussion or sample submission, visit us daily between 11:00 and 12:00." %}
-                            </div>
+                            <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="width:100%; margin-top:18px;"><tr><td bgcolor="#f3f7f7" style="padding:12px 14px; color:#5f6d78; background:#f3f7f7; border:1px solid #dbe6e7; border-radius:6px; font-size:13px; line-height:20px;">{% trans "For discussion or sample submission, visit us daily between 11:00 and 12:00." %}</td></tr></table>
                         </td>
                     </tr>
                     <tr>
-                        <td style="padding:20px 30px; background:#eef4f4; color:#74828d; font-size:12px; line-height:1.5;">
+                        <td bgcolor="#eef4f4" style="padding:16px 28px; background:#eef4f4; color:#74828d; border-radius:0 0 8px 8px; font-size:12px; line-height:18px;">
                             {% blocktrans %}This message was sent via {{ instance_title }}.{% endblocktrans %}
                         </td>
                     </tr>

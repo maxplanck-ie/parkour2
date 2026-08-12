@@ -38,7 +38,7 @@ from rest_framework.exceptions import NotFound
 from rest_framework.permissions import AllowAny, IsAdminUser
 from rest_framework.response import Response
 
-from .models import FileRequest, Request
+from .models import DEFAULT_FILE_TYPE, FileRequest, Request, is_valid_file_type
 from .resources import LibrariesResource, SamplesResource
 from .serializers import RequestFileSerializer, RequestSerializer
 
@@ -560,14 +560,40 @@ class RequestViewSet(viewsets.ModelViewSet):
     )
     def upload_files(self, request):
         file_ids = []
+        files = request.FILES.getlist("files")
 
-        if not any(request.FILES):
+        if not files:
             return JsonResponse(
                 {"success": False, "message": "No files provided."}, status=400
             )
 
-        for file in request.FILES.getlist("files"):
-            f = FileRequest(name=file.name, file=file)
+        raw_file_types = request.POST.get("file_types")
+        if raw_file_types is not None:
+            try:
+                file_types = json.loads(raw_file_types)
+            except (TypeError, json.JSONDecodeError):
+                file_types = None
+        else:
+            file_types = None
+
+        if (
+            not isinstance(file_types, list)
+            or len(file_types) != len(files)
+            or not all(
+                is_valid_file_type(value) and value != DEFAULT_FILE_TYPE
+                for value in file_types
+            )
+        ):
+            return JsonResponse(
+                {
+                    "success": False,
+                    "message": "Select a valid file type for every file.",
+                },
+                status=400,
+            )
+
+        for file, file_type in zip(files, file_types, strict=True):
+            f = FileRequest(name=file.name, file=file, file_type=file_type)
             f.save()
             file_ids.append(f.id)
 
@@ -802,6 +828,10 @@ class RequestViewSet(viewsets.ModelViewSet):
             instance.save(update_fields=["token"])
             url_scheme = request.is_secure() and "https" or "http"
             url_domain = get_current_site(request).domain
+            logo_url = (
+                f"{url_scheme}://{url_domain}{settings.STATIC_URL}"
+                "main-hub/resources/images/logo.png"
+            )
             url_query = urlencode({"token": instance.token})
             send_mail(
                 subject=subject,
@@ -813,10 +843,9 @@ class RequestViewSet(viewsets.ModelViewSet):
                         "pi_name": instance.user.pi.name,
                         "message": message,
                         "token_url": f"{url_scheme}://{url_domain}/api/approve/this/?pk={instance.id}&{url_query}",
+                        "logo_url": logo_url,
                         "records": records,
                         "instance_title": settings.INSTANCE_TITLE,
-                        "protocol": url_scheme,
-                        "domain": url_domain,
                     },
                 ),
                 from_email=settings.SERVER_EMAIL,
@@ -850,8 +879,6 @@ class RequestViewSet(viewsets.ModelViewSet):
                 )
                 records = sorted(records, key=lambda x: x.barcode[3:])
 
-            url_scheme = request.is_secure() and "https" or "http"
-            url_domain = get_current_site(request).domain
             send_mail(
                 subject=f"[ {settings.INSTANCE_NAME} | new message ] " + subject,
                 message="",
@@ -862,8 +889,9 @@ class RequestViewSet(viewsets.ModelViewSet):
                         "message": message,
                         "records": records,
                         "instance_title": settings.INSTANCE_TITLE,
-                        "protocol": url_scheme,
-                        "domain": url_domain,
+                        "logo_url": request.build_absolute_uri(
+                            f"{settings.STATIC_URL}main-hub/resources/images/logo.png"
+                        ),
                     },
                 ),
                 from_email=settings.SERVER_EMAIL,
@@ -1007,14 +1035,13 @@ class ApproveViewSet(viewsets.ModelViewSet):
             logger.exception(e)
             return render(request, "approval_expired.html", status=400)
         subject = f"[ {settings.INSTANCE_NAME} | request approved ] {instance.name}"
-        url_scheme = request.is_secure() and "https" or "http"
-        url_domain = get_current_site(request).domain
         base_context = {
             "full_name": instance.user.full_name,
             "pi_name": instance.user.pi.name,
             "instance_title": settings.INSTANCE_TITLE,
-            "protocol": url_scheme,
-            "domain": url_domain,
+            "logo_url": request.build_absolute_uri(
+                f"{settings.STATIC_URL}main-hub/resources/images/logo.png"
+            ),
         }
         if instance.user.email == instance.user.pi.email:
             greetings = [

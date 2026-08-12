@@ -522,6 +522,10 @@
                     <select
                       v-model="file.fileTypeChoice"
                       class="file-type-select"
+                      :class="{
+                        'has-custom-input':
+                          file.fileTypeChoice === requestFileTypeOther
+                      }"
                       :disabled="!canEditAttachments || attachmentsBusy"
                       :aria-label="`File type for ${file.name}`"
                       @change="handleAttachmentFileTypeChoice(file)"
@@ -534,23 +538,54 @@
                         {{ option }}
                       </option>
                     </select>
-                    <input
+                    <div
                       v-if="file.fileTypeChoice === requestFileTypeOther"
-                      :value="file.customFileType"
-                      class="file-type-custom-input"
-                      :class="{
-                        invalid:
-                          file.customFileType &&
+                      class="file-type-custom-input-wrapper"
+                    >
+                      <input
+                        :value="file.customFileType"
+                        class="file-type-custom-input"
+                        :class="{
+                          invalid:
+                            file.customFileTypeTouched &&
+                            !isValidRequestFileType(file.customFileType),
+                          'has-save-button': file.customFileTypeDirty
+                        }"
+                        :disabled="!canEditAttachments || attachmentsBusy"
+                        maxlength="100"
+                        placeholder="Custom_File_Type"
+                        :aria-label="`Custom file type for ${file.name}`"
+                        @focus="markCustomFileTypeTouched(file)"
+                        @input="handleCustomAttachmentFileType(file, $event)"
+                        @blur="saveCustomAttachmentFileType(file)"
+                        @keyup.enter="saveCustomAttachmentFileType(file)"
+                      />
+                      <button
+                        v-if="file.customFileTypeDirty"
+                        class="file-type-inline-save"
+                        type="button"
+                        title="Save custom file type"
+                        :aria-label="`Save custom file type for ${file.name}`"
+                        :disabled="
+                          attachmentsBusy ||
                           !isValidRequestFileType(file.customFileType)
-                      }"
-                      :disabled="!canEditAttachments || attachmentsBusy"
-                      maxlength="100"
-                      placeholder="Custom_File_Type"
-                      :aria-label="`Custom file type for ${file.name}`"
-                      @input="handleCustomAttachmentFileType(file, $event)"
-                      @blur="saveCustomAttachmentFileType(file)"
-                      @keyup.enter="saveCustomAttachmentFileType(file)"
-                    />
+                        "
+                        @mousedown.prevent
+                        @click="saveCustomAttachmentFileType(file)"
+                      >
+                        <font-awesome-icon icon="fa-solid fa-floppy-disk" />
+                      </button>
+                    </div>
+                    <small
+                      v-if="
+                        file.fileTypeChoice === requestFileTypeOther &&
+                        file.customFileTypeTouched &&
+                        !isValidRequestFileType(file.customFileType)
+                      "
+                      class="file-type-required-error"
+                    >
+                      A file type name is required.
+                    </small>
                   </td>
                   <td class="file-size-cell" :title="formatFileSize(file.size)">
                     {{ formatFileSize(file.size) }}
@@ -599,6 +634,94 @@
       </div>
     </div>
   </div>
+  <div
+    v-if="pendingAttachmentFiles.length"
+    class="popup-overlay file-type-selection-overlay"
+    tabindex="0"
+    @keydown.esc.prevent.stop="cancelAttachmentUpload"
+  >
+    <div class="popup-container file-type-selection-modal">
+      <div class="popup-header">
+        <div class="popup-title">Select File Types</div>
+        <button
+          class="popup-close-button"
+          type="button"
+          :disabled="attachmentsBusy"
+          aria-label="Close file type selection"
+          @click="cancelAttachmentUpload"
+        >
+          &times;
+        </button>
+      </div>
+      <div class="popup-body file-type-selection-body">
+        <p>Select a file type for each file before uploading.</p>
+        <div class="file-type-selection-list">
+          <div
+            v-for="file in pendingAttachmentFiles"
+            :key="file.pendingId"
+            class="file-type-selection-row"
+          >
+            <span class="file-type-selection-name" :title="file.name">
+              {{ file.name }}
+            </span>
+            <div class="file-type-selection-controls">
+              <select v-model="file.fileTypeChoice" :disabled="attachmentsBusy">
+                <option value="" disabled>Select file type</option>
+                <option
+                  v-for="option in requestFileTypeOptions"
+                  :key="option"
+                  :value="option"
+                >
+                  {{ option }}
+                </option>
+              </select>
+              <input
+                v-if="file.fileTypeChoice === requestFileTypeOther"
+                :value="file.customFileType"
+                :class="{
+                  invalid: !isValidRequestFileType(file.customFileType)
+                }"
+                :disabled="attachmentsBusy"
+                maxlength="100"
+                placeholder="Custom_File_Type"
+                @input="handleCustomAttachmentFileType(file, $event)"
+              />
+              <small
+                v-if="
+                  file.fileTypeChoice === requestFileTypeOther &&
+                  !isValidRequestFileType(file.customFileType)
+                "
+                class="file-type-selection-error"
+              >
+                A file type name is required.
+              </small>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="popup-footer">
+        <button
+          class="popup-button secondary"
+          type="button"
+          :disabled="attachmentsBusy"
+          @click="cancelAttachmentUpload"
+        >
+          Cancel
+        </button>
+        <button
+          class="popup-button yes-button"
+          type="button"
+          :disabled="
+            attachmentsBusy ||
+            !areRequestFileTypesSelected(pendingAttachmentFiles)
+          "
+          @click="confirmAttachmentUpload"
+        >
+          {{ attachmentsBusy ? "Uploading..." : "Save" }}
+        </button>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -611,8 +734,10 @@ import {
 import {
   REQUEST_FILE_TYPE_OPTIONS,
   REQUEST_FILE_TYPE_OTHER,
+  areRequestFileTypesSelected,
   isValidRequestFileType,
   normaliseRequestFile,
+  requestFileTypeOptionsFromResponse,
   requestFileTypesPayload,
   resolveRequestFileType
 } from "../utilities/requestFileTypes";
@@ -757,6 +882,7 @@ export default {
       deleteBusy: false,
       attachmentsFiles: [],
       attachmentsFileIds: [],
+      pendingAttachmentFiles: [],
       requestFileTypeOptions: REQUEST_FILE_TYPE_OPTIONS,
       requestFileTypeOther: REQUEST_FILE_TYPE_OTHER,
       attachmentsBusy: false,
@@ -852,7 +978,7 @@ export default {
         this.clearApprovalErrors();
       }
       if (newVal === REQUEST_ACTIONS.attachments) {
-        this.loadAttachments();
+        this.prepareAttachments();
       }
 
       this.$nextTick(() => {
@@ -872,11 +998,28 @@ export default {
         this.clearApprovalFieldError("subject");
       }
       if (this.activeAction === REQUEST_ACTIONS.attachments) {
-        this.loadAttachments();
+        this.prepareAttachments();
       }
     }
   },
   methods: {
+    areRequestFileTypesSelected,
+    async prepareAttachments() {
+      await this.fetchRequestFileTypeOptions();
+      await this.loadAttachments();
+    },
+    async fetchRequestFileTypeOptions() {
+      try {
+        const response = await axiosRef.get(
+          apiUrl("/api/attachment_file_types/")
+        );
+        this.requestFileTypeOptions = requestFileTypeOptionsFromResponse(
+          response?.data
+        );
+      } catch (error) {
+        handleError(error);
+      }
+    },
     handleGlobalKeydown(event) {
       if (!this.activeAction) return;
       if (event.key !== "Escape") return;
@@ -932,6 +1075,7 @@ export default {
       this.deleteBusy = false;
       this.attachmentsFiles = [];
       this.attachmentsFileIds = [];
+      this.pendingAttachmentFiles = [];
       this.attachmentsBusy = false;
       this.isAttachmentsDragOver = false;
       this.attachmentsRequestDetails = {
@@ -1373,13 +1517,18 @@ export default {
 
       if (meta) {
         const filesList = Array.isArray(meta?.files) ? meta.files : [];
-        this.attachmentsFiles = filesList.map((file) => normaliseRequestFile({
-          id: file?.id ?? file?.pk,
-          name: file?.name,
-          size: file?.size ?? null,
-          path: file?.path,
-          file_type: file?.file_type
-        }));
+        this.attachmentsFiles = filesList.map((file) =>
+          normaliseRequestFile(
+            {
+              id: file?.id ?? file?.pk,
+              name: file?.name,
+              size: file?.size ?? null,
+              path: file?.path,
+              file_type: file?.file_type
+            },
+            this.requestFileTypeOptions
+          )
+        );
         this.attachmentsFileIds = this.attachmentsFiles
           .map((file) => file?.id)
           .filter((id) => id !== undefined && id !== null);
@@ -1437,13 +1586,18 @@ export default {
           const filesList = Array.isArray(requestData?.files)
             ? requestData.files
             : [];
-          this.attachmentsFiles = filesList.map((file) => normaliseRequestFile({
-            id: file?.id ?? file?.pk,
-            name: file?.name,
-            size: file?.size ?? null,
-            path: file?.path,
-            file_type: file?.file_type
-          }));
+          this.attachmentsFiles = filesList.map((file) =>
+            normaliseRequestFile(
+              {
+                id: file?.id ?? file?.pk,
+                name: file?.name,
+                size: file?.size ?? null,
+                path: file?.path,
+                file_type: file?.file_type
+              },
+              this.requestFileTypeOptions
+            )
+          );
           this.attachmentsFileIds = this.attachmentsFiles
             .map((file) => file?.id)
             .filter((id) => id !== undefined && id !== null);
@@ -1484,14 +1638,9 @@ export default {
     },
     async handleAttachmentsSelection(event) {
       const files = Array.from(event.target.files || []);
-      try {
-        await this.uploadAttachments(files);
-      } catch (error) {
-        handleError(error);
-      } finally {
-        if (event?.target) {
-          event.target.value = "";
-        }
+      this.promptForAttachmentFileTypes(files);
+      if (event?.target) {
+        event.target.value = "";
       }
     },
     handleAttachmentsDragOver() {
@@ -1527,15 +1676,37 @@ export default {
         showNotification("No files selected.", NOTIFICATION_TYPES.warning);
         return;
       }
-      this.uploadAttachments(files);
+      this.promptForAttachmentFileTypes(files);
     },
-    async uploadAttachments(files = []) {
+    promptForAttachmentFileTypes(files = []) {
       if (!files.length) {
         showNotification("No files selected.", NOTIFICATION_TYPES.warning);
         return;
       }
+      const batchId = Date.now();
+      this.pendingAttachmentFiles = files.map((localFile, index) => ({
+        pendingId: `${batchId}-${index}`,
+        localFile,
+        name: localFile.name,
+        size: localFile.size,
+        fileTypeChoice: "",
+        customFileType: ""
+      }));
+    },
+    cancelAttachmentUpload() {
+      this.pendingAttachmentFiles = [];
+    },
+    async confirmAttachmentUpload() {
+      const pendingFiles = [...this.pendingAttachmentFiles];
+      if (!pendingFiles.length) return;
       const formData = new FormData();
-      files.forEach((file) => formData.append(FORM_FIELDS.files, file));
+      pendingFiles.forEach((file) =>
+        formData.append(FORM_FIELDS.files, file.localFile)
+      );
+      formData.append(
+        "file_types",
+        JSON.stringify(pendingFiles.map((file) => resolveRequestFileType(file)))
+      );
       try {
         this.attachmentsBusy = true;
         const response = await axiosRef.post(
@@ -1546,6 +1717,21 @@ export default {
         if (response?.data?.success) {
           const ids = response.data.fileIds || [];
           this.attachmentsFileIds = [...this.attachmentsFileIds, ...ids];
+          this.attachmentsFiles = [
+            ...this.attachmentsFiles,
+            ...ids.map((id, index) =>
+              normaliseRequestFile(
+                {
+                  id,
+                  name: pendingFiles[index]?.name,
+                  size: pendingFiles[index]?.size,
+                  file_type: resolveRequestFileType(pendingFiles[index])
+                },
+                this.requestFileTypeOptions
+              )
+            )
+          ];
+          this.pendingAttachmentFiles = [];
           await this.fetchUploadedFilesDetails();
           await this.saveAttachmentsToRequest();
           await this.loadAttachments({ force: true });
@@ -1578,13 +1764,19 @@ export default {
         );
         if (response?.data?.success) {
           const data = response.data.data || [];
-          this.attachmentsFiles = data.map((file) => normaliseRequestFile({
-            id: file?.id,
-            name: file?.name,
-            size: file?.size ?? null,
-            path: file?.path,
-            file_type: file?.file_type
-          }));
+          const currentFiles = new Map(
+            this.attachmentsFiles.map((file) => [String(file.id), file])
+          );
+          this.attachmentsFiles = data.map((file) => {
+            const current = currentFiles.get(String(file?.id));
+            return normaliseRequestFile(
+              {
+                ...file,
+                file_type: current?.file_type || file.file_type
+              },
+              this.requestFileTypeOptions
+            );
+          });
         }
       } catch (error) {
         handleError(error);
@@ -1603,36 +1795,47 @@ export default {
     },
     isValidRequestFileType,
     async handleAttachmentFileTypeChoice(file) {
+      if (file.fileTypeChoice === REQUEST_FILE_TYPE_OTHER) {
+        this.markCustomFileTypeTouched(file);
+        if (!isValidRequestFileType(file.customFileType)) return;
+      }
       file.file_type = resolveRequestFileType(file);
       await this.saveAttachmentsToRequest();
     },
     handleCustomAttachmentFileType(file, event) {
+      this.markCustomFileTypeTouched(file);
       const value = String(event?.target?.value || "").replace(
         /[^A-Za-z0-9_]/g,
         ""
       );
       file.customFileType = value;
+      file.customFileTypeDirty = true;
       file.file_type = value || REQUEST_FILE_TYPE_OTHER;
       if (event?.target && event.target.value !== value) {
         event.target.value = value;
       }
     },
+    markCustomFileTypeTouched(file) {
+      file.customFileTypeTouched = true;
+    },
     async saveCustomAttachmentFileType(file) {
+      if (!file.customFileTypeDirty) return;
       if (
-        file.customFileType &&
+        (file.customFileTypeTouched || file.customFileType) &&
         !isValidRequestFileType(file.customFileType)
       ) {
         showNotification(
-          "Custom file types must use words separated by single underscores.",
+          "Enter a custom file type using words separated by single underscores.",
           NOTIFICATION_TYPES.warning
         );
         return;
       }
       file.file_type = resolveRequestFileType(file);
-      await this.saveAttachmentsToRequest();
+      const saved = await this.saveAttachmentsToRequest();
+      if (saved) file.customFileTypeDirty = false;
     },
     async saveAttachmentsToRequest() {
-      if (!this.requestContext?.id) return;
+      if (!this.requestContext?.id) return false;
       const requestId = this.requestContext.id;
       const payload = {
         [REQUEST_DATA_FIELDS.costUnit]:
@@ -1657,11 +1860,14 @@ export default {
         );
         if (response?.data?.success) {
           this.$emit("refresh");
+          return true;
         } else {
           showNotification("Request update failed.", NOTIFICATION_TYPES.error);
+          return false;
         }
       } catch (error) {
         handleError(error);
+        return false;
       } finally {
         this.attachmentsBusy = false;
       }
@@ -1817,7 +2023,7 @@ export default {
   border: 1px solid #d0d0d0;
   border-radius: 8px;
   overflow-y: auto;
-  overflow-x: auto;
+  overflow-x: hidden;
   margin-top: 8px;
   flex: 1;
   min-height: 0;
@@ -1828,7 +2034,7 @@ export default {
 
 .files-table {
   width: 100%;
-  min-width: 720px;
+  min-width: 0;
   border-collapse: separate;
   border-spacing: 0;
   table-layout: fixed;
@@ -1836,19 +2042,19 @@ export default {
 }
 
 .files-table .file-col-name {
-  width: 30%;
+  width: 42%;
 }
 
 .files-table .file-col-type {
-  width: 38%;
+  width: 30%;
 }
 
 .files-table .file-col-size {
-  width: 14%;
+  width: 13%;
 }
 
 .files-table .file-col-actions {
-  width: 18%;
+  width: 15%;
 }
 
 .files-table.files-table-empty {
@@ -1867,16 +2073,19 @@ export default {
   border-bottom: 1px solid #d0d0d0;
 }
 
+.files-table tbody tr:not(:last-child) td {
+  border-bottom: 1px solid #e1e5e8;
+}
+
 .files-table .empty-cell {
   text-align: center;
   color: #7b7f89;
 }
 
 .files-table td.actions-cell {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 3px;
+  display: table-cell;
+  text-align: center;
+  white-space: nowrap;
 }
 
 .files-table td.actions-cell button + button {
@@ -1884,13 +2093,13 @@ export default {
 }
 
 .file-name-cell {
-  max-width: 220px;
-  display: flex;
-  align-items: center;
+  min-width: 0;
+  max-width: none;
 }
 
 .file-name-text {
   display: inline-block;
+  width: 100%;
   max-width: 100%;
   white-space: nowrap;
   overflow: hidden;
@@ -1905,12 +2114,13 @@ export default {
 }
 
 .file-type-cell {
-  min-width: 250px;
+  min-width: 0;
 }
 
 .file-type-select,
 .file-type-custom-input {
   width: 100%;
+  box-sizing: border-box;
   min-height: 30px;
   border: 1px solid #c9d2d6;
   border-radius: 6px;
@@ -1920,8 +2130,57 @@ export default {
   padding: 5px 7px;
 }
 
+.file-type-select {
+  appearance: none;
+  padding-right: 26px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5 6 6.5l5-5' fill='none' stroke='%23173f53' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 8px center;
+  background-size: 12px 8px;
+}
+
 .file-type-custom-input {
-  margin-top: 5px;
+  margin-top: -1px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
+.file-type-select.has-custom-input {
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.file-type-custom-input-wrapper {
+  position: relative;
+  margin-top: 0;
+}
+
+.file-type-custom-input.has-save-button {
+  padding-right: 34px;
+}
+
+.file-type-inline-save {
+  position: absolute;
+  right: 6px;
+  top: 50%;
+  width: 22px;
+  height: 22px;
+  padding: 0;
+  border: 0;
+  border-radius: 5px;
+  background: transparent;
+  color: #006c66;
+  cursor: pointer;
+  transform: translateY(-50%);
+}
+
+.file-type-inline-save:hover:not(:disabled) {
+  background: #e8f2f1;
+}
+
+.file-type-inline-save:disabled {
+  color: #9aa6ad;
+  cursor: not-allowed;
 }
 
 .file-type-custom-input.invalid {
@@ -1940,6 +2199,7 @@ export default {
   align-items: center;
   justify-content: center;
   cursor: pointer;
+  vertical-align: middle;
 }
 
 .icon-action:disabled {

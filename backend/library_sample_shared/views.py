@@ -81,7 +81,13 @@ class ReadLengthViewSet(viewsets.ReadOnlyModelViewSet):
 
 
 class ReadLengthInvoicingViewSet(viewsets.ReadOnlyModelViewSet):
-    queryset = ReadLength.objects.all().filter(archived=False)
+    """Get the list of read lengths for invoicing.
+
+    Includes archived entries: Invoicing History can span past months whose
+    requests reference a read length that has since been archived.
+    """
+
+    queryset = ReadLength.objects.all()
     serializer_class = ReadLengthSerializer
 
 
@@ -183,12 +189,16 @@ class LibraryProtocolViewSet(MoveOtherMixin, viewsets.ReadOnlyModelViewSet):
 
 
 class LibraryProtocolInvoicingViewSet(MoveOtherMixin, viewsets.ReadOnlyModelViewSet):
-    """Get the list of library protocols for invoicing."""
+    """Get the list of library protocols for invoicing.
+
+    Includes archived entries: Invoicing History can span past months whose
+    requests reference a library protocol that has since been archived.
+    """
 
     serializer_class = LibraryProtocolSerializer
 
     def get_queryset(self):
-        queryset = LibraryProtocol.objects.filter(archived=False).order_by("name")
+        queryset = LibraryProtocol.objects.order_by("name")
         na_type = self.request.query_params.get("type", None)
         if na_type is not None:
             queryset = queryset.filter(type=na_type)
@@ -293,7 +303,9 @@ class LibrarySampleBaseViewSet(viewsets.ModelViewSet):
         else:
             # Try to create valid records
             valid_data = [
-                item[1] for item in zip(serializer.errors, post_data) if not item[0]
+                item
+                for index, item in enumerate(post_data)
+                if index not in serializer.errors
             ]
 
             if any(valid_data):
@@ -355,7 +367,9 @@ class LibrarySampleBaseViewSet(viewsets.ModelViewSet):
         else:
             # Try to update valid records
             valid_data = [
-                item[1] for item in zip(serializer.errors, post_data) if not item[0]
+                item
+                for index, item in enumerate(post_data)
+                if index not in serializer.errors
             ]
 
             if any(valid_data):

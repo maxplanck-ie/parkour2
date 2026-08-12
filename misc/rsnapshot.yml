@@ -10,12 +10,10 @@ services:
       - ./rsnapshot/backups:/.snapshots
       # sources go into /data
       - parkour2_pgdb:/data/parkour2_pgdb
-      - parkour2_media:/data/parkour2_media
+      - ../media:/data/parkour2_media
 
 volumes:
   parkour2_pgdb:
-    external: true
-  parkour2_media:
     external: true
 
 networks:

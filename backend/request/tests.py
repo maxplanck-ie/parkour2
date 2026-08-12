@@ -8,6 +8,7 @@ from common.tests import BaseTestCase
 from common.utils import get_random_name
 from django.contrib.auth import get_user_model
 from django.core import mail
+from django.core.files.uploadedfile import SimpleUploadedFile
 
 # from django.core.files.base import ContentFile
 from django.test import TestCase
@@ -253,6 +254,62 @@ class TestRequests(BaseTestCase):
         requests = [x["name"] for x in response.json()["results"]]
         self.assertIn(request1.name, requests)
         self.assertIn(request2.name, requests)
+
+    def test_upload_files_persists_selected_file_types(self):
+        response = self.client.post(
+            "/api/requests/upload_files/",
+            {
+                "files": [
+                    SimpleUploadedFile("design.pdf", b"design"),
+                    SimpleUploadedFile("qc.pdf", b"qc"),
+                ],
+                "file_types": json.dumps(
+                    ["Experimental_Design", "RNA_FragmentSize_QC"]
+                ),
+            },
+        )
+
+        self.assertEqual(response.status_code, 200)
+        uploaded = FileRequest.objects.filter(
+            pk__in=response.json()["fileIds"]
+        ).order_by("pk")
+        self.assertEqual(
+            list(uploaded.values_list("file_type", flat=True)),
+            ["Experimental_Design", "RNA_FragmentSize_QC"],
+        )
+
+    def test_upload_files_rejects_missing_file_type(self):
+        response = self.client.post(
+            "/api/requests/upload_files/",
+            {
+                "files": [SimpleUploadedFile("design.pdf", b"design")],
+                "file_types": json.dumps([]),
+            },
+        )
+
+        self.assertEqual(response.status_code, 400)
+        self.assertFalse(response.json()["success"])
+
+    def test_upload_files_requires_file_types_field(self):
+        response = self.client.post(
+            "/api/requests/upload_files/",
+            {"files": [SimpleUploadedFile("legacy.pdf", b"legacy")]},
+        )
+
+        self.assertEqual(response.status_code, 400)
+        self.assertFalse(response.json()["success"])
+
+    def test_upload_files_rejects_other_without_a_custom_name(self):
+        response = self.client.post(
+            "/api/requests/upload_files/",
+            {
+                "files": [SimpleUploadedFile("other.pdf", b"other")],
+                "file_types": json.dumps(["Other"]),
+            },
+        )
+
+        self.assertEqual(response.status_code, 400)
+        self.assertFalse(response.json()["success"])
 
     def test_request_list_non_existing_page(self):
         request = create_request(self.user)

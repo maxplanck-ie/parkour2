@@ -8,8 +8,7 @@ function dispatchSyntheticDocumentInteraction() {
   const target = document.body || document;
   const baseInit = {
     bubbles: true,
-    cancelable: true,
-    view: window
+    cancelable: true
   };
 
   if (window.PointerEvent) {

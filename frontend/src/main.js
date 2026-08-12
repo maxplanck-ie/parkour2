@@ -42,7 +42,8 @@ import {
   faCloudArrowUp,
   faLightbulb,
   faFlask,
-  faFloppyDisk
+  faFloppyDisk,
+  faMoneyBill
 } from "@fortawesome/free-solid-svg-icons";
 import {
   faCalendarPlus,
@@ -91,7 +92,8 @@ library.add(
   faCloudArrowUp,
   faLightbulb,
   faFlask,
-  faFloppyDisk
+  faFloppyDisk,
+  faMoneyBill
 );
 
 app.use(router);
