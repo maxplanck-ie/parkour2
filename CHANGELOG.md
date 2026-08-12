@@ -5,6 +5,12 @@ Unreleased
 
 - Add staff-only `GET /api/internal_pis/?organizations=<comma-separated names>`, returning the lowercased names of non-archived `PrincipalInvestigator`s in the given organization(s). This lets dissectBCL replace its static `Internals.PIs` config list with a Parkour-backed, organization-parameterized lookup — no schema changes required.
 - RO-Crate export: per-record error isolation (a failed sample/library no longer aborts the whole export), Person/Organization entities as creator/author, RO-Crate 1.1/ISA profile conformance fixes, and barcode-keyed `#fastq-data-{barcode}` stub entities so dissectBCL can attach the real fastq files at delivery time.
+- Transactional emails (password reset/account creation/approval request/approval confirmation/general message): add a consistent logo to the header, widen the layout to match the approval emails, and move the requester's message above the security notice on the approval-request email.
+- Add a confirmation email sent after a user successfully sets or resets their password.
+- "Request approved" email now addresses the requester and PI by name in separate personalized emails (or a combined greeting when they share an email address), instead of a single email listing both addresses in the same `To:` header.
+- Reopening an already-used/expired approval link now shows a styled error page instead of a raw JSON error.
+- Fix the "danke" (approval thank-you) page wrapping `deepseq@ie-freiburg.mpg.de` mid-word at the hyphen.
+- Remove the unused, unlinked `db`, `report`, `import_request`, and `export_request` staff pages/endpoints.
 - ...
 
 

@@ -1,4 +1,4 @@
-{% load i18n %}
+{% load i18n static %}
 <!doctype html>
 <html lang="en">
 <head>
@@ -10,10 +10,11 @@
     <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="width:100%; background:#f3f6f7;">
         <tr>
             <td align="center" style="padding:36px 16px;">
-                <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="width:100%; max-width:600px; overflow:hidden; background:#ffffff; border:1px solid #dbe4e8; border-radius:12px;">
+                <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="width:100%; max-width:680px; overflow:hidden; background:#ffffff; border:1px solid #dbe4e8; border-radius:12px;">
                     <tr>
-                        <td style="padding:24px 30px; background:#006c66; color:#ffffff;">
-                            <div style="font-size:22px; font-weight:700; line-height:1.2;">Parkour LIMS</div>
+                        <td bgcolor="#006c66" style="padding:24px 30px; background:#006c66; color:#ffffff;">
+                            <img src="{{ protocol }}://{{ domain }}{% static 'images/parkour-logo-email.png' %}" width="28" height="28" alt="" style="display:inline-block; vertical-align:middle; margin-right:10px;">
+                            <span style="color:#ffffff; font-size:22px; font-weight:700; line-height:1.2; vertical-align:middle;">Parkour LIMS</span>
                             <div style="margin-top:5px; color:#d8efed; font-size:13px; line-height:1.5;">Sequencing request management</div>
                         </td>
                     </tr>

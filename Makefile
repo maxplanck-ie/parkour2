@@ -1,5 +1,6 @@
 .PHONY: *
 SHELL := /bin/bash
+export COMPOSE_PROJECT_NAME := parkour2
 
 ifeq ($(OS),Windows_NT)
 	NcpuThird := 2

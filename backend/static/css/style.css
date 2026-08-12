@@ -645,6 +645,7 @@
 .approval-note a {
   color: #006c66;
   font-weight: 600;
+  white-space: nowrap;
 }
 
 .error-logo {
