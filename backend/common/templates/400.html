@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block css %}
+<style>
+    body {
+        background:
+            linear-gradient(rgba(5, 24, 28, 0.58), rgba(5, 24, 28, 0.58)),
+            url("{% static 'images/error-page-background.jpg' %}") no-repeat center center fixed;
+        background-size: cover;
+    }
+</style>
+{% endblock css %}
+
+{% block title %}Parkour LIMS | Bad Request{% endblock title %}
+
+{% block content %}
+<main class="error-page">
+    <section class="error-card">
+        <img class="error-logo" src="{% static 'images/parkour-logo.svg' %}" alt="">
+        <div class="error-code">400</div>
+        <h1>Bad request</h1>
+        <p>The server could not understand your request. Please check the URL and try again.</p>
+        <a class="django-button django-button-primary" href="{% url 'index' %}">Return home</a>
+    </section>
+</main>
+{% endblock content %}
