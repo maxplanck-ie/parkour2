@@ -21,8 +21,6 @@ urlpatterns = [
     path("api/internal_pis/", InternalPIsView.as_view(), name="internal-pis"),
     path("api/usage/", include("usage.urls")),
     path("", include("common.urls")),
-    path("", include("request.urls")),
-    path("", include("report.urls")),
     path("openapi/schema/", SpectacularAPIView.as_view(), name="schema"),
     path(
         "openapi/schema/swagger-ui/",

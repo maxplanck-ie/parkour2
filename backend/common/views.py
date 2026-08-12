@@ -6,10 +6,14 @@ from urllib.parse import quote
 
 from django.conf import settings
 from django.contrib.auth import get_user_model
+from django.contrib.auth import views as auth_views
 from django.contrib.auth.decorators import login_required
+from django.contrib.sites.shortcuts import get_current_site
+from django.core.mail import send_mail
 from django.db.models import Q
 from django.http import Http404, HttpResponse, JsonResponse, FileResponse
 from django.shortcuts import get_object_or_404, render
+from django.template.loader import render_to_string
 from django.utils import timezone
 from request.models import Request
 from rest_framework import status, viewsets
@@ -346,6 +350,32 @@ def user_details(request):
 
 def danke(request):
     return render(request, "danke.html")
+
+
+class PasswordSetConfirmView(auth_views.PasswordResetConfirmView):
+    """Same as the stock view, plus a "password changed" confirmation email."""
+
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        user = form.user
+        if user.email:
+            send_mail(
+                subject="[Parkour LIMS] Password Changed",
+                message="",
+                html_message=render_to_string(
+                    "email/password_changed_email.html",
+                    {
+                        "user": user,
+                        "domain": get_current_site(self.request).domain,
+                        "logo_url": self.request.build_absolute_uri(
+                            f"{settings.STATIC_URL}main-hub/resources/images/logo.png"
+                        ),
+                    },
+                ),
+                from_email=settings.SERVER_EMAIL,
+                recipient_list=[user.email],
+            )
+        return response
 
 
 class BaseTemplateViewSet(viewsets.ModelViewSet):

@@ -9,9 +9,16 @@ Unreleased
 - Infrastructure: use Debian 12 as the shared backend base image, including Playwright, so Firefox dependencies can be installed.
 - Add staff-only `GET /api/internal_pis/?organizations=<comma-separated names>`, returning the lowercased names of non-archived `PrincipalInvestigator`s in the given organization(s). This lets dissectBCL replace its static `Internals.PIs` config list with a Parkour-backed, organization-parameterized lookup — no schema changes required.
 - RO-Crate export: per-record error isolation (a failed sample/library no longer aborts the whole export), Person/Organization entities as creator/author, RO-Crate 1.1/ISA profile conformance fixes, and barcode-keyed `#fastq-data-{barcode}` stub entities so dissectBCL can attach the real fastq files at delivery time.
+- Transactional emails (password reset/account creation/approval request/approval confirmation/general message): add a consistent logo to the header, widen the layout to match the approval emails, and move the requester's message above the security notice on the approval-request email.
+- Add a confirmation email sent after a user successfully sets or resets their password.
+- "Request approved" email now addresses the requester and PI by name in separate personalized emails (or a combined greeting when they share an email address), instead of a single email listing both addresses in the same `To:` header.
+- Reopening an already-used/expired approval link now shows a styled error page instead of a raw JSON error.
+- Fix the "danke" (approval thank-you) page wrapping `deepseq@ie-freiburg.mpg.de` mid-word at the hyphen.
+- Remove the unused, unlinked `db`, `report`, `import_request`, and `export_request` staff pages/endpoints.
 - Add/Edit Request: "Read Length" column relabeled "Minimum Read Length" (libraries and samples tables), tooltip clarified to point users at the description field for mandatory read length/device requirements, and the description placeholder now explains the facility may adjust sequencing parameters unless the project needs a fixed configuration.
 - Add/Edit Request Index I7/I5 dropdowns: fixed wrong index pair shown for index kits where several `IndexType` positions share an identical sequence (e.g. single-fixed-i5 ATAC adapter lists) — label/editor lookup resolved by sequence, so duplicate sequences always displayed the first matching position regardless of the admin-defined `IndexPair`. Now disambiguated using the row's already-selected partner index.
 - Admin: fixed HTTP 400 "Max number of fields exceeded" when assigning a large `IndexI7`/`IndexI5` set to an `IndexType` or bulk-actioning a large `IndexI5`/`IndexI7` changelist — raised `DATA_UPLOAD_MAX_NUMBER_FIELDS`, switched `IndexType`'s index widgets to `autocomplete_fields`, and any remaining overflow now shows a friendly error instead of a blank 400.
+- ...
 
 
 26.07.28

@@ -30,6 +30,11 @@
                             <p style="margin:0 0 14px; color:#50606c; font-size:15px; line-height:24px;">{% blocktrans %}Dear {{ pi_name }},{% endblocktrans %}</p>
                             <p style="margin:0 0 22px; color:#50606c; font-size:15px; line-height:24px;">{% blocktrans %}{{ full_name }} requested your approval for a sequencing experiment.{% endblocktrans %}</p>
 
+                            <p style="margin:0 0 8px; color:#173f55; font-size:13px; font-weight:700; line-height:20px;">{% blocktrans %}Message from {{ full_name }}{% endblocktrans %}</p>
+                            <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="width:100%; margin-bottom:24px;">
+                                <tr><td bgcolor="#f8fafb" style="padding:13px 15px; color:#50606c; background:#f8fafb; border-left:3px solid #0b7f78; border-radius:6px; font-size:14px; line-height:22px;">{{ message|linebreaksbr }}</td></tr>
+                            </table>
+
                             <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="width:100%; margin-bottom:24px;">
                                 <tr>
                                     <td bgcolor="#f3f7f7" style="padding:13px 15px; color:#5f6d78; background:#f3f7f7; border:1px solid #dbe6e7; border-radius:6px; font-size:13px; line-height:20px;">
@@ -55,11 +60,6 @@
                                         <!--<![endif]-->
                                     </td>
                                 </tr>
-                            </table>
-
-                            <p style="margin:0 0 8px; color:#173f55; font-size:13px; font-weight:700; line-height:20px;">{% blocktrans %}Message from {{ full_name }}{% endblocktrans %}</p>
-                            <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="width:100%; margin-bottom:24px;">
-                                <tr><td bgcolor="#f8fafb" style="padding:13px 15px; color:#50606c; background:#f8fafb; border-left:3px solid #0b7f78; border-radius:6px; font-size:14px; line-height:22px;">{{ message|linebreaksbr }}</td></tr>
                             </table>
 
                             {% if records %}

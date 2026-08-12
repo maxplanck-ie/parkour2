@@ -62,7 +62,6 @@ INSTALLED_APPS = [
     "library_preparation",
     "pooling",
     "flowcell",
-    "report",
     "invoicing",
     "usage",
     "stats",

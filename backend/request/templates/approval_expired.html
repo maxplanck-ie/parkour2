@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block css %}
+<style>
+    body {
+        background:
+            linear-gradient(rgba(5, 24, 28, 0.58), rgba(5, 24, 28, 0.58)),
+            url("{% static 'images/error-page-background.jpg' %}") no-repeat center center fixed;
+        background-size: cover;
+    }
+</style>
+{% endblock css %}
+
+{% block title %}Parkour LIMS | Approval Link No Longer Valid{% endblock title %}
+
+{% block content %}
+<main class="error-page">
+    <section class="error-card">
+        <img class="error-logo" src="{% static 'images/parkour-logo.svg' %}" width="42" height="42" alt="">
+        <h1>This approval link is no longer valid</h1>
+        <p>This request may have already been approved, or the link has expired.</p>
+        <p>If you believe this is a mistake, contact the Deep Sequencing Facility.</p>
+    </section>
+</main>
+{% endblock content %}
