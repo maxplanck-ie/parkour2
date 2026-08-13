@@ -69,7 +69,7 @@ class TestInternalPIsAPI(APITestCase):
         )
         self.assertEqual(
             sorted(response.data["pis"]),
-            ["cabezas-wallscheid", "external collaborator", "manke"],
+            ["cabezas-wallscheid", "externalcollaborator", "manke"],
         )
 
     def test_unknown_organization_name_returns_empty_list(self):
@@ -94,3 +94,37 @@ class TestInternalPIsAPI(APITestCase):
         self.client.login(email="nonstaff@test.io", password="foo-bar")
         response = self.client.get(reverse("internal-pis"), {"organizations": "MPI-IE"})
         self.assertEqual(response.status_code, 403)
+
+
+class TestInternalPIsAPITransliteration(APITestCase):
+    """
+    dissectBCL derives a PI's on-disk folder token by running the whole
+    project name through `umlautDestroyer` (accents/umlauts stripped, spaces
+    removed) before matching. This endpoint's keys must be transliterated the
+    same way, or an accented/spaced PI name never matches and gets routed as
+    external. See common.utils.transliterate_name.
+    """
+
+    def setUp(self):
+        self.staff_user = User.objects.create_user(
+            email="staff@test.io", password="foo-bar", is_staff=True
+        )
+        self.org = Organization.objects.create(name="MPI-IE")
+        self.client.login(email="staff@test.io", password="foo-bar")
+
+    def test_accented_name_is_transliterated(self):
+        PrincipalInvestigator.objects.create(name="Cissé", organization=self.org)
+        response = self.client.get(reverse("internal-pis"), {"organizations": "MPI-IE"})
+        self.assertIn("cisse", response.data["pis"])
+
+    def test_spaced_name_has_spaces_stripped(self):
+        PrincipalInvestigator.objects.create(name="AlHaj Abed", organization=self.org)
+        response = self.client.get(reverse("internal-pis"), {"organizations": "MPI-IE"})
+        self.assertIn("alhajabed", response.data["pis"])
+
+    def test_hyphenated_name_keeps_hyphen(self):
+        PrincipalInvestigator.objects.create(
+            name="Cabezas-Wallscheid", organization=self.org
+        )
+        response = self.client.get(reverse("internal-pis"), {"organizations": "MPI-IE"})
+        self.assertIn("cabezas-wallscheid", response.data["pis"])

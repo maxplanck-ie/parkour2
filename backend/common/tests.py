@@ -9,6 +9,7 @@ from django.urls import reverse
 from rest_framework.test import APITestCase
 
 from .models import AttachmentFileType, CostUnit, Organization, PrincipalInvestigator
+from .utils import transliterate_name
 
 User = get_user_model()
 
@@ -173,3 +174,33 @@ class PrincipalInvestigatorDeliverToTest(TestCase):
                 with self.assertRaises(ValidationError) as ctx:
                     self._pi(bad).full_clean()
                 self.assertIn("deliver_to", ctx.exception.error_dict)
+
+
+class TransliterateNameTest(TestCase):
+    """
+    Must stay byte-for-byte in sync with dissectBCL's `umlautDestroyer`, since
+    it's used to build cross-system-matchable tokens (see internal_pis).
+    """
+
+    def test_accents_and_umlauts_are_stripped(self):
+        cases = {
+            "Cissé": "Cisse",
+            "Förtsch": "Fortsch",
+            "Müller-Öztürk": "Muller-Ozturk",
+            "Weiß": "Weiss",
+        }
+        for original, expected in cases.items():
+            with self.subTest(original=original):
+                self.assertEqual(transliterate_name(original), expected)
+
+    def test_spaces_are_removed(self):
+        self.assertEqual(transliterate_name("AlHaj Abed"), "AlHajAbed")
+
+    def test_apostrophes_are_removed(self):
+        self.assertEqual(transliterate_name("Cisse'"), "Cisse")
+
+    def test_hyphens_are_kept(self):
+        self.assertEqual(transliterate_name("Cabezas-Wallscheid"), "Cabezas-Wallscheid")
+
+    def test_plain_ascii_is_unchanged(self):
+        self.assertEqual(transliterate_name("Manke"), "Manke")

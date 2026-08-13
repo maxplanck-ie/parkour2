@@ -95,6 +95,37 @@ def retrieve_group_items(request, queryset):
     return queryset.filter(user__pi=request.user.pi)
 
 
+def transliterate_name(name):
+    """
+    Transliterate a name the same way dissectBCL's `umlautDestroyer` does when
+    it turns a Parkour project/PI name into an on-disk folder name (Illumina
+    does this too: "Foertsch" -> "Fortsch"). Keep this in lockstep with
+    dissectBCL's `dissectBCL.misc.umlautDestroyer` - anywhere Parkour hands a
+    name to dissectBCL/BigRedButton for matching against a filesystem path
+    (e.g. `internal_pis`) must use this exact transformation, or an accented/
+    spaced name (e.g. PI "Cissé", "AlHaj Abed") will never match the
+    already-transliterated folder-derived token and silently fall through to
+    external/default handling.
+    """
+    replacements = {
+        "ü": "u",
+        "é": "e",
+        "è": "e",
+        "á": "a",
+        "à": "a",
+        "Ü": "U",
+        "ä": "a",
+        "Ä": "A",
+        "ö": "o",
+        "Ö": "O",
+        "ß": "ss",
+        "'": "",
+    }
+    for src, dst in replacements.items():
+        name = name.replace(src, dst)
+    return name.replace(" ", "")
+
+
 def cast_index_number(index_number):
     """convert "0004v3" or "0004V3" to "0004" and so on"""
     return (

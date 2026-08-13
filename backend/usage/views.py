@@ -1,5 +1,6 @@
 from collections import Counter
 
+from common.utils import transliterate_name
 from django.apps import apps
 from django.db.models import Prefetch
 from django.utils import timezone
@@ -255,8 +256,18 @@ class InternalPIsView(APIView):
             .values_list("name", "deliver_to")
             .distinct()
         )
-        # Map lowercased PI name -> IT delivery-directory override (or None when
-        # the PI name already matches its /data directory).
+        # Map the PI name, transliterated + lowercased the same way dissectBCL's
+        # umlautDestroyer turns it into an on-disk folder token (accents/umlauts
+        # stripped, spaces removed) -> IT delivery-directory override (or None
+        # when the PI name already matches its /data directory). Using the raw
+        # name here would never match an accented/spaced PI (e.g. "Cissé",
+        # "AlHaj Abed") against the already-transliterated folder name dissectBCL
+        # derives, silently routing them as external.
         return Response(
-            {"pis": {name.lower(): (deliver_to or None) for name, deliver_to in pis}}
+            {
+                "pis": {
+                    transliterate_name(name).lower(): (deliver_to or None)
+                    for name, deliver_to in pis
+                }
+            }
         )
