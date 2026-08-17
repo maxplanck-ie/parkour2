@@ -7,7 +7,7 @@ annotated-types==0.8.0
 anyio==4.14.2
     # via
     #   -c backend/requirements/3.13/dev.txt
-    #   httpx
+    #   httpx2
     #   openai
 appdirs==1.4.4
     # via
@@ -26,11 +26,11 @@ attrs==26.1.0
     #   -c backend/requirements/3.13/dev.txt
     #   jsonschema
     #   referencing
-boto3==1.43.67
+boto3==1.43.72
     # via
     #   -c backend/requirements/3.13/dev.txt
     #   -r backend/requirements/dev.in
-botocore==1.43.67
+botocore==1.43.72
     # via
     #   -c backend/requirements/3.13/dev.txt
     #   boto3
@@ -38,14 +38,12 @@ botocore==1.43.67
 certifi==2026.7.22
     # via
     #   -c backend/requirements/3.13/dev.txt
-    #   httpcore
-    #   httpx
     #   requests
 cffi==2.1.1 ; platform_python_implementation != 'PyPy'
     # via
     #   -c backend/requirements/3.13/dev.txt
     #   cryptography
-charset-normalizer==3.4.9
+charset-normalizer==3.5.1
     # via
     #   -c backend/requirements/3.13/dev.txt
     #   requests
@@ -125,7 +123,7 @@ django-cryptography-django5==2.2
     # via
     #   -c backend/requirements/3.13/dev.txt
     #   django-sql-explorer
-django-debug-toolbar==7.0.0
+django-debug-toolbar==7.1.1
     # via
     #   -c backend/requirements/3.13/dev.txt
     #   -r backend/requirements/dev.in
@@ -193,29 +191,33 @@ fpdf2==2.8.8
     # via
     #   -c backend/requirements/3.13/dev.txt
     #   -r backend/requirements/base.in
-greenlet==3.5.4
+greenlet==3.5.5
     # via playwright
 gunicorn==26.0.0
     # via
     #   -c backend/requirements/3.13/dev.txt
     #   -r backend/requirements/base.in
-h11==0.16.0
+h11==0.16.0 ; sys_platform != 'emscripten'
     # via
     #   -c backend/requirements/3.13/dev.txt
-    #   httpcore
-httpcore==1.0.9
+    #   httpcore2
+httpcore2==2.10.0 ; sys_platform != 'emscripten'
     # via
     #   -c backend/requirements/3.13/dev.txt
-    #   httpx
-httpx==0.28.1
+    #   httpx2
+httpx2==2.10.0
     # via
     #   -c backend/requirements/3.13/dev.txt
     #   openai
+httpx2-jsfetch==1.0 ; sys_platform == 'emscripten'
+    # via
+    #   -c backend/requirements/3.13/dev.txt
+    #   httpx2
 idna==3.18
     # via
     #   -c backend/requirements/3.13/dev.txt
     #   anyio
-    #   httpx
+    #   httpx2
     #   requests
 inflection==0.5.1
     # via
@@ -291,7 +293,7 @@ numpy==2.5.2
     #   contourpy
     #   matplotlib
     #   pandas
-openai==2.53.0
+openai==3.1.0
     # via
     #   -c backend/requirements/3.13/dev.txt
     #   -r backend/requirements/dev.in
@@ -385,9 +387,9 @@ pytest-base-url==2.1.0
     # via pytest-playwright
 pytest-cov==7.1.0
     # via -r backend/requirements/testing.in
-pytest-django==4.13.0
+pytest-django==4.14.0
     # via -r backend/requirements/testing.in
-pytest-playwright==0.8.0
+pytest-playwright==0.9.0
     # via -r backend/requirements/testing.in
 pytest-xdist==3.8.0
     # via -r backend/requirements/testing.in
@@ -453,11 +455,11 @@ sql-metadata==3.0.1
     # via
     #   -c backend/requirements/3.13/dev.txt
     #   -r backend/requirements/dev.in
-sqlglot==30.15.0
+sqlglot==30.17.0
     # via
     #   -c backend/requirements/3.13/dev.txt
     #   sql-metadata
-sqlparse==0.5.5
+sqlparse==0.6.0
     # via
     #   -c backend/requirements/3.13/dev.txt
     #   django
@@ -494,6 +496,11 @@ traitlets==5.16.1
     #   -c backend/requirements/3.13/dev.txt
     #   ipython
     #   matplotlib-inline
+truststore==0.10.4 ; sys_platform != 'emscripten'
+    # via
+    #   -c backend/requirements/3.13/dev.txt
+    #   httpcore2
+    #   httpx2
 typing-extensions==4.16.0
     # via
     #   -c backend/requirements/3.13/dev.txt
@@ -503,7 +510,7 @@ typing-extensions==4.16.0
     #   pyee
     #   python-docx
     #   typing-inspection
-typing-inspection==0.4.2
+typing-inspection==0.4.4
     # via
     #   -c backend/requirements/3.13/dev.txt
     #   pydantic
