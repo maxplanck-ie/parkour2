@@ -2296,6 +2296,7 @@ export default {
         this.pendingSavedMode = "edit";
         this.applyRequestEditorUpdate(payload);
         const requestId = payload.request_id;
+        this.pendingSavedRequestId = requestId;
         const existing = this.requestMetaById?.[requestId] || {};
         const nextMeta = {
           ...existing,
@@ -2388,8 +2389,8 @@ export default {
     finishRequestEditorSync() {
       const message =
         this.pendingSavedMode === "edit"
-          ? "Request updated successfully."
-          : "Request created successfully.";
+          ? `Request ${this.pendingSavedRequestId} updated successfully.`
+          : `Request ${this.pendingSavedRequestId} created successfully.`;
       showNotification(message, "success");
       this.stopRequestEditorSync();
       this.closeRequestEditorModal();
