@@ -84,10 +84,6 @@ Ext.define("MainHub.view.main.MainController", {
         "  color: #4d5b63;",
         "  font-weight: 600;",
         "  margin-left: 6px;",
-        "  min-width: 0;",
-        "  overflow: hidden;",
-        "  text-overflow: ellipsis;",
-        "  white-space: nowrap;",
         "}",
         ".header-nav-toolbar .header-nav-button .x-btn-icon-el {",
         "  color: #4d5b63;",
@@ -150,6 +146,14 @@ Ext.define("MainHub.view.main.MainController", {
         "}",
         ".header-user-actions .x-btn {",
         "  margin-left: 6px;",
+        "}",
+        "@media (max-width: 1919px) {",
+        "  .header-nav-toolbar .header-nav-button .x-btn-inner {",
+        "    display: none;",
+        "  }",
+        "  .header-nav-toolbar .header-nav-button {",
+        "    padding: 0 6px;",
+        "  }",
         "}"
       ].join("\n"),
       "top-nav-styles"
@@ -209,19 +213,15 @@ Ext.define("MainHub.view.main.MainController", {
 
       var menu = me.buildMenuForNode(node);
       var route = node.get("routeId") || node.get("viewType");
-      var text = node.get("text");
-      var preferredWidth = 44 + text.length * 6;
 
       toolbar.add({
         xtype: "button",
         ui: "header",
         cls: "header-nav-button",
         iconCls: node.get("iconCls"),
-        text: text,
+        text: node.get("text"),
         iconAlign: "left",
-        tooltip: text,
-        flex: preferredWidth,
-        minWidth: 52,
+        tooltip: node.get("text"),
         navNodeId: node.getId(),
         navRouteId: route,
         menu: menu,
