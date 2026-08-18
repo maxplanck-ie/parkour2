@@ -20,6 +20,7 @@ Unreleased
 - Add/Edit Request: "Read Length" column relabeled "Minimum Read Length" (libraries and samples tables), tooltip clarified to point users at the description field for mandatory read length/device requirements, and the description placeholder now explains the facility may adjust sequencing parameters unless the project needs a fixed configuration.
 - Add/Edit Request Index I7/I5 dropdowns: fixed wrong index pair shown for index kits where several `IndexType` positions share an identical sequence (e.g. single-fixed-i5 ATAC adapter lists) — label/editor lookup resolved by sequence, so duplicate sequences always displayed the first matching position regardless of the admin-defined `IndexPair`. Now disambiguated using the row's already-selected partner index.
 - Admin: fixed HTTP 400 "Max number of fields exceeded" when assigning a large `IndexI7`/`IndexI5` set to an `IndexType` or bulk-actioning a large `IndexI5`/`IndexI7` changelist — raised `DATA_UPLOAD_MAX_NUMBER_FIELDS`, switched `IndexType`'s index widgets to `autocomplete_fields`, and any remaining overflow now shows a friendly error instead of a blank 400.
+- Add/Edit Request: save confirmation now includes the request ID (e.g. "Request 42 updated successfully.").
 - ...
 
 

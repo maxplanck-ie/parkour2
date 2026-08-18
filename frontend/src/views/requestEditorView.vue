@@ -4840,7 +4840,10 @@ export default {
         );
         if (response?.data?.success) {
           if (this.notifyOnSave) {
-            showNotification("Request updated successfully.", "success");
+            showNotification(
+              `Request ${this.requestId} updated successfully.`,
+              "success"
+            );
           }
           this.emitSaved({
             success: true,
@@ -5019,7 +5022,10 @@ export default {
         );
         if (response?.data?.success) {
           if (this.notifyOnSave) {
-            showNotification("Request created successfully.", "success");
+            showNotification(
+              `Request ${response.data.pk} created successfully.`,
+              "success"
+            );
           }
           this.emitSaved(response.data);
           if (this.closeOnSave) {
