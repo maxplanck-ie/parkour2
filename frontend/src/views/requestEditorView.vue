@@ -4913,7 +4913,7 @@ export default {
           this.editSnapshot.related_request_ids = [...relatedRequestIds];
           if (this.notifyOnSave) {
             showNotification(
-              "Related projects updated successfully.",
+              `Request ${this.requestId}: related projects updated successfully.`,
               "success"
             );
           }
