@@ -605,10 +605,10 @@
                     :href="relacsDownloadUrl"
                     target="_blank"
                     rel="noopener"
-                    title="Download RELACS Pellets Abs form"
+                    title="Download the RELACS submission form"
                   >
                     <font-awesome-icon icon="fa-solid fa-download" />
-                    <span>RELACS Pellets Abs</span>
+                    <span>RELACS form</span>
                   </a>
                 </div>
               </div>
