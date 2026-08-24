@@ -3,6 +3,7 @@
 Unreleased
 ==========
 
+- CI: after the weekly dependency-update workflow bumps GitHub Action major versions, `zizmor --fix` re-pins those `uses:` refs to commit SHAs (with the resolved tag as a comment), so the update PR never reintroduces floating version tags.
 - `GET /api/internal_pis/` now transliterates PI names the same way dissectBCL's `umlautDestroyer` turns them into on-disk folder tokens (accents/umlauts stripped, spaces removed) before matching. Previously an accented or spaced PI name (e.g. "Cissé", "AlHaj Abed") would never match the already-transliterated folder name dissectBCL derives, silently routing them as external instead of using their `deliver_to` override.
 - Data migration: transliterate German umlauts (ä/ö/ü/ß) in existing `User.first_name`/`last_name` values to their ASCII digraph form (e.g. ö -> oe), so they can no longer mismatch a filesystem-derived token once umlaut-aware matching is in place elsewhere.
 - Fix bulk create/update endpoints (libraries, samples, flowcell lanes, incoming libraries, library preparation, pooling) silently accepting invalid records or rejecting valid ones after the DRF 3.18 upgrade, which changed `ListSerializer.errors` from a positional list to a sparse dict.
