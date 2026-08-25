@@ -336,6 +336,7 @@ def user_details(request):
     user = request.user
     data = {
         "DEBUG": settings.DEBUG,
+        "INSTANCE_VERSION": settings.INSTANCE_VERSION,
         "USER": json.dumps(
             {
                 "id": user.pk,

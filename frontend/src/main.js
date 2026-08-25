@@ -4,7 +4,7 @@ import "ag-grid-community/styles/ag-theme-alpine.css";
 import "vue-toastification/dist/index.css";
 
 import { createApp } from "vue";
-import vueApp from "./vueApp.vue";
+import App from "./App.vue";
 import router from "./router/appRoutes.js";
 import toast from "vue-toastification";
 import { library } from "@fortawesome/fontawesome-svg-core";
@@ -43,7 +43,17 @@ import {
   faLightbulb,
   faFlask,
   faFloppyDisk,
-  faMoneyBill
+  faMoneyBill,
+  faArrowDown,
+  faCogs,
+  faTable,
+  faArrowDownWideShort,
+  faTurnDown,
+  faEuroSign,
+  faChartBar,
+  faChartLine,
+  faGear,
+  faRightFromBracket
 } from "@fortawesome/free-solid-svg-icons";
 import {
   faCalendarPlus,
@@ -55,7 +65,7 @@ import { initParentMessageBridge } from "./utilities/iframeMessagingUtils";
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
-const app = createApp(vueApp);
+const app = createApp(App);
 
 library.add(
   faChalkboardUser,
@@ -93,7 +103,17 @@ library.add(
   faLightbulb,
   faFlask,
   faFloppyDisk,
-  faMoneyBill
+  faMoneyBill,
+  faArrowDown,
+  faCogs,
+  faTable,
+  faArrowDownWideShort,
+  faTurnDown,
+  faEuroSign,
+  faChartBar,
+  faChartLine,
+  faGear,
+  faRightFromBracket
 );
 
 app.use(router);
