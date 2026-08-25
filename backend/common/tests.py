@@ -150,6 +150,25 @@ class NavigationTreeTest(TestCase):
         self.assertEqual(tabs, ["Libraries & Samples"])
 
 
+class UserDetailsViewTest(TestCase):
+    def setUp(self):
+        User.objects.create_user(
+            email="admin@bar.io",
+            password="foo-foo",
+            is_staff=True,
+        )
+
+    def test_includes_instance_version(self):
+        from django.conf import settings
+
+        self.client.login(email="admin@bar.io", password="foo-foo")
+        response = self.client.get(reverse("user_details"))
+
+        self.assertEqual(response.status_code, 200)
+        data = json.loads(str(response.content, "utf-8"))
+        self.assertEqual(data["INSTANCE_VERSION"], settings.INSTANCE_VERSION)
+
+
 class PrincipalInvestigatorDeliverToTest(TestCase):
     def setUp(self):
         self.org = Organization.objects.create(name="MPI-IE")

@@ -43,7 +43,17 @@ import {
   faLightbulb,
   faFlask,
   faFloppyDisk,
-  faMoneyBill
+  faMoneyBill,
+  faArrowDown,
+  faCogs,
+  faTable,
+  faArrowDownWideShort,
+  faTurnDown,
+  faEuroSign,
+  faChartBar,
+  faChartLine,
+  faGear,
+  faRightFromBracket
 } from "@fortawesome/free-solid-svg-icons";
 import {
   faCalendarPlus,
@@ -93,7 +103,17 @@ library.add(
   faLightbulb,
   faFlask,
   faFloppyDisk,
-  faMoneyBill
+  faMoneyBill,
+  faArrowDown,
+  faCogs,
+  faTable,
+  faArrowDownWideShort,
+  faTurnDown,
+  faEuroSign,
+  faChartBar,
+  faChartLine,
+  faGear,
+  faRightFromBracket
 );
 
 app.use(router);
