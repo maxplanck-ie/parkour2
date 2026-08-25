@@ -3,6 +3,7 @@
 Unreleased
 ==========
 
+- Add a Vue-native app shell (header, top nav, user menu, logout) reachable directly at `/vue/` (phase 2 of removing the ExtJS shell) — inactive when still loaded inside the ExtJS shell's iframes, so existing pages are unaffected.
 - Usage page: replace the legacy ExtJS pie charts (built on `Ext.chart.*`) with a new Vue page using ECharts bar charts (phase 1 of removing the ExtJS shell) — same four breakdowns (Libraries & Samples, Organizations, Principal Investigators, Analysis Types) and date-range filter, same underlying API.
 - Move the shared logo image (used in PDFs, approval/message/password emails) from `static/main-hub/resources/images/` to `static/images/`, ahead of removing the legacy ExtJS main-hub shell (phase 0 of that migration) — those references would otherwise have silently broken once main-hub is deleted.
 - Fix Load Flowcells' "Apply to All" context menu action (loading concentration, PhiX %) writing the value into the grid without actually saving it to the database, because the underlying Tabulator row update doesn't trigger the per-cell save hook.
