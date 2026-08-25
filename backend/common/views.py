@@ -136,8 +136,8 @@ def get_navigation_tree(request):
             },
             {
                 "text": "Usage",
-                "iconCls": "x-fa fa-pie-chart",
-                "viewType": "usage",
+                "iconCls": "x-fa fa-bar-chart",
+                "viewType": "usage-vue",
                 "leaf": True,
             },
             {

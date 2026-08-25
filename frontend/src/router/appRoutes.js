@@ -11,6 +11,7 @@ import notFoundView from "../views/notFoundView.vue";
 import runStatisticsView from "../views/runStatisticsView.vue";
 import invoicingView from "../views/invoicingView.vue";
 import sequencesStatisticsView from "../views/sequencesStatisticsView.vue";
+import usageView from "../views/usageView.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -68,6 +69,11 @@ const router = createRouter({
           path: "sequences_statistics",
           name: "Sequenced Samples Statistics",
           component: sequencesStatisticsView
+        },
+        {
+          path: "usage",
+          name: "Usage",
+          component: usageView
         },
         {
           path: "not_found",
