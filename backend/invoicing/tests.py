@@ -3,8 +3,12 @@ import json
 from common.tests import BaseAPITestCase, BaseTestCase
 from common.utils import get_random_name
 from django.urls import reverse
-from flowcell.tests import create_sequencer
+from flowcell.models import Lane
+from flowcell.tests import create_flowcell, create_sequencer
+from index_generator.tests import create_pool
+from library.tests import create_library
 from library_sample_shared.tests import create_library_protocol, create_read_length
+from request.tests import create_request
 from rest_framework import status
 
 from .models import (
@@ -195,9 +199,58 @@ class TestInvoicingViewSet(BaseAPITestCase):
     """Tests for the main Invoicing ViewSet."""
 
     def setUp(self):
-        self.create_user()
+        self.user = self.create_user()
         self.login()
 
     def test_list(self):
         response = self.client.get(reverse("invoicing-list"))
         self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    def _create_sequenced_request(self, statuses):
+        """Build a sequenced, invoiceable request whose pool holds one
+        library per status in `statuses`. Returns (request, libraries)."""
+        sequencer = create_sequencer(get_random_name())
+        flowcell = create_flowcell(get_random_name(), sequencer)
+
+        pool = create_pool(self.user)
+        libraries = [
+            create_library(get_random_name(), status=status_) for status_ in statuses
+        ]
+        pool.libraries.add(*[library.pk for library in libraries])
+
+        lane = Lane(name=get_random_name(len=6), pool=pool)
+        lane.save()
+        flowcell.lanes.add(lane)
+
+        request = create_request(self.user)
+        request.libraries.add(*[library.pk for library in libraries])
+        request.sequenced = True
+        request.archived = False
+        request.save()
+
+        flowcell.requests.add(request)
+
+        return request, libraries
+
+    def test_failed_library_excluded_from_invoicing(self):
+        """A pool with one passed and one failed library should only bill
+        for the passed one, mirroring how failed samples are excluded."""
+        request, _ = self._create_sequenced_request(statuses=[4, -1])
+
+        response = self.client.get(reverse("invoicing-list"))
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        data = [x for x in response.json() if x["request"] == request.name]
+        self.assertEqual(len(data), 1)
+        self.assertEqual(data[0]["num_libraries_samples_show"], "1 libraries")
+
+    def test_all_failed_libraries_excluded_from_invoicing(self):
+        """A pool whose libraries all failed QC should not be billed."""
+        request, _ = self._create_sequenced_request(statuses=[-1, -1])
+
+        response = self.client.get(reverse("invoicing-list"))
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        data = [x for x in response.json() if x["request"] == request.name]
+        self.assertEqual(len(data), 1)
+        self.assertEqual(data[0]["num_libraries_samples_show"], "0 samples")

@@ -4,6 +4,7 @@ Unreleased
 ==========
 
 - Fix Load Flowcells' "Apply to All" context menu action (loading concentration, PhiX %) writing the value into the grid without actually saving it to the database, because the underlying Tabulator row update doesn't trigger the per-cell save hook.
+- Fix Invoicing counting and billing libraries that failed QC in a pool (status `-1`), unlike samples which were already excluded. A pool billed the same regardless of how many of its libraries failed.
 - CI: after the weekly dependency-update workflow bumps GitHub Action major versions, `zizmor --fix` re-pins those `uses:` refs to commit SHAs (with the resolved tag as a comment), so the update PR never reintroduces floating version tags.
 - `GET /api/internal_pis/` now transliterates PI names the same way dissectBCL's `umlautDestroyer` turns them into on-disk folder tokens (accents/umlauts stripped, spaces removed) before matching. Previously an accented or spaced PI name (e.g. "Cissé", "AlHaj Abed") would never match the already-transliterated folder name dissectBCL derives, silently routing them as external instead of using their `deliver_to` override.
 - Data migration: transliterate German umlauts (ä/ö/ü/ß) in existing `User.first_name`/`last_name` values to their ASCII digraph form (e.g. ö -> oe), so they can no longer mismatch a filesystem-derived token once umlaut-aware matching is in place elsewhere.

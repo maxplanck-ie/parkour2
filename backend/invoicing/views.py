@@ -69,7 +69,7 @@ class InvoicingViewSet(viewsets.ReadOnlyModelViewSet):
         )
 
         libraries_qs = (
-            Library.objects.filter(~Q(pool=None))
+            Library.objects.filter(~Q(pool=None) & ~Q(status=-1))
             .select_related(
                 "read_length",
                 "library_protocol",
