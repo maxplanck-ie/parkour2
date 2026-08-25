@@ -143,14 +143,3 @@ Prevent recurring regressions. No deviate without explicit ask.
   (`table.getRows("active")` / `table.getData("active")`) instead of
   re-filtering `rowData` by hand — a hand-rolled filter drifts from Tabulator's
   actual active filters (search + per-column) and silently exports the wrong rows.
-
-### Views embedded in the ExtJS main-hub shell (iframe)
-
-- Some Vue views are loaded inside an ExtJS iframe wrapper in production. For
-  formatting that must match the surrounding ExtJS shell (e.g. currency), prefer
-  the shell's own utility via `window.parent.Ext.util.Format.*`, guarded in a
-  try/catch, with a local fallback for standalone/cross-origin use.
-  Reference: `formatInvoicingCurrency` in `frontend/src/constants/invoicingConsts.js`.
-- Synthetic DOM events dispatched for the parent frame to observe must not set
-  `view: window` in their init — the iframe's `window` can be a foreign object
-  to the parent and throw under cross-origin conditions.

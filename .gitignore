@@ -11,7 +11,6 @@ rsnapshot/
 .venv/
 env/
 env_*/
-sencha-error-*.log
 graveyard/
 *.patch
 models*.pdf

@@ -6,7 +6,6 @@ misc/ollama/
 *.swp
 env/
 env_*/
-sencha-error-*.log
 graveyard/
 *.patch
 models*.pdf
