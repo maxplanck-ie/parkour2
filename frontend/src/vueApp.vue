@@ -1,8 +1,6 @@
 <template>
-  <div id="app">
-    <AppShell v-if="!isEmbedded" />
-    <router-view v-else></router-view>
-  </div>
+  <AppShell v-if="!isEmbedded" />
+  <router-view v-else></router-view>
 </template>
 <script>
 import AppShell from "./components/AppShell.vue";
