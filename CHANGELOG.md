@@ -3,6 +3,8 @@
 Unreleased
 ==========
 
+- Fix Usage page's "Libraries & Samples" chart showing an empty grid instead of "No Data" for a date range with zero records — its API endpoint always returns a `Libraries`/`Samples` row even when both are zero, so the empty-state check needs to sum the values, not just check the array isn't empty.
+
 - Usage page: replace the legacy ExtJS pie charts (built on `Ext.chart.*`) with a new Vue page using ECharts bar charts (phase 1 of removing the ExtJS shell) — same four breakdowns (Libraries & Samples, Organizations, Principal Investigators, Analysis Types) and date-range filter, same underlying API.
 - Move the shared logo image (used in PDFs, approval/message/password emails) from `static/main-hub/resources/images/` to `static/images/`, ahead of removing the legacy ExtJS main-hub shell (phase 0 of that migration) — those references would otherwise have silently broken once main-hub is deleted.
 - Fix Load Flowcells' "Apply to All" context menu action (loading concentration, PhiX %) writing the value into the grid without actually saving it to the database, because the underlying Tabulator row update doesn't trigger the per-cell save hook.
