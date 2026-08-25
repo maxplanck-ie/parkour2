@@ -27,10 +27,10 @@ SECRET_KEY = os.environ.get("SECRET_KEY", "94e9206c6a0ac99409aa")
 ALLOWED_HOSTS = ["*"]
 
 LOGIN_URL = "/login/"
-LOGIN_REDIRECT_URL = "/"
+LOGIN_REDIRECT_URL = "/vue/"
 
 # Fix FileUpload
-X_FRAME_OPTIONS = "SAMEORIGIN"
+X_FRAME_OPTIONS = "DENY"
 
 # CSRF cookie
 CSRF_TRUSTED_ORIGINS = os.environ.get("CSRF_TRUSTED_ORIGINS")

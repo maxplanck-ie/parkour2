@@ -42,17 +42,6 @@ export function formatInvoicingCurrency(value) {
   const number = Number(value);
   if (!Number.isFinite(number)) return String(value);
 
-  // In production the Vue page is hosted by MainHub. Prefer its configured
-  // money formatter so both the ExtJS shell and Vue use the same convention.
-  try {
-    const systemFormatter = window.parent?.Ext?.util?.Format?.deMoney;
-    if (typeof systemFormatter === "function") {
-      return systemFormatter(number);
-    }
-  } catch {
-    // A standalone or cross-origin host cannot expose the ExtJS formatter.
-  }
-
   return deEuroFormatter.format(number);
 }
 

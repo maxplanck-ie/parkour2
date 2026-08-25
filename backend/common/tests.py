@@ -91,10 +91,15 @@ class IndexViewTest(TestCase):
     def setUp(self):
         User.objects.create_user(email="foo@bar.io", password="foo-foo")
 
-    def test_get(self):
+    def test_get_redirects_to_vue_app(self):
         self.client.login(email="foo@bar.io", password="foo-foo")
-        response = self.client.get(reverse("index"), follow=True)
-        self.assertEqual(response.status_code, 200)
+        response = self.client.get(reverse("index"))
+        self.assertRedirects(response, "/vue/", fetch_redirect_response=False)
+
+    def test_get_requires_login(self):
+        response = self.client.get(reverse("index"))
+        self.assertEqual(response.status_code, 302)
+        self.assertTrue(response.url.startswith("/login/"))
 
 
 class AttachmentFileTypeViewTest(BaseAPITestCase):
