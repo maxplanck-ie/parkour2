@@ -1,5 +1,10 @@
-ARG PyVersion=3.12  # to be repeated after FROM, docker syntax is at fault.
-FROM python:${PyVersion}-bookworm AS pk2_base
+## Node runtime + ro-crate-html-js CLI, built once here so the Python image below
+## can just copy the binaries in (no apt-installed Node in the Python image).
+FROM node:24-bullseye AS ro_crate_html_tool
+WORKDIR /opt/ro-crate-html-js
+RUN npm install ro-crate-html-js
+
+FROM python:3.12-bookworm AS pk2_base
 ARG PyVersion=3.12
 
 ENV \
@@ -29,6 +34,11 @@ RUN localedef -i en_US -f UTF-8 en_US.UTF-8
 COPY --from=ghcr.io/astral-sh/uv:0.12.5 /uv /bin/uv
 
 WORKDIR /usr/src/app
+
+## Node binary + ro-crate-html-js CLI, copied from the ro_crate_html_tool stage above.
+COPY --from=ro_crate_html_tool /usr/local/bin/node /usr/local/bin/node
+COPY --from=ro_crate_html_tool /opt/ro-crate-html-js/node_modules /opt/ro-crate-html-js/node_modules
+ENV PATH="/opt/ro-crate-html-js/node_modules/.bin:${PATH}"
 
 ## Pre-heat the cache
 RUN --mount=type=cache,target=/root/.cache/uv \

@@ -23,6 +23,7 @@ from fpdf.enums import XPos, YPos
 from rest_framework import viewsets
 from rest_framework.response import Response
 
+from .ro_crate_html import RO_CRATE_HTML_PREVIEW_NAME, generate_html_preview
 from .utils import get_accessible_requests
 
 Library = apps.get_model("library", "Library")
@@ -2963,6 +2964,7 @@ def _render_pdf(result, skipped_records):
 
 def _zip_response(result, skipped_records):
     pdf_bytes = _render_pdf(result, skipped_records)
+    html_bytes = generate_html_preview(result.ro_crate)
     buffer = BytesIO()
     with ZipFile(buffer, "w", compression=ZIP_DEFLATED) as zip_file:
         zip_file.writestr(
@@ -2970,6 +2972,8 @@ def _zip_response(result, skipped_records):
             json.dumps(result.ro_crate, indent=2, ensure_ascii=False),
         )
         zip_file.writestr(RO_CRATE_EMBEDDED_PDF_NAME, pdf_bytes)
+        if html_bytes is not None:
+            zip_file.writestr(RO_CRATE_HTML_PREVIEW_NAME, html_bytes)
         for archive_path, source_path in result.file_entries:
             try:
                 with open(source_path, "rb") as handle:

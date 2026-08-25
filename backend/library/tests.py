@@ -1,4 +1,6 @@
 import json
+import os
+import subprocess
 from io import BytesIO
 from zipfile import ZipFile
 from unittest.mock import Mock, patch
@@ -20,6 +22,7 @@ from library.ro_crate import (
     _ro_crate_archive_name,
     _ro_crate_pdf_name,
 )
+from library.ro_crate_html import RO_CRATE_HTML_PREVIEW_NAME, generate_html_preview
 from library.views import (
     SEQUENCING_STATUSES,
     apply_stage_data_visibility,
@@ -621,6 +624,45 @@ class TestLibraries(BaseTestCase):
         self.assertEqual(response.status_code, 404)
 
 
+class TestGenerateHtmlPreview(TestCase):
+    """Tests for the rochtml CLI wrapper used by the RO-Crate export."""
+
+    def setUp(self):
+        self.ro_crate_json = {"@context": [], "@graph": []}
+
+    @patch("library.ro_crate_html.subprocess.run")
+    def test_returns_html_bytes_produced_by_rochtml(self, mock_run):
+        def write_preview_file(args, **kwargs):
+            metadata_path = args[1]
+            preview_path = os.path.join(
+                os.path.dirname(metadata_path), RO_CRATE_HTML_PREVIEW_NAME
+            )
+            with open(preview_path, "w", encoding="utf-8") as handle:
+                handle.write("<html>preview</html>")
+            return Mock(returncode=0)
+
+        mock_run.side_effect = write_preview_file
+
+        result = generate_html_preview(self.ro_crate_json)
+        self.assertEqual(result, b"<html>preview</html>")
+
+    @patch("library.ro_crate_html.subprocess.run")
+    def test_returns_none_when_rochtml_binary_is_missing(self, mock_run):
+        mock_run.side_effect = FileNotFoundError("rochtml not found")
+
+        result = generate_html_preview(self.ro_crate_json)
+        self.assertIsNone(result)
+
+    @patch("library.ro_crate_html.subprocess.run")
+    def test_returns_none_when_rochtml_exits_non_zero(self, mock_run):
+        mock_run.side_effect = subprocess.CalledProcessError(
+            returncode=1, cmd=["rochtml"]
+        )
+
+        result = generate_html_preview(self.ro_crate_json)
+        self.assertIsNone(result)
+
+
 class TestGenerateROCrateAPI(BaseAPITestCase):
     """Tests for the RO-Crate export endpoint."""
 
@@ -975,11 +1017,55 @@ class TestGenerateROCrateAPI(BaseAPITestCase):
         )
         self.assertIn("#ro-crate-export-action", graph_ids)
 
+    @patch("library.ro_crate.generate_html_preview")
+    @patch("library.ro_crate.CompleteSampleData.objects")
+    @patch("library.ro_crate.CompleteLibraryData.objects")
+    def test_zip_export_includes_html_preview_when_generation_succeeds(
+        self, mock_library_objects, mock_sample_objects, mock_generate_html_preview
+    ):
+        """The zip should include the rochtml-rendered HTML preview."""
+        self._set_ro_crate_complete_data_rows(mock_library_objects, mock_sample_objects)
+        mock_generate_html_preview.return_value = b"<html>preview</html>"
+
+        response = self.client.get(
+            reverse("generate-ro-crate-list"), {"requests": self.request.name}
+        )
+        self.assertEqual(response.status_code, 200)
+        _, archive_names = self._extract_zip_payload(response)
+        self.assertIn("ro-crate-preview.html", archive_names)
+        with ZipFile(BytesIO(response.content), "r") as zip_file:
+            self.assertEqual(
+                zip_file.read("ro-crate-preview.html"), b"<html>preview</html>"
+            )
+        mock_generate_html_preview.assert_called_once()
+
+    @patch("library.ro_crate.generate_html_preview")
+    @patch("library.ro_crate.CompleteSampleData.objects")
+    @patch("library.ro_crate.CompleteLibraryData.objects")
+    def test_zip_export_omits_html_preview_when_generation_fails(
+        self, mock_library_objects, mock_sample_objects, mock_generate_html_preview
+    ):
+        """A failed rochtml run should not break the rest of the export."""
+        self._set_ro_crate_complete_data_rows(mock_library_objects, mock_sample_objects)
+        mock_generate_html_preview.return_value = None
+
+        response = self.client.get(
+            reverse("generate-ro-crate-list"), {"requests": self.request.name}
+        )
+        self.assertEqual(response.status_code, 200)
+        payload, archive_names = self._extract_zip_payload(response)
+        self.assertNotIn("ro-crate-preview.html", archive_names)
+        self.assertIn("ro-crate-metadata.json", archive_names)
+        self.assertIn("ro-crate-preview.pdf", archive_names)
+        self.assertIn("@graph", payload)
+
+    @patch("library.ro_crate.generate_html_preview")
     @patch("library.ro_crate.CompleteSampleData.objects")
     @patch("library.ro_crate.CompleteLibraryData.objects")
     def test_request_path_metadata_preserves_optional_md5_without_packaging_paths(
-        self, mock_library_objects, mock_sample_objects
+        self, mock_library_objects, mock_sample_objects, mock_generate_html_preview
     ):
+        mock_generate_html_preview.return_value = None
         self.request.filepaths = {
             "data": {
                 "path": "/data/project/huge.fastq.gz",
