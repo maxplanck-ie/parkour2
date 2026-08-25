@@ -40,6 +40,22 @@ export const USAGE_CHARTS = [
   }
 ];
 
+// The API always returns one row per known category (e.g. "records"
+// always returns both "Libraries" and "Samples"), even when every value in
+// range is zero -- so an empty range still yields a non-empty array. Sum
+// the actual values instead of checking array length to decide whether
+// there's anything to plot.
+export function usageChartTotal(chartDef, data) {
+  return data.reduce((sum, row) => {
+    return (
+      sum +
+      (chartDef.stacked
+        ? (row.libraries || 0) + (row.samples || 0)
+        : row.data || 0)
+    );
+  }, 0);
+}
+
 export function buildUsageChartOption(chartDef, data) {
   const names = data.map((row) => row.name);
 
