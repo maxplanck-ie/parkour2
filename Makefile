@@ -73,10 +73,6 @@ collect-static:
 check-templates:
 	@docker compose exec parkour2-django python manage.py validate_templates
 
-update-extjs:  ## See: https://github.com/maxplanck-ie/parkour2/wiki/Sencha-CMD
-	@cd ./backend/static/main-hub \
-		&& OPENSSL_CONF=/dev/null sencha app build development
-
 apply-migrations:
 	@docker compose exec parkour2-django python manage.py migrate --traceback
 
