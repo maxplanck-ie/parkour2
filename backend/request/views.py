@@ -829,8 +829,7 @@ class RequestViewSet(viewsets.ModelViewSet):
             url_scheme = request.is_secure() and "https" or "http"
             url_domain = get_current_site(request).domain
             logo_url = (
-                f"{url_scheme}://{url_domain}{settings.STATIC_URL}"
-                "main-hub/resources/images/logo.png"
+                f"{url_scheme}://{url_domain}{settings.STATIC_URL}images/logo.png"
             )
             url_query = urlencode({"token": instance.token})
             send_mail(
@@ -890,7 +889,7 @@ class RequestViewSet(viewsets.ModelViewSet):
                         "records": records,
                         "instance_title": settings.INSTANCE_TITLE,
                         "logo_url": request.build_absolute_uri(
-                            f"{settings.STATIC_URL}main-hub/resources/images/logo.png"
+                            f"{settings.STATIC_URL}images/logo.png"
                         ),
                     },
                 ),
@@ -1040,7 +1039,7 @@ class ApproveViewSet(viewsets.ModelViewSet):
             "pi_name": instance.user.pi.name,
             "instance_title": settings.INSTANCE_TITLE,
             "logo_url": request.build_absolute_uri(
-                f"{settings.STATIC_URL}main-hub/resources/images/logo.png"
+                f"{settings.STATIC_URL}images/logo.png"
             ),
         }
         if instance.user.email == instance.user.pi.email:

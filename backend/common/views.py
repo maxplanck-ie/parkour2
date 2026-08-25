@@ -368,7 +368,7 @@ class PasswordSetConfirmView(auth_views.PasswordResetConfirmView):
                         "user": user,
                         "domain": get_current_site(self.request).domain,
                         "logo_url": self.request.build_absolute_uri(
-                            f"{settings.STATIC_URL}main-hub/resources/images/logo.png"
+                            f"{settings.STATIC_URL}images/logo.png"
                         ),
                     },
                 ),
