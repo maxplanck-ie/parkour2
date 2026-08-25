@@ -46,7 +46,11 @@ export function loadFlowcellsGroupHeader(value, rows = []) {
 }
 
 export function loadFlowcellsColumnDefs(getTabulatorInstance, callbacks = {}) {
-  const { onToggleSelected = () => {}, onPoolClick = () => {} } = callbacks;
+  const {
+    onToggleSelected = () => {},
+    onPoolClick = () => {},
+    onApplyToAll = null
+  } = callbacks;
 
   const columns = [
     {
@@ -216,7 +220,8 @@ export function loadFlowcellsColumnDefs(getTabulatorInstance, callbacks = {}) {
     allowCopy: true,
     allowEdit: true,
     allowApplyToAll: true,
-    skipFields: new Set(["selected", "pool_name"])
+    skipFields: new Set(["selected", "pool_name"]),
+    onApplyToAll
   });
 }
 
