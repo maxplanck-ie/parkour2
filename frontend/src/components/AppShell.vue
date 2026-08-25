@@ -103,7 +103,8 @@ export default {
       isStaff: false,
       instanceVersion: "",
       openDropdown: null,
-      urlStringStart
+      urlStringStart,
+      iconLogo
     };
   },
   async mounted() {
