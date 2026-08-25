@@ -12,7 +12,7 @@ from django.contrib.sites.shortcuts import get_current_site
 from django.core.mail import send_mail
 from django.db.models import Q
 from django.http import Http404, HttpResponse, JsonResponse, FileResponse
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import get_object_or_404, redirect, render
 from django.template.loader import render_to_string
 from django.utils import timezone
 from request.models import Request
@@ -65,22 +65,7 @@ def get_excel_content_type(file_name):
 
 @login_required
 def index(request):
-    user = request.user
-    return render(
-        request,
-        "index.html",
-        {
-            "DEBUG": settings.DEBUG,
-            "USER": json.dumps(
-                {
-                    "id": user.pk,
-                    "name": user.full_name,
-                    "is_staff": user.is_staff,
-                    "paperless_approval": user.paperless_approval,
-                }
-            ),
-        },
-    )
+    return redirect("/vue/")
 
 
 @login_required

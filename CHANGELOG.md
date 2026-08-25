@@ -3,6 +3,7 @@
 Unreleased
 ==========
 
+- Cutover (phase 3 of removing the ExtJS shell): `/` now redirects straight to the Vue app instead of rendering the ExtJS shell, which is no longer reachable in normal navigation. Removed the now-dead iframe-only bridge code (parent-frame click relay, auth-required postMessage, ExtJS currency-formatter fallback) and tightened `X-Frame-Options` from `SAMEORIGIN` to `DENY` since nothing embeds the app cross-frame anymore.
 - Add a Vue-native app shell (header, top nav, user menu, logout) reachable directly at `/vue/` (phase 2 of removing the ExtJS shell) — inactive when still loaded inside the ExtJS shell's iframes, so existing pages are unaffected.
 - Fix Usage page's "Libraries & Samples" chart showing an empty grid instead of "No Data" for a date range with zero records — its API endpoint always returns a `Libraries`/`Samples` row even when both are zero, so the empty-state check needs to sum the values, not just check the array isn't empty.
 - Usage page: replace the legacy ExtJS pie charts (built on `Ext.chart.*`) with a new Vue page using ECharts bar charts (phase 1 of removing the ExtJS shell) — same four breakdowns (Libraries & Samples, Organizations, Principal Investigators, Analysis Types) and date-range filter, same underlying API.
