@@ -72,7 +72,11 @@ import {
   isValidDate,
   urlStringStartsWith
 } from "../utilities/utilityFunctions";
-import { USAGE_CHARTS, buildUsageChartOption } from "../constants/usageConsts";
+import {
+  USAGE_CHARTS,
+  buildUsageChartOption,
+  usageChartTotal
+} from "../constants/usageConsts";
 import iconUsageHeader from "../assets/icons/header_usage.svg";
 
 use([
@@ -119,7 +123,8 @@ export default {
     });
 
     function chartHasData(key) {
-      return (chartData[key] || []).length > 0;
+      const chartDef = usageCharts.find((c) => c.key === key);
+      return usageChartTotal(chartDef, chartData[key] || []) > 0;
     }
 
     async function loadUsageData() {
