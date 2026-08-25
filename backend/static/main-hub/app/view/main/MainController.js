@@ -28,7 +28,8 @@ Ext.define("MainHub.view.main.MainController", {
     flowcells: "flowcells-vue",
     "run-statistics": "run-statistics-vue",
     "sequences-statistics": "sequences-statistics-vue",
-    invoicing: "invoicing-vue"
+    invoicing: "invoicing-vue",
+    usage: "usage-vue"
   },
 
   onMainViewRender: function () {
