@@ -208,8 +208,8 @@ export default {
   flex: 1;
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
   gap: 6px;
-  overflow-x: auto;
 }
 
 .app-shell-nav-link {
