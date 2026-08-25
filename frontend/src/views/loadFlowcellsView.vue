@@ -847,7 +847,8 @@ import {
   buildExcelDownloadFilename,
   formatDisplayDate,
   isSupportedExcelTemplateFile,
-  isValidDate
+  isValidDate,
+  applyValueToAllRows
 } from "../utilities/utilityFunctions";
 import {
   loadFlowcellsGroupHeader,
@@ -1160,7 +1161,8 @@ export default {
       );
       const columns = loadFlowcellsColumnDefs(() => this.tabulatorInstance, {
         onToggleSelected: this.handleRowSelectionToggle,
-        onPoolClick: this.openPoolInfoPopup
+        onPoolClick: this.openPoolInfoPopup,
+        onApplyToAll: this.handleApplyToAllFromContext
       });
       this.columnsList = columns.map((column) => {
         if (!column.field) return column;
@@ -1534,6 +1536,21 @@ export default {
         delete this.pendingLaneChanges[pk];
       }
       this.scheduleBatchSave();
+    },
+    handleApplyToAllFromContext(payload = {}) {
+      const { cell, field, tableRef } = payload;
+      if (!cell || !field || !tableRef) return;
+      applyValueToAllRows(cell, () => tableRef, {
+        blockActionsOnDisabledCells: false
+      });
+      // row.update() (used by applyValueToAllRows) does not fire Tabulator's
+      // cellEdited event, so affected rows must be queued for saving here.
+      tableRef.getRows().forEach((row) => {
+        const targetCell = row.getCell(field);
+        if (targetCell) {
+          this.handleCellEdited(targetCell);
+        }
+      });
     },
     scheduleBatchSave() {
       if (this.pendingEditTimer) {
