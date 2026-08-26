@@ -1,78 +1,87 @@
 <template>
   <div class="app-shell">
-    <div class="header app-shell-header">
-      <img :src="iconLogo" alt="Parkour LIMS" class="statistics-header-icon" />
-      <div class="header-title app-shell-title">
-        Parkour LIMS
-        <span v-if="instanceVersion" class="app-shell-version">{{
-          instanceVersion
-        }}</span>
+    <div class="app-shell-header">
+      <div class="app-shell-brand">
+        <img
+          :src="iconLogo"
+          alt="Parkour LIMS"
+          class="statistics-header-icon"
+        />
+        <div class="header-title app-shell-title">
+          Parkour LIMS
+          <span v-if="instanceVersion" class="app-shell-version">{{
+            instanceVersion
+          }}</span>
+        </div>
       </div>
 
-      <nav class="app-shell-nav">
-        <template v-for="node in navNodes" :key="node.text">
-          <router-link
-            v-if="node.leaf"
-            :to="navPath(node)"
-            class="app-shell-nav-link"
-          >
-            <font-awesome-icon
-              v-if="navIcon(node)"
-              :icon="navIcon(node)"
-              class="app-shell-nav-icon"
-            />
-            <span>{{ node.text }}</span>
-          </router-link>
-
-          <div v-else class="app-shell-nav-dropdown">
-            <button
-              :id="`app-shell-dropdown-${node.text}`"
-              class="app-shell-nav-link app-shell-nav-button"
-              :aria-expanded="openDropdown === node.text"
-              @click="toggleDropdown(node.text)"
+      <div class="app-shell-bar">
+        <nav class="app-shell-nav">
+          <template v-for="node in navNodes" :key="node.text">
+            <router-link
+              v-if="node.leaf"
+              :to="navPath(node)"
+              class="app-shell-nav-link"
             >
+              <font-awesome-icon
+                v-if="navIcon(node)"
+                :icon="navIcon(node)"
+                class="app-shell-nav-icon"
+              />
               <span>{{ node.text }}</span>
-              <font-awesome-icon icon="fa-solid fa-caret-down" />
-            </button>
-            <div
-              v-if="openDropdown === node.text"
-              class="app-shell-dropdown-menu"
-            >
-              <router-link
-                v-for="child in node.children"
-                :key="child.text"
-                :to="navPath(child)"
-                class="app-shell-dropdown-item"
-                @click="openDropdown = null"
-              >
-                {{ child.text }}
-              </router-link>
-            </div>
-          </div>
-        </template>
-      </nav>
+            </router-link>
 
-      <div class="app-shell-user-actions">
-        <span class="app-shell-username">{{ userName }}</span>
-        <router-link
-          v-if="isStaff"
-          to="/duties"
-          class="app-shell-icon-button"
-          title="Duties"
-        >
-          <font-awesome-icon icon="fa-regular fa-calendar-days" />
-        </router-link>
-        <a
-          v-if="isStaff"
-          :href="`${urlStringStart}/admin`"
-          class="app-shell-icon-button"
-          title="Site Administration"
-        >
-          <font-awesome-icon icon="fa-solid fa-gear" />
-        </a>
-        <button class="app-shell-icon-button" title="Logout" @click="logout">
-          <font-awesome-icon icon="fa-solid fa-right-from-bracket" />
-        </button>
+            <div v-else class="app-shell-nav-dropdown">
+              <button
+                :id="`app-shell-dropdown-${node.text}`"
+                class="app-shell-nav-link app-shell-nav-button"
+                :aria-expanded="openDropdown === node.text"
+                @click="toggleDropdown(node.text)"
+              >
+                <span>{{ node.text }}</span>
+                <font-awesome-icon icon="fa-solid fa-caret-down" />
+              </button>
+              <div
+                v-if="openDropdown === node.text"
+                class="app-shell-dropdown-menu"
+              >
+                <router-link
+                  v-for="child in node.children"
+                  :key="child.text"
+                  :to="navPath(child)"
+                  class="app-shell-dropdown-item"
+                  @click="openDropdown = null"
+                >
+                  {{ child.text }}
+                </router-link>
+              </div>
+            </div>
+          </template>
+        </nav>
+
+        <div class="app-shell-user-actions">
+          <span class="app-shell-username">{{ userName }}</span>
+          <router-link
+            v-if="isStaff"
+            to="/duties"
+            class="app-shell-icon-button"
+            title="Duties"
+          >
+            <font-awesome-icon icon="fa-regular fa-calendar-days" />
+          </router-link>
+          <a
+            v-if="isStaff"
+            :href="`${urlStringStart}/admin`"
+            class="app-shell-icon-button"
+            title="Site Administration"
+          >
+            <font-awesome-icon icon="fa-solid fa-gear" />
+          </a>
+          <span class="app-shell-user-divider"></span>
+          <button class="app-shell-icon-button" title="Logout" @click="logout">
+            <font-awesome-icon icon="fa-solid fa-right-from-bracket" />
+          </button>
+        </div>
       </div>
     </div>
 
@@ -185,7 +194,20 @@ export default {
 .app-shell-header {
   margin: 10px 10px 0;
   width: calc(100% - 20px);
+  height: 70px;
   flex: 0 0 auto;
+  display: flex;
+  align-items: stretch;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.app-shell-brand {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  padding: 16px 28px 16px 14px;
+  background: linear-gradient(135deg, #0a8a82 0%, #006c66 50%, #00504c 100%);
 }
 
 .app-shell-title {
@@ -195,7 +217,7 @@ export default {
   display: flex;
   align-items: baseline;
   gap: 8px;
-  margin-right: 24px;
+  color: white;
 }
 
 .app-shell-version {
@@ -204,32 +226,48 @@ export default {
   font-weight: normal;
 }
 
+.app-shell-bar {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  gap: 6px;
+  padding: 8px 16px;
+  background: var(--app-nav-bg);
+}
+
 .app-shell-nav {
   flex: 1;
   display: flex;
   align-items: center;
   flex-wrap: wrap;
-  gap: 6px;
+  gap: 8px;
 }
 
 .app-shell-nav-link {
   display: flex;
   align-items: center;
   gap: 6px;
-  padding: 8px 12px;
-  border-radius: 8px;
-  color: white;
+  padding: 8px 14px;
+  border-radius: 20px;
+  color: #333;
   text-decoration: none;
   white-space: nowrap;
-  background: none;
-  border: none;
+  background: white;
+  border: 1px solid var(--app-nav-pill-border);
   font-size: 14px;
   cursor: pointer;
 }
 
-.app-shell-nav-link:hover,
+.app-shell-nav-link:hover {
+  border-color: #006c66;
+}
+
 .app-shell-nav-link.router-link-active {
-  background: rgba(255, 255, 255, 0.15);
+  background: var(--app-nav-pill-active-bg);
+  border-color: #006c66;
+  color: #006c66;
+  font-weight: 600;
 }
 
 .app-shell-nav-dropdown {
@@ -270,7 +308,8 @@ export default {
 }
 
 .app-shell-username {
-  color: white;
+  color: #006c66;
+  font-weight: 600;
   max-width: 160px;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -278,8 +317,14 @@ export default {
   font-size: 14px;
 }
 
+.app-shell-user-divider {
+  width: 1px;
+  height: 20px;
+  background: var(--app-nav-pill-border);
+}
+
 .app-shell-icon-button {
-  color: white;
+  color: #555;
   background: none;
   border: none;
   cursor: pointer;
@@ -287,6 +332,10 @@ export default {
   display: flex;
   align-items: center;
   text-decoration: none;
+}
+
+.app-shell-icon-button:hover {
+  color: #006c66;
 }
 
 .app-shell-content {

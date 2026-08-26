@@ -3,6 +3,7 @@
 Unreleased
 ==========
 
+- Restyled the top nav bar: split it into a dark teal brand pill (logo/title) and a beige bar carrying the nav links and user actions, with nav items as individual pill buttons (white by default, mint-filled with a teal border/text when active) instead of plain text on a solid teal strip.
 - Unify the Vite dev and prod servers onto the same port (`5173`, was `5173`/`5174`): the two-port split let `misc/nginx-server.conf` (one file shared by prod/`parkour-test`/`parkour-dev`) silently point at the wrong server after a `git pull`, since its tracked value was prod's port and there was nothing to notice a dev host running the wrong one until the next container restart. Removed the now-unnecessary `hardreset-nginx-server-{prod,dev}` Makefile targets and per-host port overrides; dev and prod are still distinguished by which npm script runs (`start-dev`'s live HMR server vs. `start-prod`'s build+serve), never by port.
 - Fix `/vue/` rendering the header/nav but a blank content area below it: the router had no index route for `/`, so landing on the bare path matched no child route for the `<router-view>` to fill. Added a redirect from `/` to `/libraries_and_samples`, the same page listed first in the nav for every user.
 - Fixed the Vue dev server appearing to hang on a blank page: nginx's `/vue/`, `/vue/vue-assets/`, and `/vue-assets/` proxy blocks were missing the `Upgrade`/`Connection` headers needed to tunnel WebSocket connections, so Vite's HMR client could never complete its handshake and the page never finished loading.
