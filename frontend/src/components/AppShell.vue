@@ -201,8 +201,6 @@ export default {
   flex: 0 0 auto;
   display: flex;
   align-items: stretch;
-  border-radius: 8px;
-  overflow: hidden;
 }
 
 .app-shell-brand {
@@ -211,6 +209,7 @@ export default {
   align-items: center;
   padding: 16px 28px 16px 14px;
   background: linear-gradient(135deg, #0a8a82 0%, #006c66 50%, #00504c 100%);
+  border-radius: 8px 0 0 8px;
 }
 
 .app-shell-title {
@@ -241,6 +240,7 @@ export default {
   gap: 6px;
   padding: 8px 16px;
   background: var(--app-nav-bg);
+  border-radius: 0 8px 8px 0;
 }
 
 .app-shell-nav {
