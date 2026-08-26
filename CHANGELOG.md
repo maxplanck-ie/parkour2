@@ -3,6 +3,7 @@
 Unreleased
 ==========
 
+- Fixed the Vue dev server appearing to hang on a blank page: nginx's `/vue/`, `/vue/vue-assets/`, and `/vue-assets/` proxy blocks were missing the `Upgrade`/`Connection` headers needed to tunnel WebSocket connections, so Vite's HMR client could never complete its handshake and the page never finished loading.
 - Final removal (phase 4 of removing the ExtJS shell): deleted `backend/static/main-hub` entirely (the legacy ExtJS app, unreachable since phase 3's cutover), the `update-extjs` Makefile target and its Sencha CMD references, and the now-unused Django templates (`index.html`, `base_ext.html`, `globals.html`). The `metadata_exporter` Django app was investigated for removal but turned out to still be live (registered via `wui/api.py`'s router at `/api/metadata_exporter/`, just orphaned from any current UI) — left in place rather than deleting working, reachable backend code.
 - Cutover (phase 3 of removing the ExtJS shell): `/` now redirects straight to the Vue app instead of rendering the ExtJS shell, which is no longer reachable in normal navigation. Removed the now-dead iframe-only bridge code (parent-frame click relay, auth-required postMessage, ExtJS currency-formatter fallback) and tightened `X-Frame-Options` from `SAMEORIGIN` to `DENY` since nothing embeds the app cross-frame anymore.
 - Add a Vue-native app shell (header, top nav, user menu, logout) reachable directly at `/vue/` (phase 2 of removing the ExtJS shell) — inactive when still loaded inside the ExtJS shell's iframes, so existing pages are unaffected.
