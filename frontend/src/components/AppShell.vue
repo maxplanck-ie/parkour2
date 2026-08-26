@@ -64,26 +64,32 @@
 
         <div class="app-shell-user-actions">
           <span class="app-shell-username">{{ userName }}</span>
-          <router-link
-            v-if="isStaff"
-            to="/duties"
-            class="app-shell-icon-button"
-            title="Duties"
-          >
-            <font-awesome-icon icon="fa-regular fa-calendar-days" />
-          </router-link>
-          <a
-            v-if="isStaff"
-            :href="`${urlStringStart}/admin`"
-            class="app-shell-icon-button"
-            title="Site Administration"
-          >
-            <font-awesome-icon icon="fa-solid fa-gear" />
-          </a>
-          <span class="app-shell-user-divider"></span>
-          <button class="app-shell-icon-button" title="Logout" @click="logout">
-            <font-awesome-icon icon="fa-solid fa-right-from-bracket" />
-          </button>
+          <div class="app-shell-user-icons">
+            <router-link
+              v-if="isStaff"
+              to="/duties"
+              class="app-shell-icon-button"
+              title="Duties"
+            >
+              <font-awesome-icon icon="fa-regular fa-calendar-days" />
+            </router-link>
+            <a
+              v-if="isStaff"
+              :href="`${urlStringStart}/admin`"
+              class="app-shell-icon-button"
+              title="Site Administration"
+            >
+              <font-awesome-icon icon="fa-solid fa-gear" />
+            </a>
+            <span class="app-shell-user-divider"></span>
+            <button
+              class="app-shell-icon-button"
+              title="Logout"
+              @click="logout"
+            >
+              <font-awesome-icon icon="fa-solid fa-right-from-bracket" />
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -313,9 +319,16 @@ export default {
 .app-shell-user-actions {
   flex: 0 0 auto;
   display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+  margin-left: 12px;
+}
+
+.app-shell-user-icons {
+  display: flex;
   align-items: center;
   gap: 10px;
-  margin-left: 12px;
 }
 
 .app-shell-username {

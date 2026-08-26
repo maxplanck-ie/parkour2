@@ -3,7 +3,7 @@
 Unreleased
 ==========
 
-- Top nav bar: restyled (teal brand + beige bar, pill buttons), several labels shortened/renamed (Incoming, Load FCs, Stats), Usage moved under the Stats dropdown, dropdown-clipping bug fixed, and the old icon-only responsive behavior restored below 1920px.
+- Top nav bar: restyled (teal brand + beige bar, pill buttons), several labels shortened/renamed (Incoming, Load FCs, Stats), Usage moved under the Stats dropdown, dropdown-clipping bug fixed, user actions stacked into two rows (name above Duties/Admin/Logout), and the old icon-only responsive behavior restored below 1920px.
 - Removed the legacy ExtJS shell: cut over to a native Vue app shell/nav, migrated the Usage charts to Vue/ECharts, dropped the dead iframe-bridge code, and deleted `backend/static/main-hub` and its leftover Makefile/template references.
 - Fixed Vite dev server HMR/WebSocket proxying and unified dev/prod onto the same port; added a `/` redirect to the default Vue page.
 - Fixed Load Flowcells "Apply to All" not persisting loading concentration/PhiX values.
