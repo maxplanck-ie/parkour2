@@ -8,7 +8,7 @@
           class="statistics-header-icon"
         />
         <div class="header-title app-shell-title">
-          Parkour LIMS
+          <span class="app-shell-title-text">Parkour LIMS</span>
           <span v-if="instanceVersion" class="app-shell-version">{{
             instanceVersion
           }}</span>
@@ -39,7 +39,10 @@
                 @click="toggleDropdown(node.text)"
               >
                 <span>{{ node.text }}</span>
-                <font-awesome-icon icon="fa-solid fa-caret-down" />
+                <font-awesome-icon
+                  icon="fa-solid fa-caret-down"
+                  class="app-shell-nav-icon"
+                />
               </button>
               <div
                 v-if="openDropdown === node.text"
@@ -215,13 +218,17 @@ export default {
   width: auto;
   white-space: nowrap;
   display: flex;
-  align-items: baseline;
-  gap: 8px;
+  flex-direction: column;
   color: white;
+}
+
+.app-shell-title-text {
+  line-height: 1.2;
 }
 
 .app-shell-version {
   font-size: 12px;
+  line-height: 1.2;
   opacity: 0.75;
   font-weight: normal;
 }
@@ -248,15 +255,19 @@ export default {
   display: flex;
   align-items: center;
   gap: 6px;
-  padding: 8px 14px;
-  border-radius: 20px;
+  padding: 6px 12px;
+  border-radius: 18px;
   color: #333;
   text-decoration: none;
   white-space: nowrap;
   background: white;
   border: 1px solid var(--app-nav-pill-border);
-  font-size: 14px;
+  font-size: 12px;
   cursor: pointer;
+}
+
+.app-shell-nav-icon {
+  font-size: 14px;
 }
 
 .app-shell-nav-link:hover {
