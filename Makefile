@@ -19,8 +19,8 @@ help: check-rootdir
 check-deploy-matrix:
 	@set -euo pipefail; \
 	echo "[1/6] Checking Makefile wiring..."; \
-	grep -q '^set-prod: .*hardreset-caddyfile-prod.*hardreset-nginx-server-prod' Makefile || { echo 'FAIL: set-prod must depend on caddy+nginx prod hardreset targets'; exit 1; }; \
-	grep -q '^set-dev: .*hardreset-caddyfile-dev.*hardreset-nginx-server-dev' Makefile || { echo 'FAIL: set-dev must depend on caddy+nginx dev hardreset targets'; exit 1; }; \
+	grep -q '^set-prod: .*hardreset-caddyfile-prod' Makefile || { echo 'FAIL: set-prod must depend on caddy prod hardreset target'; exit 1; }; \
+	grep -q '^set-dev: .*hardreset-caddyfile-dev' Makefile || { echo 'FAIL: set-dev must depend on caddy dev hardreset target'; exit 1; }; \
 	grep -q '^set-playwright: hardreset-caddyfile-prod$$' Makefile || { echo 'FAIL: set-playwright must depend on hardreset-caddyfile-prod'; exit 1; }; \
 	echo "[2/6] Checking frontend command defaults..."; \
 	grep -q '^CMD \["npm", "run", "start-prod"\]$$' frontend.Dockerfile || { echo 'FAIL: frontend.Dockerfile default CMD must be start-prod'; exit 1; }; \
@@ -29,7 +29,7 @@ check-deploy-matrix:
 	grep -q 'reverse_proxy parkour2-vite:5173' misc/Caddyfile || { echo 'FAIL: prod caddy profile must proxy frontend to :5173'; exit 1; }; \
 	echo "[4/6] Validating dev caddy profile..."; \
 	$(MAKE) --no-print-directory hardreset-caddyfile-dev > /dev/null; \
-	grep -q 'reverse_proxy parkour2-vite:5174' misc/Caddyfile || { echo 'FAIL: dev caddy profile must proxy frontend to :5174'; exit 1; }; \
+	grep -q 'reverse_proxy parkour2-vite:5173' misc/Caddyfile || { echo 'FAIL: dev caddy profile must proxy frontend to :5173'; exit 1; }; \
 	grep -q '/@vite/\*' misc/Caddyfile || { echo 'FAIL: dev caddy profile must include vite internal routes'; exit 1; }; \
 	echo "[5/6] Restoring default caddy profile..."; \
 	$(MAKE) --no-print-directory hardreset-caddyfile-prod > /dev/null; \
@@ -42,7 +42,7 @@ check-rootdir: check-deploy-matrix
 		{ echo 'Makefile, and the corresponding compose YAML files, only work if parent directory is named "parkour2"'; \
 		exit 1; }
 
-set-prod: hardreset-caddyfile-prod hardreset-nginx-server-prod
+set-prod: hardreset-caddyfile-prod
 	@sed -i -e 's#\(target:\) pk2_.*#\1 pk2_base#' docker-compose.yml
 	@sed -i -e 's#\(^CMD \["npm", "run", "start-\).*\]#\1prod"\]#' frontend.Dockerfile
 	@test -e ./misc/parkour.env.ignore && cp ./misc/parkour.env.ignore ./misc/parkour.env || :
@@ -145,7 +145,7 @@ dev-easy: down set-dev deploy-webapp deploy-caddy collect-static clean  ## Deplo
 
 dev: down set-dev deploy-webapp deploy-nginx collect-static clean  ## Deploy Werkzeug instance with Nginx (incl. TLS)
 
-set-dev: hardreset-caddyfile-dev hardreset-nginx-server-dev
+set-dev: hardreset-caddyfile-dev
 	@sed -i -e 's#\(target:\) pk2_.*#\1 pk2_dev#' docker-compose.yml
 	@sed -i -e 's#\(^CMD \["npm", "run", "start-\).*\]#\1dev"\]#' frontend.Dockerfile
 	@test -e ./misc/parkour.env.ignore && cp ./misc/parkour.env.ignore ./misc/parkour.env || :
@@ -157,12 +157,6 @@ set-dev: hardreset-caddyfile-dev hardreset-nginx-server-dev
 
 hardreset-caddyfile: hardreset-caddyfile-prod
 
-hardreset-nginx-server-prod:
-	@sed -i -e 's#\(server parkour2-vite:\).*#\15173;#' misc/nginx-server.conf
-
-hardreset-nginx-server-dev:
-	@sed -i -e 's#\(server parkour2-vite:\).*#\15174;#' misc/nginx-server.conf
-
 hardreset-frontend-dockerfile:
 	@sed -i -e 's#\(^CMD \["npm", "run", "start-\).*\]#\1prod"\]#' frontend.Dockerfile
 
@@ -170,10 +164,10 @@ hardreset-caddyfile-prod:
 	@echo -e "http://*:9980 {\n\thandle /static/* {\n\t\troot * /parkour2\n\t\tfile_server\n\t}\n\thandle /protected_media/* {\n\t\troot * /parkour2\n\t\tfile_server\n\t}\n\thandle /vue/vue-assets/* {\n\t\turi strip_prefix /vue\n\t\treverse_proxy parkour2-vite:5173\n\t}\n\thandle /vue/* {\n\t\treverse_proxy parkour2-vite:5173\n\t}\n\thandle /vue-assets/* {\n\t\treverse_proxy parkour2-vite:5173\n\t}\n\thandle {\n\t\treverse_proxy parkour2-django:8000\n\t}\n\tlog\n}" > misc/Caddyfile
 
 hardreset-caddyfile-dev:
-	@echo -e "http://*:9980 {\n\thandle /static/* {\n\t\troot * /parkour2\n\t\tfile_server\n\t}\n\thandle /protected_media/* {\n\t\troot * /parkour2\n\t\tfile_server\n\t}\n\thandle /vue/vue-assets/* {\n\t\turi strip_prefix /vue\n\t\treverse_proxy parkour2-vite:5174 {\n\t\t\theader_up Host parkour2-vite:5174\n\t\t}\n\t}\n\t@vite_dev {\n\t\tpath /vue/* /vue-assets/* /@vite/* /src/* /node_modules/* /@id/* /@fs/* /__vite_ping\n\t}\n\thandle @vite_dev {\n\t\treverse_proxy parkour2-vite:5174 {\n\t\t\theader_up Host parkour2-vite:5174\n\t\t}\n\t}\n\thandle {\n\t\treverse_proxy parkour2-django:8000\n\t}\n\tlog\n}" > misc/Caddyfile
+	@echo -e "http://*:9980 {\n\thandle /static/* {\n\t\troot * /parkour2\n\t\tfile_server\n\t}\n\thandle /protected_media/* {\n\t\troot * /parkour2\n\t\tfile_server\n\t}\n\thandle /vue/vue-assets/* {\n\t\turi strip_prefix /vue\n\t\treverse_proxy parkour2-vite:5173 {\n\t\t\theader_up Host parkour2-vite:5173\n\t\t}\n\t}\n\t@vite_dev {\n\t\tpath /vue/* /vue-assets/* /@vite/* /src/* /node_modules/* /@id/* /@fs/* /__vite_ping\n\t}\n\thandle @vite_dev {\n\t\treverse_proxy parkour2-vite:5173 {\n\t\t\theader_up Host parkour2-vite:5173\n\t\t}\n\t}\n\thandle {\n\t\treverse_proxy parkour2-django:8000\n\t}\n\tlog\n}" > misc/Caddyfile
 
 hardreset-envfile:
-	@echo -e "INSTANCE_NAME=Parkour2\nTIME_ZONE=Europe/Berlin\nADMIN_NAME=admin\nADMIN_EMAIL=your@mail.server.tld\nEMAIL_HOST=mail.server.tld\nEMAIL_SUBJECT_PREFIX=[Parkour2]\nSERVER_EMAIL=errors@mail.server.tld\nCSRF_TRUSTED_ORIGINS=http://127.0.0.1,https://*.server.tld,http://localhost:5174\nPOSTGRES_DB=postgres\nPOSTGRES_USER=postgres\nPOSTGRES_PASSWORD=change_me__stay_safe\nDATABASE_URL=postgres://postgres:change_me__stay_safe@parkour2-postgres:5432/postgres\nREADONLY_USER=ropg\nREADONLY_PASSWORD=change_me__stay_safe2\nREADONLY_DATABASE_URL=postgres://ropg:change_me__stay_safe2@parkour2-postgres:5432/postgres\nOPENROUTER_API_KEY=aaaaaaaaaaaaaaaaa\nSECRET_KEY=generate__one__with__openssl__rand__DASH_hex__32" > misc/parkour.env
+	@echo -e "INSTANCE_NAME=Parkour2\nTIME_ZONE=Europe/Berlin\nADMIN_NAME=admin\nADMIN_EMAIL=your@mail.server.tld\nEMAIL_HOST=mail.server.tld\nEMAIL_SUBJECT_PREFIX=[Parkour2]\nSERVER_EMAIL=errors@mail.server.tld\nCSRF_TRUSTED_ORIGINS=http://127.0.0.1,https://*.server.tld,http://localhost:5173\nPOSTGRES_DB=postgres\nPOSTGRES_USER=postgres\nPOSTGRES_PASSWORD=change_me__stay_safe\nDATABASE_URL=postgres://postgres:change_me__stay_safe@parkour2-postgres:5432/postgres\nREADONLY_USER=ropg\nREADONLY_PASSWORD=change_me__stay_safe2\nREADONLY_DATABASE_URL=postgres://ropg:change_me__stay_safe2@parkour2-postgres:5432/postgres\nOPENROUTER_API_KEY=aaaaaaaaaaaaaaaaa\nSECRET_KEY=generate__one__with__openssl__rand__DASH_hex__32" > misc/parkour.env
 
 deploy-caddy: ensure-media-dir
 	@docker compose -f misc/caddy.yml --project-name=parkour2 up -d

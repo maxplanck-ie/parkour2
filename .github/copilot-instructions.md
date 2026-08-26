@@ -88,31 +88,29 @@ Prevent recurring regressions. No deviate without explicit ask.
 - Build frontend: Makefile rule `reload-ux`.
 - Command fails w/ permission error (e.g. built output files owned by root) → app likely inside Docker. Run command inside appropriate container instead `parkour2-django` for backend or `parkour2-vite` for frontend.
 
-## Vite dev vs prod: two different servers, not just a port
+## Vite dev vs prod: same port, different servers
 
 - Prod (`start-prod`) runs `vite build` then serves the static `dist/`
-  output on `:5173`. Dev (`start-dev`) runs the live Vite dev server with
-  HMR on `:5174`. These are different serving mechanisms, not
-  interchangeable — never run the raw Vite dev server (HMR) as a
-  production deployment. It serves unminified per-module source over
-  dev-only routes (`/@fs/`, `/@id/`, `/src/*`) that assume a trusted
-  local machine, has a history of path-traversal/arbitrary-file-read
-  CVEs when exposed publicly, and its HMR WebSocket isn't subject to the
-  app's normal auth/CSRF handling.
+  output; dev (`start-dev`) runs the live Vite dev server with HMR. Both
+  now bind `:5173` — the port was unified deliberately (was `5173`
+  prod / `5174` dev, and `misc/nginx-server.conf`'s tracked port drifting
+  out of sync with whichever server a host actually ran caused a real
+  incident: nav rendered, content 502'd). Don't reintroduce a second
+  port; if you need to tell dev and prod apart, check which npm script
+  ran, not the port number.
+- These remain different serving mechanisms regardless of the shared
+  port — never run the raw Vite dev server (HMR) as a production
+  deployment. It serves unminified per-module source over dev-only
+  routes (`/@fs/`, `/@id/`, `/src/*`) that assume a trusted local
+  machine, has a history of path-traversal/arbitrary-file-read CVEs
+  when exposed publicly, and its HMR WebSocket isn't subject to the
+  app's normal auth/CSRF handling. `frontend.Dockerfile`'s default CMD
+  and `Makefile`'s `check-deploy-matrix` both guard that prod always
+  builds+serves rather than running the dev server.
 - `misc/nginx-server.conf` is one file, shared by nginx across prod,
   `parkour-test`, and `parkour-dev` (all three domains, one `server`
-  block). Its tracked value in git is the **prod** port; `make set-dev`
-  locally `sed`s it to the dev port (`hardreset-nginx-server-dev`) —
-  that edit is meant to stay local/uncommitted on dev hosts, never
-  pushed. **After every `git pull` on a dev/test host, re-run
-  `make set-dev`** (or at minimum `make hardreset-nginx-server-dev`) —
-  `git pull` silently reverts the port back to prod's value if a local
-  override isn't reapplied. A stale Docker single-file bind mount can
-  mask this for a long time (nginx keeps serving old cached content
-  until the container is restarted), so the failure can surface much
-  later than the `git pull` that caused it. Symptom: nginx 502s to the
-  vite upstream, or (if the stale mount happened to still match) it
-  works until the next restart.
+  block) — since the port is now identical everywhere, it no longer
+  needs any per-host `sed`/override at all.
 
 ## Vue router needs an explicit index route
 
