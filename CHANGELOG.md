@@ -3,6 +3,7 @@
 Unreleased
 ==========
 
+- Shorten the top nav "Load Flowcells" button label to "Load FCs" and "Statistics" dropdown label to "Stats".
 - Move the "Usage" nav button into the "Statistics" dropdown instead of its own top-level button; renamed the dropdown's "Runs Statistics"/"Sequenced Samples Statistics" items to "Primary"/"Secondary".
 - Shorten the top nav "Incoming Libraries/Samples" button label to "Incoming" to match the compact pill styling of the other nav buttons.
 - Fix the top nav "Statistics" dropdown never appearing after the restyle below: `.app-shell-header` picked up `overflow: hidden` to clip its own rounded corners, but that also clipped the absolutely-positioned dropdown menu, which renders just below the header's box. Moved the rounding onto the brand and bar segments individually so the header itself no longer clips its children.

@@ -108,7 +108,7 @@ def get_navigation_tree(request):
                 "leaf": True,
             },
             {
-                "text": "Load Flowcells",
+                "text": "Load FCs",
                 "iconCls": "x-fa fa-level-down",
                 "viewType": "flowcells-vue",
                 "leaf": True,
@@ -120,7 +120,7 @@ def get_navigation_tree(request):
                 "leaf": True,
             },
             {
-                "text": "Statistics",
+                "text": "Stats",
                 "iconCls": "x-fa fa-line-chart",
                 "expanded": False,
                 "children": [
