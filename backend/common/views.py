@@ -84,7 +84,7 @@ def get_navigation_tree(request):
     if request.user.is_staff:
         data += [
             {
-                "text": "Incoming Libraries/Samples",
+                "text": "Incoming",
                 "iconCls": "x-fa fa-arrow-down",
                 "viewType": "incoming-libraries-vue",
                 "leaf": True,
@@ -120,23 +120,22 @@ def get_navigation_tree(request):
                 "leaf": True,
             },
             {
-                "text": "Usage",
-                "iconCls": "x-fa fa-bar-chart",
-                "viewType": "usage-vue",
-                "leaf": True,
-            },
-            {
                 "text": "Statistics",
                 "iconCls": "x-fa fa-line-chart",
                 "expanded": False,
                 "children": [
                     {
-                        "text": "Runs Statistics",
+                        "text": "Usage",
+                        "viewType": "usage-vue",
+                        "leaf": True,
+                    },
+                    {
+                        "text": "Primary",
                         "viewType": "run-statistics-vue",
                         "leaf": True,
                     },
                     {
-                        "text": "Sequenced Samples Statistics",
+                        "text": "Secondary",
                         "viewType": "sequences-statistics-vue",
                         "leaf": True,
                     },
