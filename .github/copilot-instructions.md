@@ -88,6 +88,44 @@ Prevent recurring regressions. No deviate without explicit ask.
 - Build frontend: Makefile rule `reload-ux`.
 - Command fails w/ permission error (e.g. built output files owned by root) → app likely inside Docker. Run command inside appropriate container instead `parkour2-django` for backend or `parkour2-vite` for frontend.
 
+## Vite dev vs prod: two different servers, not just a port
+
+- Prod (`start-prod`) runs `vite build` then serves the static `dist/`
+  output on `:5173`. Dev (`start-dev`) runs the live Vite dev server with
+  HMR on `:5174`. These are different serving mechanisms, not
+  interchangeable — never run the raw Vite dev server (HMR) as a
+  production deployment. It serves unminified per-module source over
+  dev-only routes (`/@fs/`, `/@id/`, `/src/*`) that assume a trusted
+  local machine, has a history of path-traversal/arbitrary-file-read
+  CVEs when exposed publicly, and its HMR WebSocket isn't subject to the
+  app's normal auth/CSRF handling.
+- `misc/nginx-server.conf` is one file, shared by nginx across prod,
+  `parkour-test`, and `parkour-dev` (all three domains, one `server`
+  block). Its tracked value in git is the **prod** port; `make set-dev`
+  locally `sed`s it to the dev port (`hardreset-nginx-server-dev`) —
+  that edit is meant to stay local/uncommitted on dev hosts, never
+  pushed. **After every `git pull` on a dev/test host, re-run
+  `make set-dev`** (or at minimum `make hardreset-nginx-server-dev`) —
+  `git pull` silently reverts the port back to prod's value if a local
+  override isn't reapplied. A stale Docker single-file bind mount can
+  mask this for a long time (nginx keeps serving old cached content
+  until the container is restarted), so the failure can surface much
+  later than the `git pull` that caused it. Symptom: nginx 502s to the
+  vite upstream, or (if the stale mount happened to still match) it
+  works until the next restart.
+
+## Vue router needs an explicit index route
+
+- `frontend/src/router/appRoutes.js`'s top-level `/` route has children
+  for every page but no `path: ""` entry — without one, visiting the
+  bare path renders `AppShell` (header/nav) but leaves
+  `<router-view>` (`.app-shell-content`) empty, since no child route
+  matches. This looks like a "blank page" but only the content area is
+  blank; the nav bar renders fine. Fixed via a
+  `{ path: "", redirect: "/libraries_and_samples" }` first child. Any
+  future top-level route section added under `/` should keep this in
+  mind if it also needs a bare-path landing page.
+
 ## Security
 
 - Never log secrets/sensitive data.
