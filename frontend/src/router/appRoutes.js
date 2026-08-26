@@ -21,6 +21,10 @@ const router = createRouter({
       component: vueApp,
       children: [
         {
+          path: "",
+          redirect: "/libraries_and_samples"
+        },
+        {
           path: "duties",
           name: "Duties",
           component: dutiesView
