@@ -266,15 +266,15 @@ deploy-rsnapshot: ensure-media-dir
 		sleep 1m && \
 		docker exec parkour2-rsnapshot rsnapshot halfy
 
-# --buffer --reverse --failfast --timing
+# --buffer --reverse --timing
 djtest:  ## Run Backend tests (reuse running container when available)
 	@if docker compose ps --status running --services | grep -q '^parkour2-django$$'; then \
 		echo "Info: Reusing running parkour2-django container for tests."; \
-		docker compose exec parkour2-django python manage.py test --parallel; \
+		docker compose exec parkour2-django python manage.py test --parallel --failfast; \
 	else \
 		echo "Info: parkour2-django is not running, redeploying test stack first."; \
 		$(MAKE) down set-testing deploy-webapp clean; \
-		docker compose exec parkour2-django python manage.py test --parallel; \
+		docker compose exec parkour2-django python manage.py test --parallel --failfast; \
 	fi
 
 set-testing:

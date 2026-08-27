@@ -17,6 +17,7 @@ Unreleased
 - Transactional emails: consistent header/logo layout, personalized approval emails, a password-change confirmation email, and a styled error page for expired approval links.
 - Removed the unused staff `db`/`report`/`import_request`/`export_request` pages.
 - Add/Edit Request: clarified "Minimum Read Length" labeling/help text, fixed index dropdowns picking the wrong I7/I5 pair for kits with duplicate sequences, fixed admin errors on large index assignments, and save confirmations now include the request ID.
+- `make djtest` now stops at the first failure (`--failfast`) instead of running the full suite.
 
 
 26.07.28
