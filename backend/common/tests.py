@@ -138,10 +138,10 @@ class NavigationTreeTest(TestCase):
         children = json.loads(str(response.content, "utf-8"))["children"]
         self.assertEqual(response.status_code, 200)
         self.assertGreater(len(children), 2)
-        statistics = next(item for item in children if item["text"] == "Statistics")
+        statistics = next(item for item in children if item["text"] == "Stats")
         self.assertEqual(
             [item["viewType"] for item in statistics["children"]],
-            ["run-statistics-vue", "sequences-statistics-vue"],
+            ["usage-vue", "run-statistics-vue", "sequences-statistics-vue"],
         )
 
     def test_navigation_tree_user(self):
