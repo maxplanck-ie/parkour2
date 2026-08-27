@@ -15,8 +15,12 @@
         </div>
       </div>
 
-      <div class="app-shell-bar">
-        <nav class="app-shell-nav">
+      <div class="app-shell-bar" ref="appShellBar">
+        <nav
+          ref="appShellNav"
+          class="app-shell-nav"
+          :class="{ 'app-shell-nav-collapsed': navCollapsed }"
+        >
           <template v-for="node in navNodes" :key="node.text">
             <router-link
               v-if="node.leaf"
@@ -38,6 +42,11 @@
                 :aria-expanded="openDropdown === node.text"
                 @click="toggleDropdown(node.text)"
               >
+                <font-awesome-icon
+                  v-if="dropdownIcon(node)"
+                  :icon="dropdownIcon(node)"
+                  class="app-shell-nav-icon"
+                />
                 <span>{{ node.text }}</span>
                 <font-awesome-icon
                   icon="fa-solid fa-caret-down"
@@ -55,12 +64,44 @@
                   class="app-shell-dropdown-item"
                   @click="openDropdown = null"
                 >
-                  {{ child.text }}
+                  <font-awesome-icon
+                    v-if="navIcon(child)"
+                    :icon="navIcon(child)"
+                    class="app-shell-nav-icon"
+                  />
+                  <span>{{ child.text }}</span>
                 </router-link>
               </div>
             </div>
           </template>
         </nav>
+
+        <!--
+          Invisible full-text clone used only to measure the nav's natural
+          (uncollapsed) width, so we can tell whether it actually fits
+          rather than guessing off the viewport width.
+        -->
+        <div
+          class="app-shell-nav app-shell-nav-measure"
+          ref="navMeasure"
+          aria-hidden="true"
+        >
+          <template v-for="node in navNodes" :key="`measure-${node.text}`">
+            <span class="app-shell-nav-link">
+              <font-awesome-icon
+                v-if="navIcon(node) || dropdownIcon(node)"
+                :icon="navIcon(node) || dropdownIcon(node)"
+                class="app-shell-nav-icon"
+              />
+              <span>{{ node.text }}</span>
+              <font-awesome-icon
+                v-if="!node.leaf"
+                icon="fa-solid fa-caret-down"
+                class="app-shell-nav-icon"
+              />
+            </span>
+          </template>
+        </div>
 
         <div class="app-shell-user-actions">
           <span class="app-shell-username">{{ userName }}</span>
@@ -106,7 +147,10 @@ import {
   handleError,
   urlStringStartsWith
 } from "../utilities/utilityFunctions";
-import { NAV_VIEW_TYPE_MAP } from "../constants/appShellConsts";
+import {
+  NAV_VIEW_TYPE_MAP,
+  NAV_DROPDOWN_ICON_MAP
+} from "../constants/appShellConsts";
 import iconLogo from "../assets/icons/parkour_logo_white.svg";
 
 const axiosRef = createAxiosObject();
@@ -121,6 +165,7 @@ export default {
       isStaff: false,
       instanceVersion: "",
       openDropdown: null,
+      navCollapsed: false,
       urlStringStart,
       iconLogo
     };
@@ -128,11 +173,16 @@ export default {
   async mounted() {
     document.addEventListener("click", this.handleDocumentClick);
     document.addEventListener("keydown", this.handleKeyDown);
+    this.resizeObserver = new ResizeObserver(() => this.updateNavCollapse());
+    this.resizeObserver.observe(this.$refs.appShellBar);
     await Promise.all([this.loadNavigationTree(), this.loadUserDetails()]);
+    await this.$nextTick();
+    this.updateNavCollapse();
   },
   beforeUnmount() {
     document.removeEventListener("click", this.handleDocumentClick);
     document.removeEventListener("keydown", this.handleKeyDown);
+    this.resizeObserver?.disconnect();
   },
   methods: {
     navPath(node) {
@@ -140,6 +190,21 @@ export default {
     },
     navIcon(node) {
       return NAV_VIEW_TYPE_MAP[node.viewType]?.icon || null;
+    },
+    dropdownIcon(node) {
+      return NAV_DROPDOWN_ICON_MAP[node.text] || null;
+    },
+    updateNavCollapse() {
+      const nav = this.$refs.appShellNav;
+      const measure = this.$refs.navMeasure;
+      if (!nav || !measure) return;
+      // nav is a flex:1 item, so its own width already reflects the space
+      // actually left over for it once user-actions/gaps are accounted for;
+      // subpixel widths + a small safety margin avoid off-by-a-hair wraps
+      // at fractional browser zoom levels (e.g. 110%).
+      const available = nav.getBoundingClientRect().width;
+      const required = measure.getBoundingClientRect().width;
+      this.navCollapsed = required > available - 2;
     },
     toggleDropdown(text) {
       this.openDropdown = this.openDropdown === text ? null : text;
@@ -365,5 +430,24 @@ export default {
 .app-shell-content {
   flex: 1;
   overflow: hidden;
+}
+
+.app-shell-nav-measure {
+  position: absolute;
+  visibility: hidden;
+  height: 0;
+  overflow: hidden;
+  pointer-events: none;
+  flex-wrap: nowrap;
+}
+
+.app-shell-nav-collapsed .app-shell-nav-link span,
+.app-shell-nav-collapsed .app-shell-nav-button span {
+  display: none;
+}
+
+.app-shell-nav-collapsed .app-shell-nav-link,
+.app-shell-nav-collapsed .app-shell-nav-button {
+  padding: 6px 10px;
 }
 </style>

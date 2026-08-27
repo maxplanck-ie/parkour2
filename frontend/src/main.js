@@ -52,6 +52,7 @@ import {
   faEuroSign,
   faChartBar,
   faChartLine,
+  faMicroscope,
   faGear,
   faRightFromBracket
 } from "@fortawesome/free-solid-svg-icons";
@@ -111,6 +112,7 @@ library.add(
   faEuroSign,
   faChartBar,
   faChartLine,
+  faMicroscope,
   faGear,
   faRightFromBracket
 );

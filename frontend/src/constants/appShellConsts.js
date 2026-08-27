@@ -25,10 +25,16 @@ export const NAV_VIEW_TYPE_MAP = {
   "usage-vue": { path: "/usage", icon: "fa-solid fa-chart-bar" },
   "run-statistics-vue": {
     path: "/run_statistics",
-    icon: "fa-solid fa-chart-line"
+    icon: "fa-solid fa-microscope"
   },
   "sequences-statistics-vue": {
     path: "/sequences_statistics",
-    icon: "fa-solid fa-chart-line"
+    icon: "fa-solid fa-magnifying-glass"
   }
+};
+
+// Icons for non-leaf nav nodes (dropdowns), keyed by the node's `text` since
+// they carry no `viewType` of their own. Extend if a new dropdown is added.
+export const NAV_DROPDOWN_ICON_MAP = {
+  Stats: "fa-solid fa-chart-line"
 };
