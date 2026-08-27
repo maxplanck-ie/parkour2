@@ -370,7 +370,9 @@ export default {
 }
 
 .app-shell-dropdown-item {
-  display: block;
+  display: flex;
+  align-items: center;
+  gap: 8px;
   padding: 8px 14px;
   color: #333;
   text-decoration: none;
