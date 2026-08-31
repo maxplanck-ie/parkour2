@@ -8,7 +8,7 @@ Unreleased
 - Removed the legacy ExtJS shell: cut over to a native Vue app shell/nav, migrated the Usage charts to Vue/ECharts, dropped the dead iframe-bridge code, and deleted `backend/static/main-hub` and its leftover Makefile/template references.
 - Fixed Vite dev server HMR/WebSocket proxying and unified dev/prod onto the same port; added a `/` redirect to the default Vue page.
 - Fixed Load Flowcells "Apply to All" not persisting loading concentration/PhiX values.
-- CI: `zizmor --fix` keeps GitHub Action `uses:` refs pinned to SHAs after dependency-update bumps.
+- CI: fixed the weekly dependency-update workflow failing outright since zizmor 1.20 started requiring SHA pins on official (not just third-party) actions; `zizmor --fix=all --no-exit-codes` now actually applies the SHA-pinning fix instead of leaving it unresolved and failing the job.
 - Added a staff `internal_pis` API endpoint plus umlaut/accent transliteration for PI-name matching, so dissectBCL can look up PIs via Parkour instead of a static config list.
 - Fixed bulk create/update endpoints breaking after the DRF 3.18 upgrade.
 - New Vue/Tabulator Invoicing UI, replacing the ExtJS grid.

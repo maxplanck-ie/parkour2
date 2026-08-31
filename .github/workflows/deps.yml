@@ -154,7 +154,7 @@ jobs:
         run: pip install --quiet zizmor
 
       - name: Pin bumped GitHub Actions to commit SHAs
-        run: zizmor --fix .github/workflows/
+        run: zizmor --fix=all --no-exit-codes .github/workflows/
 
       - name: Upload workflow files
         uses: actions/upload-artifact@v7
