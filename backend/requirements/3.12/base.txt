@@ -48,11 +48,11 @@ drf-spectacular==0.30.0
     # via -r backend/requirements/base.in
 et-xmlfile==2.0.0
     # via openpyxl
-fonttools==4.63.0
+fonttools==4.64.0
     # via fpdf2
 fpdf2==2.8.8
     # via -r backend/requirements/base.in
-gunicorn==26.1.0
+gunicorn==26.2.0
     # via -r backend/requirements/base.in
 inflection==0.5.1
     # via drf-spectacular
