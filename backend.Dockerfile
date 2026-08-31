@@ -31,7 +31,7 @@ RUN localedef -i en_US -f UTF-8 en_US.UTF-8
 
 ## Pinned so uv releases don't invalidate the apt layers above;
 ## kept up-to-date by the weekly deps.yml workflow
-COPY --from=ghcr.io/astral-sh/uv:0.12.5 /uv /bin/uv
+COPY --from=ghcr.io/astral-sh/uv:0.12.7 /uv /bin/uv
 
 WORKDIR /usr/src/app
 
