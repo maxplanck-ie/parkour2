@@ -151,10 +151,19 @@ jobs:
           cat pr-note-actions.md
 
       - name: Install zizmor
-        run: pip install --quiet zizmor
+        run: pip install --quiet zizmor==1.30.0
 
       - name: Pin bumped GitHub Actions to commit SHAs
-        run: zizmor --fix=all --no-exit-codes .github/workflows/
+        run: zizmor --fix=all .github/workflows/
+
+      - name: Bump pinned zizmor version
+        run: |
+          latest=$(gh api repos/zizmorcore/zizmor/releases/latest --jq .tag_name | sed 's/^v//')
+          current=$(grep -oE 'zizmor==[0-9.]+' .github/workflows/deps.yml | head -1 | cut -d= -f3)
+          if [ "$latest" != "$current" ]; then
+            sed -i "s/zizmor==$current/zizmor==$latest/" .github/workflows/deps.yml
+            echo "- CI: bumped \`zizmor\` $current -> $latest (review its release notes for policy changes before merging — it gates this job)" >> pr-note-actions.md
+          fi
 
       - name: Upload workflow files
         uses: actions/upload-artifact@v7

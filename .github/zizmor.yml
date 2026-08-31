@@ -1,0 +1,12 @@
+# Findings deliberately not enforced here. None of these have an auto-fix,
+# so `deps.yml`'s weekly `zizmor --fix=all` would otherwise fail the job on
+# them forever. unpinned-uses/artipacked (both auto-fixable) stay enforced.
+rules:
+  dangerous-triggers:
+    disable: true # workflow_run is used deliberately to gate django.yml/playwright.yml on the Update workflow
+  excessive-permissions:
+    disable: true # this repo doesn't set explicit `permissions:` blocks
+  unpinned-images:
+    disable: true # postgres:latest test-service container in django.yml
+  adhoc-packages:
+    disable: true # `npm install -g npm-check-updates` in deps.yml's vuejs job
