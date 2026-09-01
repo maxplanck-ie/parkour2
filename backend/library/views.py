@@ -85,6 +85,7 @@ def build_search_term_query(term):
         "barcode__icontains",
         "request_name__icontains",
         "pool_names__icontains",
+        "index_type_name__icontains",
     ]
     field_queries = [Q(**{field: term}) for field in search_fields]
     field_queries.append(
