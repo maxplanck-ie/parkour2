@@ -1291,13 +1291,15 @@ input[type="radio"]:checked::after {
   font-weight: bold;
 }
 
-.filter-item select {
+.filter-item select,
+.filter-item input[type="text"] {
   width: 100%;
   padding: 8px;
   border: 1px solid #ddd;
   border-end-start-radius: 8px;
   border-end-end-radius: 8px;
   background-color: white;
+  box-sizing: border-box;
 }
 
 .reset-button {

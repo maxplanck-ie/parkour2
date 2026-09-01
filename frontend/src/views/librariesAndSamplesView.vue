@@ -188,6 +188,50 @@
               </select>
             </div>
 
+            <!-- I7 Index Range Filter -->
+            <div class="filter-item">
+              <label for="i7From">I7 Index (from)</label>
+              <input
+                type="text"
+                id="i7From"
+                placeholder="e.g. N701"
+                v-model="filters.i7From"
+                @change="getLibrariesSamples(1)"
+              />
+            </div>
+            <div class="filter-item">
+              <label for="i7To">I7 Index (to)</label>
+              <input
+                type="text"
+                id="i7To"
+                placeholder="e.g. N729"
+                v-model="filters.i7To"
+                @change="getLibrariesSamples(1)"
+              />
+            </div>
+
+            <!-- I5 Index Range Filter -->
+            <div class="filter-item">
+              <label for="i5From">I5 Index (from)</label>
+              <input
+                type="text"
+                id="i5From"
+                placeholder="e.g. S501"
+                v-model="filters.i5From"
+                @change="getLibrariesSamples(1)"
+              />
+            </div>
+            <div class="filter-item">
+              <label for="i5To">I5 Index (to)</label>
+              <input
+                type="text"
+                id="i5To"
+                placeholder="e.g. S522"
+                v-model="filters.i5To"
+                @change="getLibrariesSamples(1)"
+              />
+            </div>
+
             <!-- Reset Filters Button -->
             <button @click="resetAdvancedFilters" class="reset-button">
               Reset Filters
@@ -432,6 +476,13 @@
                       sequencer, read length, or changed ownership. These
                       filters are useful when you know what stage or processing
                       setup you are looking for.
+                    </li>
+                    <li>
+                      Use the <strong>I7 Index</strong> and
+                      <strong>I5 Index</strong> range filters under Advanced
+                      Filters to find libraries/samples by their index IDs (e.g.
+                      From <code>N701</code> To <code>N729</code>). Leave one
+                      side empty to match a single index exactly.
                     </li>
                     <li>
                       If the table looks too crowded, use
@@ -1519,7 +1570,11 @@ export default {
         analysisType: null,
         sequencer: null,
         readLength: null,
-        changedOwnership: null
+        changedOwnership: null,
+        i7From: "",
+        i7To: "",
+        i5From: "",
+        i5To: ""
       },
       protocolsList: [],
       analysisTypesList: [],
@@ -1657,6 +1712,18 @@ export default {
         }
         if (this.filters.changedOwnership !== null) {
           params.changed_ownership = this.filters.changedOwnership;
+        }
+        if (this.filters.i7From) {
+          params.i7_from = this.filters.i7From;
+        }
+        if (this.filters.i7To) {
+          params.i7_to = this.filters.i7To;
+        }
+        if (this.filters.i5From) {
+          params.i5_from = this.filters.i5From;
+        }
+        if (this.filters.i5To) {
+          params.i5_to = this.filters.i5To;
         }
 
         let response = await axiosRef.get(
@@ -1864,7 +1931,11 @@ export default {
         analysisType: null,
         sequencer: null,
         readLength: null,
-        changedOwnership: null
+        changedOwnership: null,
+        i7From: "",
+        i7To: "",
+        i5From: "",
+        i5To: ""
       };
       this.getLibrariesSamples(1);
     },
