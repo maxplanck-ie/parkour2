@@ -273,6 +273,12 @@ class TestLibrarySampleTree(BaseTestCase):
             gated_flowcell_queries[0].children,
         )
 
+    def test_search_query_includes_index_type_name(self):
+        """Index Type values must be searchable like other displayed fields."""
+        query = build_search_term_query("Nextera XT")
+
+        self.assertIn(("index_type_name__icontains", "Nextera XT"), query.children)
+
     def test_sequencer_filter_is_limited_to_sequencing_statuses(self):
         """Sequencer filtering applies the same status gate as displayed data."""
         queryset = Mock()
