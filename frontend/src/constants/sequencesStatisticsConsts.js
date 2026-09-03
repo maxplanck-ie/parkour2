@@ -1,6 +1,7 @@
 import iconSelectAll from "../assets/icons/action_select_all.svg";
 import iconDeselectAll from "../assets/icons/action_deselect_all.svg";
 import { numericFilterConfig } from "../utilities/numericHeaderFilter";
+import { textFilterConfig } from "../utilities/textHeaderFilter";
 
 function fixedNumber(value, digits = 2) {
   if (value === null || value === undefined || value === "") return "";
@@ -84,8 +85,7 @@ export function sequencesStatisticsColumnDefs(onSelectionChanged) {
       minWidth: 75,
       visible: true,
       frozen: true,
-      headerFilter: true,
-      headerFilterPlaceholder: "Filter..."
+      ...textFilterConfig()
     },
     {
       title: "Barcode",
@@ -93,16 +93,14 @@ export function sequencesStatisticsColumnDefs(onSelectionChanged) {
       minWidth: 70,
       visible: true,
       frozen: true,
-      headerFilter: true,
-      headerFilterPlaceholder: "Filter..."
+      ...textFilterConfig()
     },
     {
       title: "Name",
       field: "name",
       minWidth: 80,
       visible: true,
-      headerFilter: true,
-      headerFilterPlaceholder: "Filter...",
+      ...textFilterConfig(),
       formatter: textFormatter("left", false),
       tooltip: (event, cell) => cell.getValue() || ""
     },
@@ -111,34 +109,28 @@ export function sequencesStatisticsColumnDefs(onSelectionChanged) {
       field: "lane_display",
       minWidth: 45,
       visible: true,
-      headerFilter: true,
-      headerFilterPlaceholder: "Filter..."
+      ...textFilterConfig()
     },
     {
       title: "Pool",
       field: "pool",
       minWidth: 65,
       visible: true,
-      headerFilter: true,
-      headerFilterPlaceholder: "Filter..."
+      ...textFilterConfig()
     },
     {
       title: "Protocol",
       field: "library_protocol",
       minWidth: 80,
       visible: true,
-      headerFilter: true,
-      headerFilterPlaceholder: "Filter...",
-      headerTooltip: "Library Protocol"
+      ...textFilterConfig("Library Protocol")
     },
     {
       title: "Analysis",
       field: "library_type",
       minWidth: 70,
       visible: true,
-      headerFilter: true,
-      headerFilterPlaceholder: "Filter...",
-      headerTooltip: "Analysis Type"
+      ...textFilterConfig("Analysis Type")
     },
     {
       title: "Requested Reads (M)",

@@ -1,4 +1,5 @@
 import { numericFilterConfig } from "../utilities/numericHeaderFilter";
+import { textFilterConfig } from "../utilities/textHeaderFilter";
 
 function displayValue(value) {
   if (value === null || value === undefined || value === "") return "";
@@ -65,64 +66,56 @@ export function invoicingColumnDefs() {
       minWidth: 150,
       frozen: true,
       cssClass: "right-border",
-      headerFilter: true,
-      headerFilterPlaceholder: "Filter...",
+      ...textFilterConfig(),
       formatter: textFormatter("left", true)
     },
     {
       field: "cost_unit",
       title: "Cost Unit",
       minWidth: 90,
-      headerFilter: true,
-      headerFilterPlaceholder: "Filter...",
+      ...textFilterConfig(),
       formatter: textFormatter("left")
     },
     {
       field: "sequencer",
       title: "Sequencer",
       minWidth: 115,
-      headerFilter: true,
-      headerFilterPlaceholder: "Filter...",
+      ...textFilterConfig(),
       formatter: textFormatter("left")
     },
     {
       field: "flowcell_date",
       title: "Date",
       minWidth: 95,
-      headerFilter: true,
-      headerFilterPlaceholder: "Filter...",
+      ...textFilterConfig(),
       formatter: textFormatter("left")
     },
     {
       field: "flowcell_id",
       title: "Flowcell ID",
       minWidth: 120,
-      headerFilter: true,
-      headerFilterPlaceholder: "Filter...",
+      ...textFilterConfig(),
       formatter: textFormatter("left")
     },
     {
       field: "pool",
       title: "Pool",
       minWidth: 100,
-      headerFilter: true,
-      headerFilterPlaceholder: "Filter...",
+      ...textFilterConfig(),
       formatter: textFormatter("left")
     },
     {
       field: "percentage",
       title: "%",
       minWidth: 90,
-      headerFilter: true,
-      headerFilterPlaceholder: "Filter...",
+      ...textFilterConfig(),
       formatter: textFormatter("left")
     },
     {
       field: "read_length",
       title: "Read Length",
       minWidth: 105,
-      headerFilter: true,
-      headerFilterPlaceholder: "Filter...",
+      ...textFilterConfig(),
       formatter: textFormatter("left")
     },
     {
@@ -136,8 +129,7 @@ export function invoicingColumnDefs() {
       field: "library_protocol",
       title: "Library Protocol",
       minWidth: 140,
-      headerFilter: true,
-      headerFilterPlaceholder: "Filter...",
+      ...textFilterConfig(),
       formatter: textFormatter("left")
     },
     {

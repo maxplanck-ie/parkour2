@@ -9,6 +9,7 @@ import iconQualityPassed from "../assets/icons/status_quality_passed.svg";
 import iconQualityFailed from "../assets/icons/status_quality_failed.svg";
 import iconEditComment from "../assets/icons/action_pool_edit_comment.svg";
 import { numericFilterConfig } from "../utilities/numericHeaderFilter";
+import { textFilterConfig } from "../utilities/textHeaderFilter";
 import iconDestroyPool from "../assets/icons/action_pool_destroy.svg";
 
 export function poolingGroupHeader(
@@ -102,9 +103,7 @@ export function poolingColumnDefs(getTabulatorInstance) {
       title: "Request",
       field: "request_name",
       minWidth: 140,
-      headerFilter: true,
-      headerFilterPlaceholder: "Filter...",
-      headerTooltip: "Request ID",
+      ...textFilterConfig("Request ID"),
       visible: true,
       frozen: true,
       cssClass: "right-border",
@@ -128,9 +127,7 @@ export function poolingColumnDefs(getTabulatorInstance) {
       title: "Name",
       field: "name",
       minWidth: 60,
-      headerFilter: true,
-      headerFilterPlaceholder: "Filter...",
-      headerTooltip: "Library Name",
+      ...textFilterConfig("Library Name"),
       visible: true,
       frozen: true,
       cssClass: "right-border",
@@ -147,9 +144,7 @@ export function poolingColumnDefs(getTabulatorInstance) {
       field: "barcode",
       width: 95,
       minWidth: 95,
-      headerFilter: true,
-      headerFilterPlaceholder: "Filter...",
-      headerTooltip: "Barcode",
+      ...textFilterConfig("Barcode"),
       visible: true,
       frozen: true,
       cssClass: "right-border",
@@ -172,9 +167,7 @@ export function poolingColumnDefs(getTabulatorInstance) {
       field: "create_time",
       width: 90,
       minWidth: 60,
-      headerFilter: true,
-      headerFilterPlaceholder: "Filter...",
-      headerTooltip: "Date",
+      ...textFilterConfig("Date"),
       visible: true,
       cssClass: "regular-column",
       contextMenu: () =>
@@ -291,9 +284,7 @@ export function poolingColumnDefs(getTabulatorInstance) {
       field: "coordinate",
       width: 80,
       headerVertical: false,
-      headerFilter: true,
-      headerFilterPlaceholder: "Filter...",
-      headerTooltip: "Index Pair Coordinate",
+      ...textFilterConfig("Index Pair Coordinate"),
       visible: true,
       cssClass: "regular-column",
       contextMenu: () =>
@@ -309,9 +300,7 @@ export function poolingColumnDefs(getTabulatorInstance) {
       minWidth: 60,
       width: "6%",
       headerVertical: false,
-      headerFilter: true,
-      headerFilterPlaceholder: "Filter...",
-      headerTooltip: "Index I7 ID",
+      ...textFilterConfig("Index I7 ID"),
       visible: true,
       cssClass: "regular-column",
       contextMenu: () =>
@@ -327,9 +316,7 @@ export function poolingColumnDefs(getTabulatorInstance) {
       minWidth: 60,
       width: "6%",
       headerVertical: false,
-      headerFilter: true,
-      headerFilterPlaceholder: "Filter...",
-      headerTooltip: "Index I7 ID",
+      ...textFilterConfig("Index I7 ID"),
       visible: true,
       cssClass: "regular-column",
       contextMenu: () =>
@@ -345,9 +332,7 @@ export function poolingColumnDefs(getTabulatorInstance) {
       minWidth: 60,
       width: "6%",
       headerVertical: false,
-      headerFilter: true,
-      headerFilterPlaceholder: "Filter...",
-      headerTooltip: "Index I5 ID",
+      ...textFilterConfig("Index I5 ID"),
       visible: true,
       cssClass: "regular-column",
       contextMenu: () =>
@@ -363,9 +348,7 @@ export function poolingColumnDefs(getTabulatorInstance) {
       minWidth: 60,
       width: "6%",
       headerVertical: false,
-      headerFilter: true,
-      headerFilterPlaceholder: "Filter...",
-      headerTooltip: "Index I5 ID",
+      ...textFilterConfig("Index I5 ID"),
       visible: true,
       cssClass: "regular-column",
       contextMenu: () =>

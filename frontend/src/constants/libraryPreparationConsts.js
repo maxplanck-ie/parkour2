@@ -9,6 +9,7 @@ import iconDeselectAll from "../assets/icons/action_deselect_all.svg";
 import iconQualityPassed from "../assets/icons/status_quality_passed.svg";
 import iconQualityFailed from "../assets/icons/status_quality_failed.svg";
 import { numericFilterConfig } from "../utilities/numericHeaderFilter";
+import { textFilterConfig } from "../utilities/textHeaderFilter";
 
 export function libraryPreparationGroupHeader(value, count) {
   return `
@@ -76,9 +77,7 @@ export function libraryPreparationColumnDefs(getTabulatorInstance) {
       title: "Request",
       field: "request_name",
       minWidth: 140,
-      headerFilter: true,
-      headerFilterPlaceholder: "Filter...",
-      headerTooltip: "Request",
+      ...textFilterConfig("Request"),
       visible: true,
       frozen: true,
       cssClass: "right-border",
@@ -100,9 +99,7 @@ export function libraryPreparationColumnDefs(getTabulatorInstance) {
       field: "barcode",
       width: 95,
       minWidth: 95,
-      headerFilter: true,
-      headerFilterPlaceholder: "Filter...",
-      headerTooltip: "Barcode",
+      ...textFilterConfig("Barcode"),
       visible: true,
       frozen: true,
       cssClass: "right-border",
@@ -124,9 +121,7 @@ export function libraryPreparationColumnDefs(getTabulatorInstance) {
       field: "name",
       width: 110,
       minWidth: 60,
-      headerFilter: true,
-      headerFilterPlaceholder: "Filter...",
-      headerTooltip: "Sample Name",
+      ...textFilterConfig("Sample Name"),
       visible: true,
       contextMenu: () =>
         cellContextMenu(true, false, false, getTabulatorInstance, {
@@ -146,9 +141,7 @@ export function libraryPreparationColumnDefs(getTabulatorInstance) {
       field: "create_time",
       width: 90,
       minWidth: 60,
-      headerFilter: true,
-      headerFilterPlaceholder: "Filter...",
-      headerTooltip: "Date (Since)",
+      ...textFilterConfig("Date (Since)"),
       visible: true,
       cssClass: "regular-column",
       contextMenu: () =>
@@ -171,9 +164,7 @@ export function libraryPreparationColumnDefs(getTabulatorInstance) {
       minWidth: 60,
       visible: true,
       cssClass: "regular-column",
-      headerFilter: true,
-      headerFilterPlaceholder: "Filter...",
-      headerTooltip: "Library Preparation Protocol",
+      ...textFilterConfig("Library Preparation Protocol"),
       contextMenu: () =>
         cellContextMenu(true, false, false, getTabulatorInstance, {
           blockActionsOnDisabledCells: true
@@ -193,9 +184,7 @@ export function libraryPreparationColumnDefs(getTabulatorInstance) {
       width: 140,
       minWidth: 60,
       headerVertical: false,
-      headerFilter: true,
-      headerFilterPlaceholder: "Filter...",
-      headerTooltip: "Comment (User)",
+      ...textFilterConfig("Comment (User)"),
       visible: true,
       cssClass: "regular-column",
       contextMenu: () =>
@@ -216,9 +205,7 @@ export function libraryPreparationColumnDefs(getTabulatorInstance) {
       width: 84,
       minWidth: 60,
       headerVertical: false,
-      headerFilter: true,
-      headerFilterPlaceholder: "Filter...",
-      headerTooltip: "Pool ID",
+      ...textFilterConfig("Pool ID"),
       visible: true,
       cssClass: "regular-column",
       contextMenu: () =>
@@ -239,9 +226,7 @@ export function libraryPreparationColumnDefs(getTabulatorInstance) {
       width: 96,
       minWidth: 60,
       headerVertical: false,
-      headerFilter: true,
-      headerFilterPlaceholder: "Filter...",
-      headerTooltip: "Index Type",
+      ...textFilterConfig("Index Type"),
       visible: true,
       cssClass: "regular-column",
       contextMenu: () =>
@@ -262,9 +247,7 @@ export function libraryPreparationColumnDefs(getTabulatorInstance) {
       width: 105,
       minWidth: 60,
       headerVertical: false,
-      headerFilter: true,
-      headerFilterPlaceholder: "Filter...",
-      headerTooltip: "Index I7 ID",
+      ...textFilterConfig("Index I7 ID"),
       visible: true,
       cssClass: "regular-column",
       contextMenu: () =>
@@ -285,9 +268,7 @@ export function libraryPreparationColumnDefs(getTabulatorInstance) {
       width: 105,
       minWidth: 60,
       headerVertical: false,
-      headerFilter: true,
-      headerFilterPlaceholder: "Filter...",
-      headerTooltip: "Index I5 ID",
+      ...textFilterConfig("Index I5 ID"),
       visible: true,
       cssClass: "regular-column",
       contextMenu: () =>
@@ -307,9 +288,7 @@ export function libraryPreparationColumnDefs(getTabulatorInstance) {
       field: "coordinate",
       width: 40,
       headerVertical: false,
-      headerFilter: true,
-      headerFilterPlaceholder: "Filter...",
-      headerTooltip: "Index Pair Coordinate",
+      ...textFilterConfig("Index Pair Coordinate"),
       visible: true,
       cssClass: "regular-column",
       contextMenu: () =>
@@ -379,9 +358,7 @@ export function libraryPreparationColumnDefs(getTabulatorInstance) {
         };
       },
       headerVertical: false,
-      headerFilter: "input",
-      headerFilterPlaceholder: "Filter...",
-      headerTooltip: "Measurement Unit",
+      ...textFilterConfig("Measurement Unit"),
       visible: true,
       cssClass: "regular-column",
       contextMenu: () =>
@@ -600,9 +577,7 @@ export function libraryPreparationColumnDefs(getTabulatorInstance) {
       minWidth: 60,
       editor: "input",
       headerVertical: false,
-      headerFilter: true,
-      headerFilterPlaceholder: "Filter...",
-      headerTooltip: "Comment (Facility)",
+      ...textFilterConfig("Comment (Facility)"),
       visible: true,
       cssClass: "regular-column",
       contextMenu: () =>

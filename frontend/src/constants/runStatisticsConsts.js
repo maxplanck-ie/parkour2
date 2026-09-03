@@ -1,6 +1,7 @@
 import iconSelectAll from "../assets/icons/action_select_all.svg";
 import iconDeselectAll from "../assets/icons/action_deselect_all.svg";
 import { numericFilterConfig } from "../utilities/numericHeaderFilter";
+import { textFilterConfig } from "../utilities/textHeaderFilter";
 
 function displayValue(value, digits = null) {
   if (value === null || value === undefined || value === "") return "";
@@ -94,42 +95,35 @@ export function runStatisticsColumnDefs(onSelectionChanged) {
       minWidth: 65,
       visible: true,
       frozen: true,
-      headerFilter: true,
-      headerFilterPlaceholder: "Filter..."
+      ...textFilterConfig()
     },
     {
       title: "Pool",
       field: "pool",
       minWidth: 75,
       visible: true,
-      headerFilter: true,
-      headerFilterPlaceholder: "Filter..."
+      ...textFilterConfig()
     },
     {
       title: "Request",
       field: "request",
       minWidth: 85,
       visible: true,
-      headerFilter: true,
-      headerFilterPlaceholder: "Filter..."
+      ...textFilterConfig()
     },
     {
       title: "Preparation",
       field: "library_preparation",
       minWidth: 95,
       visible: true,
-      headerFilter: true,
-      headerFilterPlaceholder: "Filter...",
-      headerTooltip: "Preparation Method"
+      ...textFilterConfig("Preparation Method")
     },
     {
       title: "Analysis Type",
       field: "library_type",
       minWidth: 85,
       visible: true,
-      headerFilter: true,
-      headerFilterPlaceholder: "Filter...",
-      headerTooltip: "Analysis Type"
+      ...textFilterConfig("Analysis Type")
     },
     {
       title: "Loading Conc.",

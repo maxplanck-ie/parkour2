@@ -14,6 +14,7 @@ import iconQualityPassed from "../assets/icons/status_quality_passed.svg";
 import iconQualityFailed from "../assets/icons/status_quality_failed.svg";
 import iconQualityCompromised from "../assets/icons/status_quality_compromised.svg";
 import { numericFilterConfig } from "../utilities/numericHeaderFilter";
+import { textFilterConfig } from "../utilities/textHeaderFilter";
 
 const GMO_TRUE_VALUES = new Set(["y", "yes", "true", "1"]);
 const GMO_FALSE_VALUES = new Set(["n", "no", "false", "0"]);
@@ -131,9 +132,7 @@ export function incomingLibrariesSamplesColumnDefs(getTabulatorInstance) {
       title: "Name",
       field: "name",
       minWidth: 100,
-      headerFilter: true,
-      headerFilterPlaceholder: "Filter...",
-      headerTooltip: "Sample Name",
+      ...textFilterConfig("Sample Name"),
       visible: true,
       frozen: true,
       cssClass: "name-column right-border",
@@ -188,9 +187,7 @@ export function incomingLibrariesSamplesColumnDefs(getTabulatorInstance) {
       field: "barcode",
       width: 95,
       minWidth: 95,
-      headerFilter: true,
-      headerFilterPlaceholder: "Filter...",
-      headerTooltip: "Barcode",
+      ...textFilterConfig("Barcode"),
       visible: true,
       frozen: true,
       cssClass: "details-column barcode-column right-border",
@@ -220,9 +217,7 @@ export function incomingLibrariesSamplesColumnDefs(getTabulatorInstance) {
           minWidth: 80,
           width: "6%",
           headerVertical: false,
-          headerFilter: true,
-          headerFilterPlaceholder: "Filter...",
-          headerTooltip: "Input Type",
+          ...textFilterConfig("Input Type"),
           visible: true,
           cssClass: "user-entry-column",
           contextMenu: () =>
@@ -244,9 +239,7 @@ export function incomingLibrariesSamplesColumnDefs(getTabulatorInstance) {
           minWidth: 80,
           width: "6%",
           headerVertical: false,
-          headerFilter: true,
-          headerFilterPlaceholder: "Filter...",
-          headerTooltip: "Library Preparation Protocol",
+          ...textFilterConfig("Library Preparation Protocol"),
           visible: true,
           cssClass: "user-entry-column",
           contextMenu: () =>
@@ -267,9 +260,7 @@ export function incomingLibrariesSamplesColumnDefs(getTabulatorInstance) {
           field: "comments",
           minWidth: 100,
           headerVertical: false,
-          headerFilter: true,
-          headerFilterPlaceholder: "Filter...",
-          headerTooltip: "Comment (User)",
+          ...textFilterConfig("Comment (User)"),
           visible: true,
           cssClass: "user-entry-column",
           contextMenu: () =>
@@ -290,9 +281,7 @@ export function incomingLibrariesSamplesColumnDefs(getTabulatorInstance) {
           minWidth: 60,
           width: "4%",
           headerVertical: false,
-          headerFilter: true,
-          headerFilterPlaceholder: "Filter...",
-          headerTooltip: "Input (User)",
+          ...textFilterConfig("Input (User)"),
           visible: true,
           cssClass: "user-entry-column",
           contextMenu: () =>
@@ -443,9 +432,7 @@ export function incomingLibrariesSamplesColumnDefs(getTabulatorInstance) {
             };
           },
           headerVertical: false,
-          headerFilter: "input",
-          headerFilterPlaceholder: "Filter...",
-          headerTooltip: "Measurement Unit",
+          ...textFilterConfig("Measurement Unit"),
           visible: true,
           cssClass: "facility-entry-column",
           contextMenu: () =>
@@ -700,9 +687,7 @@ export function incomingLibrariesSamplesColumnDefs(getTabulatorInstance) {
           minWidth: 100,
           editor: "input",
           headerVertical: false,
-          headerFilter: true,
-          headerFilterPlaceholder: "Filter...",
-          headerTooltip: "Comment (Facility)",
+          ...textFilterConfig("Comment (Facility)"),
           visible: true,
           cssClass: "facility-entry-column no-right-border",
           contextMenu: () =>
