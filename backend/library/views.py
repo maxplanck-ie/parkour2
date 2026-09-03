@@ -378,6 +378,33 @@ class LibrarySampleTree(viewsets.ViewSet):
                 library_queryset = library_queryset.exclude(request_id__in=changed_ids)
                 sample_queryset = sample_queryset.exclude(request_id__in=changed_ids)
 
+        well_position_filter = request.GET.get("well_position")
+        if well_position_filter:
+            # plate_coord is computed (not a stored column), so it can't be
+            # expressed as a DB-level Q. Compute it for every request name
+            # still matching the filters applied so far, then narrow the
+            # querysets to the matching rows -- same effect as a Q filter,
+            # just derived in Python first.
+            candidate_request_names = set(
+                library_queryset.values_list("request_name", flat=True)
+            ) | set(sample_queryset.values_list("request_name", flat=True))
+            candidate_plate_coords = compute_plate_coords(candidate_request_names)
+            needle = well_position_filter.strip().lower()
+            matching_library_ids = [
+                pk
+                for (_req, kind, pk), coord in candidate_plate_coords.items()
+                if kind == "library" and needle in coord.lower()
+            ]
+            matching_sample_ids = [
+                pk
+                for (_req, kind, pk), coord in candidate_plate_coords.items()
+                if kind == "sample" and needle in coord.lower()
+            ]
+            library_queryset = library_queryset.filter(
+                library_id__in=matching_library_ids
+            )
+            sample_queryset = sample_queryset.filter(sample_id__in=matching_sample_ids)
+
         library_requests = (
             library_queryset.values("request_name")
             .annotate(latest_time=Max("create_time"))

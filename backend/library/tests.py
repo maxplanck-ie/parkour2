@@ -173,6 +173,55 @@ class TestLibrarySampleTree(BaseTestCase):
             self.assertIn("plate_coord", record)
             self.assertRegex(record["plate_coord"], r"^[A-H](?:[1-9]|1[0-2])$")
 
+    def test_well_position_filter_matches_computed_plate_coord(self):
+        """The Plate Coord column search box filters by the server-computed
+        value, even though it isn't a stored column (see compute_plate_coords)."""
+        plate_coord_request = Request(user=self.request.user)
+        plate_coord_request.save()
+
+        rows = [
+            CompleteLibraryData.objects.create(
+                library_id=9001 + i,
+                barcode=barcode,
+                name=f"PlateCoordLib{i}",
+                status=1,
+                sequencing_depth=10.0,
+                measuring_unit="ng/µl",
+                measured_value=1.0,
+                measuring_unit_facility="ng/µl",
+                measured_value_facility=1.0,
+                concentration_library=1.0,
+                percent_total=100.0,
+                library_protocol_id=1,
+                analysis_type_id=1,
+                average_fragment_size=300.0,
+                request_id=plate_coord_request.id,
+                request_name=plate_coord_request.name,
+                create_time=timezone.now(),
+            )
+            for i, barcode in enumerate(["25L000001", "25L000002", "25L000003"])
+        ]
+        # Barcode order -> plate_coord: 25L000001 = A1, 25L000002 = B1, ...
+        # (well index -> row letter cycles every entry, column every 8; see
+        # library_sample_shared.utils._well_label).
+        target = rows[1]
+        self.assertEqual(target.plate_coord, "B1")
+
+        response = self.client.get(
+            reverse("libraries-and-samples-list"), {"well_position": "B1"}
+        )
+        self.assertEqual(response.status_code, 200)
+        payload = response.json()
+        returned_ids = {
+            record["library_id"]
+            for record in payload["children"]
+            if record["record_type"] == "Library"
+        }
+        self.assertIn(target.library_id, returned_ids)
+        for row in rows:
+            if row.library_id != target.library_id:
+                self.assertNotIn(row.library_id, returned_ids)
+
     def test_sample_stage_data_visibility_status_matrix(self):
         """Stage data remains visible after failure and is otherwise gated."""
         cases = (

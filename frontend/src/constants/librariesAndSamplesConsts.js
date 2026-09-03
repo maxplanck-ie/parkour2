@@ -327,8 +327,11 @@ export function librariesAndSamplesColumnDefs(
       field: "well_position",
       width: 80,
       minWidth: 60,
-      headerFilter: true,
-      headerTooltip: "Coordinate of Sample in 96-well Plate",
+      ...serverTextFilterConfig(
+        "well_position",
+        onHeaderFilterChange,
+        "Coordinate of Sample in 96-well Plate (e.g. A1)"
+      ),
       visible: true,
       frozen: true,
       cssClass: "right-border",
