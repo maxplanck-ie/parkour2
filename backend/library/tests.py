@@ -29,8 +29,11 @@ from library.views import (
     apply_stage_data_visibility,
     build_index_id_filter,
     build_search_term_query,
+    build_type_filter,
     filter_by_sequencer,
+    parse_gmo_filter,
     parse_index_id,
+    parse_status_filter,
 )
 from library_preparation.models import LibraryPreparation
 from library_sample_shared.models import (
@@ -326,6 +329,38 @@ class TestLibrarySampleTree(BaseTestCase):
     def test_index_id_filter_rejects_unparseable_bound(self):
         with self.assertRaises(InvalidIndexRangeError):
             build_index_id_filter("i7_id", "I7 ID", "N701-custom-seq")
+
+    def test_build_type_filter_empty_returns_none(self):
+        self.assertIsNone(build_type_filter(""))
+        self.assertIsNone(build_type_filter(None))
+
+    def test_build_type_filter_matches_third_barcode_character(self):
+        self.assertEqual(
+            build_type_filter("S"),
+            Q(barcode__iregex=r"^.{2}S"),
+        )
+
+    def test_parse_status_filter_empty_returns_none(self):
+        self.assertIsNone(parse_status_filter(""))
+        self.assertIsNone(parse_status_filter(None))
+
+    def test_parse_status_filter_parses_int(self):
+        self.assertEqual(parse_status_filter("5"), 5)
+
+    def test_parse_status_filter_rejects_non_numeric(self):
+        self.assertIsNone(parse_status_filter("abc"))
+
+    def test_parse_gmo_filter_recognizes_true_values(self):
+        for value in ("y", "yes", "true", "1", "TRUE", " Yes "):
+            self.assertIs(parse_gmo_filter(value), True)
+
+    def test_parse_gmo_filter_recognizes_false_values(self):
+        for value in ("n", "no", "false", "0", "FALSE"):
+            self.assertIs(parse_gmo_filter(value), False)
+
+    def test_parse_gmo_filter_rejects_unrecognized(self):
+        self.assertIsNone(parse_gmo_filter("maybe"))
+        self.assertIsNone(parse_gmo_filter(""))
 
 
 class TestLibraries(BaseTestCase):
