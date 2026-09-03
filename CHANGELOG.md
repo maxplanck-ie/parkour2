@@ -3,6 +3,7 @@
 Unreleased
 ==========
 
+- Added a `plate_coord` property to `CompleteLibraryData`/`CompleteSampleData`, computing the "Plate Coord" (A1..H12) value in the backend instead of only client-side in Libraries & Samples — grouped by request name, ordered by barcode, matching the existing frontend computation exactly.
 - Added I7 Index / I5 Index range filters (From/To) to Libraries & Samples Advanced Filters, so users can find libraries/samples by index ID range (e.g. N701 to N729) without relying on exact Index Type name matches.
 - Fixed Libraries & Samples search returning no results for an Index Type that exists in the data: the global search endpoint never queried `index_type_name`.
 - Fix notification email header logo: it still used an old brand mark (an "S"-swirl) at a distorted 17x26px size; replaced with the current DNA-helix mark used elsewhere in the app, sized 24x24.

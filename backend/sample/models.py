@@ -170,3 +170,13 @@ class CompleteSampleData(models.Model):
     class Meta:
         managed = False
         db_table = "complete_sample_data_mv"
+
+    @property
+    def plate_coord(self):
+        sibling_ids = list(
+            CompleteSampleData.objects.filter(request_name=self.request_name)
+            .order_by("barcode")
+            .values_list("sample_id", flat=True)
+        )
+        index = sibling_ids.index(self.sample_id) % 96
+        return f"{chr(65 + index % 8)}{index // 8 + 1}"

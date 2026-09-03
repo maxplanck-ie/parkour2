@@ -99,3 +99,13 @@ class CompleteLibraryData(models.Model):
     class Meta:
         managed = False
         db_table = "complete_library_data_mv"
+
+    @property
+    def plate_coord(self):
+        sibling_ids = list(
+            CompleteLibraryData.objects.filter(request_name=self.request_name)
+            .order_by("barcode")
+            .values_list("library_id", flat=True)
+        )
+        index = sibling_ids.index(self.library_id) % 96
+        return f"{chr(65 + index % 8)}{index // 8 + 1}"
