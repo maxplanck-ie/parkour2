@@ -13,7 +13,10 @@ import iconDeselectAll from "../assets/icons/action_deselect_all.svg";
 import iconQualityPassed from "../assets/icons/status_quality_passed.svg";
 import iconQualityFailed from "../assets/icons/status_quality_failed.svg";
 import iconQualityCompromised from "../assets/icons/status_quality_compromised.svg";
-import { numericFilterConfig } from "../utilities/numericHeaderFilter";
+import {
+  numericFilterConfig,
+  numericFilterExamples
+} from "../utilities/numericHeaderFilter";
 import { textFilterConfig } from "../utilities/textHeaderFilter";
 
 const GMO_TRUE_VALUES = new Set(["y", "yes", "true", "1"]);
@@ -303,7 +306,10 @@ export function incomingLibrariesSamplesColumnDefs(getTabulatorInstance) {
           minWidth: 60,
           width: "4%",
           headerVertical: false,
-          ...numericFilterConfig((v) => Number(v)),
+          ...numericFilterConfig(
+            (v) => Number(v),
+            numericFilterExamples(30, 10, 10, 50)
+          ),
           visible: true,
           cssClass: "user-entry-column",
           contextMenu: () =>
@@ -331,7 +337,10 @@ export function incomingLibrariesSamplesColumnDefs(getTabulatorInstance) {
           minWidth: 60,
           width: "4%",
           headerVertical: false,
-          ...numericFilterConfig((v) => Number(v)),
+          ...numericFilterConfig(
+            (v) => Number(v),
+            numericFilterExamples(400, 200, 150, 500)
+          ),
           visible: true,
           cssClass: "user-entry-column",
           contextMenu: () =>
@@ -371,7 +380,10 @@ export function incomingLibrariesSamplesColumnDefs(getTabulatorInstance) {
           width: "4%",
           editor: "number",
           headerVertical: false,
-          ...numericFilterConfig((v) => Number(v)),
+          ...numericFilterConfig(
+            (v) => Number(v),
+            numericFilterExamples(50, 10, 10, 100)
+          ),
           visible: true,
           cssClass: "facility-entry-column",
           editorParams: {
@@ -459,7 +471,10 @@ export function incomingLibrariesSamplesColumnDefs(getTabulatorInstance) {
           width: "4%",
           editor: "number",
           headerVertical: false,
-          ...numericFilterConfig((v) => Number(v)),
+          ...numericFilterConfig(
+            (v) => Number(v),
+            numericFilterExamples(30, 10, 10, 50)
+          ),
           visible: true,
           cssClass: "facility-entry-column",
           editorParams: {
@@ -490,7 +505,10 @@ export function incomingLibrariesSamplesColumnDefs(getTabulatorInstance) {
           width: "4%",
           editor: "number",
           headerVertical: false,
-          ...numericFilterConfig((v) => Number(v)),
+          ...numericFilterConfig(
+            (v) => Number(v),
+            numericFilterExamples(600, 200, 200, 800)
+          ),
           visible: true,
           cssClass: "facility-entry-column",
           editorParams: {
@@ -523,7 +541,10 @@ export function incomingLibrariesSamplesColumnDefs(getTabulatorInstance) {
           width: "4%",
           editor: "number",
           headerVertical: false,
-          ...numericFilterConfig((v) => Number(v)),
+          ...numericFilterConfig(
+            (v) => Number(v),
+            numericFilterExamples(90, 50, 80, 100)
+          ),
           visible: true,
           cssClass: "facility-entry-column",
           editorParams: {
@@ -573,7 +594,10 @@ export function incomingLibrariesSamplesColumnDefs(getTabulatorInstance) {
           minWidth: 60,
           width: "4%",
           headerVertical: false,
-          ...numericFilterConfig((v) => Number(v)),
+          ...numericFilterConfig(
+            (v) => Number(v),
+            numericFilterExamples(8, 5, 5, 9)
+          ),
           visible: true,
           editor: "number",
           editorParams: {

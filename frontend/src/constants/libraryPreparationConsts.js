@@ -8,8 +8,14 @@ import iconSelectAll from "../assets/icons/action_select_all.svg";
 import iconDeselectAll from "../assets/icons/action_deselect_all.svg";
 import iconQualityPassed from "../assets/icons/status_quality_passed.svg";
 import iconQualityFailed from "../assets/icons/status_quality_failed.svg";
-import { numericFilterConfig } from "../utilities/numericHeaderFilter";
-import { textFilterConfig } from "../utilities/textHeaderFilter";
+import {
+  numericFilterConfig,
+  numericFilterExamples
+} from "../utilities/numericHeaderFilter";
+import {
+  textFilterConfig,
+  dateFilterConfig
+} from "../utilities/textHeaderFilter";
 
 export function libraryPreparationGroupHeader(value, count) {
   return `
@@ -141,7 +147,7 @@ export function libraryPreparationColumnDefs(getTabulatorInstance) {
       field: "create_time",
       width: 90,
       minWidth: 60,
-      ...textFilterConfig("Date (Since)"),
+      ...dateFilterConfig(),
       visible: true,
       cssClass: "regular-column",
       contextMenu: () =>
@@ -310,7 +316,10 @@ export function libraryPreparationColumnDefs(getTabulatorInstance) {
       width: "4%",
       editor: "number",
       headerVertical: false,
-      ...numericFilterConfig((v) => Number(v)),
+      ...numericFilterConfig(
+        (v) => Number(v),
+        numericFilterExamples(50, 10, 10, 100)
+      ),
       visible: true,
       cssClass: "regular-column",
       editorParams: {
@@ -385,7 +394,10 @@ export function libraryPreparationColumnDefs(getTabulatorInstance) {
       width: "4%",
       editor: "number",
       headerVertical: false,
-      ...numericFilterConfig((v) => Number(v)),
+      ...numericFilterConfig(
+        (v) => Number(v),
+        numericFilterExamples(500, 200, 200, 600)
+      ),
       visible: true,
       cssClass: "regular-column",
       editorParams: {
@@ -418,7 +430,10 @@ export function libraryPreparationColumnDefs(getTabulatorInstance) {
       width: "4%",
       editor: "number",
       headerVertical: false,
-      ...numericFilterConfig((v) => Number(v)),
+      ...numericFilterConfig(
+        (v) => Number(v),
+        numericFilterExamples(100, 10, 10, 200)
+      ),
       visible: true,
       cssClass: "regular-column",
       editorParams: {
@@ -447,7 +462,10 @@ export function libraryPreparationColumnDefs(getTabulatorInstance) {
       width: "4%",
       editor: "number",
       headerVertical: false,
-      ...numericFilterConfig((v) => Number(v)),
+      ...numericFilterConfig(
+        (v) => Number(v),
+        numericFilterExamples(15, 8, 8, 14)
+      ),
       visible: true,
       cssClass: "regular-column",
       editorParams: {
@@ -480,7 +498,10 @@ export function libraryPreparationColumnDefs(getTabulatorInstance) {
       width: "4%",
       editor: "number",
       headerVertical: false,
-      ...numericFilterConfig((v) => Number(v)),
+      ...numericFilterConfig(
+        (v) => Number(v),
+        numericFilterExamples(20, 5, 5, 20)
+      ),
       visible: true,
       cssClass: "regular-column",
       editorParams: {
@@ -511,7 +532,10 @@ export function libraryPreparationColumnDefs(getTabulatorInstance) {
       width: "4%",
       editor: "number",
       headerVertical: false,
-      ...numericFilterConfig((v) => Number(v)),
+      ...numericFilterConfig(
+        (v) => Number(v),
+        numericFilterExamples(500, 200, 200, 600)
+      ),
       visible: true,
       cssClass: "regular-column",
       editorParams: {
@@ -545,7 +569,10 @@ export function libraryPreparationColumnDefs(getTabulatorInstance) {
       editor: "number",
       defaultOnEmptyPaste: 100,
       headerVertical: false,
-      ...numericFilterConfig((v) => Number(v)),
+      ...numericFilterConfig(
+        (v) => Number(v),
+        numericFilterExamples(90, 50, 80, 100)
+      ),
       visible: true,
       cssClass: "regular-column",
       editorParams: {

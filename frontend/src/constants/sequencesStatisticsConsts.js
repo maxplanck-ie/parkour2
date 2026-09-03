@@ -1,6 +1,9 @@
 import iconSelectAll from "../assets/icons/action_select_all.svg";
 import iconDeselectAll from "../assets/icons/action_deselect_all.svg";
-import { numericFilterConfig } from "../utilities/numericHeaderFilter";
+import {
+  numericFilterConfig,
+  numericFilterExamples
+} from "../utilities/numericHeaderFilter";
 import { textFilterConfig } from "../utilities/textHeaderFilter";
 
 function fixedNumber(value, digits = 2) {
@@ -137,7 +140,10 @@ export function sequencesStatisticsColumnDefs(onSelectionChanged) {
       field: "reads_pf_requested",
       minWidth: 95,
       visible: true,
-      ...numericFilterConfig((v) => Number(v)),
+      ...numericFilterConfig(
+        (v) => Number(v),
+        numericFilterExamples(50, 10, 10, 30)
+      ),
       hozAlign: "right"
     },
     {
@@ -145,7 +151,10 @@ export function sequencesStatisticsColumnDefs(onSelectionChanged) {
       field: "reads_pf_sequenced",
       minWidth: 85,
       visible: true,
-      ...numericFilterConfig((v) => Number(v) / 1000000),
+      ...numericFilterConfig(
+        (v) => Number(v) / 1000000,
+        numericFilterExamples(30, 10, 10, 50)
+      ),
       formatter: (cell) => {
         const value = cell.getValue();
         if (value === null || value === undefined || value === "") {
@@ -160,7 +169,10 @@ export function sequencesStatisticsColumnDefs(onSelectionChanged) {
       field: "reads_percent",
       minWidth: 55,
       visible: true,
-      ...numericFilterConfig((v) => Number(v)),
+      ...numericFilterConfig(
+        (v) => Number(v),
+        numericFilterExamples(100, 50, 80, 120)
+      ),
       formatter: fixedFormatter(),
       hozAlign: "right"
     },
@@ -169,7 +181,10 @@ export function sequencesStatisticsColumnDefs(onSelectionChanged) {
       field: "confident_reads",
       minWidth: 95,
       visible: true,
-      ...numericFilterConfig((v) => Number(v)),
+      ...numericFilterConfig(
+        (v) => Number(v),
+        numericFilterExamples(5, 1, 0, 2)
+      ),
       formatter: fixedFormatter(),
       hozAlign: "right"
     },
@@ -178,7 +193,10 @@ export function sequencesStatisticsColumnDefs(onSelectionChanged) {
       field: "optical_duplicates",
       minWidth: 80,
       visible: true,
-      ...numericFilterConfig((v) => Number(v)),
+      ...numericFilterConfig(
+        (v) => Number(v),
+        numericFilterExamples(10, 1, 1, 5)
+      ),
       formatter: fixedFormatter(),
       hozAlign: "right"
     },
@@ -187,7 +205,10 @@ export function sequencesStatisticsColumnDefs(onSelectionChanged) {
       field: "dupped_reads",
       minWidth: 75,
       visible: true,
-      ...numericFilterConfig((v) => Number(v)),
+      ...numericFilterConfig(
+        (v) => Number(v),
+        numericFilterExamples(30, 10, 10, 30)
+      ),
       formatter: fixedFormatter(),
       hozAlign: "right"
     },
@@ -196,7 +217,10 @@ export function sequencesStatisticsColumnDefs(onSelectionChanged) {
       field: "mapped_reads",
       minWidth: 75,
       visible: true,
-      ...numericFilterConfig((v) => Number(v)),
+      ...numericFilterConfig(
+        (v) => Number(v),
+        numericFilterExamples(90, 50, 70, 95)
+      ),
       formatter: fixedFormatter(),
       hozAlign: "right"
     },
@@ -205,7 +229,10 @@ export function sequencesStatisticsColumnDefs(onSelectionChanged) {
       field: "insert_size",
       minWidth: 55,
       visible: true,
-      ...numericFilterConfig((v) => Number(v)),
+      ...numericFilterConfig(
+        (v) => Number(v),
+        numericFilterExamples(400, 100, 150, 350)
+      ),
       hozAlign: "right"
     }
   ]);

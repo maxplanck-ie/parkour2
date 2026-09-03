@@ -8,8 +8,14 @@ import iconDeselectAll from "../assets/icons/action_deselect_all.svg";
 import iconQualityPassed from "../assets/icons/status_quality_passed.svg";
 import iconQualityFailed from "../assets/icons/status_quality_failed.svg";
 import iconEditComment from "../assets/icons/action_pool_edit_comment.svg";
-import { numericFilterConfig } from "../utilities/numericHeaderFilter";
-import { textFilterConfig } from "../utilities/textHeaderFilter";
+import {
+  numericFilterConfig,
+  numericFilterExamples
+} from "../utilities/numericHeaderFilter";
+import {
+  textFilterConfig,
+  dateFilterConfig
+} from "../utilities/textHeaderFilter";
 import iconDestroyPool from "../assets/icons/action_pool_destroy.svg";
 
 export function poolingGroupHeader(
@@ -167,7 +173,7 @@ export function poolingColumnDefs(getTabulatorInstance) {
       field: "create_time",
       width: 90,
       minWidth: 60,
-      ...textFilterConfig("Date"),
+      ...dateFilterConfig(),
       visible: true,
       cssClass: "regular-column",
       contextMenu: () =>
@@ -184,7 +190,10 @@ export function poolingColumnDefs(getTabulatorInstance) {
       minWidth: 60,
       width: "6%",
       headerVertical: false,
-      ...numericFilterConfig((v) => Number(v)),
+      ...numericFilterConfig(
+        (v) => Number(v),
+        numericFilterExamples(20, 5, 5, 20)
+      ),
       visible: true,
       cssClass: "regular-column",
       contextMenu: () =>
@@ -207,7 +216,10 @@ export function poolingColumnDefs(getTabulatorInstance) {
       minWidth: 60,
       width: "6%",
       headerVertical: false,
-      ...numericFilterConfig((v) => Number(v)),
+      ...numericFilterConfig(
+        (v) => Number(v),
+        numericFilterExamples(90, 50, 80, 100)
+      ),
       visible: true,
       cssClass: "regular-column",
       contextMenu: () =>
@@ -223,7 +235,10 @@ export function poolingColumnDefs(getTabulatorInstance) {
       minWidth: 60,
       width: "6%",
       headerVertical: false,
-      ...numericFilterConfig((v) => Number(v)),
+      ...numericFilterConfig(
+        (v) => Number(v),
+        numericFilterExamples(500, 200, 200, 600)
+      ),
       visible: true,
       cssClass: "regular-column",
       contextMenu: () =>
@@ -246,7 +261,10 @@ export function poolingColumnDefs(getTabulatorInstance) {
       minWidth: 60,
       width: "6%",
       headerVertical: false,
-      ...numericFilterConfig((v) => Number(v)),
+      ...numericFilterConfig(
+        (v) => Number(v),
+        numericFilterExamples(50, 10, 10, 30)
+      ),
       visible: true,
       cssClass: "regular-column",
       contextMenu: () =>
@@ -269,7 +287,10 @@ export function poolingColumnDefs(getTabulatorInstance) {
       minWidth: 60,
       width: "6%",
       headerVertical: false,
-      ...numericFilterConfig((v) => Number(v)),
+      ...numericFilterConfig(
+        (v) => Number(v),
+        numericFilterExamples(90, 50, 50, 100)
+      ),
       visible: true,
       cssClass: "regular-column",
       contextMenu: () =>

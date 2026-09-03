@@ -55,14 +55,31 @@ export const NUMERIC_FILTER_HELP =
   ">=100 / <=50   at least / at most\n" +
   "=0  exact      100-200  range";
 
+// Build a placeholder/tooltip pair using example numbers that actually sit
+// in the column's real data range, instead of the generic ">100  50-200"
+// (wrong for e.g. a 0-11 RQN score or a ~4pM loading concentration).
+export function numericFilterExamples(above, below, rangeLow, rangeHigh) {
+  return {
+    placeholder: `>${above}  ${rangeLow}-${rangeHigh}`,
+    help:
+      "Numeric filter — type a comparison:\n" +
+      `>${above}  above    <${below}  below\n` +
+      `>=${above} / <=${below}   at least / at most\n` +
+      `=0  exact      ${rangeLow}-${rangeHigh}  range`
+  };
+}
+
 // Shared config that turns a column's header filter into the numeric
 // comparison-expression filter, with one Tabulator tooltip for the header.
 // Do not add a native title to the input: it overlaps Tabulator's tooltip.
-export function numericFilterConfig(extract) {
+// `examples` (from numericFilterExamples) overrides the generic placeholder
+// and help text with numbers realistic for this specific column.
+export function numericFilterConfig(extract, examples) {
   return {
     headerFilter: "input",
-    headerFilterPlaceholder: NUMERIC_FILTER_PLACEHOLDER,
+    headerFilterPlaceholder:
+      examples?.placeholder ?? NUMERIC_FILTER_PLACEHOLDER,
     headerFilterFunc: numericHeaderFilter(extract),
-    headerTooltip: NUMERIC_FILTER_HELP
+    headerTooltip: examples?.help ?? NUMERIC_FILTER_HELP
   };
 }

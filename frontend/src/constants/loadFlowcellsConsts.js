@@ -7,8 +7,14 @@ import iconSelectAll from "../assets/icons/action_select_all.svg";
 import iconDeselectAll from "../assets/icons/action_deselect_all.svg";
 import iconDestroyPool from "../assets/icons/action_pool_destroy.svg";
 import iconExportDownload from "../assets/icons/export_download.svg";
-import { numericFilterConfig } from "../utilities/numericHeaderFilter";
-import { textFilterConfig } from "../utilities/textHeaderFilter";
+import {
+  numericFilterConfig,
+  numericFilterExamples
+} from "../utilities/numericHeaderFilter";
+import {
+  textFilterConfig,
+  dateFilterConfig
+} from "../utilities/textHeaderFilter";
 
 export function loadFlowcellsGroupHeader(value, rows = []) {
   const formattedDate = rows[0]?.create_time || "";
@@ -114,7 +120,7 @@ export function loadFlowcellsColumnDefs(getTabulatorInstance, callbacks = {}) {
       field: "create_time",
       width: 95,
       minWidth: 90,
-      ...textFilterConfig(),
+      ...dateFilterConfig(),
       visible: true,
       formatter: (cell) => ellipsisContainer(cell.getValue() || "-")
     },
@@ -172,7 +178,10 @@ export function loadFlowcellsColumnDefs(getTabulatorInstance, callbacks = {}) {
       minWidth: 110,
       width: 120,
       visible: true,
-      ...numericFilterConfig((v) => Number(v)),
+      ...numericFilterConfig(
+        (v) => Number(v),
+        numericFilterExamples(10, 1, 1, 5)
+      ),
       editor: "number",
       editorParams: {
         min: 0,
@@ -198,7 +207,10 @@ export function loadFlowcellsColumnDefs(getTabulatorInstance, callbacks = {}) {
       minWidth: 90,
       width: 95,
       visible: true,
-      ...numericFilterConfig((v) => Number(v)),
+      ...numericFilterConfig(
+        (v) => Number(v),
+        numericFilterExamples(10, 1, 1, 5)
+      ),
       editor: "number",
       editorParams: {
         min: 0,

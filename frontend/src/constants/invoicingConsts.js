@@ -1,5 +1,11 @@
-import { numericFilterConfig } from "../utilities/numericHeaderFilter";
-import { textFilterConfig } from "../utilities/textHeaderFilter";
+import {
+  numericFilterConfig,
+  numericFilterExamples
+} from "../utilities/numericHeaderFilter";
+import {
+  textFilterConfig,
+  dateFilterConfig
+} from "../utilities/textHeaderFilter";
 
 function displayValue(value) {
   if (value === null || value === undefined || value === "") return "";
@@ -87,7 +93,7 @@ export function invoicingColumnDefs() {
       field: "flowcell_date",
       title: "Date",
       minWidth: 95,
-      ...textFilterConfig(),
+      ...dateFilterConfig(),
       formatter: textFormatter("left")
     },
     {
@@ -122,7 +128,10 @@ export function invoicingColumnDefs() {
       field: "num_libraries_samples_show",
       title: "# of Libraries/Samples",
       minWidth: 115,
-      ...numericFilterConfig((v) => parseFloat(String(v))),
+      ...numericFilterConfig(
+        (v) => parseFloat(String(v)),
+        numericFilterExamples(20, 1, 1, 10)
+      ),
       formatter: textFormatter("left")
     },
     {
@@ -137,7 +146,10 @@ export function invoicingColumnDefs() {
       title: "Fixed Costs",
       minWidth: 95,
       hozAlign: "right",
-      ...numericFilterConfig((v) => Number(v)),
+      ...numericFilterConfig(
+        (v) => Number(v),
+        numericFilterExamples(500, 100, 100, 500)
+      ),
       formatter: moneyFormatter()
     },
     {
@@ -145,7 +157,10 @@ export function invoicingColumnDefs() {
       title: "Sequencing Costs",
       minWidth: 105,
       hozAlign: "right",
-      ...numericFilterConfig((v) => Number(v)),
+      ...numericFilterConfig(
+        (v) => Number(v),
+        numericFilterExamples(3000, 1000, 1000, 5000)
+      ),
       formatter: moneyFormatter()
     },
     {
@@ -153,7 +168,10 @@ export function invoicingColumnDefs() {
       title: "Preparation Costs",
       minWidth: 105,
       hozAlign: "right",
-      ...numericFilterConfig((v) => Number(v)),
+      ...numericFilterConfig(
+        (v) => Number(v),
+        numericFilterExamples(500, 100, 100, 500)
+      ),
       formatter: moneyFormatter()
     },
     {
@@ -161,7 +179,10 @@ export function invoicingColumnDefs() {
       title: "Variable Costs",
       minWidth: 95,
       hozAlign: "right",
-      ...numericFilterConfig((v) => Number(v)),
+      ...numericFilterConfig(
+        (v) => Number(v),
+        numericFilterExamples(1000, 500, 500, 3000)
+      ),
       formatter: moneyFormatter()
     },
     {
@@ -169,7 +190,10 @@ export function invoicingColumnDefs() {
       title: "Total Costs",
       minWidth: 95,
       hozAlign: "right",
-      ...numericFilterConfig((v) => Number(v)),
+      ...numericFilterConfig(
+        (v) => Number(v),
+        numericFilterExamples(5000, 1000, 1000, 5000)
+      ),
       formatter: moneyFormatter()
     }
   ];

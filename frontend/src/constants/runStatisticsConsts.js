@@ -1,6 +1,9 @@
 import iconSelectAll from "../assets/icons/action_select_all.svg";
 import iconDeselectAll from "../assets/icons/action_deselect_all.svg";
-import { numericFilterConfig } from "../utilities/numericHeaderFilter";
+import {
+  numericFilterConfig,
+  numericFilterExamples
+} from "../utilities/numericHeaderFilter";
 import { textFilterConfig } from "../utilities/textHeaderFilter";
 
 function displayValue(value, digits = null) {
@@ -130,7 +133,10 @@ export function runStatisticsColumnDefs(onSelectionChanged) {
       field: "loading_concentration",
       minWidth: 82,
       visible: true,
-      ...numericFilterConfig((v) => Number(v)),
+      ...numericFilterConfig(
+        (v) => Number(v),
+        numericFilterExamples(10, 1, 1, 5)
+      ),
       hozAlign: "right"
     },
     {
@@ -138,7 +144,10 @@ export function runStatisticsColumnDefs(onSelectionChanged) {
       field: "cluster_pf",
       minWidth: 78,
       visible: true,
-      ...numericFilterConfig((v) => Number(v)),
+      ...numericFilterConfig(
+        (v) => Number(v),
+        numericFilterExamples(90, 50, 70, 95)
+      ),
       formatter: numberFormatter(2),
       hozAlign: "right"
     },
@@ -147,7 +156,10 @@ export function runStatisticsColumnDefs(onSelectionChanged) {
       field: "reads_pf",
       minWidth: 74,
       visible: true,
-      ...numericFilterConfig((v) => Number(v) / 1000000),
+      ...numericFilterConfig(
+        (v) => Number(v) / 1000000,
+        numericFilterExamples(300, 100, 100, 400)
+      ),
       formatter: numberFormatter(1, 1000000),
       hozAlign: "right"
     },
@@ -156,7 +168,10 @@ export function runStatisticsColumnDefs(onSelectionChanged) {
       field: "undetermined_indices",
       minWidth: 92,
       visible: true,
-      ...numericFilterConfig((v) => Number(v)),
+      ...numericFilterConfig(
+        (v) => Number(v),
+        numericFilterExamples(20, 5, 5, 15)
+      ),
       hozAlign: "right"
     },
     {
@@ -164,7 +179,10 @@ export function runStatisticsColumnDefs(onSelectionChanged) {
       field: "phix",
       minWidth: 60,
       visible: true,
-      ...numericFilterConfig((v) => Number(v)),
+      ...numericFilterConfig(
+        (v) => Number(v),
+        numericFilterExamples(10, 1, 1, 5)
+      ),
       hozAlign: "right"
     },
     {
@@ -172,7 +190,10 @@ export function runStatisticsColumnDefs(onSelectionChanged) {
       field: "aligned_spike_in",
       minWidth: 95,
       visible: true,
-      ...numericFilterConfig((v) => Number(v)),
+      ...numericFilterConfig(
+        (v) => Number(v),
+        numericFilterExamples(5, 1, 0, 2)
+      ),
       hozAlign: "right"
     },
     {
@@ -180,7 +201,10 @@ export function runStatisticsColumnDefs(onSelectionChanged) {
       field: "read_1",
       minWidth: 85,
       visible: true,
-      ...numericFilterConfig((v) => Number(v)),
+      ...numericFilterConfig(
+        (v) => Number(v),
+        numericFilterExamples(90, 50, 80, 95)
+      ),
       formatter: numberFormatter(2),
       hozAlign: "right"
     },
@@ -189,7 +213,10 @@ export function runStatisticsColumnDefs(onSelectionChanged) {
       field: "read_2",
       minWidth: 90,
       visible: true,
-      ...numericFilterConfig((v) => Number(v)),
+      ...numericFilterConfig(
+        (v) => Number(v),
+        numericFilterExamples(90, 50, 75, 95)
+      ),
       formatter: numberFormatter(2),
       hozAlign: "right"
     }
