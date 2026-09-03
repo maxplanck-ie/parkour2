@@ -657,7 +657,8 @@ export function getRequestEditorLibraryColumns(
       minWidth: 100,
       widthGrow: 1.7,
       headerVertical: false,
-      headerTooltip: "Choose Index I7",
+      headerTooltip:
+        "Choose Index I7. Only A, T, C and G (uppercase) are allowed, up to 24 characters.",
       visible: true,
       cssClass: "regular-column",
       editor: "list",
@@ -681,7 +682,8 @@ export function getRequestEditorLibraryColumns(
       minWidth: 100,
       widthGrow: 1.7,
       headerVertical: false,
-      headerTooltip: "Choose Index I5",
+      headerTooltip:
+        "Choose Index I5. Only A, T, C and G (uppercase) are allowed, up to 24 characters.",
       visible: true,
       cssClass: "regular-column",
       editor: "list",
