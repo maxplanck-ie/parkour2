@@ -175,12 +175,58 @@ export function librariesAndSamplesGroupHeader(
 `;
 }
 
+// A header filter box whose value is sent to the backend (via
+// `onHeaderFilterChange`) instead of filtering the currently-loaded page
+// client-side — Libraries & Samples paginates server-side, so a local
+// filter would only ever see the current page. Always returns true so
+// Tabulator never re-filters the (already server-filtered) rows itself.
+function makeServerHeaderFilter(field, onHeaderFilterChange) {
+  let lastValue;
+  return (headerValue) => {
+    const value = String(headerValue ?? "").trim();
+    if (value !== lastValue) {
+      lastValue = value;
+      onHeaderFilterChange(field, value);
+    }
+    return true;
+  };
+}
+
+// Shared config for a plain server-side text (partial-match) header filter.
+function serverTextFilterConfig(field, onHeaderFilterChange, headerTooltip) {
+  return {
+    headerFilter: "input",
+    headerFilterPlaceholder: "Filter...",
+    headerFilterFunc: makeServerHeaderFilter(field, onHeaderFilterChange),
+    headerTooltip
+  };
+}
+
+const INDEX_ID_FILTER_PLACEHOLDER = "N701-N729";
+const INDEX_ID_FILTER_HELP =
+  "Filter by ID or range (same prefix):\n" +
+  "N701  exact match\n" +
+  "N701-N729  range";
+const INDEX_TYPE_FILTER_PLACEHOLDER = "e.g. Nextera XT";
+const INDEX_TYPE_FILTER_HELP = "Filter by Index Type (partial match)";
+
+const STATUS_FILTER_PLACEHOLDER = "e.g. 5";
+const TYPE_FILTER_PLACEHOLDER = "S or L";
+const TYPE_FILTER_HELP = "Filter by record type: S = Sample, L = Library";
+const GMO_FILTER_PLACEHOLDER = "yes / no";
+const GMO_FILTER_HELP = "Filter by GMO: yes/y/true or no/n/false";
+const DATE_FILTER_PLACEHOLDER = "DD.MM.YYYY";
+const DATE_FILTER_HELP = "Filter by date, full or partial, e.g. 03.09 or 2026";
+
 export function librariesAndSamplesColumnDefs(
   getTabulatorInstance,
   columnOptions = {}
 ) {
-  const { inputColumnMode = "mode_user", onInputColumnModeChange = () => {} } =
-    columnOptions;
+  const {
+    inputColumnMode = "mode_user",
+    onInputColumnModeChange = () => {},
+    onHeaderFilterChange = () => {}
+  } = columnOptions;
 
   const columns = [
     {
@@ -221,8 +267,7 @@ export function librariesAndSamplesColumnDefs(
       title: "Name",
       field: "name",
       minWidth: 140,
-      headerFilter: true,
-      headerTooltip: "Name",
+      ...serverTextFilterConfig("name", onHeaderFilterChange, "Name"),
       visible: true,
       frozen: true,
       cssClass: "right-border",
@@ -241,7 +286,9 @@ export function librariesAndSamplesColumnDefs(
       title: "Status",
       field: "status",
       width: 50,
-      headerFilter: true,
+      headerFilter: "input",
+      headerFilterPlaceholder: STATUS_FILTER_PLACEHOLDER,
+      headerFilterFunc: makeServerHeaderFilter("status", onHeaderFilterChange),
       headerTooltip: () => createStatusHeaderTooltip(),
       visible: true,
       frozen: true,
@@ -260,8 +307,10 @@ export function librariesAndSamplesColumnDefs(
       field: "type",
       width: 45,
       minWidth: 45,
-      headerFilter: true,
-      headerTooltip: "Type",
+      headerFilter: "input",
+      headerFilterPlaceholder: TYPE_FILTER_PLACEHOLDER,
+      headerFilterFunc: makeServerHeaderFilter("type", onHeaderFilterChange),
+      headerTooltip: TYPE_FILTER_HELP,
       visible: true,
       frozen: true,
       cssClass: "right-border",
@@ -278,8 +327,11 @@ export function librariesAndSamplesColumnDefs(
       field: "well_position",
       width: 80,
       minWidth: 60,
-      headerFilter: true,
-      headerTooltip: "Coordinate of Sample in 96-well Plate",
+      ...serverTextFilterConfig(
+        "well_position",
+        onHeaderFilterChange,
+        "Coordinate of Sample in 96-well Plate (e.g. A1)"
+      ),
       visible: true,
       frozen: true,
       cssClass: "right-border",
@@ -296,8 +348,7 @@ export function librariesAndSamplesColumnDefs(
       field: "barcode",
       width: 96,
       minWidth: 96,
-      headerFilter: true,
-      headerTooltip: "Barcode",
+      ...serverTextFilterConfig("barcode", onHeaderFilterChange, "Barcode"),
       visible: true,
       frozen: true,
       cssClass: "right-border",
@@ -320,8 +371,11 @@ export function librariesAndSamplesColumnDefs(
       field: "pool_names",
       width: 85,
       minWidth: 60,
-      headerFilter: true,
-      headerTooltip: "Pool Paths",
+      ...serverTextFilterConfig(
+        "pool_names",
+        onHeaderFilterChange,
+        "Pool Paths"
+      ),
       visible: true,
       cssClass: "regular-column",
       contextMenu: () =>
@@ -337,8 +391,10 @@ export function librariesAndSamplesColumnDefs(
       field: "gmo",
       width: 120,
       minWidth: 60,
-      headerFilter: true,
-      headerTooltip: "Genetically Modified Organism",
+      headerFilter: "input",
+      headerFilterPlaceholder: GMO_FILTER_PLACEHOLDER,
+      headerFilterFunc: makeServerHeaderFilter("gmo", onHeaderFilterChange),
+      headerTooltip: GMO_FILTER_HELP,
       visible: true,
       cssClass: "regular-column",
       contextMenu: () =>
@@ -354,8 +410,13 @@ export function librariesAndSamplesColumnDefs(
       field: "create_time",
       width: 90,
       minWidth: 60,
-      headerFilter: true,
-      headerTooltip: "Date",
+      headerFilter: "input",
+      headerFilterPlaceholder: DATE_FILTER_PLACEHOLDER,
+      headerFilterFunc: makeServerHeaderFilter(
+        "create_time",
+        onHeaderFilterChange
+      ),
+      headerTooltip: DATE_FILTER_HELP,
       visible: true,
       cssClass: "regular-column",
       contextMenu: () =>
@@ -372,8 +433,11 @@ export function librariesAndSamplesColumnDefs(
       minWidth: 80,
       width: "5%",
       headerVertical: false,
-      headerFilter: true,
-      headerTooltip: "Input Type",
+      ...serverTextFilterConfig(
+        "nucleic_acid_type_name",
+        onHeaderFilterChange,
+        "Input Type"
+      ),
       visible: true,
       cssClass: "regular-column",
       contextMenu: () =>
@@ -390,8 +454,11 @@ export function librariesAndSamplesColumnDefs(
       minWidth: 120,
       width: "7%",
       headerVertical: false,
-      headerFilter: true,
-      headerTooltip: "Comment Input / Comment Library",
+      ...serverTextFilterConfig(
+        "comment_input",
+        onHeaderFilterChange,
+        "Comment Input / Comment Library"
+      ),
       visible: true,
       cssClass: "regular-column",
       contextMenu: () =>
@@ -408,8 +475,11 @@ export function librariesAndSamplesColumnDefs(
       minWidth: 110,
       width: "6%",
       headerVertical: false,
-      headerFilter: true,
-      headerTooltip: "Organism",
+      ...serverTextFilterConfig(
+        "organism_name",
+        onHeaderFilterChange,
+        "Organism"
+      ),
       visible: true,
       cssClass: "regular-column",
       contextMenu: () =>
@@ -426,9 +496,12 @@ export function librariesAndSamplesColumnDefs(
       minWidth: 80,
       width: "5%",
       visible: true,
-      headerFilter: true,
+      ...serverTextFilterConfig(
+        "library_protocol_name",
+        onHeaderFilterChange,
+        "Library Preparation Protocol"
+      ),
       cssClass: "regular-column",
-      headerTooltip: "Library Preparation Protocol",
       contextMenu: () =>
         cellContextMenu(true, false, false, getTabulatorInstance),
       formatter: (cell) => {
@@ -443,9 +516,12 @@ export function librariesAndSamplesColumnDefs(
       minWidth: 80,
       width: "5%",
       visible: true,
-      headerFilter: true,
+      ...serverTextFilterConfig(
+        "analysis_type_name",
+        onHeaderFilterChange,
+        "Analysis Type"
+      ),
       cssClass: "regular-column",
-      headerTooltip: "Analysis Type",
       contextMenu: () =>
         cellContextMenu(true, false, false, getTabulatorInstance),
       formatter: (cell) => {
@@ -577,8 +653,13 @@ export function librariesAndSamplesColumnDefs(
       minWidth: 60,
       width: "4%",
       headerVertical: false,
-      headerFilter: true,
-      headerTooltip: "Index Type",
+      headerFilter: "input",
+      headerFilterPlaceholder: INDEX_TYPE_FILTER_PLACEHOLDER,
+      headerFilterFunc: makeServerHeaderFilter(
+        "indexType",
+        onHeaderFilterChange
+      ),
+      headerTooltip: INDEX_TYPE_FILTER_HELP,
       visible: true,
       cssClass: "regular-column",
       contextMenu: () =>
@@ -594,8 +675,11 @@ export function librariesAndSamplesColumnDefs(
       minWidth: 60,
       width: "3.5%",
       headerVertical: false,
-      headerFilter: true,
-      headerTooltip: "Index Pair Coordinate",
+      ...serverTextFilterConfig(
+        "coordinate",
+        onHeaderFilterChange,
+        "Index Pair Coordinate"
+      ),
       visible: true,
       cssClass: "regular-column",
       contextMenu: () =>
@@ -611,8 +695,10 @@ export function librariesAndSamplesColumnDefs(
       minWidth: 60,
       width: "3.5%",
       headerVertical: false,
-      headerFilter: true,
-      headerTooltip: "Index I7 ID",
+      headerFilter: "input",
+      headerFilterPlaceholder: INDEX_ID_FILTER_PLACEHOLDER,
+      headerFilterFunc: makeServerHeaderFilter("i7Id", onHeaderFilterChange),
+      headerTooltip: INDEX_ID_FILTER_HELP,
       visible: true,
       cssClass: "regular-column",
       contextMenu: () =>
@@ -628,8 +714,11 @@ export function librariesAndSamplesColumnDefs(
       minWidth: 60,
       width: "3.5%",
       headerVertical: false,
-      headerFilter: true,
-      headerTooltip: "Index I7 ID",
+      ...serverTextFilterConfig(
+        "index_i7",
+        onHeaderFilterChange,
+        "Index I7 ID"
+      ),
       visible: true,
       cssClass: "regular-column",
       contextMenu: () =>
@@ -645,8 +734,10 @@ export function librariesAndSamplesColumnDefs(
       minWidth: 60,
       width: "3.5%",
       headerVertical: false,
-      headerFilter: true,
-      headerTooltip: "Index I5 ID",
+      headerFilter: "input",
+      headerFilterPlaceholder: INDEX_ID_FILTER_PLACEHOLDER,
+      headerFilterFunc: makeServerHeaderFilter("i5Id", onHeaderFilterChange),
+      headerTooltip: INDEX_ID_FILTER_HELP,
       visible: true,
       cssClass: "regular-column",
       contextMenu: () =>
@@ -662,8 +753,11 @@ export function librariesAndSamplesColumnDefs(
       minWidth: 60,
       width: "3.5%",
       headerVertical: false,
-      headerFilter: true,
-      headerTooltip: "Index I5 ID",
+      ...serverTextFilterConfig(
+        "index_i5",
+        onHeaderFilterChange,
+        "Index I5 ID"
+      ),
       visible: true,
       cssClass: "regular-column",
       contextMenu: () =>
@@ -679,8 +773,11 @@ export function librariesAndSamplesColumnDefs(
       minWidth: 60,
       width: "3.5%",
       headerVertical: false,
-      headerFilter: true,
-      headerTooltip: "Read Length",
+      ...serverTextFilterConfig(
+        "read_length_name",
+        onHeaderFilterChange,
+        "Read Length"
+      ),
       visible: true,
       cssClass: "regular-column",
       contextMenu: () =>
@@ -719,8 +816,11 @@ export function librariesAndSamplesColumnDefs(
       minWidth: 60,
       width: "5.5%",
       headerVertical: false,
-      headerFilter: true,
-      headerTooltip: "Flowcell IDs",
+      ...serverTextFilterConfig(
+        "flowcell_ids",
+        onHeaderFilterChange,
+        "Flowcell IDs (only searchable once sequencing has started)"
+      ),
       visible: true,
       cssClass: "regular-column",
       contextMenu: () =>
@@ -736,8 +836,11 @@ export function librariesAndSamplesColumnDefs(
       minWidth: 60,
       width: "5.5%",
       headerVertical: false,
-      headerFilter: true,
-      headerTooltip: "Sequencer",
+      ...serverTextFilterConfig(
+        "sequencer_names",
+        onHeaderFilterChange,
+        "Sequencer (only searchable once sequencing has started)"
+      ),
       visible: true,
       cssClass: "regular-column",
       contextMenu: () =>

@@ -27,10 +27,13 @@ from library.views import (
     SEQUENCING_STATUSES,
     InvalidIndexRangeError,
     apply_stage_data_visibility,
-    build_index_range_filter,
+    build_index_id_filter,
     build_search_term_query,
+    build_type_filter,
     filter_by_sequencer,
+    parse_gmo_filter,
     parse_index_id,
+    parse_status_filter,
 )
 from library_preparation.models import LibraryPreparation
 from library_sample_shared.models import (
@@ -170,6 +173,55 @@ class TestLibrarySampleTree(BaseTestCase):
             self.assertIn("plate_coord", record)
             self.assertRegex(record["plate_coord"], r"^[A-H](?:[1-9]|1[0-2])$")
 
+    def test_well_position_filter_matches_computed_plate_coord(self):
+        """The Plate Coord column search box filters by the server-computed
+        value, even though it isn't a stored column (see compute_plate_coords)."""
+        plate_coord_request = Request(user=self.request.user)
+        plate_coord_request.save()
+
+        rows = [
+            CompleteLibraryData.objects.create(
+                library_id=9001 + i,
+                barcode=barcode,
+                name=f"PlateCoordLib{i}",
+                status=1,
+                sequencing_depth=10.0,
+                measuring_unit="ng/µl",
+                measured_value=1.0,
+                measuring_unit_facility="ng/µl",
+                measured_value_facility=1.0,
+                concentration_library=1.0,
+                percent_total=100.0,
+                library_protocol_id=1,
+                analysis_type_id=1,
+                average_fragment_size=300.0,
+                request_id=plate_coord_request.id,
+                request_name=plate_coord_request.name,
+                create_time=timezone.now(),
+            )
+            for i, barcode in enumerate(["25L000001", "25L000002", "25L000003"])
+        ]
+        # Barcode order -> plate_coord: 25L000001 = A1, 25L000002 = B1, ...
+        # (well index -> row letter cycles every entry, column every 8; see
+        # library_sample_shared.utils._well_label).
+        target = rows[1]
+        self.assertEqual(target.plate_coord, "B1")
+
+        response = self.client.get(
+            reverse("libraries-and-samples-list"), {"well_position": "B1"}
+        )
+        self.assertEqual(response.status_code, 200)
+        payload = response.json()
+        returned_ids = {
+            record["library_id"]
+            for record in payload["children"]
+            if record["record_type"] == "Library"
+        }
+        self.assertIn(target.library_id, returned_ids)
+        for row in rows:
+            if row.library_id != target.library_id:
+                self.assertNotIn(row.library_id, returned_ids)
+
     def test_sample_stage_data_visibility_status_matrix(self):
         """Stage data remains visible after failure and is otherwise gated."""
         cases = (
@@ -275,12 +327,6 @@ class TestLibrarySampleTree(BaseTestCase):
             gated_flowcell_queries[0].children,
         )
 
-    def test_search_query_includes_index_type_name(self):
-        """Index Type values must be searchable like other displayed fields."""
-        query = build_search_term_query("Nextera XT")
-
-        self.assertIn(("index_type_name__icontains", "Nextera XT"), query.children)
-
     def test_sequencer_filter_is_limited_to_sequencing_statuses(self):
         """Sequencer filtering applies the same status gate as displayed data."""
         queryset = Mock()
@@ -302,41 +348,70 @@ class TestLibrarySampleTree(BaseTestCase):
         self.assertEqual(parse_index_id("N701A"), (None, None))
         self.assertEqual(parse_index_id(""), (None, None))
 
-    def test_index_range_filter_expands_numeric_range(self):
+    def test_index_id_filter_empty_returns_none(self):
+        self.assertIsNone(build_index_id_filter("i7_id", "I7 ID", ""))
+        self.assertIsNone(build_index_id_filter("i7_id", "I7 ID", None))
+
+    def test_index_id_filter_single_value_is_exact_match(self):
+        self.assertEqual(
+            build_index_id_filter("i7_id", "I7 ID", "N701"),
+            Q(i7_id__iexact="N701"),
+        )
+
+    def test_index_id_filter_expands_numeric_range(self):
         """Ranges are expanded to literal IDs, not compared as strings."""
-        query = build_index_range_filter("i7_id", "I7 Index", "RPI1", "RPI10")
+        query = build_index_id_filter("i7_id", "I7 ID", "RPI1-RPI10")
         self.assertEqual(
             query,
             Q(i7_id__in=[f"RPI{n}" for n in range(1, 11)]),
         )
 
-    def test_index_range_filter_accepts_reversed_bounds(self):
-        query = build_index_range_filter("i5_id", "I5 Index", "S522", "S501")
+    def test_index_id_filter_accepts_reversed_bounds(self):
+        query = build_index_id_filter("i5_id", "I5 ID", "S522-S501")
         self.assertEqual(
             query,
             Q(i5_id__in=[f"S{n}" for n in range(501, 523)]),
         )
 
-    def test_index_range_filter_single_bound_is_exact_match(self):
-        self.assertEqual(
-            build_index_range_filter("i7_id", "I7 Index", "N701", ""),
-            Q(i7_id="N701"),
-        )
-        self.assertEqual(
-            build_index_range_filter("i7_id", "I7 Index", "", "N701"),
-            Q(i7_id="N701"),
-        )
-
-    def test_index_range_filter_no_bounds_returns_none(self):
-        self.assertIsNone(build_index_range_filter("i7_id", "I7 Index", "", ""))
-
-    def test_index_range_filter_rejects_mismatched_prefix(self):
+    def test_index_id_filter_rejects_mismatched_prefix(self):
         with self.assertRaises(InvalidIndexRangeError):
-            build_index_range_filter("i7_id", "I7 Index", "N701", "S508")
+            build_index_id_filter("i7_id", "I7 ID", "N701-S508")
 
-    def test_index_range_filter_rejects_unparseable_bound(self):
+    def test_index_id_filter_rejects_unparseable_bound(self):
         with self.assertRaises(InvalidIndexRangeError):
-            build_index_range_filter("i7_id", "I7 Index", "N701", "custom-seq")
+            build_index_id_filter("i7_id", "I7 ID", "N701-custom-seq")
+
+    def test_build_type_filter_empty_returns_none(self):
+        self.assertIsNone(build_type_filter(""))
+        self.assertIsNone(build_type_filter(None))
+
+    def test_build_type_filter_matches_third_barcode_character(self):
+        self.assertEqual(
+            build_type_filter("S"),
+            Q(barcode__iregex=r"^.{2}S"),
+        )
+
+    def test_parse_status_filter_empty_returns_none(self):
+        self.assertIsNone(parse_status_filter(""))
+        self.assertIsNone(parse_status_filter(None))
+
+    def test_parse_status_filter_parses_int(self):
+        self.assertEqual(parse_status_filter("5"), 5)
+
+    def test_parse_status_filter_rejects_non_numeric(self):
+        self.assertIsNone(parse_status_filter("abc"))
+
+    def test_parse_gmo_filter_recognizes_true_values(self):
+        for value in ("y", "yes", "true", "1", "TRUE", " Yes "):
+            self.assertIs(parse_gmo_filter(value), True)
+
+    def test_parse_gmo_filter_recognizes_false_values(self):
+        for value in ("n", "no", "false", "0", "FALSE"):
+            self.assertIs(parse_gmo_filter(value), False)
+
+    def test_parse_gmo_filter_rejects_unrecognized(self):
+        self.assertIsNone(parse_gmo_filter("maybe"))
+        self.assertIsNone(parse_gmo_filter(""))
 
 
 class TestLibraries(BaseTestCase):

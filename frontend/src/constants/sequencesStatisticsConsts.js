@@ -1,5 +1,10 @@
 import iconSelectAll from "../assets/icons/action_select_all.svg";
 import iconDeselectAll from "../assets/icons/action_deselect_all.svg";
+import {
+  numericFilterConfig,
+  numericFilterExamples
+} from "../utilities/numericHeaderFilter";
+import { textFilterConfig } from "../utilities/textHeaderFilter";
 
 function fixedNumber(value, digits = 2) {
   if (value === null || value === undefined || value === "") return "";
@@ -83,7 +88,7 @@ export function sequencesStatisticsColumnDefs(onSelectionChanged) {
       minWidth: 75,
       visible: true,
       frozen: true,
-      headerFilter: true
+      ...textFilterConfig()
     },
     {
       title: "Barcode",
@@ -91,14 +96,14 @@ export function sequencesStatisticsColumnDefs(onSelectionChanged) {
       minWidth: 70,
       visible: true,
       frozen: true,
-      headerFilter: true
+      ...textFilterConfig()
     },
     {
       title: "Name",
       field: "name",
       minWidth: 80,
       visible: true,
-      headerFilter: true,
+      ...textFilterConfig(),
       formatter: textFormatter("left", false),
       tooltip: (event, cell) => cell.getValue() || ""
     },
@@ -107,37 +112,38 @@ export function sequencesStatisticsColumnDefs(onSelectionChanged) {
       field: "lane_display",
       minWidth: 45,
       visible: true,
-      headerFilter: true
+      ...textFilterConfig()
     },
     {
       title: "Pool",
       field: "pool",
       minWidth: 65,
       visible: true,
-      headerFilter: true
+      ...textFilterConfig()
     },
     {
       title: "Protocol",
       field: "library_protocol",
       minWidth: 80,
       visible: true,
-      headerFilter: true,
-      headerTooltip: "Library Protocol"
+      ...textFilterConfig("Library Protocol")
     },
     {
       title: "Analysis",
       field: "library_type",
       minWidth: 70,
       visible: true,
-      headerFilter: true,
-      headerTooltip: "Analysis Type"
+      ...textFilterConfig("Analysis Type")
     },
     {
       title: "Requested Reads (M)",
       field: "reads_pf_requested",
       minWidth: 95,
       visible: true,
-      headerTooltip: "Requested Reads (M)",
+      ...numericFilterConfig(
+        (v) => Number(v),
+        numericFilterExamples(50, 10, 10, 30)
+      ),
       hozAlign: "right"
     },
     {
@@ -145,7 +151,10 @@ export function sequencesStatisticsColumnDefs(onSelectionChanged) {
       field: "reads_pf_sequenced",
       minWidth: 85,
       visible: true,
-      headerTooltip: "Sequenced Reads PF (M)",
+      ...numericFilterConfig(
+        (v) => Number(v) / 1000000,
+        numericFilterExamples(30, 10, 10, 50)
+      ),
       formatter: (cell) => {
         const value = cell.getValue();
         if (value === null || value === undefined || value === "") {
@@ -160,6 +169,10 @@ export function sequencesStatisticsColumnDefs(onSelectionChanged) {
       field: "reads_percent",
       minWidth: 55,
       visible: true,
+      ...numericFilterConfig(
+        (v) => Number(v),
+        numericFilterExamples(100, 50, 80, 120)
+      ),
       formatter: fixedFormatter(),
       hozAlign: "right"
     },
@@ -168,7 +181,10 @@ export function sequencesStatisticsColumnDefs(onSelectionChanged) {
       field: "confident_reads",
       minWidth: 95,
       visible: true,
-      headerTooltip: "Confident Off-species Reads",
+      ...numericFilterConfig(
+        (v) => Number(v),
+        numericFilterExamples(5, 1, 0, 2)
+      ),
       formatter: fixedFormatter(),
       hozAlign: "right"
     },
@@ -177,7 +193,10 @@ export function sequencesStatisticsColumnDefs(onSelectionChanged) {
       field: "optical_duplicates",
       minWidth: 80,
       visible: true,
-      headerTooltip: "Optical Duplicates (%)",
+      ...numericFilterConfig(
+        (v) => Number(v),
+        numericFilterExamples(10, 1, 1, 5)
+      ),
       formatter: fixedFormatter(),
       hozAlign: "right"
     },
@@ -186,7 +205,10 @@ export function sequencesStatisticsColumnDefs(onSelectionChanged) {
       field: "dupped_reads",
       minWidth: 75,
       visible: true,
-      headerTooltip: "Duplicated Reads (%)",
+      ...numericFilterConfig(
+        (v) => Number(v),
+        numericFilterExamples(30, 10, 10, 30)
+      ),
       formatter: fixedFormatter(),
       hozAlign: "right"
     },
@@ -195,7 +217,10 @@ export function sequencesStatisticsColumnDefs(onSelectionChanged) {
       field: "mapped_reads",
       minWidth: 75,
       visible: true,
-      headerTooltip: "Mapped Reads (%)",
+      ...numericFilterConfig(
+        (v) => Number(v),
+        numericFilterExamples(90, 50, 70, 95)
+      ),
       formatter: fixedFormatter(),
       hozAlign: "right"
     },
@@ -204,7 +229,10 @@ export function sequencesStatisticsColumnDefs(onSelectionChanged) {
       field: "insert_size",
       minWidth: 55,
       visible: true,
-      headerTooltip: "Insert Size",
+      ...numericFilterConfig(
+        (v) => Number(v),
+        numericFilterExamples(400, 100, 150, 350)
+      ),
       hozAlign: "right"
     }
   ]);

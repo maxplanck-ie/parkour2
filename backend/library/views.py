@@ -6,7 +6,7 @@ from itertools import chain
 from operator import or_
 
 from django.apps import apps
-from django.db.models import Count, Max, Q
+from django.db.models import CharField, Count, Func, Max, Q, Value
 from django.utils import timezone
 from rest_framework import viewsets
 from rest_framework.response import Response
@@ -87,7 +87,6 @@ def build_search_term_query(term):
         "barcode__icontains",
         "request_name__icontains",
         "pool_names__icontains",
-        "index_type_name__icontains",
     ]
     field_queries = [Q(**{field: term}) for field in search_fields]
     field_queries.append(
@@ -122,22 +121,24 @@ class InvalidIndexRangeError(Exception):
         super().__init__(f"Invalid {field_label} range")
 
 
-def build_index_range_filter(field, field_label, from_val, to_val):
-    """Build a Q object for an I7/I5 ID range, or None if no range was requested.
+def build_index_id_filter(field, field_label, raw_value):
+    """Build a Q object for an I7/I5 ID header-filter box, or None if empty.
 
-    Both ends given: IDs must share a letter prefix and end in a number, so the
-    range can be expanded into the literal IDs it covers (a plain string range
-    would misorder IDs like RPI2..RPI10 lexicographically). Only one end given:
-    exact match on that ID. Mismatched/unparsable prefixes raise
-    InvalidIndexRangeError rather than silently returning a wrong subset.
+    A single ID (e.g. "N701") is an exact match. Two IDs joined by "-"
+    (e.g. "N701-N729") are a range: both must share a letter prefix and end
+    in a number, so the range can be expanded into the literal IDs it covers
+    (a plain string range would misorder IDs like RPI2..RPI10 lexically).
+    Mismatched/unparsable prefixes raise InvalidIndexRangeError rather than
+    silently returning a wrong subset.
     """
-    from_val = (from_val or "").strip()
-    to_val = (to_val or "").strip()
-
-    if not from_val and not to_val:
+    value = (raw_value or "").strip()
+    if not value:
         return None
 
-    if from_val and to_val:
+    if "-" in value:
+        from_val, _, to_val = value.partition("-")
+        from_val = from_val.strip()
+        to_val = to_val.strip()
         from_prefix, from_number = parse_index_id(from_val)
         to_prefix, to_number = parse_index_id(to_val)
         if from_prefix is None or to_prefix is None or from_prefix != to_prefix:
@@ -146,21 +147,80 @@ def build_index_range_filter(field, field_label, from_val, to_val):
         candidates = [f"{from_prefix}{n}" for n in range(lo, hi + 1)]
         return Q(**{f"{field}__in": candidates})
 
-    return Q(**{field: from_val or to_val})
+    return Q(**{f"{field}__iexact": value})
+
+
+def build_type_filter(raw_value):
+    """S/L column: the record type lives in the 3rd character of the barcode."""
+    value = (raw_value or "").strip()
+    if not value:
+        return None
+    return Q(barcode__iregex=rf"^.{{2}}{re.escape(value)}")
+
+
+def parse_status_filter(raw_value):
+    """Parse a Status header-filter box value; None if empty/unparsable."""
+    value = (raw_value or "").strip()
+    if not value:
+        return None
+    try:
+        return int(value)
+    except ValueError:
+        return None
+
+
+GMO_TRUE_VALUES = {"y", "yes", "true", "1"}
+GMO_FALSE_VALUES = {"n", "no", "false", "0"}
+
+
+def parse_gmo_filter(raw_value):
+    """Map a typed GMO header-filter value to True/False; None if unrecognized."""
+    value = (raw_value or "").strip().lower()
+    if value in GMO_TRUE_VALUES:
+        return True
+    if value in GMO_FALSE_VALUES:
+        return False
+    return None
+
+
+class ToChar(Func):
+    """Format a date/datetime column as text via Postgres' to_char()."""
+
+    function = "to_char"
+    output_field = CharField()
+
+
+# Plain text columns filtered the same way (icontains) on both querysets.
+SIMPLE_TEXT_FILTER_FIELDS = (
+    "name",
+    "barcode",
+    "pool_names",
+    "comment_input",
+    "organism_name",
+    "coordinate",
+    "index_i7",
+    "index_i5",
+    "library_protocol_name",
+    "analysis_type_name",
+    "read_length_name",
+)
+# Only masked/exposed once a flowcell has reached sequencing (see
+# apply_stage_data_visibility) -- gate the filter the same way the "search"
+# box already does, so a filter can't reveal a pre-sequencing value.
+SEQUENCING_GATED_TEXT_FILTER_FIELDS = ("flowcell_ids", "sequencer_names")
 
 
 class LibrarySampleTree(viewsets.ViewSet):
     def list(self, request):
         search_string = request.GET.get("search")
         status_filter = request.GET.get("status")
-        library_protocol_filter = request.GET.get("library_protocol")
-        analysis_type_filter = request.GET.get("analysis_type")
-        sequencer_filter = request.GET.get("sequencer")
-        read_length_filter = request.GET.get("read_length")
-        i7_from = request.GET.get("i7_from")
-        i7_to = request.GET.get("i7_to")
-        i5_from = request.GET.get("i5_from")
-        i5_to = request.GET.get("i5_to")
+        type_filter = request.GET.get("type")
+        gmo_filter = request.GET.get("gmo")
+        create_time_filter = request.GET.get("create_time")
+        nucleic_acid_type_filter = request.GET.get("nucleic_acid_type_name")
+        i7_id_filter = request.GET.get("i7_id")
+        i5_id_filter = request.GET.get("i5_id")
+        index_type_filter = request.GET.get("index_type")
         start_date_str = request.GET.get("start_date")
         end_date_str = request.GET.get("end_date")
         page = int(request.GET.get("page", 1))
@@ -217,63 +277,92 @@ class LibrarySampleTree(viewsets.ViewSet):
                 library_queryset = library_queryset.filter(final_search)
                 sample_queryset = sample_queryset.filter(final_search)
 
-        if status_filter:
-            library_queryset = library_queryset.filter(status=int(status_filter))
-            sample_queryset = sample_queryset.filter(status=int(status_filter))
+        status_value = parse_status_filter(status_filter)
+        if status_value is not None:
+            library_queryset = library_queryset.filter(status=status_value)
+            sample_queryset = sample_queryset.filter(status=status_value)
 
-        if library_protocol_filter:
-            library_queryset = library_queryset.filter(
-                library_protocol_id=int(library_protocol_filter)
-            )
+        type_q = build_type_filter(type_filter)
+        if type_q is not None:
+            library_queryset = library_queryset.filter(type_q)
+            sample_queryset = sample_queryset.filter(type_q)
+
+        if gmo_filter:
+            gmo_value = parse_gmo_filter(gmo_filter)
+            if gmo_value is not None:
+                # gmo has no meaning for libraries (field doesn't exist on
+                # CompleteLibraryData) -- exclude them rather than leaving
+                # every library unfiltered while a GMO filter is active.
+                library_queryset = library_queryset.none()
+                sample_queryset = sample_queryset.filter(gmo=gmo_value)
+
+        if nucleic_acid_type_filter:
+            # Input Type likewise only exists on CompleteSampleData.
+            library_queryset = library_queryset.none()
             sample_queryset = sample_queryset.filter(
-                library_protocol_id=int(library_protocol_filter)
+                nucleic_acid_type_name__icontains=nucleic_acid_type_filter
             )
 
-        if analysis_type_filter:
-            library_queryset = library_queryset.filter(
-                analysis_type_id=int(analysis_type_filter)
-            )
-            sample_queryset = sample_queryset.filter(
-                analysis_type_id=int(analysis_type_filter)
-            )
+        if create_time_filter:
+            library_queryset = library_queryset.annotate(
+                create_time_display=ToChar("create_time", Value("DD.MM.YYYY"))
+            ).filter(create_time_display__icontains=create_time_filter)
+            sample_queryset = sample_queryset.annotate(
+                create_time_display=ToChar("create_time", Value("DD.MM.YYYY"))
+            ).filter(create_time_display__icontains=create_time_filter)
 
-        if sequencer_filter:
-            seq_id = int(sequencer_filter)
-            library_queryset = filter_by_sequencer(library_queryset, seq_id)
-            sample_queryset = filter_by_sequencer(sample_queryset, seq_id)
+        for field in SIMPLE_TEXT_FILTER_FIELDS:
+            value = request.GET.get(field)
+            if value:
+                library_queryset = library_queryset.filter(
+                    **{f"{field}__icontains": value}
+                )
+                sample_queryset = sample_queryset.filter(
+                    **{f"{field}__icontains": value}
+                )
+
+        for field in SEQUENCING_GATED_TEXT_FILTER_FIELDS:
+            value = request.GET.get(field)
+            if value:
+                library_queryset = library_queryset.filter(
+                    status__in=SEQUENCING_STATUSES, **{f"{field}__icontains": value}
+                )
+                sample_queryset = sample_queryset.filter(
+                    status__in=SEQUENCING_STATUSES, **{f"{field}__icontains": value}
+                )
 
         try:
-            i7_range_q = build_index_range_filter("i7_id", "I7 Index", i7_from, i7_to)
-            i5_range_q = build_index_range_filter("i5_id", "I5 Index", i5_from, i5_to)
+            i7_id_q = build_index_id_filter("i7_id", "I7 ID", i7_id_filter)
+            i5_id_q = build_index_id_filter("i5_id", "I5 ID", i5_id_filter)
         except InvalidIndexRangeError as exc:
             return Response(
                 {
                     "success": False,
                     "error": (
                         f"{exc.field_label} range must share a prefix and end "
-                        "in a number, e.g. N701 to N729."
+                        "in a number, e.g. N701-N729."
                     ),
                 },
                 status=400,
             )
 
-        if i7_range_q is not None:
-            library_queryset = library_queryset.filter(i7_range_q)
-            sample_queryset = sample_queryset.filter(i7_range_q)
+        if i7_id_q is not None:
+            library_queryset = library_queryset.filter(i7_id_q)
+            sample_queryset = sample_queryset.filter(i7_id_q)
 
-        if i5_range_q is not None:
-            library_queryset = library_queryset.filter(i5_range_q)
-            sample_queryset = sample_queryset.filter(i5_range_q)
+        if i5_id_q is not None:
+            library_queryset = library_queryset.filter(i5_id_q)
+            sample_queryset = sample_queryset.filter(i5_id_q)
 
-        changed_ownership_filter = request.GET.get("changed_ownership")
-
-        if read_length_filter:
+        if index_type_filter:
             library_queryset = library_queryset.filter(
-                read_length_id=int(read_length_filter)
+                index_type_name__icontains=index_type_filter
             )
             sample_queryset = sample_queryset.filter(
-                read_length_id=int(read_length_filter)
+                index_type_name__icontains=index_type_filter
             )
+
+        changed_ownership_filter = request.GET.get("changed_ownership")
 
         if changed_ownership_filter in ("true", "false"):
             changed_ids = (
@@ -288,6 +377,33 @@ class LibrarySampleTree(viewsets.ViewSet):
             else:
                 library_queryset = library_queryset.exclude(request_id__in=changed_ids)
                 sample_queryset = sample_queryset.exclude(request_id__in=changed_ids)
+
+        well_position_filter = request.GET.get("well_position")
+        if well_position_filter:
+            # plate_coord is computed (not a stored column), so it can't be
+            # expressed as a DB-level Q. Compute it for every request name
+            # still matching the filters applied so far, then narrow the
+            # querysets to the matching rows -- same effect as a Q filter,
+            # just derived in Python first.
+            candidate_request_names = set(
+                library_queryset.values_list("request_name", flat=True)
+            ) | set(sample_queryset.values_list("request_name", flat=True))
+            candidate_plate_coords = compute_plate_coords(candidate_request_names)
+            needle = well_position_filter.strip().lower()
+            matching_library_ids = [
+                pk
+                for (_req, kind, pk), coord in candidate_plate_coords.items()
+                if kind == "library" and needle in coord.lower()
+            ]
+            matching_sample_ids = [
+                pk
+                for (_req, kind, pk), coord in candidate_plate_coords.items()
+                if kind == "sample" and needle in coord.lower()
+            ]
+            library_queryset = library_queryset.filter(
+                library_id__in=matching_library_ids
+            )
+            sample_queryset = sample_queryset.filter(sample_id__in=matching_sample_ids)
 
         library_requests = (
             library_queryset.values("request_name")

@@ -7,6 +7,14 @@ import iconSelectAll from "../assets/icons/action_select_all.svg";
 import iconDeselectAll from "../assets/icons/action_deselect_all.svg";
 import iconDestroyPool from "../assets/icons/action_pool_destroy.svg";
 import iconExportDownload from "../assets/icons/export_download.svg";
+import {
+  numericFilterConfig,
+  numericFilterExamples
+} from "../utilities/numericHeaderFilter";
+import {
+  textFilterConfig,
+  dateFilterConfig
+} from "../utilities/textHeaderFilter";
 
 export function loadFlowcellsGroupHeader(value, rows = []) {
   const formattedDate = rows[0]?.create_time || "";
@@ -83,7 +91,7 @@ export function loadFlowcellsColumnDefs(getTabulatorInstance, callbacks = {}) {
       field: "name",
       minWidth: 80,
       width: 90,
-      headerFilter: true,
+      ...textFilterConfig(),
       visible: true,
       frozen: true,
       cssClass: "right-border",
@@ -94,7 +102,7 @@ export function loadFlowcellsColumnDefs(getTabulatorInstance, callbacks = {}) {
       field: "pool_name",
       minWidth: 105,
       width: 110,
-      headerFilter: true,
+      ...textFilterConfig(),
       visible: true,
       cssClass: "right-border",
       formatter: (cell) => {
@@ -112,7 +120,7 @@ export function loadFlowcellsColumnDefs(getTabulatorInstance, callbacks = {}) {
       field: "create_time",
       width: 95,
       minWidth: 90,
-      headerFilter: true,
+      ...dateFilterConfig(),
       visible: true,
       formatter: (cell) => ellipsisContainer(cell.getValue() || "-")
     },
@@ -120,7 +128,7 @@ export function loadFlowcellsColumnDefs(getTabulatorInstance, callbacks = {}) {
       title: "Request",
       field: "request",
       minWidth: 150,
-      headerFilter: true,
+      ...textFilterConfig(),
       visible: true,
       formatter: (cell) => ellipsisContainer(cell.getValue() || "-")
     },
@@ -128,7 +136,7 @@ export function loadFlowcellsColumnDefs(getTabulatorInstance, callbacks = {}) {
       title: "Read Length",
       field: "read_length_name",
       minWidth: 100,
-      headerFilter: true,
+      ...textFilterConfig(),
       visible: true,
       formatter: (cell) => ellipsisContainer(cell.getValue() || "-")
     },
@@ -136,7 +144,7 @@ export function loadFlowcellsColumnDefs(getTabulatorInstance, callbacks = {}) {
       title: "Index I7",
       field: "index_i7_show",
       minWidth: 90,
-      headerFilter: true,
+      ...textFilterConfig(),
       visible: true,
       formatter: (cell) => ellipsisContainer(cell.getValue() || "-")
     },
@@ -144,7 +152,7 @@ export function loadFlowcellsColumnDefs(getTabulatorInstance, callbacks = {}) {
       title: "Index I5",
       field: "index_i5_show",
       minWidth: 90,
-      headerFilter: true,
+      ...textFilterConfig(),
       visible: true,
       formatter: (cell) => ellipsisContainer(cell.getValue() || "-")
     },
@@ -152,7 +160,7 @@ export function loadFlowcellsColumnDefs(getTabulatorInstance, callbacks = {}) {
       title: "Sequencer",
       field: "sequencer_name",
       minWidth: 110,
-      headerFilter: true,
+      ...textFilterConfig(),
       visible: true,
       formatter: (cell) => ellipsisContainer(cell.getValue() || "-")
     },
@@ -160,7 +168,7 @@ export function loadFlowcellsColumnDefs(getTabulatorInstance, callbacks = {}) {
       title: "Library Protocol",
       field: "protocol",
       minWidth: 150,
-      headerFilter: true,
+      ...textFilterConfig(),
       visible: true,
       formatter: (cell) => ellipsisContainer(cell.getValue() || "-")
     },
@@ -170,6 +178,10 @@ export function loadFlowcellsColumnDefs(getTabulatorInstance, callbacks = {}) {
       minWidth: 110,
       width: 120,
       visible: true,
+      ...numericFilterConfig(
+        (v) => Number(v),
+        numericFilterExamples(10, 1, 1, 5)
+      ),
       editor: "number",
       editorParams: {
         min: 0,
@@ -195,6 +207,10 @@ export function loadFlowcellsColumnDefs(getTabulatorInstance, callbacks = {}) {
       minWidth: 90,
       width: 95,
       visible: true,
+      ...numericFilterConfig(
+        (v) => Number(v),
+        numericFilterExamples(10, 1, 1, 5)
+      ),
       editor: "number",
       editorParams: {
         min: 0,

@@ -13,6 +13,29 @@ import iconDeselectAll from "../assets/icons/action_deselect_all.svg";
 import iconQualityPassed from "../assets/icons/status_quality_passed.svg";
 import iconQualityFailed from "../assets/icons/status_quality_failed.svg";
 import iconQualityCompromised from "../assets/icons/status_quality_compromised.svg";
+import {
+  numericFilterConfig,
+  numericFilterExamples
+} from "../utilities/numericHeaderFilter";
+import { textFilterConfig } from "../utilities/textHeaderFilter";
+
+const GMO_TRUE_VALUES = new Set(["y", "yes", "true", "1"]);
+const GMO_FALSE_VALUES = new Set(["n", "no", "false", "0"]);
+const GMO_FACILITY_FILTER_PLACEHOLDER = "yes / no";
+const GMO_FACILITY_FILTER_HELP =
+  "Filter by GMO: yes/y/true or no/n/false, or search the text (e.g. Risk Assessment)";
+
+function gmoFacilityHeaderFilter(headerValue, rowValue, rowData) {
+  const query = String(headerValue ?? "")
+    .trim()
+    .toLowerCase();
+  if (!query) return true;
+  if (GMO_TRUE_VALUES.has(query)) return rowData.gmo === true;
+  if (GMO_FALSE_VALUES.has(query)) return rowData.gmo !== true;
+  return String(rowValue ?? "")
+    .toLowerCase()
+    .includes(query);
+}
 
 export function incomingLibrariesSamplesGroupHeader(
   value,
@@ -112,8 +135,7 @@ export function incomingLibrariesSamplesColumnDefs(getTabulatorInstance) {
       title: "Name",
       field: "name",
       minWidth: 100,
-      headerFilter: true,
-      headerTooltip: "Sample Name",
+      ...textFilterConfig("Sample Name"),
       visible: true,
       frozen: true,
       cssClass: "name-column right-border",
@@ -168,8 +190,7 @@ export function incomingLibrariesSamplesColumnDefs(getTabulatorInstance) {
       field: "barcode",
       width: 95,
       minWidth: 95,
-      headerFilter: true,
-      headerTooltip: "Barcode",
+      ...textFilterConfig("Barcode"),
       visible: true,
       frozen: true,
       cssClass: "details-column barcode-column right-border",
@@ -199,7 +220,7 @@ export function incomingLibrariesSamplesColumnDefs(getTabulatorInstance) {
           minWidth: 80,
           width: "6%",
           headerVertical: false,
-          headerTooltip: "Input Type",
+          ...textFilterConfig("Input Type"),
           visible: true,
           cssClass: "user-entry-column",
           contextMenu: () =>
@@ -221,7 +242,7 @@ export function incomingLibrariesSamplesColumnDefs(getTabulatorInstance) {
           minWidth: 80,
           width: "6%",
           headerVertical: false,
-          headerTooltip: "Library Preparation Protocol",
+          ...textFilterConfig("Library Preparation Protocol"),
           visible: true,
           cssClass: "user-entry-column",
           contextMenu: () =>
@@ -242,7 +263,7 @@ export function incomingLibrariesSamplesColumnDefs(getTabulatorInstance) {
           field: "comments",
           minWidth: 100,
           headerVertical: false,
-          headerTooltip: "Comment (User)",
+          ...textFilterConfig("Comment (User)"),
           visible: true,
           cssClass: "user-entry-column",
           contextMenu: () =>
@@ -263,7 +284,7 @@ export function incomingLibrariesSamplesColumnDefs(getTabulatorInstance) {
           minWidth: 60,
           width: "4%",
           headerVertical: false,
-          headerTooltip: "Input (User)",
+          ...textFilterConfig("Input (User)"),
           visible: true,
           cssClass: "user-entry-column",
           contextMenu: () =>
@@ -285,7 +306,10 @@ export function incomingLibrariesSamplesColumnDefs(getTabulatorInstance) {
           minWidth: 60,
           width: "4%",
           headerVertical: false,
-          headerTooltip: "Volume (User)",
+          ...numericFilterConfig(
+            (v) => Number(v),
+            numericFilterExamples(30, 10, 10, 50)
+          ),
           visible: true,
           cssClass: "user-entry-column",
           contextMenu: () =>
@@ -313,7 +337,10 @@ export function incomingLibrariesSamplesColumnDefs(getTabulatorInstance) {
           minWidth: 60,
           width: "4%",
           headerVertical: false,
-          headerTooltip: "Size Distribution (User)",
+          ...numericFilterConfig(
+            (v) => Number(v),
+            numericFilterExamples(400, 200, 150, 500)
+          ),
           visible: true,
           cssClass: "user-entry-column",
           contextMenu: () =>
@@ -353,7 +380,10 @@ export function incomingLibrariesSamplesColumnDefs(getTabulatorInstance) {
           width: "4%",
           editor: "number",
           headerVertical: false,
-          headerTooltip: "Measured Value",
+          ...numericFilterConfig(
+            (v) => Number(v),
+            numericFilterExamples(50, 10, 10, 100)
+          ),
           visible: true,
           cssClass: "facility-entry-column",
           editorParams: {
@@ -414,7 +444,7 @@ export function incomingLibrariesSamplesColumnDefs(getTabulatorInstance) {
             };
           },
           headerVertical: false,
-          headerTooltip: "Measurement Unit",
+          ...textFilterConfig("Measurement Unit"),
           visible: true,
           cssClass: "facility-entry-column",
           contextMenu: () =>
@@ -441,7 +471,10 @@ export function incomingLibrariesSamplesColumnDefs(getTabulatorInstance) {
           width: "4%",
           editor: "number",
           headerVertical: false,
-          headerTooltip: "Volume (Facility)",
+          ...numericFilterConfig(
+            (v) => Number(v),
+            numericFilterExamples(30, 10, 10, 50)
+          ),
           visible: true,
           cssClass: "facility-entry-column",
           editorParams: {
@@ -472,7 +505,10 @@ export function incomingLibrariesSamplesColumnDefs(getTabulatorInstance) {
           width: "4%",
           editor: "number",
           headerVertical: false,
-          headerTooltip: "Size Distribution (Facility)",
+          ...numericFilterConfig(
+            (v) => Number(v),
+            numericFilterExamples(600, 200, 200, 800)
+          ),
           visible: true,
           cssClass: "facility-entry-column",
           editorParams: {
@@ -505,7 +541,10 @@ export function incomingLibrariesSamplesColumnDefs(getTabulatorInstance) {
           width: "4%",
           editor: "number",
           headerVertical: false,
-          headerTooltip: "Smear Analysis (% Total)",
+          ...numericFilterConfig(
+            (v) => Number(v),
+            numericFilterExamples(90, 50, 80, 100)
+          ),
           visible: true,
           cssClass: "facility-entry-column",
           editorParams: {
@@ -555,7 +594,10 @@ export function incomingLibrariesSamplesColumnDefs(getTabulatorInstance) {
           minWidth: 60,
           width: "4%",
           headerVertical: false,
-          headerTooltip: "RNA Quality",
+          ...numericFilterConfig(
+            (v) => Number(v),
+            numericFilterExamples(8, 5, 5, 9)
+          ),
           visible: true,
           editor: "number",
           editorParams: {
@@ -604,7 +646,6 @@ export function incomingLibrariesSamplesColumnDefs(getTabulatorInstance) {
           minWidth: 60,
           width: "7%",
           editor: "list",
-          headerTooltip: "Propagable & GMO Documentation",
           editorParams: {
             values: ["Not Needed", "Risk Assessment Done"].map((v) => ({
               label: v,
@@ -641,7 +682,10 @@ export function incomingLibrariesSamplesColumnDefs(getTabulatorInstance) {
               cell.getTable().modules.edit.currentCell = null;
             }
           },
-          headerFilter: false,
+          headerFilter: "input",
+          headerFilterPlaceholder: GMO_FACILITY_FILTER_PLACEHOLDER,
+          headerFilterFunc: gmoFacilityHeaderFilter,
+          headerTooltip: GMO_FACILITY_FILTER_HELP,
           headerVertical: false,
           visible: true,
           formatter: (cell) => {
@@ -667,7 +711,7 @@ export function incomingLibrariesSamplesColumnDefs(getTabulatorInstance) {
           minWidth: 100,
           editor: "input",
           headerVertical: false,
-          headerTooltip: "Comment (Facility)",
+          ...textFilterConfig("Comment (Facility)"),
           visible: true,
           cssClass: "facility-entry-column no-right-border",
           contextMenu: () =>

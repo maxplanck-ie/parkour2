@@ -88,11 +88,19 @@
               />
             </div>
 
-            <!-- Status Filter -->
+            <!-- Status, Protocol, Analysis Type, Sequencer, and Read Length
+                 reuse the same server-side header-filter plumbing as their
+                 column search boxes (handleHeaderFilterChange), so picking
+                 a value here and typing in the column box stay in sync. -->
             <div class="filter-item">
               <label>Status</label>
-              <select v-model="filters.status" @change="getLibrariesSamples(1)">
-                <option :value="null">All Statuses</option>
+              <select
+                :value="filters.status"
+                @change="
+                  handleHeaderFilterChange('status', $event.target.value)
+                "
+              >
+                <option value="">All Statuses</option>
                 <option
                   v-for="(text, num) in statusMap"
                   :key="num"
@@ -107,14 +115,19 @@
             <div class="filter-item">
               <label>Protocol</label>
               <select
-                v-model="filters.protocol"
-                @change="getLibrariesSamples(1)"
+                :value="filters.library_protocol_name"
+                @change="
+                  handleHeaderFilterChange(
+                    'library_protocol_name',
+                    $event.target.value
+                  )
+                "
               >
-                <option :value="null">All Protocols</option>
+                <option value="">All Protocols</option>
                 <option
                   v-for="protocol in protocolsList"
                   :key="protocol.id"
-                  :value="protocol.id"
+                  :value="protocol.name"
                 >
                   {{ protocol.name }}
                 </option>
@@ -125,14 +138,19 @@
             <div class="filter-item">
               <label>Analysis Type</label>
               <select
-                v-model="filters.analysisType"
-                @change="getLibrariesSamples(1)"
+                :value="filters.analysis_type_name"
+                @change="
+                  handleHeaderFilterChange(
+                    'analysis_type_name',
+                    $event.target.value
+                  )
+                "
               >
-                <option :value="null">All Analysis Types</option>
+                <option value="">All Analysis Types</option>
                 <option
                   v-for="type in analysisTypesList"
                   :key="type.id"
-                  :value="type.id"
+                  :value="type.name"
                 >
                   {{ type.name }}
                 </option>
@@ -143,14 +161,19 @@
             <div class="filter-item">
               <label>Sequencer</label>
               <select
-                v-model="filters.sequencer"
-                @change="getLibrariesSamples(1)"
+                :value="filters.sequencer_names"
+                @change="
+                  handleHeaderFilterChange(
+                    'sequencer_names',
+                    $event.target.value
+                  )
+                "
               >
-                <option :value="null">All Sequencers</option>
+                <option value="">All Sequencers</option>
                 <option
                   v-for="sequencer in sequencersList"
                   :key="sequencer.id"
-                  :value="sequencer.id"
+                  :value="sequencer.name"
                 >
                   {{ sequencer.name }}
                 </option>
@@ -161,14 +184,19 @@
             <div class="filter-item">
               <label>Read Length</label>
               <select
-                v-model="filters.readLength"
-                @change="getLibrariesSamples(1)"
+                :value="filters.read_length_name"
+                @change="
+                  handleHeaderFilterChange(
+                    'read_length_name',
+                    $event.target.value
+                  )
+                "
               >
-                <option :value="null">All Read Lengths</option>
+                <option value="">All Read Lengths</option>
                 <option
                   v-for="length in readLengthsList"
                   :key="length.id"
-                  :value="length.id"
+                  :value="length.name"
                 >
                   {{ length.name }}
                 </option>
@@ -186,50 +214,6 @@
                 <option :value="true">Yes</option>
                 <option :value="false">No</option>
               </select>
-            </div>
-
-            <!-- I7 Index Range Filter -->
-            <div class="filter-item">
-              <label for="i7From">I7 Index (from)</label>
-              <input
-                type="text"
-                id="i7From"
-                placeholder="e.g. N701"
-                v-model="filters.i7From"
-                @change="getLibrariesSamples(1)"
-              />
-            </div>
-            <div class="filter-item">
-              <label for="i7To">I7 Index (to)</label>
-              <input
-                type="text"
-                id="i7To"
-                placeholder="e.g. N729"
-                v-model="filters.i7To"
-                @change="getLibrariesSamples(1)"
-              />
-            </div>
-
-            <!-- I5 Index Range Filter -->
-            <div class="filter-item">
-              <label for="i5From">I5 Index (from)</label>
-              <input
-                type="text"
-                id="i5From"
-                placeholder="e.g. S501"
-                v-model="filters.i5From"
-                @change="getLibrariesSamples(1)"
-              />
-            </div>
-            <div class="filter-item">
-              <label for="i5To">I5 Index (to)</label>
-              <input
-                type="text"
-                id="i5To"
-                placeholder="e.g. S522"
-                v-model="filters.i5To"
-                @change="getLibrariesSamples(1)"
-              />
             </div>
 
             <!-- Reset Filters Button -->
@@ -471,18 +455,17 @@
                       on a specific time period.
                     </li>
                     <li>
-                      Use <strong>Advanced Filters</strong> if you want to
-                      narrow the page by status, protocol, analysis type,
-                      sequencer, read length, or changed ownership. These
-                      filters are useful when you know what stage or processing
-                      setup you are looking for.
+                      Use the column search boxes to narrow by status, protocol,
+                      analysis type, sequencer, read length, and more, right
+                      where that data is shown. Hover a box for its expected
+                      syntax.
                     </li>
                     <li>
-                      Use the <strong>I7 Index</strong> and
-                      <strong>I5 Index</strong> range filters under Advanced
-                      Filters to find libraries/samples by their index IDs (e.g.
-                      From <code>N701</code> To <code>N729</code>). Leave one
-                      side empty to match a single index exactly.
+                      Use <strong>Advanced Filters</strong> if you prefer
+                      picking status, protocol, analysis type, sequencer, or
+                      read length from a dropdown instead — these are shortcuts
+                      for the same column search boxes, plus changed ownership,
+                      which has no column of its own.
                     </li>
                     <li>
                       If the table looks too crowded, use
@@ -1385,6 +1368,36 @@ import iconDownloadROCrate from "../assets/icons/action_rocrate.svg";
 const axiosRef = createAxiosObject();
 const urlStringStart = urlStringStartsWith();
 const RO_CRATE_EXPORTABLE_STATUSES = new Set([5, 6]);
+// Maps a header-filter state key to its Tabulator column field, for the few
+// that don't share the same name; every other key equals its column field.
+const HEADER_FILTER_COLUMN_FIELD = {
+  i7Id: "i7_id",
+  i5Id: "i5_id",
+  indexType: "index_type_name"
+};
+// Plain server-side header-filter fields, sent through under the same key
+// as their Tabulator column field.
+const HEADER_FILTER_FIELDS = [
+  "status",
+  "name",
+  "type",
+  "well_position",
+  "barcode",
+  "pool_names",
+  "gmo",
+  "create_time",
+  "nucleic_acid_type_name",
+  "comment_input",
+  "organism_name",
+  "library_protocol_name",
+  "analysis_type_name",
+  "coordinate",
+  "index_i7",
+  "index_i5",
+  "read_length_name",
+  "flowcell_ids",
+  "sequencer_names"
+];
 
 export default {
   name: "LibrariesAndSamples",
@@ -1566,15 +1579,28 @@ export default {
       searchQuery: "",
       filters: {
         status: null,
-        protocol: null,
-        analysisType: null,
-        sequencer: null,
-        readLength: null,
         changedOwnership: null,
-        i7From: "",
-        i7To: "",
-        i5From: "",
-        i5To: ""
+        i7Id: "",
+        i5Id: "",
+        indexType: "",
+        name: "",
+        type: "",
+        well_position: "",
+        barcode: "",
+        pool_names: "",
+        gmo: "",
+        create_time: "",
+        nucleic_acid_type_name: "",
+        comment_input: "",
+        organism_name: "",
+        library_protocol_name: "",
+        analysis_type_name: "",
+        coordinate: "",
+        index_i7: "",
+        index_i5: "",
+        read_length_name: "",
+        flowcell_ids: "",
+        sequencer_names: ""
       },
       protocolsList: [],
       analysisTypesList: [],
@@ -1587,6 +1613,7 @@ export default {
       startDateValid: true,
       endDateValid: true,
       dateChangeTimer: null,
+      headerFilterTimer: null,
       showAdvancedFilters: false,
       showSelectColumns: false,
       showPageHelp: false,
@@ -1695,36 +1722,27 @@ export default {
         }
 
         // Add advanced filter parameters
-        if (this.filters.status !== null) {
-          params.status = this.filters.status;
-        }
-        if (this.filters.protocol !== null) {
-          params.library_protocol = this.filters.protocol;
-        }
-        if (this.filters.analysisType !== null) {
-          params.analysis_type = this.filters.analysisType;
-        }
-        if (this.filters.sequencer !== null) {
-          params.sequencer = this.filters.sequencer;
-        }
-        if (this.filters.readLength !== null) {
-          params.read_length = this.filters.readLength;
-        }
         if (this.filters.changedOwnership !== null) {
           params.changed_ownership = this.filters.changedOwnership;
         }
-        if (this.filters.i7From) {
-          params.i7_from = this.filters.i7From;
+        if (this.filters.i7Id) {
+          params.i7_id = this.filters.i7Id;
         }
-        if (this.filters.i7To) {
-          params.i7_to = this.filters.i7To;
+        if (this.filters.i5Id) {
+          params.i5_id = this.filters.i5Id;
         }
-        if (this.filters.i5From) {
-          params.i5_from = this.filters.i5From;
+        if (this.filters.indexType) {
+          params.index_type = this.filters.indexType;
         }
-        if (this.filters.i5To) {
-          params.i5_to = this.filters.i5To;
-        }
+
+        // Add header-filter (column search box) parameters -- these send
+        // the raw typed value straight through under the same key as the
+        // Tabulator column field.
+        HEADER_FILTER_FIELDS.forEach((field) => {
+          if (this.filters[field]) {
+            params[field] = this.filters[field];
+          }
+        });
 
         let response = await axiosRef.get(
           urlStringStart + "/api/libraries_and_samples/",
@@ -1902,17 +1920,53 @@ export default {
     resetAdvancedFilters() {
       this.filters = {
         status: null,
-        protocol: null,
-        analysisType: null,
-        sequencer: null,
-        readLength: null,
         changedOwnership: null,
-        i7From: "",
-        i7To: "",
-        i5From: "",
-        i5To: ""
+        i7Id: "",
+        i5Id: "",
+        indexType: "",
+        name: "",
+        type: "",
+        well_position: "",
+        barcode: "",
+        pool_names: "",
+        gmo: "",
+        create_time: "",
+        nucleic_acid_type_name: "",
+        comment_input: "",
+        organism_name: "",
+        library_protocol_name: "",
+        analysis_type_name: "",
+        coordinate: "",
+        index_i7: "",
+        index_i5: "",
+        read_length_name: "",
+        flowcell_ids: "",
+        sequencer_names: ""
       };
+      const table = this.tabulatorInstance?.getTable?.();
+      if (table) {
+        ["i7Id", "i5Id", "indexType", ...HEADER_FILTER_FIELDS].forEach(
+          (field) => {
+            const columnField = HEADER_FILTER_COLUMN_FIELD[field] ?? field;
+            table.getColumn(columnField)?.setHeaderFilterValue("");
+          }
+        );
+      }
       this.getLibrariesSamples(1);
+    },
+    handleHeaderFilterChange(field, value) {
+      this.filters[field] = value;
+      clearTimeout(this.headerFilterTimer);
+      this.headerFilterTimer = setTimeout(async () => {
+        await this.getLibrariesSamples(1);
+        // Refreshing table data via Tabulator's setData() re-renders the
+        // header filter inputs and drops their typed value, so restore it.
+        const columnField = HEADER_FILTER_COLUMN_FIELD[field] ?? field;
+        this.tabulatorInstance
+          ?.getTable?.()
+          ?.getColumn(columnField)
+          ?.setHeaderFilterValue(this.filters[field]);
+      }, 800);
     },
     syncInputHeaderMode(mode = this.inputColumnMode) {
       const normalizedMode =
@@ -1977,7 +2031,8 @@ export default {
         () => this.tabulatorInstance,
         {
           inputColumnMode: this.inputColumnMode,
-          onInputColumnModeChange: this.handleInputColumnModeChange.bind(this)
+          onInputColumnModeChange: this.handleInputColumnModeChange.bind(this),
+          onHeaderFilterChange: this.handleHeaderFilterChange.bind(this)
         }
       );
 
