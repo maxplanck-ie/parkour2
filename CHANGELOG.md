@@ -3,6 +3,7 @@
 Unreleased
 ==========
 
+- Fixed the library/sample name length/charset migration (`055386e`) crashing on any database with pre-existing names that violate the new rule (real production data has some) — it now sanitizes offending names (disallowed characters replaced with `_`, truncated to 99 characters, trailing non-alphanumeric characters trimmed) before applying the new constraint, instead of failing outright.
 - Library/Sample names: restricted to letters, numbers and underscores in the request editor's Name column (was letters, numbers, `_` and `-`), with a tooltip on the column header explaining the rule and its 99-character max. Backend name field is now capped at 99 characters (was 200) and validates the same charset, but keeps allowing `-` there for existing library/sample records that already use it.
 - Closed long-standing gaps between frontend and backend validation that had never been ported to the API: Index I7/I5 now reject non-ACGT characters server-side too (any length up to 24 is accepted, so long-read technologies like Nanopore aren't blocked); loosened the request editor's Index I7/I5 validator to accept any length up to 24 instead of only 6/8/10/12/24, since that whitelist wrongly rejected valid indices of other lengths; Library's Mean Fragment Size and Size Distribution (facility) now also enforce their existing frontend minimums (>=1bp and >=0 respectively) on the backend.
 - Added header tooltips to the request editor's Index I7/I5 columns explaining the allowed characters (A/T/C/G) and max length (24).
