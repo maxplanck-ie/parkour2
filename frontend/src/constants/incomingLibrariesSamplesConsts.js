@@ -443,7 +443,7 @@ export function incomingLibrariesSamplesColumnDefs(getTabulatorInstance) {
             };
           },
           headerVertical: false,
-          headerFilter: true,
+          headerFilter: "input",
           headerFilterPlaceholder: "Filter...",
           headerTooltip: "Measurement Unit",
           visible: true,
