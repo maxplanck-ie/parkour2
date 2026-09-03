@@ -15,6 +15,24 @@ import iconQualityFailed from "../assets/icons/status_quality_failed.svg";
 import iconQualityCompromised from "../assets/icons/status_quality_compromised.svg";
 import { numericFilterConfig } from "../utilities/numericHeaderFilter";
 
+const GMO_TRUE_VALUES = new Set(["y", "yes", "true", "1"]);
+const GMO_FALSE_VALUES = new Set(["n", "no", "false", "0"]);
+const GMO_FACILITY_FILTER_PLACEHOLDER = "yes / no";
+const GMO_FACILITY_FILTER_HELP =
+  "Filter by GMO: yes/y/true or no/n/false, or search the text (e.g. Risk Assessment)";
+
+function gmoFacilityHeaderFilter(headerValue, rowValue, rowData) {
+  const query = String(headerValue ?? "")
+    .trim()
+    .toLowerCase();
+  if (!query) return true;
+  if (GMO_TRUE_VALUES.has(query)) return rowData.gmo === true;
+  if (GMO_FALSE_VALUES.has(query)) return rowData.gmo !== true;
+  return String(rowValue ?? "")
+    .toLowerCase()
+    .includes(query);
+}
+
 export function incomingLibrariesSamplesGroupHeader(
   value,
   count,
@@ -425,17 +443,8 @@ export function incomingLibrariesSamplesColumnDefs(getTabulatorInstance) {
             };
           },
           headerVertical: false,
-          headerFilter: "select",
-          headerFilterParams: {
-            values: {
-              "": "All Units",
-              "ng/µl": "ng/µl (Concentration)",
-              Cells: "Cells",
-              k: "k (Cells)",
-              M: "M (Cells)",
-              Unknown: "Unknown"
-            }
-          },
+          headerFilter: true,
+          headerFilterPlaceholder: "Filter...",
           headerTooltip: "Measurement Unit",
           visible: true,
           cssClass: "facility-entry-column",
@@ -626,7 +635,6 @@ export function incomingLibrariesSamplesColumnDefs(getTabulatorInstance) {
           minWidth: 60,
           width: "7%",
           editor: "list",
-          headerTooltip: "Propagable & GMO Documentation",
           editorParams: {
             values: ["Not Needed", "Risk Assessment Done"].map((v) => ({
               label: v,
@@ -663,14 +671,10 @@ export function incomingLibrariesSamplesColumnDefs(getTabulatorInstance) {
               cell.getTable().modules.edit.currentCell = null;
             }
           },
-          headerFilter: "select",
-          headerFilterParams: {
-            values: {
-              "": "All",
-              "Not Needed": "Not Needed",
-              "Risk Assessment Done": "Risk Assessment Done"
-            }
-          },
+          headerFilter: "input",
+          headerFilterPlaceholder: GMO_FACILITY_FILTER_PLACEHOLDER,
+          headerFilterFunc: gmoFacilityHeaderFilter,
+          headerTooltip: GMO_FACILITY_FILTER_HELP,
           headerVertical: false,
           visible: true,
           formatter: (cell) => {

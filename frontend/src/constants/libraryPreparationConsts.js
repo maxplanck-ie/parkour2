@@ -379,17 +379,8 @@ export function libraryPreparationColumnDefs(getTabulatorInstance) {
         };
       },
       headerVertical: false,
-      headerFilter: "select",
-      headerFilterParams: {
-        values: {
-          "": "All Units",
-          "ng/µl": "ng/µl (Concentration)",
-          Cells: "Cells",
-          k: "k (Cells)",
-          M: "M (Cells)",
-          Unknown: "Unknown"
-        }
-      },
+      headerFilter: true,
+      headerFilterPlaceholder: "Filter...",
       headerTooltip: "Measurement Unit",
       visible: true,
       cssClass: "regular-column",
