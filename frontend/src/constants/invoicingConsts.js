@@ -114,7 +114,9 @@ export function invoicingColumnDefs() {
       field: "percentage",
       title: "%",
       minWidth: 90,
-      ...textFilterConfig(),
+      ...textFilterConfig(
+        "This request's share of each pool's total sequencing depth, times the number of lanes that pool occupies on the flowcell (e.g. \"0.5*2\" = 50% of the pool, over 2 lanes)"
+      ),
       formatter: textFormatter("left")
     },
     {
