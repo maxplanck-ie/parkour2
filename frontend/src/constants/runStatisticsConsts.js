@@ -1,5 +1,6 @@
 import iconSelectAll from "../assets/icons/action_select_all.svg";
 import iconDeselectAll from "../assets/icons/action_deselect_all.svg";
+import { numericFilterConfig } from "../utilities/numericHeaderFilter";
 
 function displayValue(value, digits = null) {
   if (value === null || value === undefined || value === "") return "";
@@ -135,7 +136,7 @@ export function runStatisticsColumnDefs(onSelectionChanged) {
       field: "loading_concentration",
       minWidth: 82,
       visible: true,
-      headerTooltip: "Loading Concentration",
+      ...numericFilterConfig((v) => Number(v)),
       hozAlign: "right"
     },
     {
@@ -143,7 +144,7 @@ export function runStatisticsColumnDefs(onSelectionChanged) {
       field: "cluster_pf",
       minWidth: 78,
       visible: true,
-      headerTooltip: "Cluster PF (%)",
+      ...numericFilterConfig((v) => Number(v)),
       formatter: numberFormatter(2),
       hozAlign: "right"
     },
@@ -152,6 +153,7 @@ export function runStatisticsColumnDefs(onSelectionChanged) {
       field: "reads_pf",
       minWidth: 74,
       visible: true,
+      ...numericFilterConfig((v) => Number(v) / 1000000),
       formatter: numberFormatter(1, 1000000),
       hozAlign: "right"
     },
@@ -160,7 +162,7 @@ export function runStatisticsColumnDefs(onSelectionChanged) {
       field: "undetermined_indices",
       minWidth: 92,
       visible: true,
-      headerTooltip: "Undetermined Indices (%)",
+      ...numericFilterConfig((v) => Number(v)),
       hozAlign: "right"
     },
     {
@@ -168,6 +170,7 @@ export function runStatisticsColumnDefs(onSelectionChanged) {
       field: "phix",
       minWidth: 60,
       visible: true,
+      ...numericFilterConfig((v) => Number(v)),
       hozAlign: "right"
     },
     {
@@ -175,7 +178,7 @@ export function runStatisticsColumnDefs(onSelectionChanged) {
       field: "aligned_spike_in",
       minWidth: 95,
       visible: true,
-      headerTooltip: "Aligned to PhiX (%)",
+      ...numericFilterConfig((v) => Number(v)),
       hozAlign: "right"
     },
     {
@@ -183,6 +186,7 @@ export function runStatisticsColumnDefs(onSelectionChanged) {
       field: "read_1",
       minWidth: 85,
       visible: true,
+      ...numericFilterConfig((v) => Number(v)),
       formatter: numberFormatter(2),
       hozAlign: "right"
     },
@@ -191,7 +195,7 @@ export function runStatisticsColumnDefs(onSelectionChanged) {
       field: "read_2",
       minWidth: 90,
       visible: true,
-      headerTooltip: "Read 2 (I) ≥ Q30 (%)",
+      ...numericFilterConfig((v) => Number(v)),
       formatter: numberFormatter(2),
       hozAlign: "right"
     }

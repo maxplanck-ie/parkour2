@@ -1,5 +1,6 @@
 import iconSelectAll from "../assets/icons/action_select_all.svg";
 import iconDeselectAll from "../assets/icons/action_deselect_all.svg";
+import { numericFilterConfig } from "../utilities/numericHeaderFilter";
 
 function fixedNumber(value, digits = 2) {
   if (value === null || value === undefined || value === "") return "";
@@ -144,7 +145,7 @@ export function sequencesStatisticsColumnDefs(onSelectionChanged) {
       field: "reads_pf_requested",
       minWidth: 95,
       visible: true,
-      headerTooltip: "Requested Reads (M)",
+      ...numericFilterConfig((v) => Number(v)),
       hozAlign: "right"
     },
     {
@@ -152,7 +153,7 @@ export function sequencesStatisticsColumnDefs(onSelectionChanged) {
       field: "reads_pf_sequenced",
       minWidth: 85,
       visible: true,
-      headerTooltip: "Sequenced Reads PF (M)",
+      ...numericFilterConfig((v) => Number(v) / 1000000),
       formatter: (cell) => {
         const value = cell.getValue();
         if (value === null || value === undefined || value === "") {
@@ -167,6 +168,7 @@ export function sequencesStatisticsColumnDefs(onSelectionChanged) {
       field: "reads_percent",
       minWidth: 55,
       visible: true,
+      ...numericFilterConfig((v) => Number(v)),
       formatter: fixedFormatter(),
       hozAlign: "right"
     },
@@ -175,7 +177,7 @@ export function sequencesStatisticsColumnDefs(onSelectionChanged) {
       field: "confident_reads",
       minWidth: 95,
       visible: true,
-      headerTooltip: "Confident Off-species Reads",
+      ...numericFilterConfig((v) => Number(v)),
       formatter: fixedFormatter(),
       hozAlign: "right"
     },
@@ -184,7 +186,7 @@ export function sequencesStatisticsColumnDefs(onSelectionChanged) {
       field: "optical_duplicates",
       minWidth: 80,
       visible: true,
-      headerTooltip: "Optical Duplicates (%)",
+      ...numericFilterConfig((v) => Number(v)),
       formatter: fixedFormatter(),
       hozAlign: "right"
     },
@@ -193,7 +195,7 @@ export function sequencesStatisticsColumnDefs(onSelectionChanged) {
       field: "dupped_reads",
       minWidth: 75,
       visible: true,
-      headerTooltip: "Duplicated Reads (%)",
+      ...numericFilterConfig((v) => Number(v)),
       formatter: fixedFormatter(),
       hozAlign: "right"
     },
@@ -202,7 +204,7 @@ export function sequencesStatisticsColumnDefs(onSelectionChanged) {
       field: "mapped_reads",
       minWidth: 75,
       visible: true,
-      headerTooltip: "Mapped Reads (%)",
+      ...numericFilterConfig((v) => Number(v)),
       formatter: fixedFormatter(),
       hozAlign: "right"
     },
@@ -211,7 +213,7 @@ export function sequencesStatisticsColumnDefs(onSelectionChanged) {
       field: "insert_size",
       minWidth: 55,
       visible: true,
-      headerTooltip: "Insert Size",
+      ...numericFilterConfig((v) => Number(v)),
       hozAlign: "right"
     }
   ]);

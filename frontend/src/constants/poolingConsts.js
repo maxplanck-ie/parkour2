@@ -8,6 +8,7 @@ import iconDeselectAll from "../assets/icons/action_deselect_all.svg";
 import iconQualityPassed from "../assets/icons/status_quality_passed.svg";
 import iconQualityFailed from "../assets/icons/status_quality_failed.svg";
 import iconEditComment from "../assets/icons/action_pool_edit_comment.svg";
+import { numericFilterConfig } from "../utilities/numericHeaderFilter";
 import iconDestroyPool from "../assets/icons/action_pool_destroy.svg";
 
 export function poolingGroupHeader(
@@ -190,7 +191,7 @@ export function poolingColumnDefs(getTabulatorInstance) {
       minWidth: 60,
       width: "6%",
       headerVertical: false,
-      headerTooltip: "Concentration Library (ng/µl)",
+      ...numericFilterConfig((v) => Number(v)),
       visible: true,
       cssClass: "regular-column",
       contextMenu: () =>
@@ -213,7 +214,7 @@ export function poolingColumnDefs(getTabulatorInstance) {
       minWidth: 60,
       width: "6%",
       headerVertical: false,
-      headerTooltip: "Smear Analysis (% Total)",
+      ...numericFilterConfig((v) => Number(v)),
       visible: true,
       cssClass: "regular-column",
       contextMenu: () =>
@@ -229,7 +230,7 @@ export function poolingColumnDefs(getTabulatorInstance) {
       minWidth: 60,
       width: "6%",
       headerVertical: false,
-      headerTooltip: "Mean Fragment Size (bp)",
+      ...numericFilterConfig((v) => Number(v)),
       visible: true,
       cssClass: "regular-column",
       contextMenu: () =>
@@ -252,7 +253,7 @@ export function poolingColumnDefs(getTabulatorInstance) {
       minWidth: 60,
       width: "6%",
       headerVertical: false,
-      headerTooltip: "Sequencing Depth (M)",
+      ...numericFilterConfig((v) => Number(v)),
       visible: true,
       cssClass: "regular-column",
       contextMenu: () =>
@@ -275,7 +276,7 @@ export function poolingColumnDefs(getTabulatorInstance) {
       minWidth: 60,
       width: "6%",
       headerVertical: false,
-      headerTooltip: "% Library in Pool",
+      ...numericFilterConfig((v) => Number(v)),
       visible: true,
       cssClass: "regular-column",
       contextMenu: () =>
@@ -290,6 +291,8 @@ export function poolingColumnDefs(getTabulatorInstance) {
       field: "coordinate",
       width: 80,
       headerVertical: false,
+      headerFilter: true,
+      headerFilterPlaceholder: "Filter...",
       headerTooltip: "Index Pair Coordinate",
       visible: true,
       cssClass: "regular-column",
@@ -306,6 +309,8 @@ export function poolingColumnDefs(getTabulatorInstance) {
       minWidth: 60,
       width: "6%",
       headerVertical: false,
+      headerFilter: true,
+      headerFilterPlaceholder: "Filter...",
       headerTooltip: "Index I7 ID",
       visible: true,
       cssClass: "regular-column",
@@ -322,6 +327,8 @@ export function poolingColumnDefs(getTabulatorInstance) {
       minWidth: 60,
       width: "6%",
       headerVertical: false,
+      headerFilter: true,
+      headerFilterPlaceholder: "Filter...",
       headerTooltip: "Index I7 ID",
       visible: true,
       cssClass: "regular-column",
@@ -338,6 +345,8 @@ export function poolingColumnDefs(getTabulatorInstance) {
       minWidth: 60,
       width: "6%",
       headerVertical: false,
+      headerFilter: true,
+      headerFilterPlaceholder: "Filter...",
       headerTooltip: "Index I5 ID",
       visible: true,
       cssClass: "regular-column",
@@ -354,6 +363,8 @@ export function poolingColumnDefs(getTabulatorInstance) {
       minWidth: 60,
       width: "6%",
       headerVertical: false,
+      headerFilter: true,
+      headerFilterPlaceholder: "Filter...",
       headerTooltip: "Index I5 ID",
       visible: true,
       cssClass: "regular-column",

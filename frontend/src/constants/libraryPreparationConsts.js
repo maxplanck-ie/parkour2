@@ -8,6 +8,7 @@ import iconSelectAll from "../assets/icons/action_select_all.svg";
 import iconDeselectAll from "../assets/icons/action_deselect_all.svg";
 import iconQualityPassed from "../assets/icons/status_quality_passed.svg";
 import iconQualityFailed from "../assets/icons/status_quality_failed.svg";
+import { numericFilterConfig } from "../utilities/numericHeaderFilter";
 
 export function libraryPreparationGroupHeader(value, count) {
   return `
@@ -170,6 +171,8 @@ export function libraryPreparationColumnDefs(getTabulatorInstance) {
       minWidth: 60,
       visible: true,
       cssClass: "regular-column",
+      headerFilter: true,
+      headerFilterPlaceholder: "Filter...",
       headerTooltip: "Library Preparation Protocol",
       contextMenu: () =>
         cellContextMenu(true, false, false, getTabulatorInstance, {
@@ -190,6 +193,8 @@ export function libraryPreparationColumnDefs(getTabulatorInstance) {
       width: 140,
       minWidth: 60,
       headerVertical: false,
+      headerFilter: true,
+      headerFilterPlaceholder: "Filter...",
       headerTooltip: "Comment (User)",
       visible: true,
       cssClass: "regular-column",
@@ -211,6 +216,8 @@ export function libraryPreparationColumnDefs(getTabulatorInstance) {
       width: 84,
       minWidth: 60,
       headerVertical: false,
+      headerFilter: true,
+      headerFilterPlaceholder: "Filter...",
       headerTooltip: "Pool ID",
       visible: true,
       cssClass: "regular-column",
@@ -232,6 +239,8 @@ export function libraryPreparationColumnDefs(getTabulatorInstance) {
       width: 96,
       minWidth: 60,
       headerVertical: false,
+      headerFilter: true,
+      headerFilterPlaceholder: "Filter...",
       headerTooltip: "Index Type",
       visible: true,
       cssClass: "regular-column",
@@ -253,6 +262,8 @@ export function libraryPreparationColumnDefs(getTabulatorInstance) {
       width: 105,
       minWidth: 60,
       headerVertical: false,
+      headerFilter: true,
+      headerFilterPlaceholder: "Filter...",
       headerTooltip: "Index I7 ID",
       visible: true,
       cssClass: "regular-column",
@@ -274,6 +285,8 @@ export function libraryPreparationColumnDefs(getTabulatorInstance) {
       width: 105,
       minWidth: 60,
       headerVertical: false,
+      headerFilter: true,
+      headerFilterPlaceholder: "Filter...",
       headerTooltip: "Index I5 ID",
       visible: true,
       cssClass: "regular-column",
@@ -294,6 +307,8 @@ export function libraryPreparationColumnDefs(getTabulatorInstance) {
       field: "coordinate",
       width: 40,
       headerVertical: false,
+      headerFilter: true,
+      headerFilterPlaceholder: "Filter...",
       headerTooltip: "Index Pair Coordinate",
       visible: true,
       cssClass: "regular-column",
@@ -316,7 +331,7 @@ export function libraryPreparationColumnDefs(getTabulatorInstance) {
       width: "4%",
       editor: "number",
       headerVertical: false,
-      headerTooltip: "Measured Value",
+      ...numericFilterConfig((v) => Number(v)),
       visible: true,
       cssClass: "regular-column",
       editorParams: {
@@ -364,6 +379,17 @@ export function libraryPreparationColumnDefs(getTabulatorInstance) {
         };
       },
       headerVertical: false,
+      headerFilter: "select",
+      headerFilterParams: {
+        values: {
+          "": "All Units",
+          "ng/µl": "ng/µl (Concentration)",
+          Cells: "Cells",
+          k: "k (Cells)",
+          M: "M (Cells)",
+          Unknown: "Unknown"
+        }
+      },
       headerTooltip: "Measurement Unit",
       visible: true,
       cssClass: "regular-column",
@@ -391,7 +417,7 @@ export function libraryPreparationColumnDefs(getTabulatorInstance) {
       width: "4%",
       editor: "number",
       headerVertical: false,
-      headerTooltip: "Sample Average Fragment Size (bp)",
+      ...numericFilterConfig((v) => Number(v)),
       visible: true,
       cssClass: "regular-column",
       editorParams: {
@@ -424,7 +450,7 @@ export function libraryPreparationColumnDefs(getTabulatorInstance) {
       width: "4%",
       editor: "number",
       headerVertical: false,
-      headerTooltip: "Starting Amount (ng or fmol)",
+      ...numericFilterConfig((v) => Number(v)),
       visible: true,
       cssClass: "regular-column",
       editorParams: {
@@ -453,7 +479,7 @@ export function libraryPreparationColumnDefs(getTabulatorInstance) {
       width: "4%",
       editor: "number",
       headerVertical: false,
-      headerTooltip: "PCR Cycles",
+      ...numericFilterConfig((v) => Number(v)),
       visible: true,
       cssClass: "regular-column",
       editorParams: {
@@ -486,7 +512,7 @@ export function libraryPreparationColumnDefs(getTabulatorInstance) {
       width: "4%",
       editor: "number",
       headerVertical: false,
-      headerTooltip: "Concentration Library (ng/µl)",
+      ...numericFilterConfig((v) => Number(v)),
       visible: true,
       cssClass: "regular-column",
       editorParams: {
@@ -517,7 +543,7 @@ export function libraryPreparationColumnDefs(getTabulatorInstance) {
       width: "4%",
       editor: "number",
       headerVertical: false,
-      headerTooltip: "Library Average Fragment Size (bp)",
+      ...numericFilterConfig((v) => Number(v)),
       visible: true,
       cssClass: "regular-column",
       editorParams: {
@@ -551,7 +577,7 @@ export function libraryPreparationColumnDefs(getTabulatorInstance) {
       editor: "number",
       defaultOnEmptyPaste: 100,
       headerVertical: false,
-      headerTooltip: "Smear Analysis (% Total)",
+      ...numericFilterConfig((v) => Number(v)),
       visible: true,
       cssClass: "regular-column",
       editorParams: {
@@ -583,6 +609,8 @@ export function libraryPreparationColumnDefs(getTabulatorInstance) {
       minWidth: 60,
       editor: "input",
       headerVertical: false,
+      headerFilter: true,
+      headerFilterPlaceholder: "Filter...",
       headerTooltip: "Comment (Facility)",
       visible: true,
       cssClass: "regular-column",
