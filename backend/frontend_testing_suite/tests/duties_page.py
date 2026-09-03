@@ -26,6 +26,7 @@ def test_duties_page(page: Page):
         "Manage Duties",
         preferred_test_id="duties-page-title",
     )
+    expect(page.locator(".tabulator")).to_be_visible()
 
     # Pick the first available options; these are always present in fixtures.
     page.locator("select#facility").select_option(index=1)

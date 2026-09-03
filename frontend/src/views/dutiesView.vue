@@ -61,25 +61,14 @@
             </div>
           </div>
           <div class="duties-grid-wrapper">
-            <ag-grid-vue
-              ref="dutiesGrid"
-              class="ag-theme-alpine"
-              style="height: 100%"
-              theme="legacy"
-              :rowSelection="{
-                mode: 'multiRow',
-                checkboxes: false,
-                headerCheckbox: false
-              }"
-              :animateRows="true"
-              :rowDragManaged="true"
-              :stopEditingWhenCellsLoseFocus="true"
-              :columnDefs="columnsList"
+            <TabulatorTable
+              v-if="dutiesList !== null && columnsList.length"
+              ref="dutiesTable"
+              tableId="dutiesTable"
               :rowData="dutiesList"
-              :gridOptions="gridOptions"
-              @cellValueChanged="editDuty"
-              @first-data-rendered="updateGridDataObject"
-              @grid-ready="onGridReady"
+              :columnDefs="columnsList"
+              :enableDefaultFilters="false"
+              :tableOptions="tableOptions"
             />
           </div>
         </div>
@@ -194,7 +183,7 @@
 </template>
 
 <script>
-import { AgGridVue } from "ag-grid-vue3";
+import TabulatorTable from "../components/TabulatorTableFull.vue";
 import {
   showNotification,
   handleError,
@@ -206,6 +195,7 @@ import axios from "axios";
 import moment from "moment";
 import Cookies from "js-cookie";
 import iconDutiesHeader from "../assets/icons/header_duties.svg";
+import { dutiesColumnDefs } from "../constants/dutiesConsts";
 
 const axiosRef = axios.create({
   withCredentials: true,
@@ -220,7 +210,7 @@ const urlStringStart = urlStringStartsWith();
 export default {
   name: "Duties",
   components: {
-    AgGridVue
+    TabulatorTable
   },
   data() {
     return {
@@ -231,10 +221,13 @@ export default {
       userList: [],
       userListFiltered: [],
       columnsList: [],
-      gridOptions: {},
-      gridData: [],
-      selectedFilter: "ongoing",
-      gridApi: null
+      tableOptions: {
+        index: "duty_id",
+        placeholder: "No duties to show.",
+        initialSort: [{ column: "start_date", dir: "asc" }],
+        handleCellEdited: (cell) => this.editDuty(cell)
+      },
+      selectedFilter: "ongoing"
     };
   },
   setup() {},
@@ -250,9 +243,6 @@ export default {
   },
   computed: {},
   methods: {
-    onGridReady(params) {
-      this.gridApi = params.api;
-    },
     updateDutyObject(event) {
       let newDuty = toRaw(this.newDuty);
       if (event.target.id === "facility") {
@@ -377,7 +367,6 @@ export default {
         this.dutiesListBackup = fetchedRows;
       } catch (error) {
         handleError(error);
-      } finally {
       }
     },
     getFilteredDuties(refresh = false, selectedFilter) {
@@ -417,11 +406,12 @@ export default {
       }
       this.getDuties(refresh, additionalUrl);
     },
-    async editDuty(rowData) {
-      let dutyId = rowData.data.duty_id;
-      let columnName = rowData.column.colId;
-      let oldValue = String(rowData.oldValue);
-      let newValue = String(rowData.newValue);
+    async editDuty(cell) {
+      const rowData = cell.getRow().getData();
+      const dutyId = rowData.duty_id;
+      const columnName = cell.getField();
+      const oldValue = String(cell.getOldValue() ?? "");
+      let newValue = String(cell.getValue() ?? "");
 
       if (
         (columnName !== "platform" && newValue.trim() !== oldValue.trim()) ||
@@ -448,10 +438,8 @@ export default {
             );
             break;
           case "start_date":
-            newValue = moment(newValue);
-            break;
           case "end_date":
-            newValue = moment(newValue);
+            newValue = moment(newValue).format("YYYY-MM-DD");
             break;
           case "platform":
             newValue =
@@ -475,7 +463,6 @@ export default {
             this.getFilteredDuties(true, this.selectedFilter);
             handleError(error);
           });
-        this.updateGridDataObject();
       }
     },
     searchDuties(event) {
@@ -532,145 +519,7 @@ export default {
         .catch((error) => handleError(error));
     },
     setColumns(userList) {
-      this.columnsList = [
-        // {
-        //   headerName: "Select",
-        //   field: "select",
-        //   cellEditor: "agCheckboxCellEditor",
-        //   editable: true,
-        // },
-        {
-          headerName: "Responsible Person",
-          field: "main_name",
-          minWidth: 200,
-          flex: 3,
-          filter: true,
-          sortable: true,
-          resizable: true,
-          editable: true,
-          cellEditor: "agSelectCellEditor",
-          cellEditorParams: (params) => {
-            return {
-              values: userList
-                .filter((element) => element.facility === params.data.facility)
-                .map((element) => element.first_name),
-              valueListGap: 0
-            };
-          },
-          rowDrag: true
-        },
-        {
-          headerName: "Backup Person",
-          field: "backup_name",
-          minWidth: 150,
-          flex: 3,
-          filter: true,
-          sortable: true,
-          resizable: true,
-          editable: true,
-          cellEditor: "agSelectCellEditor",
-          cellEditorParams: (params) => {
-            return {
-              values: userList
-                .filter((element) => element.facility === params.data.facility)
-                .map((element) => element.first_name),
-              valueListGap: 0
-            };
-          }
-        },
-        {
-          headerName: "Start Date",
-          field: "start_date",
-          cellEditor: "agDateStringCellEditor",
-          cellEditorParams: {
-            min: "2015-01-01",
-            max: "2099-12-31"
-          },
-          cellRenderer: (data) => {
-            return data.value ? moment(data.value).format("MM/DD/YYYY") : "-";
-          },
-          minWidth: 120,
-          flex: 2,
-          filter: true,
-          sortable: true,
-          resizable: true,
-          editable: true,
-          sort: "asc"
-        },
-        {
-          headerName: "End Date",
-          field: "end_date",
-          cellEditor: "agDateStringCellEditor",
-          cellEditorParams: {
-            min: "2015-01-01",
-            max: "2099-12-31"
-          },
-          cellRenderer: (data) => {
-            return data.value ? moment(data.value).format("MM/DD/YYYY") : "-";
-          },
-          minWidth: 120,
-          flex: 2,
-          filter: true,
-          sortable: true,
-          resizable: true,
-          editable: true
-        },
-        {
-          headerName: "Facility",
-          field: "facility",
-          minWidth: 150,
-          flex: 2,
-          filter: true,
-          sortable: true,
-          resizable: true
-        },
-        {
-          headerName: "Platform",
-          field: "platform",
-          minWidth: 150,
-          flex: 2,
-          filter: true,
-          sortable: true,
-          resizable: true,
-          editable: true,
-          cellEditor: "agSelectCellEditor",
-          cellEditorParams: {
-            values: ["Short", "Long", "Short + Long"],
-            valueListGap: 0
-          },
-          cellRenderer: (data) => {
-            if (data.value === "shortlong") return "Short + Long";
-            else return data.value[0].toUpperCase() + data.value.slice(1);
-          }
-        },
-        {
-          headerName: "Comments",
-          field: "comment",
-          minWidth: 300,
-          flex: 4,
-          resizable: true,
-          editable: true,
-          cellEditor: "agLargeTextCellEditor",
-          cellEditorPopup: true,
-          cellEditorParams: {
-            maxLength: 100,
-            rows: 10,
-            cols: 50
-          }
-        }
-      ];
-    },
-    updateGridDataObject() {
-      const api =
-        this.gridApi || (this.$refs.dutiesGrid && this.$refs.dutiesGrid.api);
-      if (!api) {
-        return;
-      }
-      const gridData = [];
-      api.forEachNode((rowNode) => {
-        gridData.push(rowNode.data);
-      });
-      this.gridData = gridData;
+      this.columnsList = dutiesColumnDefs(userList);
     }
   }
 };
