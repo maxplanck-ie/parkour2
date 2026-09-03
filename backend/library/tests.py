@@ -170,6 +170,8 @@ class TestLibrarySampleTree(BaseTestCase):
             self.assertIn("organism_name", record)
             self.assertIn("measuring_unit_facility", record)
             self.assertIn("measured_value_facility", record)
+            self.assertIn("plate_coord", record)
+            self.assertRegex(record["plate_coord"], r"^[A-H](?:[1-9]|1[0-2])$")
 
     def test_sample_stage_data_visibility_status_matrix(self):
         """Stage data remains visible after failure and is otherwise gated."""
@@ -2064,3 +2066,177 @@ class TestGenerateROCrateAPI(BaseAPITestCase):
             library_entry.get("indexType"),
             {"@id": f"#index-type-{library.index_type_id}"},
         )
+
+
+def _frontend_plate_coords(rows):
+    """Python port of the Plate Coord computation in librariesAndSamplesView.vue:
+    group by request_name, sort by barcode, index % 96 -> A1..H12."""
+    coordinates = [f"{chr(65 + i % 8)}{i // 8 + 1}" for i in range(96)]
+    groups = {}
+    for row in rows:
+        groups.setdefault(row["request_name"], []).append(row)
+    result = {}
+    for group in groups.values():
+        group.sort(key=lambda row: row["barcode"])
+        for idx, row in enumerate(group):
+            result[row["pk"]] = coordinates[idx % 96]
+    return result
+
+
+class TestPlateCoordProperty(BaseTestCase):
+    """CompleteLibraryData/CompleteSampleData.plate_coord must match the
+    'Plate Coord' column computed client-side in librariesAndSamplesView.vue."""
+
+    def setUp(self):
+        super().setUp()
+        self.user = self.create_user("wellpos@test.io", "foo-bar")
+        self.request_a = Request.objects.create(user=self.user)
+        self.request_a.refresh_from_db()
+        self.request_b = Request.objects.create(user=self.user)
+        self.request_b.refresh_from_db()
+
+    def _make_library_row(self, library_id, barcode, request):
+        return CompleteLibraryData.objects.create(
+            library_id=library_id,
+            barcode=barcode,
+            name=f"Library {library_id}",
+            status=1,
+            sequencing_depth=10.0,
+            measuring_unit="ng/µl",
+            measured_value=1.0,
+            measuring_unit_facility="ng/µl",
+            measured_value_facility=1.0,
+            concentration_library=1.0,
+            percent_total=100.0,
+            library_protocol_id=1,
+            analysis_type_id=1,
+            average_fragment_size=300.0,
+            request_id=request.id,
+            request_name=request.name,
+            create_time=timezone.now(),
+        )
+
+    def test_plate_coord_matches_frontend_computation(self):
+        # Barcodes intentionally NOT in library_id/creation order, to catch a
+        # property that (wrongly) sorts by pk instead of barcode.
+        specs = [
+            # (library_id, barcode, request)
+            (101, "25L000005", self.request_a),
+            (102, "25L000002", self.request_a),
+            (103, "25L000009", self.request_a),
+            (104, "25L000001", self.request_a),
+            (201, "25L000003", self.request_b),
+            (202, "25L000004", self.request_b),
+        ]
+        rows = [self._make_library_row(*spec) for spec in specs]
+
+        frontend_rows = [
+            {
+                "pk": row.library_id,
+                "request_name": row.request_name,
+                "barcode": row.barcode,
+            }
+            for row in rows
+        ]
+        expected = _frontend_plate_coords(frontend_rows)
+
+        for row in rows:
+            with self.subTest(library_id=row.library_id):
+                self.assertEqual(row.plate_coord, expected[row.library_id])
+
+    def _make_sample_row(self, sample_id, barcode, request):
+        return CompleteSampleData.objects.create(
+            sample_id=sample_id,
+            barcode=barcode,
+            name=f"Sample {sample_id}",
+            status=1,
+            sequencing_depth=10.0,
+            nucleic_acid_type_id=1,
+            nucleic_acid_type_name="RNA",
+            measuring_unit="ng/µl",
+            measured_value=1.0,
+            measuring_unit_facility="ng/µl",
+            measured_value_facility=1.0,
+            concentration_library=1.0,
+            gmo=False,
+            library_protocol_id=1,
+            analysis_type_id=1,
+            average_fragment_size=300.0,
+            starting_amount=5.0,
+            pcr_cycles=8,
+            request_id=request.id,
+            request_name=request.name,
+            create_time=timezone.now(),
+        )
+
+    def test_plate_coord_matches_frontend_computation_for_samples(self):
+        specs = [
+            (301, "25S000005", self.request_a),
+            (302, "25S000002", self.request_a),
+            (303, "25S000009", self.request_a),
+        ]
+        rows = [self._make_sample_row(*spec) for spec in specs]
+
+        frontend_rows = [
+            {
+                "pk": row.sample_id,
+                "request_name": row.request_name,
+                "barcode": row.barcode,
+            }
+            for row in rows
+        ]
+        expected = _frontend_plate_coords(frontend_rows)
+
+        for row in rows:
+            with self.subTest(sample_id=row.sample_id):
+                self.assertEqual(row.plate_coord, expected[row.sample_id])
+
+    def test_plate_coord_disambiguates_duplicate_barcodes(self):
+        # Real production data (a 2019 request) has two Sample rows sharing
+        # an identical (legacy) barcode. Keying results by barcode alone
+        # would collapse them onto the same coord; keying by
+        # (request_name, record_type, pk) keeps them distinct.
+        dup_a = self._make_sample_row(601, "19L003038", self.request_a)
+        dup_b = self._make_sample_row(602, "19L003038", self.request_a)
+
+        self.assertNotEqual(dup_a.plate_coord, dup_b.plate_coord)
+        for row in (dup_a, dup_b):
+            self.assertRegex(row.plate_coord, r"^[A-H](?:[1-9]|1[0-2])$")
+
+    def test_plate_coord_ranks_libraries_and_samples_together_within_a_request(self):
+        # A single request mixing libraries and samples: librariesAndSamplesView.vue
+        # groups both record types together (via request_name) before assigning
+        # Plate Coord, so a property that only looks at same-model siblings would
+        # diverge here.
+        libraries = [
+            self._make_library_row(401, "25L000002", self.request_a),
+            self._make_library_row(402, "25L000004", self.request_a),
+        ]
+        samples = [
+            self._make_sample_row(501, "25S000001", self.request_a),
+            self._make_sample_row(502, "25S000003", self.request_a),
+        ]
+
+        frontend_rows = [
+            {
+                "pk": row.library_id,
+                "request_name": row.request_name,
+                "barcode": row.barcode,
+            }
+            for row in libraries
+        ] + [
+            {
+                "pk": row.sample_id,
+                "request_name": row.request_name,
+                "barcode": row.barcode,
+            }
+            for row in samples
+        ]
+        expected = _frontend_plate_coords(frontend_rows)
+
+        for row in libraries:
+            with self.subTest(library_id=row.library_id):
+                self.assertEqual(row.plate_coord, expected[row.library_id])
+        for row in samples:
+            with self.subTest(sample_id=row.sample_id):
+                self.assertEqual(row.plate_coord, expected[row.sample_id])

@@ -14,6 +14,7 @@ from rest_framework.response import Response
 from request.models import Request
 from request.serializers import RequestSerializer
 
+from library_sample_shared.utils import compute_plate_coords
 from library_sample_shared.views import LibrarySampleBaseViewSet
 
 from .serializers import LibrarySerializer
@@ -420,15 +421,23 @@ class LibrarySampleTree(viewsets.ViewSet):
             .values()
         )
 
+        plate_coords = compute_plate_coords(paginated_requests)
+
         combined_data = []
         for lib in libraries:
             apply_stage_data_visibility(lib, "Library")
             lib["record_type"] = "Library"
+            lib["plate_coord"] = plate_coords.get(
+                (lib["request_name"], "library", lib["library_id"])
+            )
             combined_data.append(lib)
 
         for sample in samples:
             apply_stage_data_visibility(sample, "Sample")
             sample["record_type"] = "Sample"
+            sample["plate_coord"] = plate_coords.get(
+                (sample["request_name"], "sample", sample["sample_id"])
+            )
             combined_data.append(sample)
 
         combined_data.sort(key=lambda x: x["create_time"], reverse=True)

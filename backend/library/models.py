@@ -99,3 +99,9 @@ class CompleteLibraryData(models.Model):
     class Meta:
         managed = False
         db_table = "complete_library_data_mv"
+
+    @property
+    def plate_coord(self):
+        from library_sample_shared.utils import compute_plate_coord
+
+        return compute_plate_coord(self.request_name, "library", self.library_id)

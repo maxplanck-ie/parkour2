@@ -170,3 +170,9 @@ class CompleteSampleData(models.Model):
     class Meta:
         managed = False
         db_table = "complete_sample_data_mv"
+
+    @property
+    def plate_coord(self):
+        from library_sample_shared.utils import compute_plate_coord
+
+        return compute_plate_coord(self.request_name, "sample", self.sample_id)

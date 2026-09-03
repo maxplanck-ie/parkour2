@@ -1681,13 +1681,6 @@ export default {
           return `${day}.${month}.${year}`;
         };
 
-        const coordinates = Array.from({ length: 96 }, (_, i) => {
-          const row = String.fromCharCode(65 + (i % 8));
-          const col = Math.floor(i / 8) + 1;
-          return `${row}${col}`;
-        });
-
-        const groupsMap = new Map();
         const requestNamesSet = new Set();
         const allRows = [];
         const requestsMeta = response.data?.requests || {};
@@ -1721,7 +1714,7 @@ export default {
                 : "",
             status: getValue(e.status),
             status_text: statusMap[e.status] ?? "-",
-            well_position: "",
+            well_position: e.plate_coord ?? "",
             concentration_library: getValue(e.concentration_library),
             create_time: e.create_time ? getFormattedDate(e.create_time) : "",
             index_type_name: e.index_type_name ?? "",
@@ -1745,25 +1738,7 @@ export default {
           if (row.request_name && !requestNamesSet.has(row.request_name)) {
             requestNamesSet.add(row.request_name);
           }
-
-          if (!groupsMap.has(row.request_name)) {
-            groupsMap.set(row.request_name, []);
-          }
-          groupsMap.get(row.request_name).push(row);
         });
-
-        for (const group of groupsMap.values()) {
-          group.sort((a, b) =>
-            (a.barcode || "").localeCompare(b.barcode || "", undefined, {
-              numeric: true,
-              sensitivity: "base"
-            })
-          );
-
-          group.forEach((row, idx) => {
-            row.well_position = coordinates[idx % 96];
-          });
-        }
 
         this.applyInputColumnMode(allRows);
 
