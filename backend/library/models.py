@@ -102,10 +102,6 @@ class CompleteLibraryData(models.Model):
 
     @property
     def plate_coord(self):
-        sibling_ids = list(
-            CompleteLibraryData.objects.filter(request_name=self.request_name)
-            .order_by("barcode")
-            .values_list("library_id", flat=True)
-        )
-        index = sibling_ids.index(self.library_id) % 96
-        return f"{chr(65 + index % 8)}{index // 8 + 1}"
+        from library_sample_shared.utils import compute_plate_coord
+
+        return compute_plate_coord(self.request_name, "library", self.library_id)
