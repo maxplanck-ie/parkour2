@@ -89,8 +89,119 @@
             </div>
 
             <!-- Status, Protocol, Analysis Type, Sequencer, and Read Length
-                 are now filtered directly from their column search boxes
-                 instead of here. -->
+                 reuse the same server-side header-filter plumbing as their
+                 column search boxes (handleHeaderFilterChange), so picking
+                 a value here and typing in the column box stay in sync. -->
+            <div class="filter-item">
+              <label>Status</label>
+              <select
+                :value="filters.status"
+                @change="
+                  handleHeaderFilterChange('status', $event.target.value)
+                "
+              >
+                <option value="">All Statuses</option>
+                <option
+                  v-for="(text, num) in statusMap"
+                  :key="num"
+                  :value="num"
+                >
+                  {{ text }}
+                </option>
+              </select>
+            </div>
+
+            <!-- Protocol Filter -->
+            <div class="filter-item">
+              <label>Protocol</label>
+              <select
+                :value="filters.library_protocol_name"
+                @change="
+                  handleHeaderFilterChange(
+                    'library_protocol_name',
+                    $event.target.value
+                  )
+                "
+              >
+                <option value="">All Protocols</option>
+                <option
+                  v-for="protocol in protocolsList"
+                  :key="protocol.id"
+                  :value="protocol.name"
+                >
+                  {{ protocol.name }}
+                </option>
+              </select>
+            </div>
+
+            <!-- Analysis Type Filter -->
+            <div class="filter-item">
+              <label>Analysis Type</label>
+              <select
+                :value="filters.analysis_type_name"
+                @change="
+                  handleHeaderFilterChange(
+                    'analysis_type_name',
+                    $event.target.value
+                  )
+                "
+              >
+                <option value="">All Analysis Types</option>
+                <option
+                  v-for="type in analysisTypesList"
+                  :key="type.id"
+                  :value="type.name"
+                >
+                  {{ type.name }}
+                </option>
+              </select>
+            </div>
+
+            <!-- Sequencer Filter -->
+            <div class="filter-item">
+              <label>Sequencer</label>
+              <select
+                :value="filters.sequencer_names"
+                @change="
+                  handleHeaderFilterChange(
+                    'sequencer_names',
+                    $event.target.value
+                  )
+                "
+              >
+                <option value="">All Sequencers</option>
+                <option
+                  v-for="sequencer in sequencersList"
+                  :key="sequencer.id"
+                  :value="sequencer.name"
+                >
+                  {{ sequencer.name }}
+                </option>
+              </select>
+            </div>
+
+            <!-- Read Length Filter -->
+            <div class="filter-item">
+              <label>Read Length</label>
+              <select
+                :value="filters.read_length_name"
+                @change="
+                  handleHeaderFilterChange(
+                    'read_length_name',
+                    $event.target.value
+                  )
+                "
+              >
+                <option value="">All Read Lengths</option>
+                <option
+                  v-for="length in readLengthsList"
+                  :key="length.id"
+                  :value="length.name"
+                >
+                  {{ length.name }}
+                </option>
+              </select>
+            </div>
 
             <!-- Changed Ownership Filter -->
             <div class="filter-item">
@@ -350,8 +461,11 @@
                       syntax.
                     </li>
                     <li>
-                      Use <strong>Advanced Filters</strong> for changed
-                      ownership, which has no column of its own.
+                      Use <strong>Advanced Filters</strong> if you prefer
+                      picking status, protocol, analysis type, sequencer, or
+                      read length from a dropdown instead — these are shortcuts
+                      for the same column search boxes, plus changed ownership,
+                      which has no column of its own.
                     </li>
                     <li>
                       If the table looks too crowded, use
