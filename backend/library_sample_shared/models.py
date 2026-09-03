@@ -14,6 +14,11 @@ NameMustEndWithAlphanumericValidator = RegexValidator(
     "Name must end with a letter or number.",
 )
 
+NameCharsetValidator = RegexValidator(
+    r"^[A-Za-z0-9_-]+$",
+    "Only letters, numbers, underscores and hyphens are allowed.",
+)
+
 
 class Organism(models.Model):
     name = models.CharField("Name", max_length=100)
@@ -302,8 +307,8 @@ def get_removed_concentrationmethod():
 class GenericLibrarySample(DateTimeMixin):
     name = models.CharField(
         "Name",
-        max_length=200,
-        validators=[NameMustEndWithAlphanumericValidator],
+        max_length=99,
+        validators=[NameCharsetValidator, NameMustEndWithAlphanumericValidator],
     )
 
     status = models.SmallIntegerField(default=0)

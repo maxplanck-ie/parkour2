@@ -428,7 +428,8 @@ export function getRequestEditorLibraryColumns(
       minWidth: 110,
       widthGrow: 2,
       headerVertical: false,
-      headerTooltip: "Enter a Unique Name",
+      headerTooltip:
+        "Enter a unique name. Only letters, numbers and underscores are allowed, max 99 characters.",
       visible: true,
       frozen: true,
       cssClass: "regular-column right-border",
@@ -436,9 +437,11 @@ export function getRequestEditorLibraryColumns(
       validator: (value) =>
         value === "" || value === undefined || value === null
           ? true
-          : /^[A-Za-z0-9_-]+$/.test(String(value))
-            ? true
-            : "Only letters, numbers, _ and - are allowed.",
+          : String(value).length > 99
+            ? "Name must be 99 characters or fewer."
+            : /^[A-Za-z0-9_]+$/.test(String(value))
+              ? true
+              : "Only letters, numbers and underscores are allowed.",
       formatter: decorateFormatter(
         (cell) => ellipsisContainer(formatDisplayValue(cell.getValue())),
         libraryEditable("name"),
@@ -921,7 +924,8 @@ export function getRequestEditorSampleColumns(
       minWidth: 110,
       widthGrow: 2,
       headerVertical: false,
-      headerTooltip: "Enter a Unique Name",
+      headerTooltip:
+        "Enter a unique name. Only letters, numbers and underscores are allowed, max 99 characters.",
       visible: true,
       frozen: true,
       cssClass: "regular-column",
@@ -929,9 +933,11 @@ export function getRequestEditorSampleColumns(
       validator: (value) =>
         value === "" || value === undefined || value === null
           ? true
-          : /^[A-Za-z0-9_-]+$/.test(String(value))
-            ? true
-            : "Only letters, numbers, _ and - are allowed.",
+          : String(value).length > 99
+            ? "Name must be 99 characters or fewer."
+            : /^[A-Za-z0-9_]+$/.test(String(value))
+              ? true
+              : "Only letters, numbers and underscores are allowed.",
       formatter: decorateFormatter(
         (cell) => ellipsisContainer(formatDisplayValue(cell.getValue())),
         sampleEditable("name"),
