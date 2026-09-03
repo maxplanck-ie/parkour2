@@ -48,16 +48,12 @@ function createValuesMap(options = []) {
   return values;
 }
 
-const INDEX_SEQUENCE_REGEX = /^[ATCG]{6,}$/;
-const INDEX_SEQUENCE_LENGTHS = new Set([6, 8, 10, 12, 24]);
+const INDEX_SEQUENCE_REGEX = /^[ATCG]{1,24}$/;
 const indexSequenceValidator = (value) => {
   if (value === "" || value === undefined || value === null) return true;
   const text = String(value);
   if (!INDEX_SEQUENCE_REGEX.test(text)) {
-    return "Only A, T, C, and G (uppercase) are allowed. Index length must be 6, 8, 10, 12, or 24.";
-  }
-  if (!INDEX_SEQUENCE_LENGTHS.has(text.length)) {
-    return "Only A, T, C, and G (uppercase) are allowed. Index length must be 6, 8, 10, 12, or 24.";
+    return "Only A, T, C, and G (uppercase) are allowed, up to 24 characters.";
   }
   return true;
 };

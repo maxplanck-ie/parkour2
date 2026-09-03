@@ -19,6 +19,11 @@ NameCharsetValidator = RegexValidator(
     "Only letters, numbers, underscores and hyphens are allowed.",
 )
 
+IndexSequenceValidator = RegexValidator(
+    r"^[ATCG]+$",
+    "Only A, T, C, and G (uppercase) are allowed.",
+)
+
 
 class Organism(models.Model):
     name = models.CharField("Name", max_length=100)
@@ -383,6 +388,7 @@ class GenericLibrarySample(DateTimeMixin):
         max_length=24,
         null=True,
         blank=True,
+        validators=[IndexSequenceValidator],
     )
 
     index_i5 = models.CharField(
@@ -390,6 +396,7 @@ class GenericLibrarySample(DateTimeMixin):
         max_length=24,
         null=True,
         blank=True,
+        validators=[IndexSequenceValidator],
     )
 
     removed_amplification_cycles = models.PositiveIntegerField(
@@ -442,6 +449,7 @@ class GenericLibrarySample(DateTimeMixin):
 
     size_distribution_facility = models.FloatField(
         "Size Distribution",
+        validators=[MinValueValidator(0)],
         null=True,
         blank=True,
     )

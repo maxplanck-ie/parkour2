@@ -23,6 +23,7 @@ class Library(GenericLibrarySample):
 
     mean_fragment_size = models.PositiveIntegerField(
         "Mean Fragment Size",
+        validators=[MinValueValidator(1)],
         null=True,
         blank=True,
     )
