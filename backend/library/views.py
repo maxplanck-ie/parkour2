@@ -1,3 +1,4 @@
+import re
 from collections import defaultdict
 from datetime import datetime
 from functools import reduce
@@ -101,6 +102,53 @@ def filter_by_sequencer(queryset, sequencer_id):
     )
 
 
+INDEX_ID_RE = re.compile(r"^([A-Za-z]+)(\d+)$")
+
+
+def parse_index_id(value):
+    """Split an index ID like 'N701' into its ('N', 701) prefix/number parts."""
+    match = INDEX_ID_RE.match(value)
+    if not match:
+        return None, None
+    prefix, number = match.groups()
+    return prefix, int(number)
+
+
+class InvalidIndexRangeError(Exception):
+    def __init__(self, field_label):
+        self.field_label = field_label
+        super().__init__(f"Invalid {field_label} range")
+
+
+def build_index_id_filter(field, field_label, raw_value):
+    """Build a Q object for an I7/I5 ID header-filter box, or None if empty.
+
+    A single ID (e.g. "N701") is an exact match. Two IDs joined by "-"
+    (e.g. "N701-N729") are a range: both must share a letter prefix and end
+    in a number, so the range can be expanded into the literal IDs it covers
+    (a plain string range would misorder IDs like RPI2..RPI10 lexically).
+    Mismatched/unparsable prefixes raise InvalidIndexRangeError rather than
+    silently returning a wrong subset.
+    """
+    value = (raw_value or "").strip()
+    if not value:
+        return None
+
+    if "-" in value:
+        from_val, _, to_val = value.partition("-")
+        from_val = from_val.strip()
+        to_val = to_val.strip()
+        from_prefix, from_number = parse_index_id(from_val)
+        to_prefix, to_number = parse_index_id(to_val)
+        if from_prefix is None or to_prefix is None or from_prefix != to_prefix:
+            raise InvalidIndexRangeError(field_label)
+        lo, hi = sorted((from_number, to_number))
+        candidates = [f"{from_prefix}{n}" for n in range(lo, hi + 1)]
+        return Q(**{f"{field}__in": candidates})
+
+    return Q(**{f"{field}__iexact": value})
+
+
 class LibrarySampleTree(viewsets.ViewSet):
     def list(self, request):
         search_string = request.GET.get("search")
@@ -109,6 +157,9 @@ class LibrarySampleTree(viewsets.ViewSet):
         analysis_type_filter = request.GET.get("analysis_type")
         sequencer_filter = request.GET.get("sequencer")
         read_length_filter = request.GET.get("read_length")
+        i7_id_filter = request.GET.get("i7_id")
+        i5_id_filter = request.GET.get("i5_id")
+        index_type_filter = request.GET.get("index_type")
         start_date_str = request.GET.get("start_date")
         end_date_str = request.GET.get("end_date")
         page = int(request.GET.get("page", 1))
@@ -189,6 +240,37 @@ class LibrarySampleTree(viewsets.ViewSet):
             seq_id = int(sequencer_filter)
             library_queryset = filter_by_sequencer(library_queryset, seq_id)
             sample_queryset = filter_by_sequencer(sample_queryset, seq_id)
+
+        try:
+            i7_id_q = build_index_id_filter("i7_id", "I7 ID", i7_id_filter)
+            i5_id_q = build_index_id_filter("i5_id", "I5 ID", i5_id_filter)
+        except InvalidIndexRangeError as exc:
+            return Response(
+                {
+                    "success": False,
+                    "error": (
+                        f"{exc.field_label} range must share a prefix and end "
+                        "in a number, e.g. N701-N729."
+                    ),
+                },
+                status=400,
+            )
+
+        if i7_id_q is not None:
+            library_queryset = library_queryset.filter(i7_id_q)
+            sample_queryset = sample_queryset.filter(i7_id_q)
+
+        if i5_id_q is not None:
+            library_queryset = library_queryset.filter(i5_id_q)
+            sample_queryset = sample_queryset.filter(i5_id_q)
+
+        if index_type_filter:
+            library_queryset = library_queryset.filter(
+                index_type_name__icontains=index_type_filter
+            )
+            sample_queryset = sample_queryset.filter(
+                index_type_name__icontains=index_type_filter
+            )
 
         changed_ownership_filter = request.GET.get("changed_ownership")
 

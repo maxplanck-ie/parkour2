@@ -175,12 +175,40 @@ export function librariesAndSamplesGroupHeader(
 `;
 }
 
+// A header filter box whose value is sent to the backend (via
+// `onIndexFilterChange`) instead of filtering the currently-loaded page
+// client-side — Libraries & Samples paginates server-side, so a local
+// filter would only ever see the current page. Always returns true so
+// Tabulator never re-filters the (already server-filtered) rows itself.
+function makeServerHeaderFilter(field, onIndexFilterChange) {
+  let lastValue;
+  return (headerValue) => {
+    const value = String(headerValue ?? "").trim();
+    if (value !== lastValue) {
+      lastValue = value;
+      onIndexFilterChange(field, value);
+    }
+    return true;
+  };
+}
+
+const INDEX_ID_FILTER_PLACEHOLDER = "N701-N729";
+const INDEX_ID_FILTER_HELP =
+  "Filter by ID or range (same prefix):\n" +
+  "N701  exact match\n" +
+  "N701-N729  range";
+const INDEX_TYPE_FILTER_PLACEHOLDER = "e.g. Nextera XT";
+const INDEX_TYPE_FILTER_HELP = "Filter by Index Type (partial match)";
+
 export function librariesAndSamplesColumnDefs(
   getTabulatorInstance,
   columnOptions = {}
 ) {
-  const { inputColumnMode = "mode_user", onInputColumnModeChange = () => {} } =
-    columnOptions;
+  const {
+    inputColumnMode = "mode_user",
+    onInputColumnModeChange = () => {},
+    onIndexFilterChange = () => {}
+  } = columnOptions;
 
   const columns = [
     {
@@ -577,8 +605,13 @@ export function librariesAndSamplesColumnDefs(
       minWidth: 60,
       width: "4%",
       headerVertical: false,
-      headerFilter: true,
-      headerTooltip: "Index Type",
+      headerFilter: "input",
+      headerFilterPlaceholder: INDEX_TYPE_FILTER_PLACEHOLDER,
+      headerFilterFunc: makeServerHeaderFilter(
+        "indexType",
+        onIndexFilterChange
+      ),
+      headerTooltip: INDEX_TYPE_FILTER_HELP,
       visible: true,
       cssClass: "regular-column",
       contextMenu: () =>
@@ -611,8 +644,10 @@ export function librariesAndSamplesColumnDefs(
       minWidth: 60,
       width: "3.5%",
       headerVertical: false,
-      headerFilter: true,
-      headerTooltip: "Index I7 ID",
+      headerFilter: "input",
+      headerFilterPlaceholder: INDEX_ID_FILTER_PLACEHOLDER,
+      headerFilterFunc: makeServerHeaderFilter("i7Id", onIndexFilterChange),
+      headerTooltip: INDEX_ID_FILTER_HELP,
       visible: true,
       cssClass: "regular-column",
       contextMenu: () =>
@@ -645,8 +680,10 @@ export function librariesAndSamplesColumnDefs(
       minWidth: 60,
       width: "3.5%",
       headerVertical: false,
-      headerFilter: true,
-      headerTooltip: "Index I5 ID",
+      headerFilter: "input",
+      headerFilterPlaceholder: INDEX_ID_FILTER_PLACEHOLDER,
+      headerFilterFunc: makeServerHeaderFilter("i5Id", onIndexFilterChange),
+      headerTooltip: INDEX_ID_FILTER_HELP,
       visible: true,
       cssClass: "regular-column",
       contextMenu: () =>

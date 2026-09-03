@@ -1519,7 +1519,10 @@ export default {
         analysisType: null,
         sequencer: null,
         readLength: null,
-        changedOwnership: null
+        changedOwnership: null,
+        i7Id: "",
+        i5Id: "",
+        indexType: ""
       },
       protocolsList: [],
       analysisTypesList: [],
@@ -1532,6 +1535,7 @@ export default {
       startDateValid: true,
       endDateValid: true,
       dateChangeTimer: null,
+      indexFilterTimer: null,
       showAdvancedFilters: false,
       showSelectColumns: false,
       showPageHelp: false,
@@ -1657,6 +1661,15 @@ export default {
         }
         if (this.filters.changedOwnership !== null) {
           params.changed_ownership = this.filters.changedOwnership;
+        }
+        if (this.filters.i7Id) {
+          params.i7_id = this.filters.i7Id;
+        }
+        if (this.filters.i5Id) {
+          params.i5_id = this.filters.i5Id;
+        }
+        if (this.filters.indexType) {
+          params.index_type = this.filters.indexType;
         }
 
         let response = await axiosRef.get(
@@ -1864,9 +1877,25 @@ export default {
         analysisType: null,
         sequencer: null,
         readLength: null,
-        changedOwnership: null
+        changedOwnership: null,
+        i7Id: "",
+        i5Id: "",
+        indexType: ""
       };
+      const table = this.tabulatorInstance?.getTable?.();
+      if (table) {
+        ["i7_id", "i5_id", "index_type_name"].forEach((field) => {
+          table.getColumn(field)?.setHeaderFilterValue("");
+        });
+      }
       this.getLibrariesSamples(1);
+    },
+    handleIndexFilterChange(field, value) {
+      this.filters[field] = value;
+      clearTimeout(this.indexFilterTimer);
+      this.indexFilterTimer = setTimeout(() => {
+        this.getLibrariesSamples(1);
+      }, 500);
     },
     syncInputHeaderMode(mode = this.inputColumnMode) {
       const normalizedMode =
@@ -1931,7 +1960,8 @@ export default {
         () => this.tabulatorInstance,
         {
           inputColumnMode: this.inputColumnMode,
-          onInputColumnModeChange: this.handleInputColumnModeChange.bind(this)
+          onInputColumnModeChange: this.handleInputColumnModeChange.bind(this),
+          onIndexFilterChange: this.handleIndexFilterChange.bind(this)
         }
       );
 
