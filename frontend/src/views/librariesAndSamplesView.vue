@@ -1334,6 +1334,11 @@ import iconDownloadROCrate from "../assets/icons/action_rocrate.svg";
 const axiosRef = createAxiosObject();
 const urlStringStart = urlStringStartsWith();
 const RO_CRATE_EXPORTABLE_STATUSES = new Set([5, 6]);
+const INDEX_FILTER_COLUMN_FIELD = {
+  i7Id: "i7_id",
+  i5Id: "i5_id",
+  indexType: "index_type_name"
+};
 
 export default {
   name: "LibrariesAndSamples",
@@ -1893,9 +1898,16 @@ export default {
     handleIndexFilterChange(field, value) {
       this.filters[field] = value;
       clearTimeout(this.indexFilterTimer);
-      this.indexFilterTimer = setTimeout(() => {
-        this.getLibrariesSamples(1);
-      }, 500);
+      this.indexFilterTimer = setTimeout(async () => {
+        await this.getLibrariesSamples(1);
+        // Refreshing table data via Tabulator's setData() re-renders the
+        // header filter inputs and drops their typed value, so restore it.
+        const columnField = INDEX_FILTER_COLUMN_FIELD[field];
+        this.tabulatorInstance
+          ?.getTable?.()
+          ?.getColumn(columnField)
+          ?.setHeaderFilterValue(this.filters[field]);
+      }, 800);
     },
     syncInputHeaderMode(mode = this.inputColumnMode) {
       const normalizedMode =

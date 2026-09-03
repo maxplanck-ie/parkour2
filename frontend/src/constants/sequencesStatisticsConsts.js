@@ -83,7 +83,8 @@ export function sequencesStatisticsColumnDefs(onSelectionChanged) {
       minWidth: 75,
       visible: true,
       frozen: true,
-      headerFilter: true
+      headerFilter: true,
+      headerFilterPlaceholder: "Filter..."
     },
     {
       title: "Barcode",
@@ -91,7 +92,8 @@ export function sequencesStatisticsColumnDefs(onSelectionChanged) {
       minWidth: 70,
       visible: true,
       frozen: true,
-      headerFilter: true
+      headerFilter: true,
+      headerFilterPlaceholder: "Filter..."
     },
     {
       title: "Name",
@@ -99,6 +101,7 @@ export function sequencesStatisticsColumnDefs(onSelectionChanged) {
       minWidth: 80,
       visible: true,
       headerFilter: true,
+      headerFilterPlaceholder: "Filter...",
       formatter: textFormatter("left", false),
       tooltip: (event, cell) => cell.getValue() || ""
     },
@@ -107,14 +110,16 @@ export function sequencesStatisticsColumnDefs(onSelectionChanged) {
       field: "lane_display",
       minWidth: 45,
       visible: true,
-      headerFilter: true
+      headerFilter: true,
+      headerFilterPlaceholder: "Filter..."
     },
     {
       title: "Pool",
       field: "pool",
       minWidth: 65,
       visible: true,
-      headerFilter: true
+      headerFilter: true,
+      headerFilterPlaceholder: "Filter..."
     },
     {
       title: "Protocol",
@@ -122,6 +127,7 @@ export function sequencesStatisticsColumnDefs(onSelectionChanged) {
       minWidth: 80,
       visible: true,
       headerFilter: true,
+      headerFilterPlaceholder: "Filter...",
       headerTooltip: "Library Protocol"
     },
     {
@@ -130,6 +136,7 @@ export function sequencesStatisticsColumnDefs(onSelectionChanged) {
       minWidth: 70,
       visible: true,
       headerFilter: true,
+      headerFilterPlaceholder: "Filter...",
       headerTooltip: "Analysis Type"
     },
     {

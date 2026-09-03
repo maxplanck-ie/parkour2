@@ -3,7 +3,8 @@
 Unreleased
 ==========
 
-- Libraries and Samples: the Index Type, I7 ID, and I5 ID column search boxes now filter server-side across the full result set (not just the loaded page); I7 ID/I5 ID also accept a range like `N701-N729`. Gray hint text shows the expected syntax, replacing the old separate I7/I5 range inputs under Advanced Filters.
+- Libraries and Samples: the Index Type, I7 ID, and I5 ID column search boxes now filter server-side across the full result set (not just the loaded page); I7 ID/I5 ID also accept a range like `N701-N729`. Gray hint text shows the expected syntax, replacing the old separate I7/I5 range inputs under Advanced Filters. The server-side filter debounce was bumped from 500ms to 800ms to avoid reloading mid-typing.
+- Column search boxes across Incoming, Preparation, Pooling, Load FCs, and the Stats tables now show gray "Filter..." hint text, matching the pattern already used in Invoicing.
 - Fix notification email header logo: it still used an old brand mark (an "S"-swirl) at a distorted 17x26px size; replaced with the current DNA-helix mark used elsewhere in the app, sized 24x24.
 - Top nav bar: restyled (teal brand + beige bar, pill buttons), several labels shortened/renamed (Incoming, Load FCs, Stats), Usage moved under the Stats dropdown with its own icon, dropdown-clipping bug fixed, user actions stacked into two rows (name above Duties/Admin/Logout), the Stats dropdown button got its old chart-line icon back with Primary/Secondary now using microscope/magnifying-glass icons, and buttons collapse to icon-only when the bar actually runs out of room (not a fixed viewport breakpoint).
 - Removed the legacy ExtJS shell: cut over to a native Vue app shell/nav, migrated the Usage charts to Vue/ECharts, dropped the dead iframe-bridge code, and deleted `backend/static/main-hub` and its leftover Makefile/template references.

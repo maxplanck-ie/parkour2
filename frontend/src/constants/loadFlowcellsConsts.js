@@ -84,6 +84,7 @@ export function loadFlowcellsColumnDefs(getTabulatorInstance, callbacks = {}) {
       minWidth: 80,
       width: 90,
       headerFilter: true,
+      headerFilterPlaceholder: "Filter...",
       visible: true,
       frozen: true,
       cssClass: "right-border",
@@ -95,6 +96,7 @@ export function loadFlowcellsColumnDefs(getTabulatorInstance, callbacks = {}) {
       minWidth: 105,
       width: 110,
       headerFilter: true,
+      headerFilterPlaceholder: "Filter...",
       visible: true,
       cssClass: "right-border",
       formatter: (cell) => {
@@ -113,6 +115,7 @@ export function loadFlowcellsColumnDefs(getTabulatorInstance, callbacks = {}) {
       width: 95,
       minWidth: 90,
       headerFilter: true,
+      headerFilterPlaceholder: "Filter...",
       visible: true,
       formatter: (cell) => ellipsisContainer(cell.getValue() || "-")
     },
@@ -121,6 +124,7 @@ export function loadFlowcellsColumnDefs(getTabulatorInstance, callbacks = {}) {
       field: "request",
       minWidth: 150,
       headerFilter: true,
+      headerFilterPlaceholder: "Filter...",
       visible: true,
       formatter: (cell) => ellipsisContainer(cell.getValue() || "-")
     },
@@ -129,6 +133,7 @@ export function loadFlowcellsColumnDefs(getTabulatorInstance, callbacks = {}) {
       field: "read_length_name",
       minWidth: 100,
       headerFilter: true,
+      headerFilterPlaceholder: "Filter...",
       visible: true,
       formatter: (cell) => ellipsisContainer(cell.getValue() || "-")
     },
@@ -137,6 +142,7 @@ export function loadFlowcellsColumnDefs(getTabulatorInstance, callbacks = {}) {
       field: "index_i7_show",
       minWidth: 90,
       headerFilter: true,
+      headerFilterPlaceholder: "Filter...",
       visible: true,
       formatter: (cell) => ellipsisContainer(cell.getValue() || "-")
     },
@@ -145,6 +151,7 @@ export function loadFlowcellsColumnDefs(getTabulatorInstance, callbacks = {}) {
       field: "index_i5_show",
       minWidth: 90,
       headerFilter: true,
+      headerFilterPlaceholder: "Filter...",
       visible: true,
       formatter: (cell) => ellipsisContainer(cell.getValue() || "-")
     },
@@ -153,6 +160,7 @@ export function loadFlowcellsColumnDefs(getTabulatorInstance, callbacks = {}) {
       field: "sequencer_name",
       minWidth: 110,
       headerFilter: true,
+      headerFilterPlaceholder: "Filter...",
       visible: true,
       formatter: (cell) => ellipsisContainer(cell.getValue() || "-")
     },
@@ -161,6 +169,7 @@ export function loadFlowcellsColumnDefs(getTabulatorInstance, callbacks = {}) {
       field: "protocol",
       minWidth: 150,
       headerFilter: true,
+      headerFilterPlaceholder: "Filter...",
       visible: true,
       formatter: (cell) => ellipsisContainer(cell.getValue() || "-")
     },

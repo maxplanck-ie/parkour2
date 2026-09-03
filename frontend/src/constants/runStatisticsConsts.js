@@ -93,21 +93,24 @@ export function runStatisticsColumnDefs(onSelectionChanged) {
       minWidth: 65,
       visible: true,
       frozen: true,
-      headerFilter: true
+      headerFilter: true,
+      headerFilterPlaceholder: "Filter..."
     },
     {
       title: "Pool",
       field: "pool",
       minWidth: 75,
       visible: true,
-      headerFilter: true
+      headerFilter: true,
+      headerFilterPlaceholder: "Filter..."
     },
     {
       title: "Request",
       field: "request",
       minWidth: 85,
       visible: true,
-      headerFilter: true
+      headerFilter: true,
+      headerFilterPlaceholder: "Filter..."
     },
     {
       title: "Preparation",
@@ -115,6 +118,7 @@ export function runStatisticsColumnDefs(onSelectionChanged) {
       minWidth: 95,
       visible: true,
       headerFilter: true,
+      headerFilterPlaceholder: "Filter...",
       headerTooltip: "Preparation Method"
     },
     {
@@ -123,6 +127,7 @@ export function runStatisticsColumnDefs(onSelectionChanged) {
       minWidth: 85,
       visible: true,
       headerFilter: true,
+      headerFilterPlaceholder: "Filter...",
       headerTooltip: "Analysis Type"
     },
     {
