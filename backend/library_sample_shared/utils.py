@@ -43,10 +43,12 @@ def compute_plate_coords(request_names):
     librariesAndSamplesView.vue, which groups by request_name across both
     record types before assigning coordinates.
 
-    Keyed by (request_name, record_type, pk) rather than by barcode, since
-    barcode alone isn't guaranteed unique for older records (real example:
-    two Sample rows in a 2019 request sharing the same barcode) — keying
-    by barcode would collapse such records onto a single shared coord.
+    Keyed by (request_name, record_type, pk) rather than by barcode. New
+    barcodes are unique (BarcodeCounter), but older ones aren't: a past
+    BarcodeCounter bug left two Sample rows in a 2019 request sharing the
+    same barcode, and that historical data is still in the database today.
+    Keying by barcode alone would collapse rows like those onto a single
+    shared coord.
 
     Returns {(request_name, "library"|"sample", pk): plate_coord}.
     """
