@@ -25,12 +25,9 @@ from library.ro_crate import (
 from library.ro_crate_html import RO_CRATE_HTML_PREVIEW_NAME, generate_html_preview
 from library.views import (
     SEQUENCING_STATUSES,
-    InvalidIndexRangeError,
     apply_stage_data_visibility,
-    build_index_range_filter,
     build_search_term_query,
     filter_by_sequencer,
-    parse_index_id,
 )
 from library_preparation.models import LibraryPreparation
 from library_sample_shared.models import (
@@ -291,50 +288,6 @@ class TestLibrarySampleTree(BaseTestCase):
             status__in=SEQUENCING_STATUSES,
             sequencer_ids__contains=[7],
         )
-
-    def test_parse_index_id_splits_prefix_and_number(self):
-        self.assertEqual(parse_index_id("N701"), ("N", 701))
-        self.assertEqual(parse_index_id("RPI10"), ("RPI", 10))
-
-    def test_parse_index_id_rejects_unrecognized_shape(self):
-        self.assertEqual(parse_index_id("N701A"), (None, None))
-        self.assertEqual(parse_index_id(""), (None, None))
-
-    def test_index_range_filter_expands_numeric_range(self):
-        """Ranges are expanded to literal IDs, not compared as strings."""
-        query = build_index_range_filter("i7_id", "I7 Index", "RPI1", "RPI10")
-        self.assertEqual(
-            query,
-            Q(i7_id__in=[f"RPI{n}" for n in range(1, 11)]),
-        )
-
-    def test_index_range_filter_accepts_reversed_bounds(self):
-        query = build_index_range_filter("i5_id", "I5 Index", "S522", "S501")
-        self.assertEqual(
-            query,
-            Q(i5_id__in=[f"S{n}" for n in range(501, 523)]),
-        )
-
-    def test_index_range_filter_single_bound_is_exact_match(self):
-        self.assertEqual(
-            build_index_range_filter("i7_id", "I7 Index", "N701", ""),
-            Q(i7_id="N701"),
-        )
-        self.assertEqual(
-            build_index_range_filter("i7_id", "I7 Index", "", "N701"),
-            Q(i7_id="N701"),
-        )
-
-    def test_index_range_filter_no_bounds_returns_none(self):
-        self.assertIsNone(build_index_range_filter("i7_id", "I7 Index", "", ""))
-
-    def test_index_range_filter_rejects_mismatched_prefix(self):
-        with self.assertRaises(InvalidIndexRangeError):
-            build_index_range_filter("i7_id", "I7 Index", "N701", "S508")
-
-    def test_index_range_filter_rejects_unparseable_bound(self):
-        with self.assertRaises(InvalidIndexRangeError):
-            build_index_range_filter("i7_id", "I7 Index", "N701", "custom-seq")
 
 
 class TestLibraries(BaseTestCase):

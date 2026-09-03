@@ -3,7 +3,6 @@
 Unreleased
 ==========
 
-- Added I7 Index / I5 Index range filters (From/To) to Libraries & Samples Advanced Filters, so users can find libraries/samples by index ID range (e.g. N701 to N729) without relying on exact Index Type name matches.
 - Fixed Libraries & Samples search returning no results for an Index Type that exists in the data: the global search endpoint never queried `index_type_name`.
 - Fix notification email header logo: it still used an old brand mark (an "S"-swirl) at a distorted 17x26px size; replaced with the current DNA-helix mark used elsewhere in the app, sized 24x24.
 - Top nav bar: restyled (teal brand + beige bar, pill buttons), several labels shortened/renamed (Incoming, Load FCs, Stats), Usage moved under the Stats dropdown with its own icon, dropdown-clipping bug fixed, user actions stacked into two rows (name above Duties/Admin/Logout), the Stats dropdown button got its old chart-line icon back with Primary/Secondary now using microscope/magnifying-glass icons, and buttons collapse to icon-only when the bar actually runs out of room (not a fixed viewport breakpoint).
