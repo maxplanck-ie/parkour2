@@ -23,7 +23,11 @@ function dutyDateFormatter(cell) {
 function dutyDateFilter(headerValue, rowValue) {
   return formatDutyDate(rowValue)
     .toLowerCase()
-    .includes(String(headerValue || "").trim().toLowerCase());
+    .includes(
+      String(headerValue || "")
+        .trim()
+        .toLowerCase()
+    );
 }
 
 function responsiblePersonEditorParams(users) {
