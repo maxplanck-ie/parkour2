@@ -1,3 +1,4 @@
+import pytest
 from playwright.sync_api import Page, expect
 
 from . import utilities
@@ -7,6 +8,19 @@ from . import utilities
 # margin room so the assertion isn't racing the debounce timer itself.
 HEADER_FILTER_DEBOUNCE_MS = 2500
 REFRESH_MARGIN_MS = 1000
+
+
+@pytest.fixture(scope="session")
+def browser_context_args(browser_context_args):
+    # Table columns use Tabulator's "fitColumns" layout, so whether the
+    # table needs horizontal scroll depends on viewport width. Force a
+    # narrow one so test_horizontal_scroll_survives_header_filter_refresh's
+    # "Index Type requires scrolling" precondition holds regardless of the
+    # default viewport (this was flaky/failing in CI at the default size).
+    return {
+        **browser_context_args,
+        "viewport": {"width": 800, "height": 720},
+    }
 
 
 def _open_libraries_and_samples_page(page: Page):
