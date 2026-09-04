@@ -31,6 +31,9 @@ def _open_duties_page(page: Page):
 
 
 def _fill_add_duty_form(page: Page, comment: str, platform_index: int = 1):
+    page.locator("#openAddDutyButton").click()
+    expect(page.locator(".add-duty-popup")).to_be_visible()
+
     # Pick the first available options; these are always present in fixtures.
     page.locator("select#facility").select_option(index=1)
 
@@ -61,7 +64,7 @@ def test_add_duty_shows_row_with_capitalized_platform(page: Page):
 
     # platform index 1 == "Short", stored server-side as "short".
     _fill_add_duty_form(page, comment, platform_index=1)
-    page.locator("button.duty-save").click()
+    page.locator("#saveAddDutyButton").click()
 
     row = page.locator("#dutiesTable .tabulator-row", has_text=comment)
     expect(row).to_have_count(1, timeout=15000)
@@ -73,7 +76,7 @@ def test_duties_search_filters_rows(page: Page):
     comment = f"Automated search test {uuid.uuid4()}"
 
     _fill_add_duty_form(page, comment, platform_index=2)
-    page.locator("button.duty-save").click()
+    page.locator("#saveAddDutyButton").click()
     expect(page.locator("#dutiesTable .tabulator-row", has_text=comment)).to_have_count(
         1, timeout=15000
     )
@@ -87,6 +90,23 @@ def test_duties_search_filters_rows(page: Page):
     expect(
         page.locator("#dutiesTable .tabulator-row", has_text=comment)
     ).to_be_visible()
+
+
+def test_add_duty_dialog_cancel_and_escape_close_it(page: Page):
+    _open_duties_page(page)
+
+    add_button = page.locator("#openAddDutyButton")
+    dialog = page.locator(".add-duty-popup")
+
+    add_button.click()
+    expect(dialog).to_be_visible()
+    page.locator("#cancelAddDutyButton").click()
+    expect(dialog).to_be_hidden()
+
+    add_button.click()
+    expect(dialog).to_be_visible()
+    page.keyboard.press("Escape")
+    expect(dialog).to_be_hidden()
 
 
 def test_duties_period_filter_switches_without_error(page: Page):
@@ -105,7 +125,7 @@ def test_duties_inline_edit_updates_comment(page: Page):
     updated_comment = f"{original_comment} edited"
 
     _fill_add_duty_form(page, original_comment, platform_index=1)
-    page.locator("button.duty-save").click()
+    page.locator("#saveAddDutyButton").click()
 
     page.locator("select#period-filter").select_option("all")
     row_locator = page.locator("#dutiesTable .tabulator-row", has_text=original_comment)

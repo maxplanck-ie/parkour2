@@ -10,78 +10,94 @@
           style="display: block"
         />
       </div>
-      <div
-        class="header-title"
-        style="display: inline"
-        data-testid="duties-page-title"
-      >
+      <div class="header-title" data-testid="duties-page-title">
         Manage Duties
       </div>
-    </div>
-    <div class="duties-body">
-      <div class="table-container duties-table-panel">
-        <div class="duties-card">
-          <div class="duties-toolbar">
-            <div class="duties-search">
-              <div class="duties-icon-box">
-                <font-awesome-icon
-                  icon="fa-solid fa-magnifying-glass"
-                  class="duties-icon"
-                />
-              </div>
-              <input
-                id="search-bar"
-                class="duties-input"
-                type="text"
-                placeholder="Search..."
-                v-model="searchQuery"
-              />
-            </div>
 
-            <div class="duties-filter">
-              <div class="duties-icon-box">
-                <font-awesome-icon
-                  icon="fa-regular fa-calendar-days"
-                  class="duties-icon"
-                />
-              </div>
-              <select
-                id="period-filter"
-                class="duties-select"
-                v-model="selectedFilter"
-              >
-                <option value="all">All</option>
-                <option value="ongoing">Ongoing</option>
-                <option value="upcoming">Upcoming</option>
-                <option value="past-1-month">Past 1 Month</option>
-                <option value="past-3-months">Past 3 Months</option>
-                <option value="past-6-months">Past 6 Months</option>
-                <option value="past-1-year">Past 1 Year</option>
-              </select>
-            </div>
-          </div>
-          <div class="duties-grid-wrapper">
-            <TabulatorTable
-              v-if="dutiesList !== null && columnsList.length"
-              ref="dutiesTable"
-              tableId="dutiesTable"
-              :rowData="dutiesList"
-              :columnDefs="columnsList"
-              :enableDefaultFilters="false"
-              :tableOptions="tableOptions"
-            />
-          </div>
+      <div class="sticky-actions">
+        <div class="search-bar">
+          <input
+            id="search-bar"
+            v-model="searchQuery"
+            type="text"
+            placeholder="Search"
+          />
+          <font-awesome-icon
+            icon="fa-solid fa-magnifying-glass"
+            style="color: darkgrey"
+          />
         </div>
-      </div>
-      <div class="add-duty-container">
-        <div class="add-duty-header">
+
+        <div class="duties-period-filter">
+          <font-awesome-icon
+            icon="fa-regular fa-calendar-days"
+            style="color: darkgrey"
+          />
+          <select id="period-filter" v-model="selectedFilter">
+            <option value="all">All</option>
+            <option value="ongoing">Ongoing</option>
+            <option value="upcoming">Upcoming</option>
+            <option value="past-1-month">Past 1 Month</option>
+            <option value="past-3-months">Past 3 Months</option>
+            <option value="past-6-months">Past 6 Months</option>
+            <option value="past-1-year">Past 1 Year</option>
+          </select>
+        </div>
+
+        <button
+          id="openAddDutyButton"
+          class="header-button"
+          type="button"
+          aria-haspopup="dialog"
+          :aria-expanded="showAddDutyDialog"
+          @click="openAddDutyDialog"
+        >
           <font-awesome-icon
             icon="fa-regular fa-calendar-plus"
-            class="add-duty-icon"
+            style="color: white"
           />
-          <span class="add-duty-title">Add Duty</span>
+          <span>Add Duty</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="table-container">
+      <TabulatorTable
+        v-if="dutiesList !== null && columnsList.length"
+        ref="dutiesTable"
+        tableId="dutiesTable"
+        :rowData="dutiesList"
+        :columnDefs="columnsList"
+        :enableDefaultFilters="false"
+        :tableOptions="tableOptions"
+      />
+    </div>
+
+    <div
+      v-if="showAddDutyDialog"
+      class="popup-overlay"
+      @click.self="closeAddDutyDialog"
+    >
+      <div
+        ref="addDutyDialog"
+        class="popup-container add-duty-popup"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="add-duty-title"
+        tabindex="-1"
+      >
+        <div class="popup-header">
+          <span id="add-duty-title" class="popup-title">Add Duty</span>
+          <button
+            class="popup-close-button"
+            type="button"
+            aria-label="Close add duty"
+            @click="closeAddDutyDialog"
+          >
+            &times;
+          </button>
         </div>
-        <div class="add-duty-body">
+        <div class="popup-body">
           <div class="duty-field">
             <div class="text-medium duty-label">Facility:</div>
             <select
@@ -173,9 +189,22 @@
             />
           </div>
         </div>
-        <button class="text-medium green-button duty-save" @click="saveDuty()">
-          Save
-        </button>
+        <div class="popup-footer">
+          <button
+            id="cancelAddDutyButton"
+            class="popup-button secondary"
+            @click="closeAddDutyDialog"
+          >
+            Cancel
+          </button>
+          <button
+            id="saveAddDutyButton"
+            class="popup-button"
+            @click="saveDuty()"
+          >
+            Save
+          </button>
+        </div>
       </div>
     </div>
   </div>
@@ -188,7 +217,9 @@ import {
   handleError,
   getProp,
   urlStringStartsWith,
-  createAxiosObject
+  createAxiosObject,
+  focusFirstElement,
+  trapFocus
 } from "../utilities/utilityFunctions";
 import { toRaw } from "vue";
 import moment from "moment";
@@ -231,14 +262,23 @@ export default {
         handleCellEdited: (cell) => this.editDuty(cell)
       },
       selectedFilter: "ongoing",
-      searchQuery: ""
+      searchQuery: "",
+      showAddDutyDialog: false,
+      addDutyPreviouslyFocusedElement: null
     };
   },
   setup() {},
   beforeMount() {
     this.getUsers();
   },
-  mounted() {},
+  mounted() {
+    document.addEventListener("click", this.handleOutsideClick);
+    document.addEventListener("keydown", this.handleKeyDown);
+  },
+  beforeUnmount() {
+    document.removeEventListener("click", this.handleOutsideClick);
+    document.removeEventListener("keydown", this.handleKeyDown);
+  },
   created() {},
   watch: {
     selectedFilter(value) {
@@ -252,6 +292,40 @@ export default {
   },
   computed: {},
   methods: {
+    openAddDutyDialog() {
+      this.addDutyPreviouslyFocusedElement = document.activeElement;
+      this.showAddDutyDialog = true;
+      this.$nextTick(() => focusFirstElement(this.$refs.addDutyDialog));
+    },
+    closeAddDutyDialog() {
+      if (!this.showAddDutyDialog) return;
+      this.showAddDutyDialog = false;
+      this.resetNewDuty();
+      const returnFocusTo = this.addDutyPreviouslyFocusedElement;
+      this.addDutyPreviouslyFocusedElement = null;
+      this.$nextTick(() => returnFocusTo?.focus?.());
+    },
+    handleOutsideClick(event) {
+      const dialog = this.$refs.addDutyDialog;
+      const button = this.$el.querySelector?.("#openAddDutyButton");
+      if (
+        this.showAddDutyDialog &&
+        dialog &&
+        !dialog.contains(event.target) &&
+        !button?.contains(event.target)
+      ) {
+        this.closeAddDutyDialog();
+      }
+    },
+    handleKeyDown(event) {
+      if (!this.showAddDutyDialog) return;
+      if (event.key === "Escape") {
+        event.preventDefault();
+        this.closeAddDutyDialog();
+        return;
+      }
+      trapFocus(event, this.$refs.addDutyDialog);
+    },
     resetNewDuty() {
       this.newDuty = {
         facility: "",
@@ -288,7 +362,7 @@ export default {
         await axiosRef
           .post(urlStringStart + "/api/duties/", newDuty)
           .then(() => {
-            this.resetNewDuty();
+            this.closeAddDutyDialog();
 
             if (this.selectedFilter == "all")
               this.getFilteredDuties(true, "all");
@@ -485,13 +559,6 @@ export default {
   padding: 10px;
 }
 
-.duties-body {
-  display: flex;
-  gap: 12px;
-  flex: 1;
-  min-height: 0;
-}
-
 .styled-box {
   height: 35px;
   padding: 0px 8px;
@@ -502,81 +569,64 @@ export default {
   border-bottom-right-radius: 8px;
 }
 
-.duties-table-panel {
-  flex: 1;
+/* Header: title-left, search/filter/add-duty-right, matching the other
+   Tabulator views (see e.g. librariesAndSamplesView.vue, invoicingView.vue). */
+.header {
+  justify-content: flex-start;
+  gap: 10px;
+}
+
+.header-title {
+  width: auto;
+  flex: 1 1 220px;
   min-width: 0;
-  height: 100%;
+  margin-right: 16px;
 }
 
-.duties-card {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  border: 1px solid #c7cbd1;
-  border-radius: 8px;
-  background: #ffffff;
+.sticky-actions {
+  margin-left: auto;
 }
 
-.duties-toolbar {
+.duties-period-filter {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  padding: 8px 12px;
-  background: #f3f1e9;
-  border-bottom: 1px solid #d9d6cc;
-  border-top-left-radius: 8px;
-  border-top-right-radius: 8px;
+  gap: 8px;
+  height: var(--header-control-height);
+  min-height: var(--header-control-height);
+  box-sizing: border-box;
+  padding: 0 12px;
+  border: 1px solid rgba(0, 0, 0, 0.18);
+  border-radius: 8px;
+  background-color: #ffffff;
 }
 
-.duties-search,
-.duties-filter {
-  display: flex;
-  align-items: center;
-  gap: 0;
-  background: #ffffff;
-  border: 1px solid #c7cbd1;
-  border-radius: 8px;
+.duties-period-filter select {
+  border: none;
+  outline: none;
+  font-size: var(--header-control-font-size);
+  color: #333;
+  background: none;
+}
+
+.table-container {
+  flex: 1;
+  min-height: 0;
+}
+
+.add-duty-popup {
+  width: min(420px, 92vw);
+  max-height: 85vh;
   overflow: hidden;
 }
 
-.duties-search {
-  flex: 1;
-  max-width: 460px;
-}
-
-.duties-filter {
-  width: 220px;
-}
-
-.duties-icon-box {
-  width: 34px;
-  height: 34px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #6b7280;
-}
-
-.duties-icon {
-  color: #ffffff;
-}
-
-.duties-input,
-.duties-select {
-  border: none;
-  outline: none;
-  font-size: 14px;
-  padding: 6px 10px;
-  background: #ffffff;
-  color: #333;
-  width: 100%;
-}
-
-.duties-grid-wrapper {
-  flex: 1;
+.add-duty-popup .popup-body {
+  flex: 1 1 auto;
   min-height: 0;
-  margin: 12px;
+  overflow-y: auto;
+}
+
+.add-duty-popup .comment-textarea {
+  height: 120px;
 }
 
 .dropdown-select,
@@ -615,45 +665,6 @@ export default {
   resize: none;
 }
 
-.add-duty-container {
-  width: 360px;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  background: #f1efe8;
-  border: 1px solid #006c66;
-  border-radius: 8px;
-  overflow: hidden;
-}
-
-.add-duty-header {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  background: #006c66;
-  color: white;
-  padding: 10px 12px;
-  border-bottom: 1px solid #0b5f59;
-}
-
-.add-duty-icon {
-  height: 18px;
-  width: 18px;
-}
-
-.add-duty-title {
-  font-size: 16px;
-  font-weight: 600;
-}
-
-.add-duty-body {
-  padding: 8px 14px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  overflow-y: auto;
-}
-
 .duty-field {
   display: flex;
   flex-direction: column;
@@ -665,28 +676,7 @@ export default {
   font-weight: 600;
 }
 
-.duty-save {
-  margin: 12px 14px 14px;
-  align-self: flex-start;
-}
-
 select:disabled {
   background: #dddddd;
-}
-
-@media (max-width: 1000px) {
-  .add-duty-container {
-    display: none;
-  }
-}
-
-@media (max-width: 800px) {
-  #search-bar {
-    width: 200px !important;
-  }
-
-  #period-filter {
-    width: 120px !important;
-  }
 }
 </style>
