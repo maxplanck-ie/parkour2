@@ -1,4 +1,5 @@
 import datetime
+import uuid
 
 import pytest
 from playwright.sync_api import Page, expect
@@ -15,7 +16,7 @@ def browser_context_args(browser_context_args):
     }
 
 
-def test_duties_page(page: Page):
+def _open_duties_page(page: Page):
     utilities.pretest_login(page)
 
     utilities.visit_vue_page(page, "duties")
@@ -28,6 +29,8 @@ def test_duties_page(page: Page):
     )
     expect(page.locator(".tabulator")).to_be_visible()
 
+
+def _fill_add_duty_form(page: Page, comment: str, platform_index: int = 1):
     # Pick the first available options; these are always present in fixtures.
     page.locator("select#facility").select_option(index=1)
 
@@ -43,5 +46,83 @@ def test_duties_page(page: Page):
     page.locator("input#end_date").fill(
         (today + datetime.timedelta(days=7)).strftime("%Y-%m-%d")
     )
-    page.locator("select#platform").select_option(index=1)
-    page.locator("textarea#comment").fill("Automated UI smoke test entry")
+    page.locator("select#platform").select_option(index=platform_index)
+    page.locator("textarea#comment").fill(comment)
+
+
+def test_duties_page(page: Page):
+    _open_duties_page(page)
+    _fill_add_duty_form(page, "Automated UI smoke test entry")
+
+
+def test_add_duty_shows_row_with_capitalized_platform(page: Page):
+    _open_duties_page(page)
+    comment = f"Automated add-duty test {uuid.uuid4()}"
+
+    # platform index 1 == "Short", stored server-side as "short".
+    _fill_add_duty_form(page, comment, platform_index=1)
+    page.locator("button.duty-save").click()
+
+    row = page.locator("#dutiesTable .tabulator-row", has_text=comment)
+    expect(row).to_have_count(1, timeout=15000)
+    expect(row.locator('[tabulator-field="platform"]')).to_have_text("Short")
+
+
+def test_duties_search_filters_rows(page: Page):
+    _open_duties_page(page)
+    comment = f"Automated search test {uuid.uuid4()}"
+
+    _fill_add_duty_form(page, comment, platform_index=2)
+    page.locator("button.duty-save").click()
+    expect(page.locator("#dutiesTable .tabulator-row", has_text=comment)).to_have_count(
+        1, timeout=15000
+    )
+
+    page.locator("input#search-bar").fill(comment)
+    rows = page.locator("#dutiesTable .tabulator-row")
+    expect(rows).to_have_count(1)
+    expect(rows.first).to_contain_text(comment)
+
+    page.locator("input#search-bar").fill("")
+    expect(
+        page.locator("#dutiesTable .tabulator-row", has_text=comment)
+    ).to_be_visible()
+
+
+def test_duties_period_filter_switches_without_error(page: Page):
+    _open_duties_page(page)
+
+    page.locator("select#period-filter").select_option("all")
+    expect(page.locator(".tabulator")).to_be_visible()
+
+    page.locator("select#period-filter").select_option("upcoming")
+    expect(page.locator(".tabulator")).to_be_visible()
+
+
+def test_duties_inline_edit_updates_comment(page: Page):
+    _open_duties_page(page)
+    original_comment = f"Automated edit test {uuid.uuid4()}"
+    updated_comment = f"{original_comment} edited"
+
+    _fill_add_duty_form(page, original_comment, platform_index=1)
+    page.locator("button.duty-save").click()
+
+    page.locator("select#period-filter").select_option("all")
+    row_locator = page.locator("#dutiesTable .tabulator-row", has_text=original_comment)
+    expect(row_locator).to_have_count(1, timeout=15000)
+
+    # Once editing starts, the textarea's value replaces the cell's text
+    # content, so the row can no longer be re-located via has_text=original_comment;
+    # grab a stable element handle for it up front instead.
+    row = row_locator.element_handle()
+    row.query_selector('[tabulator-field="comment"]').dblclick()
+
+    editor = page.locator("#dutiesTable textarea")
+    expect(editor).to_have_count(1, timeout=15000)
+    editor.fill(updated_comment)
+    # Click a non-editable cell in the same row to blur and commit the edit.
+    row.query_selector('[tabulator-field="facility"]').click()
+
+    expect(
+        page.locator("#dutiesTable .tabulator-row", has_text=updated_comment)
+    ).to_have_count(1, timeout=15000)
