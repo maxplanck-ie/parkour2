@@ -34,7 +34,7 @@
                 class="duties-input"
                 type="text"
                 placeholder="Search..."
-                @input="searchDuties"
+                v-model="searchQuery"
               />
             </div>
 
@@ -88,7 +88,8 @@
               class="dropdown-select"
               name="facility"
               id="facility"
-              @change="updateDutyObject"
+              v-model="newDuty.facility"
+              @change="onFacilityChange"
             >
               <option value="">Select</option>
               <option value="Bioinfo">Bioinfo</option>
@@ -101,8 +102,8 @@
               class="dropdown-select"
               name="main_name"
               id="main_name"
-              disabled="true"
-              @change="updateDutyObject"
+              v-model="newDuty.main_name"
+              :disabled="!newDuty.facility"
             >
               <option value="">Select</option>
               <option v-for="user in userListFiltered" :value="user.id">
@@ -116,8 +117,8 @@
               class="dropdown-select"
               name="backup_name"
               id="backup_name"
-              disabled="true"
-              @change="updateDutyObject"
+              v-model="newDuty.backup_name"
+              :disabled="!newDuty.facility"
             >
               <option value="">Select</option>
               <option v-for="user in userListFiltered" :value="user.id">
@@ -132,10 +133,9 @@
               type="date"
               id="start_date"
               name="start_date"
-              value=""
+              v-model="newDuty.start_date"
               min="2015-01-01"
               max="2099-12-31"
-              @change="updateDutyObject"
             />
           </div>
           <div class="duty-field">
@@ -145,10 +145,9 @@
               type="date"
               id="end_date"
               name="end_date"
-              value=""
+              v-model="newDuty.end_date"
               min="2015-01-01"
               max="2099-12-31"
-              @change="updateDutyObject"
             />
           </div>
           <div class="duty-field">
@@ -157,7 +156,7 @@
               class="dropdown-select"
               name="platform"
               id="platform"
-              @change="updateDutyObject"
+              v-model="newDuty.platform"
             >
               <option value="">Select</option>
               <option value="short">Short</option>
@@ -170,7 +169,7 @@
             <textarea
               class="comment-textarea"
               id="comment"
-              @input="updateDutyObject"
+              v-model="newDuty.comment"
             />
           </div>
         </div>
@@ -188,22 +187,18 @@ import {
   showNotification,
   handleError,
   getProp,
-  urlStringStartsWith
+  urlStringStartsWith,
+  createAxiosObject
 } from "../utilities/utilityFunctions";
 import { toRaw } from "vue";
-import axios from "axios";
 import moment from "moment";
-import Cookies from "js-cookie";
 import iconDutiesHeader from "../assets/icons/header_duties.svg";
-import { dutiesColumnDefs } from "../constants/dutiesConsts";
+import {
+  dutiesColumnDefs,
+  dutiesRowMatchesSearch
+} from "../constants/dutiesConsts";
 
-const axiosRef = axios.create({
-  withCredentials: true,
-  headers: {
-    "content-type": "application/json",
-    "X-CSRFToken": Cookies.get("csrftoken")
-  }
-});
+const axiosRef = createAxiosObject();
 
 const urlStringStart = urlStringStartsWith();
 
@@ -217,7 +212,15 @@ export default {
       iconDutiesHeader,
       dutiesList: null,
       dutiesListBackup: null,
-      newDuty: {},
+      newDuty: {
+        facility: "",
+        main_name: "",
+        backup_name: "",
+        start_date: "",
+        end_date: "",
+        platform: "",
+        comment: ""
+      },
       userList: [],
       userListFiltered: [],
       columnsList: [],
@@ -227,7 +230,8 @@ export default {
         initialSort: [{ column: "start_date", dir: "asc" }],
         handleCellEdited: (cell) => this.editDuty(cell)
       },
-      selectedFilter: "ongoing"
+      selectedFilter: "ongoing",
+      searchQuery: ""
     };
   },
   setup() {},
@@ -239,42 +243,38 @@ export default {
   watch: {
     selectedFilter(value) {
       this.getFilteredDuties(true, value);
+    },
+    searchQuery(value) {
+      this.dutiesList = (this.dutiesListBackup || []).filter((row) =>
+        dutiesRowMatchesSearch(row, value)
+      );
     }
   },
   computed: {},
   methods: {
-    updateDutyObject(event) {
-      let newDuty = toRaw(this.newDuty);
-      if (event.target.id === "facility") {
-        this.newDuty.main_name = "";
-        this.newDuty.backup_name = "";
-        document.getElementById("main_name").value = "";
-        document.getElementById("backup_name").value = "";
-        document.getElementById("main_name").disabled =
-          event.target.value == "";
-        document.getElementById("backup_name").disabled =
-          event.target.value == "";
-        this.userListFiltered = toRaw(this.userList).filter(
-          (element) =>
-            element.facility === document.getElementById("facility").value
-        );
-        newDuty[event.target.id] = event.target.value;
-        this.newDuty = newDuty;
-      } else if (
-        event.target.id === "start_date" ||
-        event.target.id === "end_date"
-      ) {
-        newDuty[event.target.id] = moment(event.target.value);
-        this.newDuty = newDuty;
-      } else {
-        newDuty[event.target.id] = event.target.value;
-        this.newDuty = newDuty;
-      }
+    resetNewDuty() {
+      this.newDuty = {
+        facility: "",
+        main_name: "",
+        backup_name: "",
+        start_date: "",
+        end_date: "",
+        platform: "",
+        comment: ""
+      };
+      this.userListFiltered = [];
+    },
+    onFacilityChange() {
+      this.newDuty.main_name = "";
+      this.newDuty.backup_name = "";
+      this.userListFiltered = toRaw(this.userList).filter(
+        (element) => element.facility === this.newDuty.facility
+      );
     },
     async saveDuty() {
       let newDuty = toRaw(this.newDuty);
       if (
-        !newDuty.main_name ||
+        !newDuty.facility ||
         !newDuty.main_name ||
         !newDuty.backup_name ||
         !newDuty.start_date ||
@@ -288,14 +288,7 @@ export default {
         await axiosRef
           .post(urlStringStart + "/api/duties/", newDuty)
           .then(() => {
-            this.newDuty = {};
-            document.getElementById("facility").value = "";
-            document.getElementById("main_name").value = "";
-            document.getElementById("backup_name").value = "";
-            document.getElementById("start_date").value = "";
-            document.getElementById("end_date").value = "";
-            document.getElementById("platform").value = "";
-            document.getElementById("comment").value = "";
+            this.resetNewDuty();
 
             if (this.selectedFilter == "all")
               this.getFilteredDuties(true, "all");
@@ -463,48 +456,6 @@ export default {
             this.getFilteredDuties(true, this.selectedFilter);
             handleError(error);
           });
-      }
-    },
-    searchDuties(event) {
-      if (event.target.value === "") this.dutiesList = this.dutiesListBackup;
-      else {
-        this.dutiesList = this.dutiesListBackup.filter(
-          (element) =>
-            (element.main_name &&
-              element.main_name
-                .toLowerCase()
-                .includes(event.target.value.toLowerCase())) ||
-            (element.backup_name &&
-              element.backup_name
-                .toLowerCase()
-                .includes(event.target.value.toLowerCase())) ||
-            (element.start_date &&
-              element.start_date
-                .toLowerCase()
-                .replace(/[^a-zA-Z0-9 ]/g, "")
-                .includes(
-                  event.target.value.toLowerCase().replace(/[^a-zA-Z0-9 ]/g, "")
-                )) ||
-            (element.end_date &&
-              element.end_date
-                .toLowerCase()
-                .replace(/[^a-zA-Z0-9 ]/g, "")
-                .includes(
-                  event.target.value.toLowerCase().replace(/[^a-zA-Z0-9 ]/g, "")
-                )) ||
-            (element.facility &&
-              element.facility
-                .toLowerCase()
-                .includes(event.target.value.toLowerCase())) ||
-            (element.platform &&
-              element.platform
-                .toLowerCase()
-                .includes(event.target.value.toLowerCase())) ||
-            (element.comment &&
-              element.comment
-                .toLowerCase()
-                .includes(event.target.value.toLowerCase()))
-        );
       }
     },
     async getUsers() {

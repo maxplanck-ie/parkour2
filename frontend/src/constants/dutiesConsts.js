@@ -30,6 +30,19 @@ function dutyDateFilter(headerValue, rowValue) {
     );
 }
 
+// Same shape as runStatisticsRowMatchesSearch / sequencesStatisticsRowMatchesSearch.
+export function dutiesRowMatchesSearch(row, query) {
+  const normalizedQuery = String(query || "")
+    .trim()
+    .toLowerCase();
+  if (!normalizedQuery) return true;
+  return Object.values(row).some((value) =>
+    String(value ?? "")
+      .toLowerCase()
+      .includes(normalizedQuery)
+  );
+}
+
 function responsiblePersonEditorParams(users) {
   return (cell) => {
     const { facility } = cell.getRow().getData();
