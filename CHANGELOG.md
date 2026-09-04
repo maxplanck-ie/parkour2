@@ -21,6 +21,7 @@ Unreleased
 - Removed unused staff-only pages. (PR #323.)
 - Add/Edit Request: clarified "Minimum Read Length" labeling, fixed index dropdowns picking the wrong I7/I5 pair for kits with duplicate sequences, fixed admin errors on large index assignments, and save confirmations now include the request ID. (Direct commits `168ea9a6`, `dec032c1`, `a9fe1c99`, `b2bb16be`.)
 - `make djtest` now stops at the first failure instead of running the full suite. (Direct commit `f6ccb691`.)
+- Fixed CI's Playwright job intermittently failing on a fresh runner because tests started before the frontend build had finished starting up. (Direct commit `e764a4ae`.)
 
 
 26.07.28
