@@ -98,87 +98,93 @@
           </button>
         </div>
         <div class="popup-body">
-          <div class="duty-field">
-            <div class="text-medium duty-label">Facility:</div>
-            <select
-              class="dropdown-select"
-              name="facility"
-              id="facility"
-              v-model="newDuty.facility"
-              @change="onFacilityChange"
-            >
-              <option value="">Select</option>
-              <option value="Bioinfo">Bioinfo</option>
-              <option value="DeepSeq">DeepSeq</option>
-            </select>
+          <div class="duty-field-row">
+            <div class="duty-field">
+              <div class="text-medium duty-label">Facility:</div>
+              <select
+                class="dropdown-select"
+                name="facility"
+                id="facility"
+                v-model="newDuty.facility"
+                @change="onFacilityChange"
+              >
+                <option value="">Select</option>
+                <option value="Bioinfo">Bioinfo</option>
+                <option value="DeepSeq">DeepSeq</option>
+              </select>
+            </div>
+            <div class="duty-field">
+              <div class="text-medium duty-label">Platform:</div>
+              <select
+                class="dropdown-select"
+                name="platform"
+                id="platform"
+                v-model="newDuty.platform"
+              >
+                <option value="">Select</option>
+                <option value="short">Short</option>
+                <option value="long">Long</option>
+                <option value="shortlong">Short + Long</option>
+              </select>
+            </div>
           </div>
-          <div class="duty-field">
-            <div class="text-medium duty-label">Responsible Person:</div>
-            <select
-              class="dropdown-select"
-              name="main_name"
-              id="main_name"
-              v-model="newDuty.main_name"
-              :disabled="!newDuty.facility"
-            >
-              <option value="">Select</option>
-              <option v-for="user in userListFiltered" :value="user.id">
-                {{ user.first_name }}
-              </option>
-            </select>
+          <div class="duty-field-row">
+            <div class="duty-field">
+              <div class="text-medium duty-label">Responsible Person:</div>
+              <select
+                class="dropdown-select"
+                name="main_name"
+                id="main_name"
+                v-model="newDuty.main_name"
+                :disabled="!newDuty.facility"
+              >
+                <option value="">Select</option>
+                <option v-for="user in userListFiltered" :value="user.id">
+                  {{ user.first_name }}
+                </option>
+              </select>
+            </div>
+            <div class="duty-field">
+              <div class="text-medium duty-label">Backup Person:</div>
+              <select
+                class="dropdown-select"
+                name="backup_name"
+                id="backup_name"
+                v-model="newDuty.backup_name"
+                :disabled="!newDuty.facility"
+              >
+                <option value="">Select</option>
+                <option v-for="user in userListFiltered" :value="user.id">
+                  {{ user.first_name }}
+                </option>
+              </select>
+            </div>
           </div>
-          <div class="duty-field">
-            <div class="text-medium duty-label">Backup Person:</div>
-            <select
-              class="dropdown-select"
-              name="backup_name"
-              id="backup_name"
-              v-model="newDuty.backup_name"
-              :disabled="!newDuty.facility"
-            >
-              <option value="">Select</option>
-              <option v-for="user in userListFiltered" :value="user.id">
-                {{ user.first_name }}
-              </option>
-            </select>
-          </div>
-          <div class="duty-field">
-            <div class="text-medium duty-label">Start Date:</div>
-            <input
-              class="date-selector"
-              type="date"
-              id="start_date"
-              name="start_date"
-              v-model="newDuty.start_date"
-              min="2015-01-01"
-              max="2099-12-31"
-            />
-          </div>
-          <div class="duty-field">
-            <div class="text-medium duty-label">End Date:</div>
-            <input
-              class="date-selector"
-              type="date"
-              id="end_date"
-              name="end_date"
-              v-model="newDuty.end_date"
-              min="2015-01-01"
-              max="2099-12-31"
-            />
-          </div>
-          <div class="duty-field">
-            <div class="text-medium duty-label">Platform:</div>
-            <select
-              class="dropdown-select"
-              name="platform"
-              id="platform"
-              v-model="newDuty.platform"
-            >
-              <option value="">Select</option>
-              <option value="short">Short</option>
-              <option value="long">Long</option>
-              <option value="shortlong">Short + Long</option>
-            </select>
+          <div class="duty-field-row">
+            <div class="duty-field">
+              <div class="text-medium duty-label">Start Date:</div>
+              <input
+                class="date-selector"
+                type="date"
+                id="start_date"
+                name="start_date"
+                v-model="newDuty.start_date"
+                min="2015-01-01"
+                max="2099-12-31"
+              />
+            </div>
+            <div class="duty-field">
+              <div class="text-medium duty-label">End Date:</div>
+              <input
+                class="date-selector"
+                type="date"
+                id="end_date"
+                name="end_date"
+                v-model="newDuty.end_date"
+                min="2015-01-01"
+                max="2099-12-31"
+              />
+            </div>
           </div>
           <div class="duty-field">
             <div class="text-medium duty-label">Comments:</div>
@@ -614,7 +620,7 @@ export default {
 }
 
 .add-duty-popup {
-  width: min(420px, 92vw);
+  width: min(520px, 92vw);
   max-height: 85vh;
   overflow: hidden;
 }
@@ -663,6 +669,16 @@ export default {
 .comment-textarea {
   padding: 7px;
   resize: none;
+}
+
+.duty-field-row {
+  display: flex;
+  gap: 14px;
+}
+
+.duty-field-row .duty-field {
+  flex: 1 1 0;
+  min-width: 0;
 }
 
 .duty-field {
