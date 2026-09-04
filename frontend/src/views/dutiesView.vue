@@ -264,10 +264,10 @@ export default {
       tableOptions: {
         index: "duty_id",
         placeholder: "No duties to show.",
-        initialSort: [{ column: "start_date", dir: "asc" }],
+        initialSort: [{ column: "end_date", dir: "desc" }],
         handleCellEdited: (cell) => this.editDuty(cell)
       },
-      selectedFilter: "ongoing",
+      selectedFilter: "past-1-year",
       searchQuery: "",
       showAddDutyDialog: false,
       addDutyPreviouslyFocusedElement: null

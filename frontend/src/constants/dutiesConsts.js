@@ -108,6 +108,7 @@ export function dutiesColumnDefs(users) {
       minWidth: 120,
       widthGrow: 2,
       editor: "date",
+      headerSort: true,
       editorParams: {
         min: DUTY_DATE_MIN,
         max: DUTY_DATE_MAX
@@ -122,6 +123,7 @@ export function dutiesColumnDefs(users) {
       minWidth: 120,
       widthGrow: 2,
       editor: "date",
+      headerSort: true,
       editorParams: {
         min: DUTY_DATE_MIN,
         max: DUTY_DATE_MAX

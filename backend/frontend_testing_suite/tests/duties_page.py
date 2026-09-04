@@ -109,6 +109,18 @@ def test_add_duty_dialog_cancel_and_escape_close_it(page: Page):
     expect(dialog).to_be_hidden()
 
 
+def test_duties_default_filter_and_sort(page: Page):
+    _open_duties_page(page)
+
+    expect(page.locator("select#period-filter")).to_have_value("past-1-year")
+
+    # Default sort is End Date descending (most recent first).
+    end_date_header = page.locator(
+        '#dutiesTable .tabulator-col[tabulator-field="end_date"]'
+    )
+    expect(end_date_header).to_have_attribute("aria-sort", "descending")
+
+
 def test_duties_period_filter_switches_without_error(page: Page):
     _open_duties_page(page)
 
