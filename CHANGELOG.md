@@ -3,6 +3,7 @@
 Unreleased
 ==========
 
+- Tabulator header filters: removed the gray placeholder text (hint now lives only in the hover tooltip); client-side filters now trigger 800ms after typing stops instead of Tabulator's default 300ms, and libraries_and_samples' server-side filters now trigger after 2500ms or on Enter (was 800ms, no Enter shortcut). (Direct commit `TBD`.)
 - Fixed a migration that could crash applying the new library/sample naming rule to a database with pre-existing invalid names (real production data has some) — invalid names are now cleaned up automatically instead of the migration failing outright. (Direct commit `c9db14dd`.)
 - Duties: migrated to the shared Tabulator-based table used elsewhere in the app, with a redesigned header (search, period filter, and an "Add Duty" button that opens a dialog instead of an always-visible form), sortable date columns, and a new default filter of "Past 1 Year" sorted by most recent end date. (PR #341.)
 - Library/Sample names: restricted to letters, numbers and underscores in the request editor's Name column, capped at 99 characters, with a tooltip explaining the rule. (Direct commit `055386ee`.)

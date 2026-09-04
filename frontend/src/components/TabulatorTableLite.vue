@@ -15,6 +15,10 @@ import { markRaw } from "vue";
 const TABULATOR_TABLE_DEFAULT_ID = "tabulatorTable";
 const TABULATOR_SELECTOR_PREFIX = "#";
 const GROUP_VALUE_SEPARATOR = "_";
+// Client-side header filters trigger 800ms after the user stops typing.
+// librariesAndSamplesView overrides this to 0 -- its filters are
+// server-side and own their debounce (2500ms or Enter).
+const HEADER_FILTER_LIVE_FILTER_DELAY_MS = 800;
 
 const TABULATOR_OPTIONS = {
   layout: "fitColumns",
@@ -119,6 +123,7 @@ export default {
           },
           renderVertical: TABULATOR_OPTIONS.renderVertical,
           tooltips: true,
+          headerFilterLiveFilterDelay: HEADER_FILTER_LIVE_FILTER_DELAY_MS,
           resizableColumns: true,
           selectable: true,
           selectableRange: 1,

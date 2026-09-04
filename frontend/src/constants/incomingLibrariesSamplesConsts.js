@@ -21,7 +21,6 @@ import { textFilterConfig } from "../utilities/textHeaderFilter";
 
 const GMO_TRUE_VALUES = new Set(["y", "yes", "true", "1"]);
 const GMO_FALSE_VALUES = new Set(["n", "no", "false", "0"]);
-const GMO_FACILITY_FILTER_PLACEHOLDER = "yes / no";
 const GMO_FACILITY_FILTER_HELP =
   "Filter by GMO: yes/y/true or no/n/false, or search the text (e.g. Risk Assessment)";
 
@@ -683,7 +682,6 @@ export function incomingLibrariesSamplesColumnDefs(getTabulatorInstance) {
             }
           },
           headerFilter: "input",
-          headerFilterPlaceholder: GMO_FACILITY_FILTER_PLACEHOLDER,
           headerFilterFunc: gmoFacilityHeaderFilter,
           headerTooltip: GMO_FACILITY_FILTER_HELP,
           headerVertical: false,

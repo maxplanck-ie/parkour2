@@ -85,6 +85,9 @@ const TABULATOR_SELECTOR_PREFIX = "#";
 const GROUP_VALUE_SEPARATOR = "_";
 const DEFAULT_DOUBLE_CLICK_EDIT_DELAY_MS = 1000;
 const LARGE_PASTE_CELL_THRESHOLD = 200;
+// Client-side header filters trigger 800ms after the user stops typing.
+// libraries_and_samples filters are server-side and set their own delay.
+const HEADER_FILTER_LIVE_FILTER_DELAY_MS = 800;
 
 const TABULATOR_OPTIONS = {
   layout: "fitColumns",
@@ -450,6 +453,7 @@ export default {
             headerContextMenu: []
           },
           tooltips: true,
+          headerFilterLiveFilterDelay: HEADER_FILTER_LIVE_FILTER_DELAY_MS,
           resizableColumns: true,
           groupToggleElement: TABULATOR_OPTIONS.groupToggleElement,
           selectable: true,

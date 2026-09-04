@@ -196,26 +196,19 @@ function makeServerHeaderFilter(field, onHeaderFilterChange) {
 function serverTextFilterConfig(field, onHeaderFilterChange, headerTooltip) {
   return {
     headerFilter: "input",
-    headerFilterPlaceholder: "Filter...",
     headerFilterFunc: makeServerHeaderFilter(field, onHeaderFilterChange),
     headerTooltip
   };
 }
 
-const INDEX_ID_FILTER_PLACEHOLDER = "N701-N729";
 const INDEX_ID_FILTER_HELP =
   "Filter by ID or range (same prefix):\n" +
   "N701  exact match\n" +
   "N701-N729  range";
-const INDEX_TYPE_FILTER_PLACEHOLDER = "e.g. Nextera XT";
 const INDEX_TYPE_FILTER_HELP = "Filter by Index Type (partial match)";
 
-const STATUS_FILTER_PLACEHOLDER = "e.g. 5";
-const TYPE_FILTER_PLACEHOLDER = "S or L";
 const TYPE_FILTER_HELP = "Filter by record type: S = Sample, L = Library";
-const GMO_FILTER_PLACEHOLDER = "yes / no";
 const GMO_FILTER_HELP = "Filter by GMO: yes/y/true or no/n/false";
-const DATE_FILTER_PLACEHOLDER = "DD.MM.YYYY";
 const DATE_FILTER_HELP = "Filter by date, full or partial, e.g. 03.09 or 2026";
 
 export function librariesAndSamplesColumnDefs(
@@ -287,7 +280,6 @@ export function librariesAndSamplesColumnDefs(
       field: "status",
       width: 50,
       headerFilter: "input",
-      headerFilterPlaceholder: STATUS_FILTER_PLACEHOLDER,
       headerFilterFunc: makeServerHeaderFilter("status", onHeaderFilterChange),
       headerTooltip: () => createStatusHeaderTooltip(),
       visible: true,
@@ -308,7 +300,6 @@ export function librariesAndSamplesColumnDefs(
       width: 45,
       minWidth: 45,
       headerFilter: "input",
-      headerFilterPlaceholder: TYPE_FILTER_PLACEHOLDER,
       headerFilterFunc: makeServerHeaderFilter("type", onHeaderFilterChange),
       headerTooltip: TYPE_FILTER_HELP,
       visible: true,
@@ -392,7 +383,6 @@ export function librariesAndSamplesColumnDefs(
       width: 120,
       minWidth: 60,
       headerFilter: "input",
-      headerFilterPlaceholder: GMO_FILTER_PLACEHOLDER,
       headerFilterFunc: makeServerHeaderFilter("gmo", onHeaderFilterChange),
       headerTooltip: GMO_FILTER_HELP,
       visible: true,
@@ -411,7 +401,6 @@ export function librariesAndSamplesColumnDefs(
       width: 90,
       minWidth: 60,
       headerFilter: "input",
-      headerFilterPlaceholder: DATE_FILTER_PLACEHOLDER,
       headerFilterFunc: makeServerHeaderFilter(
         "create_time",
         onHeaderFilterChange
@@ -654,7 +643,6 @@ export function librariesAndSamplesColumnDefs(
       width: "4%",
       headerVertical: false,
       headerFilter: "input",
-      headerFilterPlaceholder: INDEX_TYPE_FILTER_PLACEHOLDER,
       headerFilterFunc: makeServerHeaderFilter(
         "indexType",
         onHeaderFilterChange
@@ -696,7 +684,6 @@ export function librariesAndSamplesColumnDefs(
       width: "3.5%",
       headerVertical: false,
       headerFilter: "input",
-      headerFilterPlaceholder: INDEX_ID_FILTER_PLACEHOLDER,
       headerFilterFunc: makeServerHeaderFilter("i7Id", onHeaderFilterChange),
       headerTooltip: INDEX_ID_FILTER_HELP,
       visible: true,
@@ -735,7 +722,6 @@ export function librariesAndSamplesColumnDefs(
       width: "3.5%",
       headerVertical: false,
       headerFilter: "input",
-      headerFilterPlaceholder: INDEX_ID_FILTER_PLACEHOLDER,
       headerFilterFunc: makeServerHeaderFilter("i5Id", onHeaderFilterChange),
       headerTooltip: INDEX_ID_FILTER_HELP,
       visible: true,

@@ -1444,6 +1444,9 @@ export default {
       pageInput: 1,
       tableOptions: {
         index: "barcode",
+        // Server-side filters here debounce themselves (handleHeaderFilterChange,
+        // 2500ms or Enter) -- don't let Tabulator's own live-filter delay add on top.
+        headerFilterLiveFilterDelay: 0,
         placeholder: "No Libraries and Samples to show.",
         initialSort: [
           { column: "name", dir: "asc" },
@@ -1966,7 +1969,7 @@ export default {
           ?.getTable?.()
           ?.getColumn(columnField)
           ?.setHeaderFilterValue(this.filters[field]);
-      }, 800);
+      }, 2500);
     },
     syncInputHeaderMode(mode = this.inputColumnMode) {
       const normalizedMode =
@@ -2110,6 +2113,13 @@ export default {
       }
     },
     handleKeyDown(event) {
+      const isEnter = event.key === "Enter";
+      if (isEnter && event.target?.closest?.(".tabulator-header-filter")) {
+        event.preventDefault();
+        clearTimeout(this.headerFilterTimer);
+        this.getLibrariesSamples(1);
+        return;
+      }
       const isEscape = event.key === "Escape";
       if (isEscape && this.showPageHelp) {
         this.showPageHelp = false;
