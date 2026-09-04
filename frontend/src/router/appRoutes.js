@@ -1,17 +1,23 @@
 import { createRouter, createWebHistory } from "vue-router";
-import dutiesView from "../views/dutiesView.vue";
 import vueApp from "../vueApp.vue";
-import librariesAndSamples from "../views/librariesAndSamplesView.vue";
-import IncomingLibrariesSamples from "../views/incomingLibrariesSamplesView.vue";
-import libraryPreparation from "../views/libraryPreparationView.vue";
-import pooling from "../views/poolingView.vue";
-import loadFlowcells from "../views/loadFlowcellsView.vue";
-import IndexGeneratorView from "../views/indexGeneratorView.vue";
-import notFoundView from "../views/notFoundView.vue";
-import runStatisticsView from "../views/runStatisticsView.vue";
-import invoicingView from "../views/invoicingView.vue";
-import sequencesStatisticsView from "../views/sequencesStatisticsView.vue";
-import usageView from "../views/usageView.vue";
+
+// Lazy-loaded per route so each view lands in its own chunk instead of one
+// large bundle (see Vite's "chunks larger than 500 kB" build warning).
+const dutiesView = () => import("../views/dutiesView.vue");
+const librariesAndSamples = () =>
+  import("../views/librariesAndSamplesView.vue");
+const IncomingLibrariesSamples = () =>
+  import("../views/incomingLibrariesSamplesView.vue");
+const libraryPreparation = () => import("../views/libraryPreparationView.vue");
+const pooling = () => import("../views/poolingView.vue");
+const loadFlowcells = () => import("../views/loadFlowcellsView.vue");
+const IndexGeneratorView = () => import("../views/indexGeneratorView.vue");
+const notFoundView = () => import("../views/notFoundView.vue");
+const runStatisticsView = () => import("../views/runStatisticsView.vue");
+const invoicingView = () => import("../views/invoicingView.vue");
+const sequencesStatisticsView = () =>
+  import("../views/sequencesStatisticsView.vue");
+const usageView = () => import("../views/usageView.vue");
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),

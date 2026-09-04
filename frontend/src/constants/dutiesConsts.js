@@ -20,6 +20,27 @@ function dutyDateFormatter(cell) {
   return ellipsisContainer(formatDutyDate(cell.getValue()));
 }
 
+// Same shape as the escapeHtml/ellipsisContainer/textFormatter trio in
+// invoicingConsts.js, runStatisticsConsts.js and sequencesStatisticsConsts.js:
+// Tabulator cells without a formatter render with this table's line-height: 6px
+// (see TabulatorTableFull.vue), which clips plain text above the cell -- every
+// other Tabulator view avoids that by wrapping cell content in a padded div.
+// This one escapes HTML since, unlike the date columns above, "comment" is
+// free-typed user text.
+function escapeHtml(value) {
+  return String(value ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
+function dutyTextFormatter(cell) {
+  const escapedValue = escapeHtml(cell.getValue() ?? "");
+  return `<div title="${escapedValue}" style="padding: 8px 12px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">${escapedValue}</div>`;
+}
+
 function dutyDateFilter(headerValue, rowValue) {
   return formatDutyDate(rowValue)
     .toLowerCase()
@@ -68,6 +89,7 @@ export function dutiesColumnDefs(users) {
       widthGrow: 3,
       editor: "list",
       editorParams: personEditorParams,
+      formatter: dutyTextFormatter,
       ...textFilterConfig()
     },
     {
@@ -77,6 +99,7 @@ export function dutiesColumnDefs(users) {
       widthGrow: 3,
       editor: "list",
       editorParams: personEditorParams,
+      formatter: dutyTextFormatter,
       ...textFilterConfig()
     },
     {
@@ -112,6 +135,7 @@ export function dutiesColumnDefs(users) {
       field: "facility",
       minWidth: 150,
       widthGrow: 2,
+      formatter: dutyTextFormatter,
       ...textFilterConfig()
     },
     {
@@ -126,6 +150,7 @@ export function dutiesColumnDefs(users) {
         listOnEmpty: true,
         freetext: false
       },
+      formatter: dutyTextFormatter,
       ...textFilterConfig()
     },
     {
@@ -139,6 +164,7 @@ export function dutiesColumnDefs(users) {
           maxlength: 100
         }
       },
+      formatter: dutyTextFormatter,
       ...textFilterConfig()
     }
   ];
