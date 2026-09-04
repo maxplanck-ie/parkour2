@@ -1880,6 +1880,17 @@ export default {
           this.syncLoading = false;
         } else {
           this.loading = false;
+          // A silent refresh (header-filter debounce/Enter) never unmounts
+          // the table, so its inputs already keep whatever the user typed --
+          // restoring on top of that races their still-in-progress typing
+          // and can scramble the cursor position (see handleHeaderFilterChange
+          // for why non-silent refreshes are avoided there). A non-silent
+          // refresh (pagination, search, filter reset) *does* unmount it
+          // (the `v-if="!loading"` below), which drops every header filter's
+          // value, so only restore here, where the table just got rebuilt.
+          if (!exportOnly) {
+            this.$nextTick(() => this.restoreHeaderFilterValues());
+          }
         }
       }
     },
@@ -1957,18 +1968,34 @@ export default {
       }
       this.getLibrariesSamples(1);
     },
+    // Any refresh can remount the table (loading toggles the `v-if` on
+    // LiteTabulatorTable) or otherwise re-render its header filter inputs,
+    // dropping whatever the user had typed. Re-apply every known filter
+    // value afterward so a box the user isn't actively editing doesn't go
+    // quietly blank while its filter is still in effect server-side.
+    restoreHeaderFilterValues() {
+      const table = this.tabulatorInstance?.getTable?.();
+      if (!table) return;
+      ["i7Id", "i5Id", "indexType", ...HEADER_FILTER_FIELDS].forEach(
+        (field) => {
+          const value = this.filters[field];
+          if (!value) return;
+          const columnField = HEADER_FILTER_COLUMN_FIELD[field] ?? field;
+          table.getColumn(columnField)?.setHeaderFilterValue(value);
+        }
+      );
+    },
     handleHeaderFilterChange(field, value) {
       this.filters[field] = value;
       clearTimeout(this.headerFilterTimer);
       this.headerFilterTimer = setTimeout(async () => {
-        await this.getLibrariesSamples(1);
-        // Refreshing table data via Tabulator's setData() re-renders the
-        // header filter inputs and drops their typed value, so restore it.
-        const columnField = HEADER_FILTER_COLUMN_FIELD[field] ?? field;
-        this.tabulatorInstance
-          ?.getTable?.()
-          ?.getColumn(columnField)
-          ?.setHeaderFilterValue(this.filters[field]);
+        // Silent: a non-silent refresh flips `loading`, which unmounts and
+        // recreates the whole Tabulator table (v-if on LiteTabulatorTable
+        // below). The new table takes a beat to finish building its
+        // columns, so restoreHeaderFilterValues() -- called right after --
+        // can't find them yet and silently no-ops, leaving every header
+        // filter box blank even though the filters are still applied.
+        await this.getLibrariesSamples(1, false, true);
       }, 2500);
     },
     syncInputHeaderMode(mode = this.inputColumnMode) {
@@ -2117,7 +2144,7 @@ export default {
       if (isEnter && event.target?.closest?.(".tabulator-header-filter")) {
         event.preventDefault();
         clearTimeout(this.headerFilterTimer);
-        this.getLibrariesSamples(1);
+        this.getLibrariesSamples(1, false, true);
         return;
       }
       const isEscape = event.key === "Escape";

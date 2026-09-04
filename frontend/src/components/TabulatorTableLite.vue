@@ -88,6 +88,7 @@ export default {
         noGroupByClass: false
       },
       scrollPosition: 0,
+      scrollLeftPosition: 0,
       lastGroupValues: []
     };
   },
@@ -172,11 +173,27 @@ export default {
             tabulatorElement.classList.remove(TABULATOR_CLASSES.noGroupBy);
           }
           this.tabulatorInstance.restoreRedraw();
+          // Track horizontal scroll continuously (mirrors the vertical
+          // scrollPosition tracking below) so it can be restored after a
+          // redraw kicks the table back to the left edge -- e.g. every
+          // keystroke in a header filter re-filters/redraws the table even
+          // when filtering itself happens server-side.
+          this.tabulatorInstance.rowManager.element.addEventListener(
+            "scroll",
+            () => {
+              this.scrollLeftPosition =
+                this.tabulatorInstance.rowManager.element.scrollLeft;
+            }
+          );
         });
 
         this.tabulatorInstance.on(TABULATOR_EVENTS.renderComplete, () => {
           const rows = this.tabulatorInstance?.rowManager?.activeRows || [];
           this.updateGroupValuesFromRows(rows);
+          const scrollElement = this.tabulatorInstance.rowManager.element;
+          if (scrollElement.scrollLeft !== this.scrollLeftPosition) {
+            scrollElement.scrollLeft = this.scrollLeftPosition;
+          }
           if (this.tableOptions.handleRenderComplete) {
             this.tableOptions.handleRenderComplete();
           }
