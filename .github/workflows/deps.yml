@@ -72,7 +72,7 @@ jobs:
           node-version-file: 'frontend/package.json'
 
       - run: npm install -g npm-check-updates
-      - run: cd frontend && ncu \!ag-grid-* -u
+      - run: cd frontend && ncu -u
 
       - name: Upload VueJS package.json
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1

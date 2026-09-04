@@ -10,281 +10,359 @@
           style="display: block"
         />
       </div>
-      <div
-        class="header-title"
-        style="display: inline"
-        data-testid="duties-page-title"
-      >
+      <div class="header-title" data-testid="duties-page-title">
         Manage Duties
       </div>
-    </div>
-    <div class="duties-body">
-      <div class="table-container duties-table-panel">
-        <div class="duties-card">
-          <div class="duties-toolbar">
-            <div class="duties-search">
-              <div class="duties-icon-box">
-                <font-awesome-icon
-                  icon="fa-solid fa-magnifying-glass"
-                  class="duties-icon"
-                />
-              </div>
-              <input
-                id="search-bar"
-                class="duties-input"
-                type="text"
-                placeholder="Search..."
-                @input="searchDuties"
-              />
-            </div>
 
-            <div class="duties-filter">
-              <div class="duties-icon-box">
-                <font-awesome-icon
-                  icon="fa-regular fa-calendar-days"
-                  class="duties-icon"
-                />
-              </div>
+      <div class="sticky-actions">
+        <div class="search-bar">
+          <input
+            id="search-bar"
+            v-model="searchQuery"
+            type="text"
+            placeholder="Search"
+          />
+          <font-awesome-icon
+            icon="fa-solid fa-magnifying-glass"
+            style="color: darkgrey"
+          />
+        </div>
+
+        <div class="duties-period-filter">
+          <font-awesome-icon
+            icon="fa-regular fa-calendar-days"
+            style="color: darkgrey"
+          />
+          <select id="period-filter" v-model="selectedFilter">
+            <option value="all">All</option>
+            <option value="ongoing">Ongoing</option>
+            <option value="upcoming">Upcoming</option>
+            <option value="past-1-month">Past 1 Month</option>
+            <option value="past-3-months">Past 3 Months</option>
+            <option value="past-6-months">Past 6 Months</option>
+            <option value="past-1-year">Past 1 Year</option>
+          </select>
+        </div>
+
+        <button
+          id="openAddDutyButton"
+          class="header-button"
+          type="button"
+          aria-haspopup="dialog"
+          :aria-expanded="showAddDutyDialog"
+          @click="openAddDutyDialog"
+        >
+          <font-awesome-icon
+            icon="fa-regular fa-calendar-plus"
+            style="color: white"
+          />
+          <span>Add Duty</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="table-container">
+      <TabulatorTable
+        v-if="dutiesList !== null && columnsList.length"
+        ref="dutiesTable"
+        tableId="dutiesTable"
+        :rowData="dutiesList"
+        :columnDefs="columnsList"
+        :enableDefaultFilters="false"
+        :tableOptions="tableOptions"
+      />
+    </div>
+
+    <div
+      v-if="showAddDutyDialog"
+      class="popup-overlay"
+      @click.self="closeAddDutyDialog"
+    >
+      <div
+        ref="addDutyDialog"
+        class="popup-container add-duty-popup"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="add-duty-title"
+        tabindex="-1"
+      >
+        <div class="popup-header">
+          <span id="add-duty-title" class="popup-title">Add Duty</span>
+          <button
+            class="popup-close-button"
+            type="button"
+            aria-label="Close add duty"
+            @click="closeAddDutyDialog"
+          >
+            &times;
+          </button>
+        </div>
+        <div class="popup-body">
+          <div class="duty-field-row">
+            <div class="duty-field">
+              <div class="text-medium duty-label">Facility:</div>
               <select
-                id="period-filter"
-                class="duties-select"
-                v-model="selectedFilter"
+                class="dropdown-select"
+                name="facility"
+                id="facility"
+                v-model="newDuty.facility"
+                @change="onFacilityChange"
               >
-                <option value="all">All</option>
-                <option value="ongoing">Ongoing</option>
-                <option value="upcoming">Upcoming</option>
-                <option value="past-1-month">Past 1 Month</option>
-                <option value="past-3-months">Past 3 Months</option>
-                <option value="past-6-months">Past 6 Months</option>
-                <option value="past-1-year">Past 1 Year</option>
+                <option value="">Select</option>
+                <option value="Bioinfo">Bioinfo</option>
+                <option value="DeepSeq">DeepSeq</option>
+              </select>
+            </div>
+            <div class="duty-field">
+              <div class="text-medium duty-label">Platform:</div>
+              <select
+                class="dropdown-select"
+                name="platform"
+                id="platform"
+                v-model="newDuty.platform"
+              >
+                <option value="">Select</option>
+                <option value="short">Short</option>
+                <option value="long">Long</option>
+                <option value="shortlong">Short + Long</option>
               </select>
             </div>
           </div>
-          <div class="duties-grid-wrapper">
-            <ag-grid-vue
-              ref="dutiesGrid"
-              class="ag-theme-alpine"
-              style="height: 100%"
-              theme="legacy"
-              :rowSelection="{
-                mode: 'multiRow',
-                checkboxes: false,
-                headerCheckbox: false
-              }"
-              :animateRows="true"
-              :rowDragManaged="true"
-              :stopEditingWhenCellsLoseFocus="true"
-              :columnDefs="columnsList"
-              :rowData="dutiesList"
-              :gridOptions="gridOptions"
-              @cellValueChanged="editDuty"
-              @first-data-rendered="updateGridDataObject"
-              @grid-ready="onGridReady"
-            />
+          <div class="duty-field-row">
+            <div class="duty-field">
+              <div class="text-medium duty-label">Responsible Person:</div>
+              <select
+                class="dropdown-select"
+                name="main_name"
+                id="main_name"
+                v-model="newDuty.main_name"
+                :disabled="!newDuty.facility"
+              >
+                <option value="">Select</option>
+                <option
+                  v-for="user in userListFiltered"
+                  :key="user.id"
+                  :value="user.id"
+                >
+                  {{ user.first_name }}
+                </option>
+              </select>
+            </div>
+            <div class="duty-field">
+              <div class="text-medium duty-label">Backup Person:</div>
+              <select
+                class="dropdown-select"
+                name="backup_name"
+                id="backup_name"
+                v-model="newDuty.backup_name"
+                :disabled="!newDuty.facility"
+              >
+                <option value="">Select</option>
+                <option
+                  v-for="user in userListFiltered"
+                  :key="user.id"
+                  :value="user.id"
+                >
+                  {{ user.first_name }}
+                </option>
+              </select>
+            </div>
           </div>
-        </div>
-      </div>
-      <div class="add-duty-container">
-        <div class="add-duty-header">
-          <font-awesome-icon
-            icon="fa-regular fa-calendar-plus"
-            class="add-duty-icon"
-          />
-          <span class="add-duty-title">Add Duty</span>
-        </div>
-        <div class="add-duty-body">
-          <div class="duty-field">
-            <div class="text-medium duty-label">Facility:</div>
-            <select
-              class="dropdown-select"
-              name="facility"
-              id="facility"
-              @change="updateDutyObject"
-            >
-              <option value="">Select</option>
-              <option value="Bioinfo">Bioinfo</option>
-              <option value="DeepSeq">DeepSeq</option>
-            </select>
-          </div>
-          <div class="duty-field">
-            <div class="text-medium duty-label">Responsible Person:</div>
-            <select
-              class="dropdown-select"
-              name="main_name"
-              id="main_name"
-              disabled="true"
-              @change="updateDutyObject"
-            >
-              <option value="">Select</option>
-              <option v-for="user in userListFiltered" :value="user.id">
-                {{ user.first_name }}
-              </option>
-            </select>
-          </div>
-          <div class="duty-field">
-            <div class="text-medium duty-label">Backup Person:</div>
-            <select
-              class="dropdown-select"
-              name="backup_name"
-              id="backup_name"
-              disabled="true"
-              @change="updateDutyObject"
-            >
-              <option value="">Select</option>
-              <option v-for="user in userListFiltered" :value="user.id">
-                {{ user.first_name }}
-              </option>
-            </select>
-          </div>
-          <div class="duty-field">
-            <div class="text-medium duty-label">Start Date:</div>
-            <input
-              class="date-selector"
-              type="date"
-              id="start_date"
-              name="start_date"
-              value=""
-              min="2015-01-01"
-              max="2099-12-31"
-              @change="updateDutyObject"
-            />
-          </div>
-          <div class="duty-field">
-            <div class="text-medium duty-label">End Date:</div>
-            <input
-              class="date-selector"
-              type="date"
-              id="end_date"
-              name="end_date"
-              value=""
-              min="2015-01-01"
-              max="2099-12-31"
-              @change="updateDutyObject"
-            />
-          </div>
-          <div class="duty-field">
-            <div class="text-medium duty-label">Platform:</div>
-            <select
-              class="dropdown-select"
-              name="platform"
-              id="platform"
-              @change="updateDutyObject"
-            >
-              <option value="">Select</option>
-              <option value="short">Short</option>
-              <option value="long">Long</option>
-              <option value="shortlong">Short + Long</option>
-            </select>
+          <div class="duty-field-row">
+            <div class="duty-field">
+              <div class="text-medium duty-label">Start Date:</div>
+              <input
+                class="date-selector"
+                type="date"
+                id="start_date"
+                name="start_date"
+                v-model="newDuty.start_date"
+                min="2015-01-01"
+                max="2099-12-31"
+              />
+            </div>
+            <div class="duty-field">
+              <div class="text-medium duty-label">End Date:</div>
+              <input
+                class="date-selector"
+                type="date"
+                id="end_date"
+                name="end_date"
+                v-model="newDuty.end_date"
+                min="2015-01-01"
+                max="2099-12-31"
+              />
+            </div>
           </div>
           <div class="duty-field">
             <div class="text-medium duty-label">Comments:</div>
             <textarea
               class="comment-textarea"
               id="comment"
-              @input="updateDutyObject"
+              v-model="newDuty.comment"
             />
           </div>
         </div>
-        <button class="text-medium green-button duty-save" @click="saveDuty()">
-          Save
-        </button>
+        <div class="popup-footer">
+          <button
+            id="cancelAddDutyButton"
+            class="popup-button secondary"
+            @click="closeAddDutyDialog"
+          >
+            Cancel
+          </button>
+          <button
+            id="saveAddDutyButton"
+            class="popup-button"
+            @click="saveDuty()"
+          >
+            Save
+          </button>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { AgGridVue } from "ag-grid-vue3";
+import TabulatorTable from "../components/TabulatorTableFull.vue";
 import {
   showNotification,
   handleError,
   getProp,
-  urlStringStartsWith
+  urlStringStartsWith,
+  createAxiosObject,
+  focusFirstElement,
+  trapFocus
 } from "../utilities/utilityFunctions";
 import { toRaw } from "vue";
-import axios from "axios";
 import moment from "moment";
-import Cookies from "js-cookie";
 import iconDutiesHeader from "../assets/icons/header_duties.svg";
+import {
+  dutiesColumnDefs,
+  dutiesRowMatchesSearch
+} from "../constants/dutiesConsts";
 
-const axiosRef = axios.create({
-  withCredentials: true,
-  headers: {
-    "content-type": "application/json",
-    "X-CSRFToken": Cookies.get("csrftoken")
-  }
-});
+const axiosRef = createAxiosObject();
 
 const urlStringStart = urlStringStartsWith();
 
 export default {
-  name: "Duties",
+  name: "DutiesView",
   components: {
-    AgGridVue
+    TabulatorTable
   },
   data() {
     return {
       iconDutiesHeader,
       dutiesList: null,
       dutiesListBackup: null,
-      newDuty: {},
+      newDuty: {
+        facility: "",
+        main_name: "",
+        backup_name: "",
+        start_date: "",
+        end_date: "",
+        platform: "",
+        comment: ""
+      },
       userList: [],
       userListFiltered: [],
       columnsList: [],
-      gridOptions: {},
-      gridData: [],
-      selectedFilter: "ongoing",
-      gridApi: null
+      tableOptions: {
+        index: "duty_id",
+        placeholder: "No duties to show.",
+        initialSort: [{ column: "end_date", dir: "desc" }],
+        handleCellEdited: (cell) => this.editDuty(cell)
+      },
+      selectedFilter: "past-1-year",
+      searchQuery: "",
+      showAddDutyDialog: false,
+      addDutyPreviouslyFocusedElement: null
     };
   },
   setup() {},
   beforeMount() {
     this.getUsers();
   },
-  mounted() {},
+  mounted() {
+    document.addEventListener("click", this.handleOutsideClick);
+    document.addEventListener("keydown", this.handleKeyDown);
+  },
+  beforeUnmount() {
+    document.removeEventListener("click", this.handleOutsideClick);
+    document.removeEventListener("keydown", this.handleKeyDown);
+  },
   created() {},
   watch: {
     selectedFilter(value) {
       this.getFilteredDuties(true, value);
+    },
+    searchQuery(value) {
+      this.dutiesList = (this.dutiesListBackup || []).filter((row) =>
+        dutiesRowMatchesSearch(row, value)
+      );
     }
   },
   computed: {},
   methods: {
-    onGridReady(params) {
-      this.gridApi = params.api;
+    openAddDutyDialog() {
+      this.addDutyPreviouslyFocusedElement = document.activeElement;
+      this.showAddDutyDialog = true;
+      this.$nextTick(() => focusFirstElement(this.$refs.addDutyDialog));
     },
-    updateDutyObject(event) {
-      let newDuty = toRaw(this.newDuty);
-      if (event.target.id === "facility") {
-        this.newDuty.main_name = "";
-        this.newDuty.backup_name = "";
-        document.getElementById("main_name").value = "";
-        document.getElementById("backup_name").value = "";
-        document.getElementById("main_name").disabled =
-          event.target.value == "";
-        document.getElementById("backup_name").disabled =
-          event.target.value == "";
-        this.userListFiltered = toRaw(this.userList).filter(
-          (element) =>
-            element.facility === document.getElementById("facility").value
-        );
-        newDuty[event.target.id] = event.target.value;
-        this.newDuty = newDuty;
-      } else if (
-        event.target.id === "start_date" ||
-        event.target.id === "end_date"
+    closeAddDutyDialog() {
+      if (!this.showAddDutyDialog) return;
+      this.showAddDutyDialog = false;
+      this.resetNewDuty();
+      const returnFocusTo = this.addDutyPreviouslyFocusedElement;
+      this.addDutyPreviouslyFocusedElement = null;
+      this.$nextTick(() => returnFocusTo?.focus?.());
+    },
+    handleOutsideClick(event) {
+      const dialog = this.$refs.addDutyDialog;
+      const button = this.$el.querySelector?.("#openAddDutyButton");
+      if (
+        this.showAddDutyDialog &&
+        dialog &&
+        !dialog.contains(event.target) &&
+        !button?.contains(event.target)
       ) {
-        newDuty[event.target.id] = moment(event.target.value);
-        this.newDuty = newDuty;
-      } else {
-        newDuty[event.target.id] = event.target.value;
-        this.newDuty = newDuty;
+        this.closeAddDutyDialog();
       }
+    },
+    handleKeyDown(event) {
+      if (!this.showAddDutyDialog) return;
+      if (event.key === "Escape") {
+        event.preventDefault();
+        this.closeAddDutyDialog();
+        return;
+      }
+      trapFocus(event, this.$refs.addDutyDialog);
+    },
+    resetNewDuty() {
+      this.newDuty = {
+        facility: "",
+        main_name: "",
+        backup_name: "",
+        start_date: "",
+        end_date: "",
+        platform: "",
+        comment: ""
+      };
+      this.userListFiltered = [];
+    },
+    onFacilityChange() {
+      this.newDuty.main_name = "";
+      this.newDuty.backup_name = "";
+      this.userListFiltered = toRaw(this.userList).filter(
+        (element) => element.facility === this.newDuty.facility
+      );
     },
     async saveDuty() {
       let newDuty = toRaw(this.newDuty);
       if (
-        !newDuty.main_name ||
+        !newDuty.facility ||
         !newDuty.main_name ||
         !newDuty.backup_name ||
         !newDuty.start_date ||
@@ -298,14 +376,7 @@ export default {
         await axiosRef
           .post(urlStringStart + "/api/duties/", newDuty)
           .then(() => {
-            this.newDuty = {};
-            document.getElementById("facility").value = "";
-            document.getElementById("main_name").value = "";
-            document.getElementById("backup_name").value = "";
-            document.getElementById("start_date").value = "";
-            document.getElementById("end_date").value = "";
-            document.getElementById("platform").value = "";
-            document.getElementById("comment").value = "";
+            this.closeAddDutyDialog();
 
             if (this.selectedFilter == "all")
               this.getFilteredDuties(true, "all");
@@ -377,13 +448,12 @@ export default {
         this.dutiesListBackup = fetchedRows;
       } catch (error) {
         handleError(error);
-      } finally {
       }
     },
     getFilteredDuties(refresh = false, selectedFilter) {
       let additionalUrl = "";
-      let start_date = "";
-      let end_date = "";
+      let start_date;
+      let end_date;
       if (selectedFilter === "all") {
         additionalUrl = "";
       } else if (selectedFilter === "ongoing") {
@@ -417,11 +487,12 @@ export default {
       }
       this.getDuties(refresh, additionalUrl);
     },
-    async editDuty(rowData) {
-      let dutyId = rowData.data.duty_id;
-      let columnName = rowData.column.colId;
-      let oldValue = String(rowData.oldValue);
-      let newValue = String(rowData.newValue);
+    async editDuty(cell) {
+      const rowData = cell.getRow().getData();
+      const dutyId = rowData.duty_id;
+      const columnName = cell.getField();
+      const oldValue = String(cell.getOldValue() ?? "");
+      let newValue = String(cell.getValue() ?? "");
 
       if (
         (columnName !== "platform" && newValue.trim() !== oldValue.trim()) ||
@@ -448,10 +519,8 @@ export default {
             );
             break;
           case "start_date":
-            newValue = moment(newValue);
-            break;
           case "end_date":
-            newValue = moment(newValue);
+            newValue = moment(newValue).format("YYYY-MM-DD");
             break;
           case "platform":
             newValue =
@@ -475,49 +544,6 @@ export default {
             this.getFilteredDuties(true, this.selectedFilter);
             handleError(error);
           });
-        this.updateGridDataObject();
-      }
-    },
-    searchDuties(event) {
-      if (event.target.value === "") this.dutiesList = this.dutiesListBackup;
-      else {
-        this.dutiesList = this.dutiesListBackup.filter(
-          (element) =>
-            (element.main_name &&
-              element.main_name
-                .toLowerCase()
-                .includes(event.target.value.toLowerCase())) ||
-            (element.backup_name &&
-              element.backup_name
-                .toLowerCase()
-                .includes(event.target.value.toLowerCase())) ||
-            (element.start_date &&
-              element.start_date
-                .toLowerCase()
-                .replace(/[^a-zA-Z0-9 ]/g, "")
-                .includes(
-                  event.target.value.toLowerCase().replace(/[^a-zA-Z0-9 ]/g, "")
-                )) ||
-            (element.end_date &&
-              element.end_date
-                .toLowerCase()
-                .replace(/[^a-zA-Z0-9 ]/g, "")
-                .includes(
-                  event.target.value.toLowerCase().replace(/[^a-zA-Z0-9 ]/g, "")
-                )) ||
-            (element.facility &&
-              element.facility
-                .toLowerCase()
-                .includes(event.target.value.toLowerCase())) ||
-            (element.platform &&
-              element.platform
-                .toLowerCase()
-                .includes(event.target.value.toLowerCase())) ||
-            (element.comment &&
-              element.comment
-                .toLowerCase()
-                .includes(event.target.value.toLowerCase()))
-        );
       }
     },
     async getUsers() {
@@ -532,145 +558,7 @@ export default {
         .catch((error) => handleError(error));
     },
     setColumns(userList) {
-      this.columnsList = [
-        // {
-        //   headerName: "Select",
-        //   field: "select",
-        //   cellEditor: "agCheckboxCellEditor",
-        //   editable: true,
-        // },
-        {
-          headerName: "Responsible Person",
-          field: "main_name",
-          minWidth: 200,
-          flex: 3,
-          filter: true,
-          sortable: true,
-          resizable: true,
-          editable: true,
-          cellEditor: "agSelectCellEditor",
-          cellEditorParams: (params) => {
-            return {
-              values: userList
-                .filter((element) => element.facility === params.data.facility)
-                .map((element) => element.first_name),
-              valueListGap: 0
-            };
-          },
-          rowDrag: true
-        },
-        {
-          headerName: "Backup Person",
-          field: "backup_name",
-          minWidth: 150,
-          flex: 3,
-          filter: true,
-          sortable: true,
-          resizable: true,
-          editable: true,
-          cellEditor: "agSelectCellEditor",
-          cellEditorParams: (params) => {
-            return {
-              values: userList
-                .filter((element) => element.facility === params.data.facility)
-                .map((element) => element.first_name),
-              valueListGap: 0
-            };
-          }
-        },
-        {
-          headerName: "Start Date",
-          field: "start_date",
-          cellEditor: "agDateStringCellEditor",
-          cellEditorParams: {
-            min: "2015-01-01",
-            max: "2099-12-31"
-          },
-          cellRenderer: (data) => {
-            return data.value ? moment(data.value).format("MM/DD/YYYY") : "-";
-          },
-          minWidth: 120,
-          flex: 2,
-          filter: true,
-          sortable: true,
-          resizable: true,
-          editable: true,
-          sort: "asc"
-        },
-        {
-          headerName: "End Date",
-          field: "end_date",
-          cellEditor: "agDateStringCellEditor",
-          cellEditorParams: {
-            min: "2015-01-01",
-            max: "2099-12-31"
-          },
-          cellRenderer: (data) => {
-            return data.value ? moment(data.value).format("MM/DD/YYYY") : "-";
-          },
-          minWidth: 120,
-          flex: 2,
-          filter: true,
-          sortable: true,
-          resizable: true,
-          editable: true
-        },
-        {
-          headerName: "Facility",
-          field: "facility",
-          minWidth: 150,
-          flex: 2,
-          filter: true,
-          sortable: true,
-          resizable: true
-        },
-        {
-          headerName: "Platform",
-          field: "platform",
-          minWidth: 150,
-          flex: 2,
-          filter: true,
-          sortable: true,
-          resizable: true,
-          editable: true,
-          cellEditor: "agSelectCellEditor",
-          cellEditorParams: {
-            values: ["Short", "Long", "Short + Long"],
-            valueListGap: 0
-          },
-          cellRenderer: (data) => {
-            if (data.value === "shortlong") return "Short + Long";
-            else return data.value[0].toUpperCase() + data.value.slice(1);
-          }
-        },
-        {
-          headerName: "Comments",
-          field: "comment",
-          minWidth: 300,
-          flex: 4,
-          resizable: true,
-          editable: true,
-          cellEditor: "agLargeTextCellEditor",
-          cellEditorPopup: true,
-          cellEditorParams: {
-            maxLength: 100,
-            rows: 10,
-            cols: 50
-          }
-        }
-      ];
-    },
-    updateGridDataObject() {
-      const api =
-        this.gridApi || (this.$refs.dutiesGrid && this.$refs.dutiesGrid.api);
-      if (!api) {
-        return;
-      }
-      const gridData = [];
-      api.forEachNode((rowNode) => {
-        gridData.push(rowNode.data);
-      });
-      this.gridData = gridData;
+      this.columnsList = dutiesColumnDefs(userList);
     }
   }
 };
@@ -685,13 +573,6 @@ export default {
   padding: 10px;
 }
 
-.duties-body {
-  display: flex;
-  gap: 12px;
-  flex: 1;
-  min-height: 0;
-}
-
 .styled-box {
   height: 35px;
   padding: 0px 8px;
@@ -702,81 +583,64 @@ export default {
   border-bottom-right-radius: 8px;
 }
 
-.duties-table-panel {
-  flex: 1;
+/* Header: title-left, search/filter/add-duty-right, matching the other
+   Tabulator views (see e.g. librariesAndSamplesView.vue, invoicingView.vue). */
+.header {
+  justify-content: flex-start;
+  gap: 10px;
+}
+
+.header-title {
+  width: auto;
+  flex: 1 1 220px;
   min-width: 0;
-  height: 100%;
+  margin-right: 16px;
 }
 
-.duties-card {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  border: 1px solid #c7cbd1;
-  border-radius: 8px;
-  background: #ffffff;
+.sticky-actions {
+  margin-left: auto;
 }
 
-.duties-toolbar {
+.duties-period-filter {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  padding: 8px 12px;
-  background: #f3f1e9;
-  border-bottom: 1px solid #d9d6cc;
-  border-top-left-radius: 8px;
-  border-top-right-radius: 8px;
+  gap: 8px;
+  height: var(--header-control-height);
+  min-height: var(--header-control-height);
+  box-sizing: border-box;
+  padding: 0 12px;
+  border: 1px solid rgba(0, 0, 0, 0.18);
+  border-radius: 8px;
+  background-color: #ffffff;
 }
 
-.duties-search,
-.duties-filter {
-  display: flex;
-  align-items: center;
-  gap: 0;
-  background: #ffffff;
-  border: 1px solid #c7cbd1;
-  border-radius: 8px;
+.duties-period-filter select {
+  border: none;
+  outline: none;
+  font-size: var(--header-control-font-size);
+  color: #333;
+  background: none;
+}
+
+.table-container {
+  flex: 1;
+  min-height: 0;
+}
+
+.add-duty-popup {
+  width: min(520px, 92vw);
+  max-height: 85vh;
   overflow: hidden;
 }
 
-.duties-search {
-  flex: 1;
-  max-width: 460px;
-}
-
-.duties-filter {
-  width: 220px;
-}
-
-.duties-icon-box {
-  width: 34px;
-  height: 34px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #6b7280;
-}
-
-.duties-icon {
-  color: #ffffff;
-}
-
-.duties-input,
-.duties-select {
-  border: none;
-  outline: none;
-  font-size: 14px;
-  padding: 6px 10px;
-  background: #ffffff;
-  color: #333;
-  width: 100%;
-}
-
-.duties-grid-wrapper {
-  flex: 1;
+.add-duty-popup .popup-body {
+  flex: 1 1 auto;
   min-height: 0;
-  margin: 12px;
+  overflow-y: auto;
+}
+
+.add-duty-popup .comment-textarea {
+  height: 120px;
 }
 
 .dropdown-select,
@@ -815,43 +679,14 @@ export default {
   resize: none;
 }
 
-.add-duty-container {
-  width: 360px;
-  height: 100%;
+.duty-field-row {
   display: flex;
-  flex-direction: column;
-  background: #f1efe8;
-  border: 1px solid #006c66;
-  border-radius: 8px;
-  overflow: hidden;
+  gap: 14px;
 }
 
-.add-duty-header {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  background: #006c66;
-  color: white;
-  padding: 10px 12px;
-  border-bottom: 1px solid #0b5f59;
-}
-
-.add-duty-icon {
-  height: 18px;
-  width: 18px;
-}
-
-.add-duty-title {
-  font-size: 16px;
-  font-weight: 600;
-}
-
-.add-duty-body {
-  padding: 8px 14px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  overflow-y: auto;
+.duty-field-row .duty-field {
+  flex: 1 1 0;
+  min-width: 0;
 }
 
 .duty-field {
@@ -865,28 +700,7 @@ export default {
   font-weight: 600;
 }
 
-.duty-save {
-  margin: 12px 14px 14px;
-  align-self: flex-start;
-}
-
 select:disabled {
   background: #dddddd;
-}
-
-@media (max-width: 1000px) {
-  .add-duty-container {
-    display: none;
-  }
-}
-
-@media (max-width: 800px) {
-  #search-bar {
-    width: 200px !important;
-  }
-
-  #period-filter {
-    width: 120px !important;
-  }
 }
 </style>

@@ -37,7 +37,12 @@ export default defineConfig({
     )
   },
   build: {
-    assetsDir: "vue-assets"
+    assetsDir: "vue-assets",
+    // Routes are lazy-loaded per view (see router/appRoutes.js), so what's
+    // left above the default 500 kB warning is vendor code (Tabulator,
+    // ECharts) that doesn't split further without much bigger vendor-chunking
+    // work than this warning is worth chasing.
+    chunkSizeWarningLimit: 1500
   },
   plugins: [vue(), vueJsx()],
   resolve: {

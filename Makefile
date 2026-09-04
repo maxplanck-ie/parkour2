@@ -318,7 +318,14 @@ playwright:  ## Run Frontend tests (reuse running container when available)
 
 playwright-migras: down set-playwright deploy-webapp deploy-caddy collect-static load-fixtures-migras e2e
 
-e2e:
+wait-for-app:  ## Poll the app until Caddy serves it, so e2e doesn't race npm install/vite build/serve startup
+	@for i in $$(seq 1 60); do \
+		curl -sf -o /dev/null http://localhost:9980/vue/libraries_and_samples && exit 0; \
+		sleep 2; \
+	done; \
+	echo "ERROR: app did not become ready on :9980 within 120s"; exit 1
+
+e2e: wait-for-app
 	@docker compose exec parkour2-django pytest -n $(NcpuThird) -c playwright.ini
 
 create-admin:

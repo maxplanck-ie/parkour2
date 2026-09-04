@@ -80,6 +80,14 @@ Prevent recurring regressions. No deviate without explicit ask.
   `yy.mm.dd` release date. Never add or guess date yourself.
 - Keep entries terse, specific (what changed, why matters), match
   style of existing entries — no filler.
+- Entries are end-user facing: describe user-visible behavior, not
+  implementation. Skip function/file names, internal refactor details — those
+  belong in the PR description instead.
+- End each bullet with a reference sentence naming its source: `(PR #NNN)` for
+  a squash-merged PR (check `(#NNN)` suffix in `git log origin/develop
+  --oneline`), or `(Direct commit \`sha\`)` for a commit pushed straight to
+  `develop` with no PR suffix. Multiple sources: list all, e.g.
+  `(PRs #337, #338.)` or `(Direct commits \`abc1234\`, \`def5678\`.)`.
 
 ## Commands
 
