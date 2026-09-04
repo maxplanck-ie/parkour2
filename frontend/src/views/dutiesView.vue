@@ -139,7 +139,11 @@
                 :disabled="!newDuty.facility"
               >
                 <option value="">Select</option>
-                <option v-for="user in userListFiltered" :value="user.id">
+                <option
+                  v-for="user in userListFiltered"
+                  :key="user.id"
+                  :value="user.id"
+                >
                   {{ user.first_name }}
                 </option>
               </select>
@@ -154,7 +158,11 @@
                 :disabled="!newDuty.facility"
               >
                 <option value="">Select</option>
-                <option v-for="user in userListFiltered" :value="user.id">
+                <option
+                  v-for="user in userListFiltered"
+                  :key="user.id"
+                  :value="user.id"
+                >
                   {{ user.first_name }}
                 </option>
               </select>
@@ -240,7 +248,7 @@ const axiosRef = createAxiosObject();
 const urlStringStart = urlStringStartsWith();
 
 export default {
-  name: "Duties",
+  name: "DutiesView",
   components: {
     TabulatorTable
   },
@@ -444,8 +452,8 @@ export default {
     },
     getFilteredDuties(refresh = false, selectedFilter) {
       let additionalUrl = "";
-      let start_date = "";
-      let end_date = "";
+      let start_date;
+      let end_date;
       if (selectedFilter === "all") {
         additionalUrl = "";
       } else if (selectedFilter === "ongoing") {
