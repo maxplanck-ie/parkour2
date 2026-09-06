@@ -84,6 +84,7 @@ def test_horizontal_scroll_survives_header_filter_refresh(page: Page):
     scroll back to the left edge while the user is scrolled into a
     right-hand column (e.g. to reach Index Type itself)."""
     _open_libraries_and_samples_page(page)
+    expect(page.locator(".tabulator-row").first).to_be_visible()
 
     # Whether the table actually needs horizontal scroll depends on real
     # column widths, which vary with fonts/rendering across environments
