@@ -1,4 +1,3 @@
-import pytest
 from playwright.sync_api import Page, expect
 
 from . import utilities
@@ -8,24 +7,6 @@ from . import utilities
 # margin room so the assertion isn't racing the debounce timer itself.
 HEADER_FILTER_DEBOUNCE_MS = 2500
 REFRESH_MARGIN_MS = 1000
-
-
-@pytest.fixture(scope="function")
-def browser_context_args(browser_context_args):
-    # Table columns use Tabulator's "fitColumns" layout, so whether the
-    # table needs horizontal scroll depends on viewport width. Force a
-    # narrow one so test_horizontal_scroll_survives_header_filter_refresh's
-    # "Index Type requires scrolling" precondition holds regardless of the
-    # default viewport (this was flaky/failing in CI at the default size).
-    # function-scoped, not session-scoped: pytest-xdist's default "load"
-    # distribution interleaves tests from other files (each overriding this
-    # same fixture with a different viewport) onto the same worker, and a
-    # session-scoped override would cache whichever ran first for the rest
-    # of that worker's session.
-    return {
-        **browser_context_args,
-        "viewport": {"width": 800, "height": 720},
-    }
 
 
 def _open_libraries_and_samples_page(page: Page):
@@ -104,13 +85,24 @@ def test_horizontal_scroll_survives_header_filter_refresh(page: Page):
     right-hand column (e.g. to reach Index Type itself)."""
     _open_libraries_and_samples_page(page)
 
+    # Whether the table actually needs horizontal scroll depends on real
+    # column widths, which vary with fonts/rendering across environments
+    # (this was flaky in CI vs. locally at any fixed viewport size). Force
+    # rows wide via a stylesheet rule -- unlike an inline style, this keeps
+    # applying even if Tabulator remounts the table -- so the need to
+    # scroll, and its amount, are deterministic everywhere.
+    page.add_style_tag(
+        content=".tabulator-row { min-width: 3000px !important; width: 3000px !important; }"
+    )
+
     holder = page.locator(".tabulator-tableholder").first
     header_filter = _index_type_header_filter(page)
-    header_filter.click()  # scrolls the column filter into view
 
+    holder.evaluate("el => { el.scrollLeft = 500; }")
     scroll_left = holder.evaluate("el => el.scrollLeft")
-    assert scroll_left > 0, "test setup: Index Type should require scrolling"
+    assert scroll_left > 0, "test setup: table should be horizontally scrollable"
 
+    header_filter.click()
     header_filter.type("Nextera", delay=30)
     page.wait_for_timeout(HEADER_FILTER_DEBOUNCE_MS + REFRESH_MARGIN_MS)
 
