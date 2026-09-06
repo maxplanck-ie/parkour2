@@ -67,7 +67,7 @@ ENV DJANGO_SETTINGS_MODULE=wui.settings.dev \
     PYTHONDONTWRITEBYTECODE=1
 RUN --mount=type=cache,target=/root/.cache/uv \
     uv pip install -r requirements/${PyVersion}/dev.txt
-CMD ["python", "/usr/src/app/manage.py", "runserver_plus", "0.0.0.0:8000"]
+CMD ["python", "/usr/src/app/manage.py", "runserver_plus", "--threaded", "0.0.0.0:8000"]
 
 # ----------------------
 FROM pk2_dev AS pk2_testing

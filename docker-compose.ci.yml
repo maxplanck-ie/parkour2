@@ -2,15 +2,15 @@ services:
   parkour2-vite:
     build:
       cache_from:
-        - type=gha
+        - type=local,src=/tmp/.buildx-cache
       cache_to:
-        - type=gha,mode=max
+        - type=local,dest=/tmp/.buildx-cache-new,mode=max
     volumes:
       - /usr/src/app/node_modules
 
   parkour2-django:
     build:
       cache_from:
-        - type=gha
+        - type=local,src=/tmp/.buildx-cache
       cache_to:
-        - type=gha,mode=max
+        - type=local,dest=/tmp/.buildx-cache-new,mode=max
