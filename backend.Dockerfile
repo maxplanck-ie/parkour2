@@ -35,11 +35,6 @@ COPY --from=ghcr.io/astral-sh/uv:0.12.7 /uv /bin/uv
 
 WORKDIR /usr/src/app
 
-## Node binary + ro-crate-html-js CLI, copied from the ro_crate_html_tool stage above.
-COPY --from=ro_crate_html_tool /usr/local/bin/node /usr/local/bin/node
-COPY --from=ro_crate_html_tool /opt/ro-crate-html-js/node_modules /opt/ro-crate-html-js/node_modules
-ENV PATH="/opt/ro-crate-html-js/node_modules/.bin:${PATH}"
-
 ## Pre-heat the cache
 RUN --mount=type=cache,target=/root/.cache/uv \
     uv pip install setuptools wheel psycopg2 gunicorn django~=5.2
@@ -47,6 +42,15 @@ RUN --mount=type=cache,target=/root/.cache/uv \
 COPY ./backend/requirements requirements
 RUN --mount=type=cache,target=/root/.cache/uv \
     uv pip install -r requirements/${PyVersion}/base.txt
+
+## Node binary + ro-crate-html-js CLI, copied from the ro_crate_html_tool stage above.
+## Kept below the apt/uv layers above: npm install isn't reproducible run-to-run,
+## so this copy's digest changes every build -- placing it after those layers keeps
+## them independently cacheable instead of invalidating on every build.
+COPY --from=ro_crate_html_tool /usr/local/bin/node /usr/local/bin/node
+COPY --from=ro_crate_html_tool /opt/ro-crate-html-js/node_modules /opt/ro-crate-html-js/node_modules
+ENV PATH="/opt/ro-crate-html-js/node_modules/.bin:${PATH}"
+
 ## Second, bring source code, without invalidating the docker layer ;)
 COPY ./backend .
 
