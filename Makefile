@@ -3,9 +3,9 @@ SHELL := /bin/bash
 export COMPOSE_PROJECT_NAME := parkour2
 
 ifeq ($(OS),Windows_NT)
-	NcpuThird := 2
-else	
-	NcpuThird := $(shell LC_NUMERIC=C echo "scale=0; ($$(nproc --all)*.333)" | bc | xargs printf "%.0f")
+	NcpuFraction := 2
+else
+	NcpuFraction := $(shell LC_NUMERIC=C echo "scale=0; ($$(nproc --all)*.999)" | bc | xargs printf "%.0f")
 endif
 
 stamp := $(shell date +%Y%m%d_%H%M%S)_$(shell git log --oneline -1 | cut -d' ' -f1)
@@ -326,7 +326,7 @@ wait-for-app:  ## Poll the app until Caddy serves it, so e2e doesn't race npm in
 	echo "ERROR: app did not become ready on :9980 within 120s"; exit 1
 
 e2e: wait-for-app
-	@docker compose exec parkour2-django pytest -n $(NcpuThird) -c playwright.ini
+	@docker compose exec parkour2-django pytest -n $(NcpuFraction) -c playwright.ini
 
 create-admin:
 	@docker compose exec parkour2-django sh -c \

@@ -23,10 +23,13 @@ jobs:
   run-prod-bare:
     if: github.repository == 'maxplanck-ie/parkour2'
     runs-on: ubuntu-latest
+    env:
+      COMPOSE_FILE: docker-compose.yml:docker-compose.ci.yml
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
+      - uses: docker/setup-buildx-action@e468171a9de216ec08956ac3ada2f0791b6bd435 # v3.11.1
       - name: Build and see that DEBUG is respected
         run: |
           make prod-ci
@@ -34,10 +37,13 @@ jobs:
   install-per-wiki-instructions:
     if: github.repository == 'maxplanck-ie/parkour2'
     runs-on: ubuntu-latest
+    env:
+      COMPOSE_FILE: docker-compose.yml:docker-compose.ci.yml
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
+      - uses: docker/setup-buildx-action@e468171a9de216ec08956ac3ada2f0791b6bd435 # v3.11.1
       - name: Follow instructions
         run: |
           make

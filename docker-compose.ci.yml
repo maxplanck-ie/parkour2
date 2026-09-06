@@ -1,0 +1,16 @@
+services:
+  parkour2-vite:
+    build:
+      cache_from:
+        - type=gha
+      cache_to:
+        - type=gha,mode=max
+    volumes:
+      - /usr/src/app/node_modules
+
+  parkour2-django:
+    build:
+      cache_from:
+        - type=gha
+      cache_to:
+        - type=gha,mode=max
