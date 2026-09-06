@@ -173,6 +173,23 @@ def _queue_refresh(
         _schedule_refresh(delay)
 
 
+def refresh_now_blocking(full_refresh: bool = True) -> None:
+    """
+    Refresh the denormalized complete_*_data tables synchronously, in the
+    calling thread/process.
+
+    The other refresh_* helpers here schedule the actual work on a
+    background threading.Timer via transaction.on_commit -- fine for a
+    long-running server process, but useless from a short-lived one-off
+    command (e.g. `manage.py load_initial_data`): that process exits as
+    soon as handle() returns, killing the daemon timer thread before it
+    ever fires, so the tables stay empty. Call this instead when the
+    refresh must actually have happened before the caller returns.
+    """
+    _ensure_denormalized_tables_exist()
+    _execute_full_refresh()
+
+
 def refresh_complete_data_materialized_views(
     concurrently: bool = True,
     library_ids: Iterable[int] | None = None,

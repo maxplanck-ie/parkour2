@@ -1,6 +1,8 @@
 from django.core.management import call_command
 from django.core.management.base import BaseCommand
 
+from common.mviews import refresh_now_blocking
+
 
 class Command(BaseCommand):
     help = "Installs the fixture(s) in the database."
@@ -36,6 +38,7 @@ class Command(BaseCommand):
             self.loaddata_wrapper(model=m, app_label="flowcell")
         for m in ("fixedcosts", "librarypreparationcosts", "sequencingcosts"):
             self.loaddata_wrapper(model=m, app_label="invoicing")
+        refresh_now_blocking(full_refresh=True)
         self.stdout.write(self.style.SUCCESS("Successfully loaded initial data."))
 
     def loaddata_wrapper(self, model, app_label):
