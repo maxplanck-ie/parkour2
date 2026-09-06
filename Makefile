@@ -61,7 +61,7 @@ ensure-media-dir:  ## Create ./media if missing (plain dir locally; a pre-made s
 	fi
 
 deploy-webapp: ensure-media-dir
-	@docker compose build
+	@docker compose build --progress=plain
 	@docker compose --project-name=parkour2 up -d
 	@git checkout docker-compose.yml
 
