@@ -78,6 +78,13 @@ FROM pk2_dev AS pk2_testing
 ENV DJANGO_SETTINGS_MODULE=wui.settings.testing
 RUN --mount=type=cache,target=/root/.cache/uv \
     uv pip install -r requirements/${PyVersion}/testing.txt
+## e2e/playwright runs hit this over real concurrent requests -- runserver_plus
+## (Werkzeug dev server, inherited from pk2_dev) isn't built to serve that
+## reliably even threaded, and caused intermittent session/auth failures under
+## xdist parallelism. Serve with the same gunicorn setup as prod instead;
+## nothing here needs live-reload.
+CMD ["gunicorn", "wui.wsgi:application", "--bind=0.0.0.0:8000", "--name=pk2", "--timeout=600", \
+    "--worker-class=gthread", "--worker-tmp-dir=/dev/shm", "--workers=4", "--threads=6"]
 
 # ----------------------
 FROM pk2_testing AS pk2_playwright
