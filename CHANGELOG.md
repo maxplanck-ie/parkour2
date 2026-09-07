@@ -3,7 +3,7 @@
 Unreleased
 ==========
 
-- Dates now display as `YYYY.MM.DD` everywhere (tables, exports, PDFs, filters) instead of the old `DD.MM.YYYY`. Date-range filters (Duties, Libraries & Samples, Load Flowcells, Runs/Sequences Statistics, Usage) use a new masked text input with a calendar picker instead of the browser's native date field. (PENDING: add commit/PR reference before merging.)
+- Dates now display as `YYYY.MM.DD` everywhere (tables, exports, PDFs, filters) instead of the old `DD.MM.YYYY`. Date-range filters (Duties, Libraries & Samples, Load Flowcells, Runs/Sequences Statistics, Usage) use a new masked text input with a calendar picker instead of the browser's native date field. (Direct commit `18054663`.)
 - Table header filters: removed gray placeholder text, hint now only in the hover tooltip; filters now trigger 800ms after typing stops (was Tabulator's default 300ms), except Libraries & Samples, which triggers at 2500ms or on Enter. (Direct commit `71e46c72`.)
 - Fixed a migration that could crash applying the new library/sample naming rule to a database with pre-existing invalid names (real production data has some) — invalid names are now cleaned up automatically instead of the migration failing outright. (Direct commit `c9db14dd`.)
 - Duties: migrated to the shared Tabulator-based table used elsewhere in the app, with a redesigned header (search, period filter, and an "Add Duty" button that opens a dialog instead of an always-visible form), sortable date columns, and a new default filter of "Past 1 Year" sorted by most recent end date. (PR #341.)
