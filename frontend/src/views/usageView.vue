@@ -12,22 +12,20 @@
       <div class="sticky-actions">
         <div class="filter-item date-filter-item">
           <label for="usageStartDate">From</label>
-          <input
+          <DateInput
             id="usageStartDate"
             v-model="startDateString"
             :class="{ 'invalid-date': !startDateValid }"
-            type="date"
-            @input="scheduleReload"
+            @update:model-value="scheduleReload"
           />
         </div>
         <div class="filter-item date-filter-item">
           <label for="usageEndDate">To</label>
-          <input
+          <DateInput
             id="usageEndDate"
             v-model="endDateString"
             :class="{ 'invalid-date': !endDateValid }"
-            type="date"
-            @input="scheduleReload"
+            @update:model-value="scheduleReload"
           />
         </div>
       </div>
@@ -65,6 +63,7 @@ import {
   TooltipComponent
 } from "echarts/components";
 import VChart from "vue-echarts";
+import DateInput from "../components/DateInput.vue";
 import {
   createAxiosObject,
   formatDateForInput,
@@ -98,7 +97,8 @@ oneYearAgo.setFullYear(today.getFullYear() - 1);
 export default {
   name: "UsageView",
   components: {
-    VChart
+    VChart,
+    DateInput
   },
   setup() {
     const loading = ref(true);
@@ -213,7 +213,7 @@ export default {
   padding: 0 8px;
 }
 
-.filter-item.date-filter-item input.invalid-date {
+.filter-item.date-filter-item .invalid-date {
   border-color: #dc3545;
 }
 

@@ -159,7 +159,7 @@ class InvoicingSerializer(ModelSerializer):
     def get_flowcell(self, obj):
         return [
             "{} {}".format(
-                flowcell.create_time.strftime("%d.%m.%Y"),
+                flowcell.create_time.strftime("%Y.%m.%d"),
                 flowcell.flowcell_id,
             )
             for flowcell in obj.flowcell.all()

@@ -171,26 +171,18 @@
           <div class="duty-field-row">
             <div class="duty-field">
               <div class="text-medium duty-label">Start Date:</div>
-              <input
+              <DateInput
                 class="date-selector"
-                type="date"
                 id="start_date"
-                name="start_date"
                 v-model="newDuty.start_date"
-                min="2015-01-01"
-                max="2099-12-31"
               />
             </div>
             <div class="duty-field">
               <div class="text-medium duty-label">End Date:</div>
-              <input
+              <DateInput
                 class="date-selector"
-                type="date"
                 id="end_date"
-                name="end_date"
                 v-model="newDuty.end_date"
-                min="2015-01-01"
-                max="2099-12-31"
               />
             </div>
           </div>
@@ -226,6 +218,7 @@
 
 <script>
 import TabulatorTable from "../components/TabulatorTableFull.vue";
+import DateInput from "../components/DateInput.vue";
 import {
   showNotification,
   handleError,
@@ -250,7 +243,8 @@ const urlStringStart = urlStringStartsWith();
 export default {
   name: "DutiesView",
   components: {
-    TabulatorTable
+    TabulatorTable,
+    DateInput
   },
   data() {
     return {

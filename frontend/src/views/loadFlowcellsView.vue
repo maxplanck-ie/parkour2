@@ -35,19 +35,17 @@
         <div class="date-filters">
           <div class="date-filter">
             <label for="startDate">From</label>
-            <input
+            <DateInput
               id="startDate"
               v-model="startDateString"
-              type="date"
               :class="{ 'invalid-date': !startDateValid }"
             />
           </div>
           <div class="date-filter">
             <label for="endDate">To</label>
-            <input
+            <DateInput
               id="endDate"
               v-model="endDateString"
-              type="date"
               :class="{ 'invalid-date': !endDateValid }"
             />
           </div>
@@ -837,6 +835,7 @@
 <script lang="jsx">
 import { saveAs } from "file-saver";
 import TabulatorTable from "../components/TabulatorTableFull.vue";
+import DateInput from "../components/DateInput.vue";
 import {
   showNotification,
   handleError,
@@ -878,7 +877,8 @@ const createEmptyConfirmPopup = () => ({
 export default {
   name: "LoadFlowcells",
   components: {
-    TabulatorTable
+    TabulatorTable,
+    DateInput
   },
   data() {
     const now = new Date();
@@ -2731,7 +2731,7 @@ export default {
     font-size: 12px;
   }
 
-  .date-filter input[type="date"] {
+  .date-filter .date-input-wrap {
     width: 118px;
     height: 26px;
     padding: 4px 6px;

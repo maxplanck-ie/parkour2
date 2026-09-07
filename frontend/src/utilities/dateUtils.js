@@ -35,8 +35,16 @@ export function formatDateForInput(date) {
 
 export function formatDisplayDate(date) {
   if (!date) return "";
-  const day = String(date.getDate()).padStart(2, "0");
-  const month = String(date.getMonth() + 1).padStart(2, "0");
   const year = date.getFullYear();
-  return `${day}.${month}.${year}`;
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  return `${year}.${month}.${day}`;
+}
+
+// Inverse of formatDisplayDate: "YYYY.MM.DD" -> "YYYY-MM-DD", or "" if the
+// string isn't a valid display date (used to parse free-text date input).
+export function parseDisplayDate(displayString) {
+  if (!/^\d{4}\.\d{2}\.\d{2}$/.test(displayString || "")) return "";
+  const isoString = displayString.replaceAll(".", "-");
+  return isValidDate(isoString) ? isoString : "";
 }
