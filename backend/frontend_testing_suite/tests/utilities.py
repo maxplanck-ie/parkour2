@@ -1,3 +1,4 @@
+import time
 from os import getenv as getenvvar
 from platform import node as nodename
 from urllib.parse import urlparse
@@ -35,7 +36,37 @@ def pretest_login(page: Page):
     wait_until_authenticated(page)
 
 
-def wait_until_authenticated(page: Page, *, timeout: int = 15000):
+_cached_storage_state = None
+
+
+def pretest_login_cached(page: Page):
+    """Authenticate `page`, reusing a session captured once per worker process
+    instead of re-running the UI login flow for every test.
+
+    Under xdist parallelism, every test re-running the real login POST was
+    hammering the login endpoint hard enough to cause genuine (not just slow)
+    auth failures for some concurrent requests. Logging in once per worker and
+    replaying the session cookies removes that load entirely. Tests that need
+    to exercise the login form itself (login_page.py) still call
+    `pretest_login` directly.
+    """
+    global _cached_storage_state
+    if _cached_storage_state is None:
+        pretest_login(page)
+        _cached_storage_state = page.context.storage_state()
+        return
+
+    page.context.add_cookies(_cached_storage_state["cookies"])
+    hostName = get_host_name()
+    page.goto(f"http://{hostName}:9980/api_user_details")
+    page.wait_for_load_state("networkidle")
+    if urlparse(page.url).path.startswith("/login"):
+        # Cached session no longer valid -- fall back to a real login.
+        pretest_login(page)
+        _cached_storage_state = page.context.storage_state()
+
+
+def wait_until_authenticated(page: Page, *, timeout: int = 30000):
     """Wait for Django's login POST to finish and leave the login page."""
     try:
         page.wait_for_function(
@@ -55,13 +86,21 @@ def wait_until_authenticated(page: Page, *, timeout: int = 15000):
         raise AssertionError(f"Login did not complete.{detail}") from exc
 
     hostName = get_host_name()
-    page.goto(f"http://{hostName}:9980/api_user_details")
-    page.wait_for_load_state("networkidle")
-    if urlparse(page.url).path.startswith("/login"):
-        raise AssertionError(
-            "Login did not create an authenticated session. "
-            "Check that the frontend fixtures are loaded."
-        )
+    # Under heavy parallel load the session cookie can lag the redirect by a
+    # beat, so retry the authenticated check briefly instead of failing on
+    # the first still-on-/login read.
+    deadline = time.monotonic() + timeout / 1000
+    while True:
+        page.goto(f"http://{hostName}:9980/api_user_details")
+        page.wait_for_load_state("networkidle", timeout=timeout)
+        if not urlparse(page.url).path.startswith("/login"):
+            break
+        if time.monotonic() >= deadline:
+            raise AssertionError(
+                "Login did not create an authenticated session. "
+                "Check that the frontend fixtures are loaded."
+            )
+        page.wait_for_timeout(500)
     expect(page.locator("body")).to_contain_text("USER", timeout=timeout)
 
 

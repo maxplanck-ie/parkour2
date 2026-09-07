@@ -34,6 +34,11 @@ jobs:
       - name: Playwright rule
         run: |
           make playwright
+      - name: Dump backend logs on failure
+        if: failure()
+        run: |
+          docker compose logs parkour2-django
+          docker compose -f misc/caddy.yml --project-name=parkour2 logs parkour2-caddy
       - name: Move Docker build cache
         if: always()
         run: |

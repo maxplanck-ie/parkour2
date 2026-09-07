@@ -16,7 +16,7 @@ def browser_context_args(browser_context_args):
 
 
 def _open_batch_add_modal(page: Page):
-    utilities.pretest_login(page)
+    utilities.pretest_login_cached(page)
     utilities.visit_vue_page(page, "libraries_and_samples")
 
     utilities.expect_page_header(
@@ -98,7 +98,7 @@ def _mock_libraries_and_samples_for_ro_crate(page: Page, status=6):
 
 
 def _open_libraries_page_with_ro_crate_data(page: Page, status=6):
-    utilities.pretest_login(page)
+    utilities.pretest_login_cached(page)
     _mock_libraries_and_samples_for_ro_crate(page, status=status)
     utilities.visit_vue_page(page, "libraries_and_samples")
     utilities.expect_page_header(
@@ -423,7 +423,7 @@ def test_requests_page(page: Page):
 
 
 def test_ro_crate_action_requires_exportable_selection(page: Page):
-    utilities.pretest_login(page)
+    utilities.pretest_login_cached(page)
     utilities.visit_vue_page(page, "libraries_and_samples")
     utilities.expect_page_header(
         page,
