@@ -1,4 +1,5 @@
 import datetime
+import re
 import uuid
 
 import pytest
@@ -107,6 +108,33 @@ def test_add_duty_dialog_cancel_and_escape_close_it(page: Page):
     expect(dialog).to_be_visible()
     page.keyboard.press("Escape")
     expect(dialog).to_be_hidden()
+
+
+def test_add_duty_calendar_day_click_keeps_dialog_open(page: Page):
+    _open_duties_page(page)
+
+    dialog = page.locator(".add-duty-popup")
+    page.locator("#openAddDutyButton").click()
+    expect(dialog).to_be_visible()
+
+    toggle = page.locator("#start_date ~ button.date-input-toggle")
+    toggle.click()
+
+    panel = page.locator(".date-input-panel:visible")
+    expect(panel).to_be_visible()
+    panel.locator(".date-input-day:not(.date-input-day-muted)", has_text="15").click()
+
+    # Regression test: selecting a day used to close the whole Add Duty
+    # dialog, not just the calendar dropdown. Vue removed the clicked day
+    # button from the DOM mid-click-bubble (the calendar used v-if), so by
+    # the time the dialog's own click-outside listener ran, event.target was
+    # already detached and dialog.contains(event.target) came back false,
+    # making the listener think the click had happened outside the dialog.
+    expect(dialog).to_be_visible()
+    expect(panel).to_be_hidden()
+    expect(page.locator("input#start_date")).to_have_value(
+        re.compile(r"^\d{4}\.\d{2}\.15$")
+    )
 
 
 def test_duties_default_filter_and_sort(page: Page):
