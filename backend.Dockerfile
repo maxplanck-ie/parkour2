@@ -84,7 +84,8 @@ RUN --mount=type=cache,target=/root/.cache/uv \
 ## xdist parallelism. Serve with the same gunicorn setup as prod instead;
 ## nothing here needs live-reload.
 CMD ["gunicorn", "wui.wsgi:application", "--bind=0.0.0.0:8000", "--name=pk2", "--timeout=600", \
-    "--worker-class=gthread", "--worker-tmp-dir=/dev/shm", "--workers=4", "--threads=6"]
+    "--worker-class=gthread", "--worker-tmp-dir=/dev/shm", "--workers=4", "--threads=6", \
+    "--access-logfile=-"]
 
 # ----------------------
 FROM pk2_testing AS pk2_playwright
