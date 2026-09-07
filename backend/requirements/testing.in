@@ -4,3 +4,4 @@ pytest-cov
 pytest-django
 pytest-xdist
 pytest-playwright
+pytest-rerunfailures

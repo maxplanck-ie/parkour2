@@ -308,6 +308,7 @@ packaging==26.3
     #   -c backend/requirements/3.11/dev.txt
     #   matplotlib
     #   pytest
+    #   pytest-rerunfailures
 pandas==2.3.3 ; python_full_version < '3.12'
     # via
     #   -c backend/requirements/3.11/dev.txt
@@ -388,6 +389,7 @@ pytest==9.1.1
     #   pytest-cov
     #   pytest-django
     #   pytest-playwright
+    #   pytest-rerunfailures
     #   pytest-xdist
 pytest-base-url==2.1.0
     # via pytest-playwright
@@ -396,6 +398,8 @@ pytest-cov==7.1.0
 pytest-django==4.14.0
     # via -r backend/requirements/testing.in
 pytest-playwright==0.9.0
+    # via -r backend/requirements/testing.in
+pytest-rerunfailures==16.6.1
     # via -r backend/requirements/testing.in
 pytest-xdist==3.8.0
     # via -r backend/requirements/testing.in
