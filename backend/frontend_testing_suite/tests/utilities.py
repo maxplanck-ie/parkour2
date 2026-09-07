@@ -1,5 +1,8 @@
+import fcntl
+import json
 import time
 from os import getenv as getenvvar
+from pathlib import Path
 from platform import node as nodename
 from urllib.parse import urlparse
 
@@ -36,34 +39,46 @@ def pretest_login(page: Page):
     wait_until_authenticated(page)
 
 
-_cached_storage_state = None
+_SHARED_LOGIN_STATE_PATH = Path("/tmp/.e2e_shared_login_state.json")
+_SHARED_LOGIN_LOCK_PATH = Path("/tmp/.e2e_shared_login_state.lock")
 
 
 def pretest_login_cached(page: Page):
-    """Authenticate `page`, reusing a session captured once per worker process
-    instead of re-running the UI login flow for every test.
+    """Authenticate `page`, reusing a session shared across every pytest-xdist
+    worker instead of re-running the UI login flow for every test.
 
     Under xdist parallelism, every test re-running the real login POST was
     hammering the login endpoint hard enough to cause genuine (not just slow)
-    auth failures for some concurrent requests. Logging in once per worker and
-    replaying the session cookies removes that load entirely. Tests that need
-    to exercise the login form itself (login_page.py) still call
-    `pretest_login` directly.
+    auth failures for some concurrent requests. All xdist workers here are
+    subprocesses of the same container, so they share a real filesystem:
+    the first test across the whole run does the one real login and writes
+    the session to a fixed path (file-locked so concurrent workers block
+    instead of racing); every other test on every worker just replays those
+    cookies. Tests that need to exercise the login form itself
+    (login_page.py) still call `pretest_login` directly.
     """
-    global _cached_storage_state
-    if _cached_storage_state is None:
-        pretest_login(page)
-        _cached_storage_state = page.context.storage_state()
-        return
+    with open(_SHARED_LOGIN_LOCK_PATH, "w") as lock_file:
+        fcntl.flock(lock_file, fcntl.LOCK_EX)
+        try:
+            if not _SHARED_LOGIN_STATE_PATH.exists():
+                pretest_login(page)
+                _SHARED_LOGIN_STATE_PATH.write_text(
+                    json.dumps(page.context.storage_state())
+                )
+                return
+            state = json.loads(_SHARED_LOGIN_STATE_PATH.read_text())
+        finally:
+            fcntl.flock(lock_file, fcntl.LOCK_UN)
 
-    page.context.add_cookies(_cached_storage_state["cookies"])
+    page.context.add_cookies(state["cookies"])
     hostName = get_host_name()
     page.goto(f"http://{hostName}:9980/api_user_details")
     page.wait_for_load_state("networkidle")
     if urlparse(page.url).path.startswith("/login"):
-        # Cached session no longer valid -- fall back to a real login.
+        # Shared session no longer valid -- fall back to a real login and
+        # refresh the shared file for the rest of the run.
         pretest_login(page)
-        _cached_storage_state = page.context.storage_state()
+        _SHARED_LOGIN_STATE_PATH.write_text(json.dumps(page.context.storage_state()))
 
 
 def wait_until_authenticated(page: Page, *, timeout: int = 30000):
