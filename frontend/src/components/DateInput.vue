@@ -21,10 +21,10 @@
       aria-label="Choose date"
       @click="toggleCalendar"
     >
-      <font-awesome-icon icon="fa-solid fa-calendar-days" />
+      <font-awesome-icon icon="fa-regular fa-calendar-days" />
     </button>
     <div
-      v-if="open"
+      v-show="open"
       ref="panelEl"
       class="date-input-panel"
       role="dialog"
@@ -291,6 +291,7 @@ const calendarDays = computed(() => {
 }
 
 .date-input-panel {
+  text-transform: none;
   position: absolute;
   top: calc(100% + 4px);
   left: 0;
