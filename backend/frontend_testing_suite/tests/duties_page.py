@@ -17,7 +17,7 @@ def browser_context_args(browser_context_args):
 
 
 def _open_duties_page(page: Page):
-    utilities.pretest_login(page)
+    utilities.pretest_login_cached(page)
 
     utilities.visit_vue_page(page, "duties")
     page.bring_to_front()

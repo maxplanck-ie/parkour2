@@ -10,7 +10,7 @@ REFRESH_MARGIN_MS = 1000
 
 
 def _open_libraries_and_samples_page(page: Page):
-    utilities.pretest_login(page)
+    utilities.pretest_login_cached(page)
     utilities.visit_vue_page(page, "libraries_and_samples")
     expect(page.locator(".tabulator")).to_be_visible()
 

@@ -36,6 +36,36 @@ def pretest_login(page: Page):
     wait_until_authenticated(page)
 
 
+_cached_storage_state = None
+
+
+def pretest_login_cached(page: Page):
+    """Authenticate `page`, reusing a session captured once per worker process
+    instead of re-running the UI login flow for every test.
+
+    Under xdist parallelism, every test re-running the real login POST was
+    hammering the login endpoint hard enough to cause genuine (not just slow)
+    auth failures for some concurrent requests. Logging in once per worker and
+    replaying the session cookies removes that load entirely. Tests that need
+    to exercise the login form itself (login_page.py) still call
+    `pretest_login` directly.
+    """
+    global _cached_storage_state
+    if _cached_storage_state is None:
+        pretest_login(page)
+        _cached_storage_state = page.context.storage_state()
+        return
+
+    page.context.add_cookies(_cached_storage_state["cookies"])
+    hostName = get_host_name()
+    page.goto(f"http://{hostName}:9980/api_user_details")
+    page.wait_for_load_state("networkidle")
+    if urlparse(page.url).path.startswith("/login"):
+        # Cached session no longer valid -- fall back to a real login.
+        pretest_login(page)
+        _cached_storage_state = page.context.storage_state()
+
+
 def wait_until_authenticated(page: Page, *, timeout: int = 30000):
     """Wait for Django's login POST to finish and leave the login page."""
     try:
