@@ -132,6 +132,48 @@ Prevent recurring regressions. No deviate without explicit ask.
   future top-level route section added under `/` should keep this in
   mind if it also needs a bare-path landing page.
 
+## Playwright e2e CI: Docker cache, e2e server, xdist isolation
+
+- `docker-compose.ci.yml` (merged in via `COMPOSE_FILE` env, CI jobs only —
+  never auto-loaded locally) adds `type=local` + `actions/cache` layer
+  caching to both services' builds. `type=gha` was tried first and silently
+  no-op'd (confirmed with `--progress=plain`: zero cache lines logged either
+  direction, likely GitHub's 2025 Actions Cache Service v1 deprecation) —
+  don't reintroduce it without verifying it actually attempts a cache
+  exporter step in the build log, not just that the workflow doesn't error.
+- `backend.Dockerfile`'s `COPY --from=ro_crate_html_tool` (fed by an
+  unpinned `npm install ro-crate-html-js`, so its digest changes every
+  build) must stay *after* the apt-get/uv-install layers in `pk2_base`, not
+  before. Before those layers, its non-determinism invalidated the cache for
+  everything below it on every single build, even with nothing actually
+  changed.
+- `pk2_testing`/`pk2_playwright` run `gunicorn` (`backend.Dockerfile`), not
+  `runserver_plus` (Werkzeug dev server, still used by `pk2_dev`) — the dev
+  server isn't built to serve real concurrent load reliably even
+  `--threaded`, which only became visible once e2e tests actually ran in
+  parallel (see `Makefile`'s `NcpuFraction`, tuned to use ~all cores; it
+  used to collapse to 1 worker on GitHub-hosted runners, silently masking
+  this and the point below for a long time).
+- `playwright.ini`'s `--dist=loadscope` is load-bearing, not a speed knob:
+  pytest-xdist's default `--dist=load` interleaves individual test items
+  from the same file across different workers. `duties_page.py`'s tests all
+  mutate the same shared duty rows (same facility/person/date range), so
+  under `--dist=load` concurrent duties tests genuinely raced each other's
+  inserts/reads — this reproduced locally 4/6 runs, 0/10 with
+  `--dist=loadscope` (keeps a module's tests sequential relative to each
+  other, still parallel across files). If a new test file mutates shared
+  server-side state the same way, it inherits this same risk.
+- `frontend_testing_suite/tests/utilities.py`'s `pretest_login_cached`
+  shares one real login across the whole run (file-locked at a fixed
+  `/tmp` path, since all xdist workers are subprocesses of the same
+  container) instead of each test/worker logging in fresh. Use it for any
+  new test that just needs an authenticated session; only
+  `login_page.py` (which tests the login form itself) should call
+  `pretest_login` directly.
+- `--reruns=2 --reruns-delay=1` (`pytest-rerunfailures`) stays as a cheap
+  safety net even after the above fixes — don't read its presence as "this
+  test is known-flaky, ignore failures here."
+
 ## Security
 
 - Never log secrets/sensitive data.
