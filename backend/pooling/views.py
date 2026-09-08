@@ -751,7 +751,7 @@ class PoolingViewSet(LibrarySampleMultiEditMixin, viewsets.ModelViewSet):
 
             row.extend(
                 [
-                    time.strftime("%d.%m.%Y"),  # Date
+                    time.strftime("%Y.%m.%d"),  # Date
                     record.comments,  # Comments
                 ]
             )

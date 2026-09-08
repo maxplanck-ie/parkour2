@@ -696,7 +696,7 @@ class RequestViewSet(viewsets.ModelViewSet):
 
         # Deep Sequencing Request info
         pdf.info_row("Request Name", instance.name)
-        pdf.info_row("Date", instance.create_time.strftime("%d.%m.%Y"))
+        pdf.info_row("Date", instance.create_time.strftime("%Y.%m.%d"))
         pdf.info_row("User", user.full_name)
         pdf.info_row("Phone", user.phone if user.phone else "")
         pdf.info_row("Email", user.email)

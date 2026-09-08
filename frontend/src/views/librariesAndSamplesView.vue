@@ -69,8 +69,7 @@
             <!-- Date Range Filters -->
             <div class="filter-item date-filter-item">
               <label for="startDate">From</label>
-              <input
-                type="date"
+              <DateInput
                 id="startDate"
                 :class="{ 'invalid-date': !startDateValid }"
                 v-model="startDateString"
@@ -79,8 +78,7 @@
             </div>
             <div class="filter-item date-filter-item">
               <label for="endDate">To</label>
-              <input
-                type="date"
+              <DateInput
                 id="endDate"
                 :class="{ 'invalid-date': !endDateValid }"
                 v-model="endDateString"
@@ -1335,6 +1333,7 @@
 
 <script lang="jsx">
 import LiteTabulatorTable from "../components/TabulatorTableLite.vue";
+import DateInput from "../components/DateInput.vue";
 import { saveAs } from "file-saver";
 import {
   showNotification,
@@ -1403,6 +1402,7 @@ export default {
   name: "LibrariesAndSamples",
   components: {
     LiteTabulatorTable,
+    DateInput,
     RequestEditorView,
     ROCratePreviewView,
     RequestActionsPopups
@@ -3474,7 +3474,7 @@ body,
   filter: brightness(0) invert(1);
 }
 
-.date-filter-item input[type="date"] {
+.date-filter-item .date-input-wrap {
   width: 100%;
   padding: 8px;
   border: 1px solid #ddd;
@@ -3821,7 +3821,7 @@ body.input-dropdown-open .tabulator-tooltip {
     gap: 6px;
   }
 
-  .date-filter input[type="date"] {
+  .date-filter .date-input-wrap {
     width: 120px;
   }
 }

@@ -240,10 +240,10 @@ class LibrarySampleTree(viewsets.ViewSet):
         if start_date_str and end_date_str:
             try:
                 start_date = timezone.make_aware(
-                    datetime.strptime(start_date_str, "%d.%m.%Y")
+                    datetime.strptime(start_date_str, "%Y.%m.%d")
                 )
                 end_date = timezone.make_aware(
-                    datetime.strptime(end_date_str, "%d.%m.%Y")
+                    datetime.strptime(end_date_str, "%Y.%m.%d")
                 )
                 end_date = end_date.replace(hour=23, minute=59, second=59)
                 library_queryset = library_queryset.filter(
@@ -254,7 +254,7 @@ class LibrarySampleTree(viewsets.ViewSet):
                 )
             except ValueError:
                 return Response(
-                    {"success": False, "error": "Invalid date format. Use DD.MM.YYYY"},
+                    {"success": False, "error": "Invalid date format. Use YYYY.MM.DD"},
                     status=400,
                 )
 
@@ -305,10 +305,10 @@ class LibrarySampleTree(viewsets.ViewSet):
 
         if create_time_filter:
             library_queryset = library_queryset.annotate(
-                create_time_display=ToChar("create_time", Value("DD.MM.YYYY"))
+                create_time_display=ToChar("create_time", Value("YYYY.MM.DD"))
             ).filter(create_time_display__icontains=create_time_filter)
             sample_queryset = sample_queryset.annotate(
-                create_time_display=ToChar("create_time", Value("DD.MM.YYYY"))
+                create_time_display=ToChar("create_time", Value("YYYY.MM.DD"))
             ).filter(create_time_display__icontains=create_time_filter)
 
         for field in SIMPLE_TEXT_FILTER_FIELDS:

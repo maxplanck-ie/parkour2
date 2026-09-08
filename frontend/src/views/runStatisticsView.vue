@@ -40,22 +40,20 @@
           >
             <div class="filter-item date-filter-item">
               <label for="runsStartDate">From</label>
-              <input
+              <DateInput
                 id="runsStartDate"
                 v-model="startDateString"
                 :class="{ 'invalid-date': !startDateValid }"
-                type="date"
-                @input="handleDateChange('start', $event.target.value)"
+                @update:model-value="handleDateChange('start', $event)"
               />
             </div>
             <div class="filter-item date-filter-item">
               <label for="runsEndDate">To</label>
-              <input
+              <DateInput
                 id="runsEndDate"
                 v-model="endDateString"
                 :class="{ 'invalid-date': !endDateValid }"
-                type="date"
-                @input="handleDateChange('end', $event.target.value)"
+                @update:model-value="handleDateChange('end', $event)"
               />
             </div>
             <div class="filter-item">
@@ -472,6 +470,7 @@ import {
 } from "vue";
 import { saveAs } from "file-saver";
 import LiteTabulatorTable from "../components/TabulatorTableLite.vue";
+import DateInput from "../components/DateInput.vue";
 import {
   formatRunStatisticsDate,
   runStatisticsColumnDefs,
@@ -513,7 +512,8 @@ twoMonthsAgo.setMonth(today.getMonth() - 2);
 export default {
   name: "RunStatistics",
   components: {
-    LiteTabulatorTable
+    LiteTabulatorTable,
+    DateInput
   },
   setup() {
     const tableRef = ref(null);

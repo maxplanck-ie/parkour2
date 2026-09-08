@@ -706,7 +706,7 @@ input[type="radio"]:checked::after {
   overflow-y: auto;
 }
 
-.date-filter-item input[type="date"] {
+.date-filter-item .date-input-wrap {
   width: 100%;
   padding: 8px;
   border: 1px solid #ddd;
@@ -1240,8 +1240,7 @@ input[type="radio"]:checked::after {
   margin: 0 4px 0 2px;
 }
 
-.date-filter input[type="date"],
-.date-filter input[type="month"] {
+.date-filter .date-input-wrap {
   padding: 6px 8px;
   border: 1px solid rgba(0, 0, 0, 0.18);
   border-radius: 5px;
@@ -1262,11 +1261,6 @@ input[type="radio"]:checked::after {
   background: linear-gradient(180deg, #0f8a82 0%, #05736d 100%);
   border-color: rgba(255, 255, 255, 0.75);
   transform: translateY(-1px);
-}
-
-.date-filters input[type="date"]:not(:valid),
-.date-filters input[type="month"]:not(:valid) {
-  font-size: 12px;
 }
 
 .invalid-date {

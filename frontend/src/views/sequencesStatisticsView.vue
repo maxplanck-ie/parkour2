@@ -41,22 +41,20 @@
           >
             <div class="filter-item date-filter-item">
               <label for="sequencesStartDate">From</label>
-              <input
+              <DateInput
                 id="sequencesStartDate"
                 v-model="startDateString"
                 :class="{ 'invalid-date': !startDateValid }"
-                type="date"
-                @input="handleDateChange('start', $event.target.value)"
+                @update:model-value="handleDateChange('start', $event)"
               />
             </div>
             <div class="filter-item date-filter-item">
               <label for="sequencesEndDate">To</label>
-              <input
+              <DateInput
                 id="sequencesEndDate"
                 v-model="endDateString"
                 :class="{ 'invalid-date': !endDateValid }"
-                type="date"
-                @input="handleDateChange('end', $event.target.value)"
+                @update:model-value="handleDateChange('end', $event)"
               />
             </div>
             <div class="filter-item">
@@ -466,6 +464,7 @@ import {
 } from "vue";
 import { saveAs } from "file-saver";
 import LiteTabulatorTable from "../components/TabulatorTableLite.vue";
+import DateInput from "../components/DateInput.vue";
 import {
   formatSequencesStatisticsDate,
   sequencesStatisticsColumnDefs,
@@ -507,7 +506,8 @@ twoMonthsAgo.setMonth(today.getMonth() - 2);
 export default {
   name: "SequencesStatistics",
   components: {
-    LiteTabulatorTable
+    LiteTabulatorTable,
+    DateInput
   },
   setup() {
     const tableRef = ref(null);
