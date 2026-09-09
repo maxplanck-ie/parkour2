@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg viewBox="0 0 920 1060" role="img" aria-labelledby="seqlife-title seqlife-desc" xmlns="http://www.w3.org/2000/svg">
+<title id="seqlife-title">Sequencing Request Lifecycle</title>
+<desc id="seqlife-desc">Flowchart of a sequencing request moving from end-user metadata submission through an incoming-libraries QC gate, index generation, library preparation with its own QC gate, cross-project pooling (which can itself fail a library or be destroyed and looped back to preparation), flowcell loading, and per-PI invoicing, with usage and QC statistics collected along the way.</desc>
+
+<defs>
+  <marker id="arr" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+    <polygon points="0 0, 8 3, 0 6" fill="#6b7280"/>
+  </marker>
+  <marker id="arr-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+    <polygon points="0 0, 8 3, 0 6" fill="#006c66"/>
+  </marker>
+</defs>
+
+<rect width="920" height="1060" fill="#ffffff"/>
+
+<!-- ============ ARROWS (drawn before nodes) ============ -->
+
+<!-- A1 Request -> Incoming Libraries -->
+<path d="M460,104 L460,160" fill="none" stroke="#6b7280" stroke-width="1" marker-end="url(#arr)"/>
+<rect x="472" y="122" width="70" height="12" rx="2" fill="#ffffff"/>
+<text x="476" y="131" font-family="'Geist Mono',monospace" font-size="8" letter-spacing="0.06em" fill="#8b8f97">APPROVED</text>
+
+<!-- A2 Incoming Libraries -> Index Generator (pass) -->
+<path d="M460,224 L460,280" fill="none" stroke="#6b7280" stroke-width="1" marker-end="url(#arr)"/>
+<rect x="472" y="246" width="38" height="12" rx="2" fill="#ffffff"/>
+<text x="476" y="255" font-family="'Geist Mono',monospace" font-size="8" letter-spacing="0.06em" fill="#8b8f97">PASS</text>
+
+<!-- A3 Incoming Libraries -> Removed (fail) -->
+<path d="M372,192 L308,192 Q300,192 300,200 L300,392 Q300,400 292,400 L272,400"
+      fill="none" stroke="#6b7280" stroke-width="1" stroke-dasharray="5,4" marker-end="url(#arr)"/>
+<rect x="316" y="174" width="40" height="12" rx="2" fill="#ffffff"/>
+<text x="336" y="183" font-family="'Geist Mono',monospace" font-size="8" letter-spacing="0.06em" fill="#8b8f97" text-anchor="middle">FAIL</text>
+
+<!-- A4 Index Generator -> Preparation -->
+<path d="M460,344 L460,400" fill="none" stroke="#6b7280" stroke-width="1" marker-end="url(#arr)"/>
+
+<!-- A5 Preparation -> Pooling (pass) -->
+<path d="M460,464 L460,560" fill="none" stroke="#6b7280" stroke-width="1" marker-end="url(#arr)"/>
+<rect x="472" y="506" width="38" height="12" rx="2" fill="#ffffff"/>
+<text x="476" y="515" font-family="'Geist Mono',monospace" font-size="8" letter-spacing="0.06em" fill="#8b8f97">PASS</text>
+
+<!-- A6 Preparation -> Removed (fail) -->
+<path d="M372,432 L272,432" fill="none" stroke="#6b7280" stroke-width="1" stroke-dasharray="5,4" marker-end="url(#arr)"/>
+<rect x="316" y="414" width="48" height="12" rx="2" fill="#ffffff"/>
+<text x="340" y="423" font-family="'Geist Mono',monospace" font-size="8" letter-spacing="0.06em" fill="#8b8f97" text-anchor="middle">FAIL</text>
+
+<!-- A7 Pooling -> Load Flowcells (focal / accent) -->
+<path d="M460,624 L460,720" fill="none" stroke="#006c66" stroke-width="1.2" marker-end="url(#arr-accent)"/>
+<rect x="472" y="666" width="118" height="12" rx="2" fill="#ffffff"/>
+<text x="476" y="675" font-family="'Geist Mono',monospace" font-size="8" letter-spacing="0.06em" fill="#006c66">LOAD ONTO FLOWCELL</text>
+
+<!-- A8 Pooling -> Removed (fail, per-library QC inside the pool) -->
+<path d="M372,592 L308,592 Q300,592 300,584 L300,472 Q300,464 292,464 L272,464"
+      fill="none" stroke="#6b7280" stroke-width="1" stroke-dasharray="5,4" marker-end="url(#arr)"/>
+<rect x="316" y="574" width="48" height="12" rx="2" fill="#ffffff"/>
+<text x="340" y="583" font-family="'Geist Mono',monospace" font-size="8" letter-spacing="0.06em" fill="#8b8f97" text-anchor="middle">FAIL</text>
+
+<!-- A9 Pooling -> Preparation (loop, pool destroyed) -->
+<path d="M548,592 L652,592 Q660,592 660,584 L660,452 Q660,444 652,444 L548,444"
+      fill="none" stroke="#6b7280" stroke-width="1" stroke-dasharray="5,4" marker-end="url(#arr)"/>
+<rect x="558" y="562" width="96" height="24" rx="2" fill="#ffffff"/>
+<text x="606" y="572" font-family="'Geist Mono',monospace" font-size="8" letter-spacing="0.06em" fill="#8b8f97" text-anchor="middle">POOL DESTROYED</text>
+<text x="606" y="583" font-family="'Geist Mono',monospace" font-size="8" letter-spacing="0.06em" fill="#8b8f97" text-anchor="middle">CONTENTS GO BACK</text>
+
+<!-- A10 Load Flowcells -> Statistics (QC metrics) -->
+<path d="M548,756 L602,756 Q610,756 610,764 L610,828 Q610,836 618,836 L680,836"
+      fill="none" stroke="#6b7280" stroke-width="1" stroke-dasharray="5,4" marker-end="url(#arr)"/>
+<rect x="560" y="738" width="56" height="12" rx="2" fill="#ffffff"/>
+<text x="588" y="747" font-family="'Geist Mono',monospace" font-size="8" letter-spacing="0.06em" fill="#8b8f97" text-anchor="middle">QC METRICS</text>
+
+<!-- A11 Load Flowcells -> Statistics (usage) -->
+<path d="M548,728 L642,728 Q650,728 650,736 L650,756 Q650,764 658,764 L680,764"
+      fill="none" stroke="#6b7280" stroke-width="1" stroke-dasharray="5,4" marker-end="url(#arr)"/>
+<rect x="560" y="710" width="52" height="12" rx="2" fill="#ffffff"/>
+<text x="586" y="719" font-family="'Geist Mono',monospace" font-size="8" letter-spacing="0.06em" fill="#8b8f97" text-anchor="middle">USAGE</text>
+
+<!-- A12 Load Flowcells -> Invoicing -->
+<path d="M460,784 L460,840" fill="none" stroke="#6b7280" stroke-width="1" marker-end="url(#arr)"/>
+
+<!-- ============ NODES ============ -->
+
+<!-- Request (start) -->
+<rect x="372" y="40" width="176" height="64" rx="28" fill="#ffffff" stroke="#181818" stroke-width="1"/>
+<text x="460" y="66" text-anchor="middle" font-family="'Inter',sans-serif" font-size="12" font-weight="600" fill="#181818">Request</text>
+<text x="460" y="82" text-anchor="middle" font-family="'Geist Mono',monospace" font-size="9" fill="#6b7280">end-user submits metadata</text>
+
+<!-- Incoming Libraries -->
+<rect x="372" y="160" width="176" height="64" rx="6" fill="#ffffff" stroke="#181818" stroke-width="1"/>
+<text x="460" y="186" text-anchor="middle" font-family="'Inter',sans-serif" font-size="12" font-weight="600" fill="#181818">Incoming Libraries</text>
+<text x="460" y="202" text-anchor="middle" font-family="'Geist Mono',monospace" font-size="9" fill="#6b7280">initial QC on arrival</text>
+
+<!-- Index Generator -->
+<rect x="372" y="280" width="176" height="64" rx="6" fill="#ffffff" stroke="#181818" stroke-width="1"/>
+<text x="460" y="306" text-anchor="middle" font-family="'Inter',sans-serif" font-size="12" font-weight="600" fill="#181818">Index Generator</text>
+<text x="460" y="322" text-anchor="middle" font-family="'Geist Mono',monospace" font-size="9" fill="#6b7280">assign barcodes</text>
+
+<!-- Preparation -->
+<rect x="372" y="400" width="176" height="64" rx="6" fill="#ffffff" stroke="#181818" stroke-width="1"/>
+<text x="460" y="426" text-anchor="middle" font-family="'Inter',sans-serif" font-size="12" font-weight="600" fill="#181818">Preparation</text>
+<text x="460" y="442" text-anchor="middle" font-family="'Geist Mono',monospace" font-size="9" fill="#6b7280">samples meet libraries · QC</text>
+
+<!-- Removed (shared sink for all three QC-fail paths) -->
+<rect x="100" y="384" width="172" height="88" rx="12" fill="#ffffff" stroke="#8b8f97" stroke-width="1" stroke-dasharray="4,3"/>
+<text x="186" y="416" text-anchor="middle" font-family="'Inter',sans-serif" font-size="12" font-weight="600" fill="#181818">Removed</text>
+<text x="186" y="430" text-anchor="middle" font-family="'Geist Mono',monospace" font-size="8.5" fill="#6b7280">excluded downstream</text>
+<text x="186" y="444" text-anchor="middle" font-family="'Geist Mono',monospace" font-size="8.5" fill="#6b7280">single library, not project</text>
+
+<!-- Pooling (focal) -->
+<rect x="372" y="560" width="176" height="64" rx="6" fill="#d9efed" stroke="#006c66" stroke-width="1"/>
+<text x="460" y="586" text-anchor="middle" font-family="'Inter',sans-serif" font-size="12" font-weight="600" fill="#181818">Pooling</text>
+<text x="460" y="602" text-anchor="middle" font-family="'Geist Mono',monospace" font-size="9" fill="#006c66">combine across projects</text>
+
+<!-- Load Flowcells -->
+<rect x="372" y="720" width="176" height="64" rx="6" fill="#ffffff" stroke="#181818" stroke-width="1"/>
+<text x="460" y="746" text-anchor="middle" font-family="'Inter',sans-serif" font-size="12" font-weight="600" fill="#181818">Load Flowcells</text>
+<text x="460" y="762" text-anchor="middle" font-family="'Geist Mono',monospace" font-size="9" fill="#6b7280">maximize reagent use</text>
+
+<!-- Invoicing (end) -->
+<rect x="372" y="840" width="176" height="64" rx="28" fill="#ffffff" stroke="#181818" stroke-width="1"/>
+<text x="460" y="866" text-anchor="middle" font-family="'Inter',sans-serif" font-size="12" font-weight="600" fill="#181818">Invoicing</text>
+<text x="460" y="882" text-anchor="middle" font-family="'Geist Mono',monospace" font-size="9" fill="#6b7280">charge each PI</text>
+
+<!-- Statistics (aside, bottom-aligned to Invoicing) -->
+<rect x="680" y="696" width="160" height="208" rx="6" fill="rgba(24,24,24,0.05)" stroke="#6b7280" stroke-width="1"/>
+<text x="700" y="720" font-family="'Geist Mono',monospace" font-size="8" letter-spacing="0.14em" fill="#6b7280">STATISTICS</text>
+<line x1="700" y1="730" x2="820" y2="730" stroke="rgba(24,24,24,0.12)" stroke-width="0.8"/>
+
+<text x="700" y="752" font-family="'Inter',sans-serif" font-size="12" font-weight="600" fill="#181818">Usage</text>
+<text x="700" y="766" font-family="'Geist Mono',monospace" font-size="8.5" fill="#6b7280">filtered by time:</text>
+<text x="700" y="780" font-family="'Geist Mono',monospace" font-size="8.5" fill="#6b7280">protocols, sample prep,</text>
+<text x="700" y="794" font-family="'Geist Mono',monospace" font-size="8.5" fill="#6b7280">PIs, organizations</text>
+
+<text x="700" y="822" font-family="'Inter',sans-serif" font-size="12" font-weight="600" fill="#181818">QC Metrics</text>
+<text x="700" y="836" font-family="'Geist Mono',monospace" font-size="8.5" fill="#6b7280">reads passing filter,</text>
+<text x="700" y="850" font-family="'Geist Mono',monospace" font-size="8.5" fill="#6b7280">% mapped, duplicates,</text>
+<text x="700" y="864" font-family="'Geist Mono',monospace" font-size="8.5" fill="#6b7280">insert size</text>
+<text x="700" y="878" font-family="'Geist Mono',monospace" font-size="8.5" fill="#6b7280">(via POST, downstream</text>
+<text x="700" y="892" font-family="'Geist Mono',monospace" font-size="8.5" fill="#6b7280">processing scripts)</text>
+
+<!-- ============ LEGEND ============ -->
+<line x1="30" y1="956" x2="890" y2="956" stroke="rgba(24,24,24,0.12)" stroke-width="0.8"/>
+<text x="30" y="972" font-family="'Geist Mono',monospace" font-size="8" letter-spacing="0.14em" fill="#6b7280">LEGEND</text>
+
+<!-- shapes -->
+<rect x="30" y="984" width="24" height="16" rx="8" fill="#ffffff" stroke="#181818" stroke-width="1"/>
+<text x="62" y="995" font-family="'Geist Mono',monospace" font-size="8" fill="#6b7280">START / END</text>
+
+<rect x="180" y="984" width="24" height="16" rx="4" fill="#ffffff" stroke="#181818" stroke-width="1"/>
+<text x="212" y="995" font-family="'Geist Mono',monospace" font-size="8" fill="#6b7280">STEP (WITH QC GATE)</text>
+
+<rect x="400" y="984" width="24" height="16" rx="12" fill="#ffffff" stroke="#8b8f97" stroke-width="1" stroke-dasharray="4,3"/>
+<text x="432" y="995" font-family="'Geist Mono',monospace" font-size="8" fill="#6b7280">EXCLUDED</text>
+
+<rect x="560" y="984" width="24" height="16" rx="4" fill="#d9efed" stroke="#006c66" stroke-width="1"/>
+<text x="592" y="995" font-family="'Geist Mono',monospace" font-size="8" fill="#6b7280">FOCAL (COST SAVING)</text>
+
+<!-- lines -->
+<line x1="30" y1="1020" x2="60" y2="1020" stroke="#6b7280" stroke-width="1" marker-end="url(#arr)"/>
+<text x="68" y="1023" font-family="'Geist Mono',monospace" font-size="8" fill="#6b7280">FLOW</text>
+
+<line x1="150" y1="1020" x2="180" y2="1020" stroke="#6b7280" stroke-width="1" stroke-dasharray="5,4" marker-end="url(#arr)"/>
+<text x="188" y="1023" font-family="'Geist Mono',monospace" font-size="8" fill="#6b7280">EXCEPTION / FEEDS STATISTICS</text>
+
+<line x1="430" y1="1020" x2="460" y2="1020" stroke="#006c66" stroke-width="1.2" marker-end="url(#arr-accent)"/>
+<text x="468" y="1023" font-family="'Geist Mono',monospace" font-size="8" fill="#6b7280">HAPPY PATH</text>
+
+</svg>
