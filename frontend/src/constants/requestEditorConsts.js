@@ -8,7 +8,7 @@ export const LIBRARY_REQUIRED_FIELDS = new Set([
   "name",
   "measuring_unit",
   "library_protocol",
-  "library_type",
+  "analysis_type",
   "read_length",
   "sequencing_depth",
   "organism",
@@ -22,7 +22,7 @@ export const SAMPLE_REQUIRED_FIELDS = new Set([
   "nucleic_acid_type",
   "measuring_unit",
   "library_protocol",
-  "library_type",
+  "analysis_type",
   "read_length",
   "sequencing_depth",
   "organism",
@@ -155,7 +155,7 @@ function listEditorConfig(options = [], placeholder = "Select") {
   };
 }
 
-function filterLibraryTypesByProtocol(types = [], protocolId) {
+function filterAnalysisTypesByProtocol(types = [], protocolId) {
   if (!protocolId) return [];
   const matchId = String(protocolId);
   return types
@@ -328,11 +328,11 @@ export function getRequestEditorLibraryColumns(
       );
     };
 
-  const getLibraryTypeOptions = (rowData) =>
-    filterLibraryTypesByProtocol(analysisTypes, rowData.library_protocol);
+  const getAnalysisTypeOptions = (rowData) =>
+    filterAnalysisTypesByProtocol(analysisTypes, rowData.library_protocol);
 
   const isLibraryEditable = (field, rowData) => {
-    if (field === "library_type") {
+    if (field === "analysis_type") {
       return Boolean(rowData.library_protocol);
     }
     if (field === "index_i7") {
@@ -353,7 +353,7 @@ export function getRequestEditorLibraryColumns(
     isLibraryEditable(field, getRowData(cell));
   const libraryDisabledMessage = (field) => (cell) => {
     const rowData = getRowData(cell);
-    if (field === "library_type" && !rowData.library_protocol) {
+    if (field === "analysis_type" && !rowData.library_protocol) {
       return "Select a Protocol first.";
     }
     if (field === "index_i7") {
@@ -481,7 +481,7 @@ export function getRequestEditorLibraryColumns(
     },
     {
       title: "Analysis Type",
-      field: "library_type",
+      field: "analysis_type",
       minWidth: 110,
       widthGrow: 1.2,
       headerVertical: false,
@@ -489,15 +489,15 @@ export function getRequestEditorLibraryColumns(
       visible: true,
       cssClass: "regular-column",
       editor: "list",
-      editable: libraryEditable("library_type"),
-      editorParams: dynamicEditorParams(getLibraryTypeOptions),
+      editable: libraryEditable("analysis_type"),
+      editorParams: dynamicEditorParams(getAnalysisTypeOptions),
       formatter: decorateFormatter(
-        dynamicListFormatter(getLibraryTypeOptions),
-        libraryEditable("library_type"),
-        libraryDisabledMessage("library_type")
+        dynamicListFormatter(getAnalysisTypeOptions),
+        libraryEditable("analysis_type"),
+        libraryDisabledMessage("analysis_type")
       ),
       clipboardCopyValue: createDynamicListClipboardValueGetter(
-        getLibraryTypeOptions,
+        getAnalysisTypeOptions,
         getRowData
       )
     },
@@ -821,8 +821,8 @@ export function getRequestEditorSampleColumns(
       placeholder: "Select"
     };
   };
-  const getLibraryTypeOptions = (rowData) =>
-    filterLibraryTypesByProtocol(analysisTypes, rowData.library_protocol);
+  const getAnalysisTypeOptions = (rowData) =>
+    filterAnalysisTypesByProtocol(analysisTypes, rowData.library_protocol);
   const getProtocolOptions = (rowData) => {
     const meta = getNucleicAcidMeta(rowData);
     const type = meta?.type ? String(meta.type).toLowerCase() : "";
@@ -846,7 +846,7 @@ export function getRequestEditorSampleColumns(
     if (field === "library_protocol") {
       return Boolean(rowData.nucleic_acid_type);
     }
-    if (field === "library_type") {
+    if (field === "analysis_type") {
       return Boolean(rowData.library_protocol);
     }
     if (field === "measured_value") {
@@ -866,7 +866,7 @@ export function getRequestEditorSampleColumns(
     if (field === "library_protocol" && !rowData.nucleic_acid_type) {
       return "Select an Input Type first.";
     }
-    if (field === "library_type" && !rowData.library_protocol) {
+    if (field === "analysis_type" && !rowData.library_protocol) {
       return "Select a Protocol first.";
     }
     if (field === "measured_value") {
@@ -1065,7 +1065,7 @@ export function getRequestEditorSampleColumns(
     },
     {
       title: "Analysis Type",
-      field: "library_type",
+      field: "analysis_type",
       minWidth: 110,
       widthGrow: 1.2,
       headerVertical: false,
@@ -1073,15 +1073,15 @@ export function getRequestEditorSampleColumns(
       visible: true,
       cssClass: "regular-column",
       editor: "list",
-      editable: sampleEditable("library_type"),
-      editorParams: dynamicEditorParams(getLibraryTypeOptions),
+      editable: sampleEditable("analysis_type"),
+      editorParams: dynamicEditorParams(getAnalysisTypeOptions),
       formatter: decorateFormatter(
-        dynamicListFormatter(getLibraryTypeOptions),
-        sampleEditable("library_type"),
-        sampleDisabledMessage("library_type")
+        dynamicListFormatter(getAnalysisTypeOptions),
+        sampleEditable("analysis_type"),
+        sampleDisabledMessage("analysis_type")
       ),
       clipboardCopyValue: createDynamicListClipboardValueGetter(
-        getLibraryTypeOptions,
+        getAnalysisTypeOptions,
         getRowData
       )
     },

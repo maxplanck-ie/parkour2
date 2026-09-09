@@ -1934,7 +1934,7 @@ export default {
       return Boolean(unit) && unit !== "Unknown";
     },
     isLibraryFieldEditable(field, rowData) {
-      if (field === "library_type") return Boolean(rowData.library_protocol);
+      if (field === "analysis_type") return Boolean(rowData.library_protocol);
       if (field === "index_i7") return this.getIndexReadsCount(rowData) >= 1;
       if (field === "index_i5") return this.getIndexReadsCount(rowData) >= 2;
       if (field === "measured_value") return this.hasMeasuredValueUnit(rowData);
@@ -1943,7 +1943,7 @@ export default {
     isSampleFieldEditable(field, rowData) {
       if (field === "library_protocol")
         return Boolean(rowData.nucleic_acid_type);
-      if (field === "library_type") return Boolean(rowData.library_protocol);
+      if (field === "analysis_type") return Boolean(rowData.library_protocol);
       if (field === "measured_value") return this.hasMeasuredValueUnit(rowData);
       if (field === "gmo")
         return this.isGmoAllowedInputType(rowData.nucleic_acid_type);
@@ -2569,7 +2569,7 @@ export default {
             barcode_original: record.barcode || "",
             name: record.name || "",
             library_protocol: record.library_protocol || null,
-            library_type: record.library_type || null,
+            analysis_type: record.analysis_type || null,
             measuring_unit: record.measuring_unit || null,
             measured_value: record.measured_value ?? null,
             mean_fragment_size: record.mean_fragment_size ?? null,
@@ -2594,7 +2594,7 @@ export default {
           name: record.name || "",
           nucleic_acid_type: record.nucleic_acid_type || null,
           library_protocol: record.library_protocol || null,
-          library_type: record.library_type || null,
+          analysis_type: record.analysis_type || null,
           measuring_unit: record.measuring_unit || null,
           measured_value: record.measured_value ?? null,
           volume: record.volume ?? null,
@@ -3038,8 +3038,8 @@ export default {
           }
         }
         if (normalizedFields.has("library_protocol")) {
-          if (shouldResetDependent("library_type")) {
-            assignIfChanged("library_type", "");
+          if (shouldResetDependent("analysis_type")) {
+            assignIfChanged("analysis_type", "");
           }
         }
       } else {
@@ -3047,16 +3047,16 @@ export default {
           if (shouldResetDependent("library_protocol")) {
             assignIfChanged("library_protocol", "");
           }
-          if (shouldResetDependent("library_type")) {
-            assignIfChanged("library_type", "");
+          if (shouldResetDependent("analysis_type")) {
+            assignIfChanged("analysis_type", "");
           }
           if (shouldResetDependent("gmo")) {
             assignIfChanged("gmo", null);
           }
         }
         if (normalizedFields.has("library_protocol")) {
-          if (shouldResetDependent("library_type")) {
-            assignIfChanged("library_type", "");
+          if (shouldResetDependent("analysis_type")) {
+            assignIfChanged("analysis_type", "");
           }
         }
       }
@@ -3101,8 +3101,8 @@ export default {
       const fields = new Set(dirtyFields || []);
       const normalizedMode = mode === "sample" ? "sample" : "library";
       if (normalizedMode === "library") {
-        if (fields.has("library_protocol")) fields.add("library_type");
-        if (fields.has("library_type")) fields.add("library_protocol");
+        if (fields.has("library_protocol")) fields.add("analysis_type");
+        if (fields.has("analysis_type")) fields.add("library_protocol");
         if (fields.has("index_type")) {
           const reads = this.getIndexReadsCount(rowData);
           if (reads >= 1) fields.add("index_i7");
@@ -3117,10 +3117,10 @@ export default {
       } else {
         if (fields.has("nucleic_acid_type")) fields.add("library_protocol");
         if (fields.has("library_protocol")) {
-          fields.add("library_type");
+          fields.add("analysis_type");
           fields.add("nucleic_acid_type");
         }
-        if (fields.has("library_type")) fields.add("library_protocol");
+        if (fields.has("analysis_type")) fields.add("library_protocol");
         if (fields.has("measuring_unit") || fields.has("measured_value")) {
           fields.add("measured_value");
         }
@@ -3359,7 +3359,7 @@ export default {
             return false;
           }
         }
-        if (field === "library_type" && !rowData.library_protocol) {
+        if (field === "analysis_type" && !rowData.library_protocol) {
           showNotification("Select a protocol first.", "warning");
           return false;
         }
@@ -3370,7 +3370,7 @@ export default {
         showNotification("Select an input type first.", "warning");
         return false;
       }
-      if (field === "library_type" && !rowData.library_protocol) {
+      if (field === "analysis_type" && !rowData.library_protocol) {
         showNotification("Select a protocol first.", "warning");
         return false;
       }
@@ -3422,7 +3422,7 @@ export default {
         return;
       }
       if (field === "library_protocol") {
-        data.library_type = "";
+        data.analysis_type = "";
         row.update(data);
         this.refreshRowFormatting(row);
         return;
@@ -3509,14 +3509,14 @@ export default {
       const data = { ...row.getData() };
       if (field === "nucleic_acid_type") {
         data.library_protocol = "";
-        data.library_type = "";
+        data.analysis_type = "";
         data.gmo = null;
         row.update(data);
         this.refreshRowFormatting(row);
         return;
       }
       if (field === "library_protocol") {
-        data.library_type = "";
+        data.analysis_type = "";
         row.update(data);
         this.refreshRowFormatting(row);
         return;
@@ -3906,8 +3906,8 @@ export default {
       if (isEditable("library_protocol") && !row.library_protocol) {
         errors.library_protocol = `${prefix}: Protocol is a required field.`;
       }
-      if (isEditable("library_type") && !row.library_type) {
-        errors.library_type = `${prefix}: Analysis Type is a required field.`;
+      if (isEditable("analysis_type") && !row.analysis_type) {
+        errors.analysis_type = `${prefix}: Analysis Type is a required field.`;
       }
       if (isEditable("read_length") && !row.read_length) {
         errors.read_length = `${prefix}: Read Length is a required field.`;
@@ -3971,8 +3971,8 @@ export default {
       if (isEditable("library_protocol") && !row.library_protocol) {
         errors.library_protocol = `${prefix}: Protocol is a required field.`;
       }
-      if (isEditable("library_type") && !row.library_type) {
-        errors.library_type = `${prefix}: Analysis Type is a required field.`;
+      if (isEditable("analysis_type") && !row.analysis_type) {
+        errors.analysis_type = `${prefix}: Analysis Type is a required field.`;
       }
       if (isEditable("read_length") && !row.read_length) {
         errors.read_length = `${prefix}: Read Length is a required field.`;
@@ -4014,7 +4014,7 @@ export default {
       return {
         name: (row.name || "").trim(),
         library_protocol: this.normalizeId(row.library_protocol),
-        library_type: this.normalizeId(row.library_type),
+        analysis_type: this.normalizeId(row.analysis_type),
         measuring_unit: row.measuring_unit || null,
         measured_value: this.coerceMeasuredValue(row),
         mean_fragment_size: this.normalizeNumber(row.mean_fragment_size),
@@ -4045,7 +4045,7 @@ export default {
         name: (row.name || "").trim(),
         nucleic_acid_type: this.normalizeId(row.nucleic_acid_type),
         library_protocol: this.normalizeId(row.library_protocol),
-        library_type: this.normalizeId(row.library_type),
+        analysis_type: this.normalizeId(row.analysis_type),
         measuring_unit: row.measuring_unit || null,
         measured_value: this.coerceMeasuredValue(row),
         volume: this.normalizeNumber(row.volume),
@@ -5102,7 +5102,7 @@ export default {
           return getVal(a.name) - getVal(b.name);
         });
         const analysisRes = await axiosRef.get(
-          `${urlStringStart}/api/library_types/`
+          `${urlStringStart}/api/analysis_types/`
         );
         this.analysisTypesList = analysisRes.data.sort((a, b) =>
           a.name.localeCompare(b.name, undefined, { sensitivity: "base" })

@@ -586,7 +586,7 @@ export default {
       uniqueSequencesStatisticsValues(rows.value, "library_protocol")
     );
     const analysisTypeOptions = computed(() =>
-      uniqueSequencesStatisticsValues(rows.value, "library_type")
+      uniqueSequencesStatisticsValues(rows.value, "analysis_type")
     );
     const filteredRows = computed(() =>
       rows.value.filter(
@@ -594,7 +594,7 @@ export default {
           sequencesStatisticsRowMatchesSearch(row, searchQuery.value) &&
           (!filters.sequencer || row.sequencer === filters.sequencer) &&
           (!filters.protocol || row.library_protocol === filters.protocol) &&
-          (!filters.analysisType || row.library_type === filters.analysisType)
+          (!filters.analysisType || row.analysis_type === filters.analysisType)
       )
     );
     const hasSelectedRows = computed(() =>

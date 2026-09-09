@@ -272,21 +272,21 @@ class LibraryProtocol(models.Model):
 
         if created:
             # When a new library protocol is created, add it to the list of
-            # protocols of the Library Type 'Other'. If the latter does not
+            # protocols of the Analysis Type 'Other'. If the latter does not
             # exist, create it
             try:
-                library_type = LibraryType.objects.filter(archived=False).get(
+                analysis_type = AnalysisType.objects.filter(archived=False).get(
                     name="Other"
                 )
-            except LibraryType.DoesNotExist:
-                library_type = LibraryType(name="Other")
-                library_type.save()
+            except AnalysisType.DoesNotExist:
+                analysis_type = AnalysisType(name="Other")
+                analysis_type.save()
             finally:
                 if self.name != "Quality Control":
-                    library_type.library_protocol.add(self)
+                    analysis_type.library_protocol.add(self)
 
 
-class LibraryType(models.Model):
+class AnalysisType(models.Model):
     name = models.CharField("Name", max_length=200)
     library_protocol = models.ManyToManyField(
         LibraryProtocol,
@@ -296,8 +296,8 @@ class LibraryType(models.Model):
     history = HistoricalRecords()
 
     class Meta:
-        verbose_name = "Library Type"
-        verbose_name_plural = "Library Types"
+        verbose_name = "Analysis Type"
+        verbose_name_plural = "Analysis Types"
 
     def __str__(self):
         return self.name
@@ -325,9 +325,9 @@ class GenericLibrarySample(DateTimeMixin):
         null=True,
     )
 
-    library_type = models.ForeignKey(
-        LibraryType,
-        verbose_name="Library Type",
+    analysis_type = models.ForeignKey(
+        AnalysisType,
+        verbose_name="Analysis Type",
         on_delete=models.SET_NULL,
         null=True,
     )

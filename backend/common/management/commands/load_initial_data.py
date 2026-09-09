@@ -19,7 +19,7 @@ class Command(BaseCommand):
             "indextype",
             "indexpair",
             "libraryprotocol",
-            "librarytype",
+            "analysistype",
             "barcodecounter",
         ):
             self.loaddata_wrapper(model=m, app_label="library_sample_shared")

@@ -130,7 +130,7 @@ export function sequencesStatisticsColumnDefs(onSelectionChanged) {
     },
     {
       title: "Analysis",
-      field: "library_type",
+      field: "analysis_type",
       minWidth: 70,
       visible: true,
       ...textFilterConfig("Analysis Type")
@@ -318,7 +318,7 @@ export function sequencesStatisticsExportColumns() {
     },
     {
       header: "Analysis Type",
-      key: "library_type",
+      key: "analysis_type",
       width: 20,
       excelType: "text"
     },

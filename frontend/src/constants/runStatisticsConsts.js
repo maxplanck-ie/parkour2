@@ -123,7 +123,7 @@ export function runStatisticsColumnDefs(onSelectionChanged) {
     },
     {
       title: "Analysis Type",
-      field: "library_type",
+      field: "analysis_type",
       minWidth: 85,
       visible: true,
       ...textFilterConfig("Analysis Type")
@@ -303,7 +303,7 @@ export function runStatisticsExportColumns() {
     },
     {
       header: "Analysis Type",
-      key: "library_type",
+      key: "analysis_type",
       width: 20,
       excelType: "text"
     },

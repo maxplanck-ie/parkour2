@@ -13,7 +13,7 @@ from .models import (
     IndexI7,
     IndexType,
     LibraryProtocol,
-    LibraryType,
+    AnalysisType,
     Organism,
     ReadLength,
 )
@@ -147,25 +147,25 @@ class LibraryProtocolTest(TestCase):
             self.library_protocol.name,
         )
 
-    def test_library_protocol_in_library_type(self):
+    def test_library_protocol_in_analysis_type(self):
         """
         Ensure a new library protocol is added to the list of protocols of
         the library type 'Other'.
         """
-        library_type = LibraryType.objects.get(name="Other")
-        library_protocols = library_type.library_protocol.all().values_list(
+        analysis_type = AnalysisType.objects.get(name="Other")
+        library_protocols = analysis_type.library_protocol.all().values_list(
             "name", flat=True
         )
         self.assertIn(self.library_protocol.name, library_protocols)
 
 
-class LibraryTypeTest(TestCase):
+class AnalysisTypeTest(TestCase):
     def setUp(self):
-        self.library_type = LibraryType(name=get_random_name())
+        self.analysis_type = AnalysisType(name=get_random_name())
 
-    def test_library_type_name(self):
-        self.assertTrue(isinstance(self.library_type, LibraryType))
-        self.assertEqual(self.library_type.__str__(), self.library_type.name)
+    def test_analysis_type_name(self):
+        self.assertTrue(isinstance(self.analysis_type, AnalysisType))
+        self.assertEqual(self.analysis_type.__str__(), self.analysis_type.name)
 
 
 # class GenericLibrarySampleTest(TestCase):
@@ -376,7 +376,7 @@ class TestLibraryProtocols(BaseTestCase):
         self.client.get(reverse("library-protocol-list"), {type: "DNA"})
 
 
-class TestLibraryTypes(BaseTestCase):
+class TestAnalysisTypes(BaseTestCase):
     """Tests for library types."""
 
     def setUp(self):
@@ -394,41 +394,41 @@ class TestLibraryTypes(BaseTestCase):
         )
         self.library_protocol.save()
 
-        self.library_type = LibraryType(name=self._get_random_name())
-        self.library_type.save()
-        self.library_type.library_protocol.add(self.library_protocol)
+        self.analysis_type = AnalysisType(name=self._get_random_name())
+        self.analysis_type.save()
+        self.analysis_type.library_protocol.add(self.library_protocol)
 
-    def test_library_type_list(self):
+    def test_analysis_type_list(self):
         """Ensure get library types behaves correctly."""
-        response = self.client.get(reverse("library-type-list"))
+        response = self.client.get(reverse("analysis-type-list"))
         data = response.json()
-        library_types = [x["name"] for x in data]
+        analysis_types = [x["name"] for x in data]
         self.assertEqual(response.status_code, 200)
-        self.assertIn(self.library_type.name, library_types)
+        self.assertIn(self.analysis_type.name, analysis_types)
 
-    def test_library_type_with_protocol_list(self):
+    def test_analysis_type_with_protocol_list(self):
         """
         Ensure get library types given library protocol behaves correctly.
         """
         response = self.client.get(
-            reverse("library-type-list"),
+            reverse("analysis-type-list"),
             {
                 "library_protocol_id": self.library_protocol.pk,
             },
         )
         data = response.json()
-        library_types = [x["name"] for x in data]
+        analysis_types = [x["name"] for x in data]
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(len(library_types), 2)  # +1 for 'Other'
-        self.assertIn(self.library_type.name, library_types)
+        self.assertEqual(len(analysis_types), 2)  # +1 for 'Other'
+        self.assertIn(self.analysis_type.name, analysis_types)
 
-    def test_library_type_invalid_protocol(self):
+    def test_analysis_type_invalid_protocol(self):
         """
         Ensure get library types given invalid library protocol behaves
         correctly.
         """
         response = self.client.get(
-            reverse("library-type-list"),
+            reverse("analysis-type-list"),
             {
                 "library_protocol_id": "blah",
             },

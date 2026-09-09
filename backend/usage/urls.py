@@ -15,8 +15,8 @@ urlpatterns = [
         name="principal-investigators--usage",
     ),
     re_path(
-        "library_types/",
-        views.LibraryTypesUsage.as_view(),
-        name="library-types-usage",
+        "analysis_types/",
+        views.AnalysisTypesUsage.as_view(),
+        name="analysis-types-usage",
     ),
 ]

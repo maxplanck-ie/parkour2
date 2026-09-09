@@ -43,7 +43,7 @@ from library_sample_shared.models import (
     IndexPair,
     IndexType,
     LibraryProtocol,
-    LibraryType,
+    AnalysisType,
     Organism,
     ReadLength,
 )
@@ -74,9 +74,9 @@ def create_library(name, status=0, save=True, read_length=None, index_type=None)
     )
     library_protocol.save()
 
-    library_type = LibraryType(name="Library Type")
-    library_type.save()
-    library_type.library_protocol.add(library_protocol)
+    analysis_type = AnalysisType(name="Library Type")
+    analysis_type.save()
+    analysis_type.library_protocol.add(library_protocol)
 
     if index_type is None:
         index_type = IndexType(name="Index Type")
@@ -90,7 +90,7 @@ def create_library(name, status=0, save=True, read_length=None, index_type=None)
         read_length_id=read_length.pk,
         sequencing_depth=1,
         library_protocol_id=library_protocol.pk,
-        library_type_id=library_type.pk,
+        analysis_type_id=analysis_type.pk,
         index_type_id=index_type.pk,
         index_reads=0,
         mean_fragment_size=1,
@@ -506,7 +506,7 @@ class TestLibraries(BaseTestCase):
                             "read_length": library.read_length.pk,
                             "sequencing_depth": 1,
                             "library_protocol": library.library_protocol.pk,
-                            "library_type": library.library_type.pk,
+                            "analysis_type": library.analysis_type.pk,
                             "index_type": library.index_type.pk,
                             "index_reads": 0,
                             "mean_fragment_size": 1,
@@ -536,7 +536,7 @@ class TestLibraries(BaseTestCase):
                             "read_length": self.library.read_length.pk,
                             "sequencing_depth": 1,
                             "library_protocol": self.library.library_protocol.pk,
-                            "library_type": self.library.library_type.pk,
+                            "analysis_type": self.library.analysis_type.pk,
                             "index_type": self.library.index_type.pk,
                             "index_reads": 0,
                             "mean_fragment_size": 1,
@@ -604,7 +604,7 @@ class TestLibraries(BaseTestCase):
                             "read_length": library.read_length.pk,
                             "sequencing_depth": 1,
                             "library_protocol": library.library_protocol.pk,
-                            "library_type": library.library_type.pk,
+                            "analysis_type": library.analysis_type.pk,
                             "index_type": library.index_type.pk,
                             "index_reads": 0,
                             "mean_fragment_size": 1,
@@ -637,7 +637,7 @@ class TestLibraries(BaseTestCase):
                             "read_length": library1.read_length.pk,
                             "sequencing_depth": 1,
                             "library_protocol": library1.library_protocol.pk,
-                            "library_type": library1.library_type.pk,
+                            "analysis_type": library1.analysis_type.pk,
                             "index_type": library1.index_type.pk,
                             "index_reads": 0,
                             "mean_fragment_size": 1,
@@ -677,7 +677,7 @@ class TestLibraries(BaseTestCase):
                             "read_length": self.library.read_length.pk,
                             "sequencing_depth": 1,
                             "library_protocol": self.library.library_protocol.pk,
-                            "library_type": self.library.library_type.pk,
+                            "analysis_type": self.library.analysis_type.pk,
                             "index_type": self.library.index_type.pk,
                             "index_reads": 0,
                             "mean_fragment_size": 1,
@@ -708,7 +708,7 @@ class TestLibraries(BaseTestCase):
                             "read_length": library.read_length.pk,
                             "sequencing_depth": 1,
                             "library_protocol": library.library_protocol.pk,
-                            "library_type": library.library_type.pk,
+                            "analysis_type": library.analysis_type.pk,
                             "index_type": library.index_type.pk,
                             "index_reads": 0,
                             "mean_fragment_size": 1,
@@ -1344,8 +1344,8 @@ class TestGenerateROCrateAPI(BaseAPITestCase):
             {"@id": f"#organism-{sample.organism_id}"},
         )
         self.assertEqual(
-            sample_entry.get("libraryType"),
-            {"@id": f"#library-type-{sample.library_type_id}"},
+            sample_entry.get("analysisType"),
+            {"@id": f"#analysis-type-{sample.analysis_type_id}"},
         )
         process_entry = self._graph_entry(payload, f"#sample-process-{sample.pk}")
         self._assert_comment_names_include(
@@ -1981,8 +1981,8 @@ class TestGenerateROCrateAPI(BaseAPITestCase):
             library.library_protocol.name,
         )
         self.assertEqual(
-            self._comment_value(library_entry, "library_db_library_type", payload),
-            library.library_type.name,
+            self._comment_value(library_entry, "library_db_analysis_type", payload),
+            library.analysis_type.name,
         )
         self.assertEqual(
             self._comment_value(library_entry, "library_db_organism", payload),
@@ -2019,12 +2019,12 @@ class TestGenerateROCrateAPI(BaseAPITestCase):
             [{"@id": f"#flowcell-assay-{flowcell.id}"}],
         )
 
-        library_type_entry = self._graph_entry(
-            payload, f"#library-type-{library.library_type_id}"
+        analysis_type_entry = self._graph_entry(
+            payload, f"#analysis-type-{library.analysis_type_id}"
         )
         self.assertIn(
             {"@id": f"#protocol-{library.library_protocol_id}"},
-            library_type_entry.get("availableProtocols", []),
+            analysis_type_entry.get("availableProtocols", []),
         )
         index_type_entry = self._graph_entry(
             payload, f"#index-type-{library.index_type_id}"
@@ -2104,8 +2104,8 @@ class TestGenerateROCrateAPI(BaseAPITestCase):
             {"@id": f"#organism-{library.organism_id}"},
         )
         self.assertEqual(
-            library_entry.get("libraryType"),
-            {"@id": f"#library-type-{library.library_type_id}"},
+            library_entry.get("analysisType"),
+            {"@id": f"#analysis-type-{library.analysis_type_id}"},
         )
         self.assertEqual(
             library_entry.get("readLength"),

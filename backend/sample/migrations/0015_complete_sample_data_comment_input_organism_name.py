@@ -2,7 +2,7 @@
 
 from django.db import migrations, models
 
-from common.sql import sample_insert_sql
+from common.sql_legacy_pre_analysis_type_rename import sample_insert_sql
 
 
 POPULATE_SQL = sample_insert_sql()

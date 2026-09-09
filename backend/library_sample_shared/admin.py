@@ -22,7 +22,7 @@ from .models import (
     IndexPair,
     IndexType,
     LibraryProtocol,
-    LibraryType,
+    AnalysisType,
     Organism,
     ReadLength,
 )
@@ -527,8 +527,8 @@ class LibraryProtocolAdmin(SimpleHistoryAdmin):
         queryset.update(archived=False)
 
 
-@admin.register(LibraryType)
-class LibraryTypeAdmin(SimpleHistoryAdmin):
+@admin.register(AnalysisType)
+class AnalysisTypeAdmin(SimpleHistoryAdmin):
     filter_horizontal = ("library_protocol",)
     list_display = ("name", "archived")
     list_filter = (ArchivedFilter,)

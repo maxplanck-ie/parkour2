@@ -33,7 +33,7 @@ class RunsSerializer(ModelSerializer):
                 "phix": lane.phix,
                 "read_length": records[0].read_length.name,
                 "library_preparation": records[0].library_protocol.name,
-                "library_type": records[0].library_type.name,
+                "analysis_type": records[0].analysis_type.name,
                 "request": records[0].fetched_request[0].name,
             }
 
@@ -51,8 +51,8 @@ class RunsSerializer(ModelSerializer):
                         "library_preparation": lanes.get(lane_key, {}).get(
                             "library_preparation", None
                         ),
-                        "library_type": lanes.get(lane_key, {}).get(
-                            "library_type", None
+                        "analysis_type": lanes.get(lane_key, {}).get(
+                            "analysis_type", None
                         ),
                         "loading_concentration": lanes.get(lane_key, {}).get(
                             "loading_concentration", None
@@ -110,7 +110,7 @@ class SequencesSerializer(ModelSerializer):
                         "barcode": record.barcode,
                         "request": request.name,
                         "library_protocol": record.library_protocol.name,
-                        "library_type": record.library_type.name,
+                        "analysis_type": record.analysis_type.name,
                         "reads_pf_requested": record.sequencing_depth,
                         "pool": pools.get(barcode, ""),
                         "lane": lanes.get(barcode, ""),
@@ -132,7 +132,7 @@ class SequencesSerializer(ModelSerializer):
                         "lane": obj.get("lane", ""),
                         "pool": obj.get("pool", ""),
                         "library_protocol": obj.get("library_protocol", ""),
-                        "library_type": obj.get("library_type", ""),
+                        "analysis_type": obj.get("analysis_type", ""),
                         "reads_pf_requested": obj.get("reads_pf_requested", ""),
                     },
                     **item,

@@ -32,7 +32,7 @@ class RunStatisticsViewSet(viewsets.ReadOnlyModelViewSet):
             .select_related(
                 "read_length",
                 "library_protocol",
-                "library_type",
+                "analysis_type",
             )
             .prefetch_related(
                 Prefetch("request", queryset=request_qs, to_attr="fetched_request")
@@ -40,7 +40,7 @@ class RunStatisticsViewSet(viewsets.ReadOnlyModelViewSet):
             .only(
                 "read_length__name",
                 "library_protocol__name",
-                "library_type__name",
+                "analysis_type__name",
             )
         )
 
@@ -49,7 +49,7 @@ class RunStatisticsViewSet(viewsets.ReadOnlyModelViewSet):
             .select_related(
                 "read_length",
                 "library_protocol",
-                "library_type",
+                "analysis_type",
             )
             .prefetch_related(
                 Prefetch("request", queryset=request_qs, to_attr="fetched_request")
@@ -57,7 +57,7 @@ class RunStatisticsViewSet(viewsets.ReadOnlyModelViewSet):
             .only(
                 "read_length__name",
                 "library_protocol__name",
-                "library_type__name",
+                "analysis_type__name",
             )
         )
 
@@ -173,13 +173,13 @@ class SequencesStatisticsViewSet(viewsets.ReadOnlyModelViewSet):
             Library.objects.filter(~Q(status=-1))
             .select_related(
                 "library_protocol",
-                "library_type",
+                "analysis_type",
             )
             .only(
                 "name",
                 "barcode",
                 "library_protocol__name",
-                "library_type__name",
+                "analysis_type__name",
             )
         )
 
@@ -187,13 +187,13 @@ class SequencesStatisticsViewSet(viewsets.ReadOnlyModelViewSet):
             Sample.objects.filter(~Q(status=-1))
             .select_related(
                 "library_protocol",
-                "library_type",
+                "analysis_type",
             )
             .only(
                 "name",
                 "barcode",
                 "library_protocol__name",
-                "library_type__name",
+                "analysis_type__name",
             )
         )
 

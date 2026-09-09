@@ -3,6 +3,7 @@
 Unreleased
 ==========
 
+- "Library Type" renamed to "Analysis Type" end-to-end (model, API fields and endpoints, admin, exports), not just the frontend column label — avoids confusion with Library Protocol. `/api/library_types/` and `/api/usage/library_types/` are now `/api/analysis_types/` and `/api/usage/analysis_types/`; the `library_type`/`library_type_name` JSON keys on libraries/samples/run-statistics/sequences-statistics responses are now `analysis_type`/`analysis_type_name`. (Direct commit `<pending>`.)
 - Dates now display as `YYYY.MM.DD` everywhere (tables, exports, PDFs, filters) instead of the old `DD.MM.YYYY`. Date-range filters (Duties, Libraries & Samples, Load Flowcells, Runs/Sequences Statistics, Usage) use a new masked text input with a calendar picker instead of the browser's native date field. (PR #343.)
 - Table header filters: removed gray placeholder text, hint now only in the hover tooltip; filters now trigger 800ms after typing stops (was Tabulator's default 300ms), except Libraries & Samples, which triggers at 2500ms or on Enter. (Direct commit `71e46c72`.)
 - Fixed a migration that could crash applying the new library/sample naming rule to a database with pre-existing invalid names (real production data has some) — invalid names are now cleaned up automatically instead of the migration failing outright. (Direct commit `c9db14dd`.)

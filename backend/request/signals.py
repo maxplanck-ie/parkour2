@@ -25,7 +25,7 @@ Sample = apps.get_model("sample", "Sample")
 ReadLength = apps.get_model("library_sample_shared", "ReadLength")
 Organism = apps.get_model("library_sample_shared", "Organism")
 LibraryProtocol = apps.get_model("library_sample_shared", "LibraryProtocol")
-LibraryType = apps.get_model("library_sample_shared", "LibraryType")
+AnalysisType = apps.get_model("library_sample_shared", "AnalysisType")
 IndexType = apps.get_model("library_sample_shared", "IndexType")
 IndexI7 = apps.get_model("library_sample_shared", "IndexI7")
 IndexI5 = apps.get_model("library_sample_shared", "IndexI5")
@@ -236,9 +236,11 @@ def _collect_library_protocol(
     return libs, samples
 
 
-def _collect_library_type(instance: LibraryType) -> tuple[Sequence[int], Sequence[int]]:
-    libs = _query_ids(Library.objects.filter(library_type_id=instance.pk))
-    samples = _query_ids(Sample.objects.filter(library_type_id=instance.pk))
+def _collect_analysis_type(
+    instance: AnalysisType,
+) -> tuple[Sequence[int], Sequence[int]]:
+    libs = _query_ids(Library.objects.filter(analysis_type_id=instance.pk))
+    samples = _query_ids(Sample.objects.filter(analysis_type_id=instance.pk))
     return libs, samples
 
 
@@ -375,7 +377,7 @@ RELATED_COLLECTORS: dict[type, Callable] = {
     ReadLength: _collect_read_length,
     Organism: _collect_organism,
     LibraryProtocol: _collect_library_protocol,
-    LibraryType: _collect_library_type,
+    AnalysisType: _collect_analysis_type,
     IndexType: _collect_index_type,
     IndexI7: _collect_index_i7,
     IndexI5: _collect_index_i5,
@@ -484,7 +486,7 @@ def on_request_samples_m2m(sender, instance, action, pk_set, **kwargs):
 )
 @receiver(pre_delete, sender=Organism)
 @receiver(pre_delete, sender=LibraryProtocol)
-@receiver(pre_delete, sender=LibraryType)
+@receiver(pre_delete, sender=AnalysisType)
 @receiver(pre_delete, sender=IndexType)
 @receiver(pre_delete, sender=IndexI7)
 @receiver(pre_delete, sender=IndexI5)
@@ -508,7 +510,7 @@ def cache_related_model_before_delete(sender, instance, **kwargs):
 )
 @receiver(post_save, sender=Organism)
 @receiver(post_save, sender=LibraryProtocol)
-@receiver(post_save, sender=LibraryType)
+@receiver(post_save, sender=AnalysisType)
 @receiver(post_save, sender=IndexType)
 @receiver(post_save, sender=IndexI7)
 @receiver(post_save, sender=IndexI5)
@@ -534,7 +536,7 @@ def on_related_model_save(sender, instance, **kwargs):
 )
 @receiver(post_delete, sender=Organism)
 @receiver(post_delete, sender=LibraryProtocol)
-@receiver(post_delete, sender=LibraryType)
+@receiver(post_delete, sender=AnalysisType)
 @receiver(post_delete, sender=IndexType)
 @receiver(post_delete, sender=IndexI7)
 @receiver(post_delete, sender=IndexI5)

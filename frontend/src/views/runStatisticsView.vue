@@ -596,7 +596,7 @@ export default {
       uniqueRunStatisticsValues(rows.value, "library_preparation")
     );
     const analysisTypeOptions = computed(() =>
-      uniqueRunStatisticsValues(rows.value, "library_type")
+      uniqueRunStatisticsValues(rows.value, "analysis_type")
     );
     const filteredRows = computed(() =>
       rows.value.filter(
@@ -606,7 +606,7 @@ export default {
           (!filters.readLength || row.read_length === filters.readLength) &&
           (!filters.preparation ||
             row.library_preparation === filters.preparation) &&
-          (!filters.analysisType || row.library_type === filters.analysisType)
+          (!filters.analysisType || row.analysis_type === filters.analysisType)
       )
     );
     const hasSelectedRows = computed(() =>

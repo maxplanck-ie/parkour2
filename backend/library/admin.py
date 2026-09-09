@@ -12,7 +12,7 @@ class LibraryAdmin(SimpleHistoryAdmin):
         "status",
         "request_name",
         "library_protocol",
-        "library_type",
+        "analysis_type",
         "index_type",
         "index_i7",
         "index_i5",
@@ -27,13 +27,13 @@ class LibraryAdmin(SimpleHistoryAdmin):
         "name",
         "barcode",
         "library_protocol__name",
-        "library_type__name",
+        "analysis_type__name",
         "request__name",
     )
 
     list_filter = (
         ("library_protocol", RelatedDropdownFilter),
-        ("library_type", RelatedDropdownFilter),
+        ("analysis_type", RelatedDropdownFilter),
         ("organism", RelatedDropdownFilter),
         ("read_length", RelatedDropdownFilter),
         ("index_type", RelatedDropdownFilter),
@@ -56,7 +56,7 @@ class LibraryAdmin(SimpleHistoryAdmin):
             {
                 "fields": (
                     "library_protocol",
-                    "library_type",
+                    "analysis_type",
                     "measuring_unit",
                     "measured_value",
                     "mean_fragment_size",

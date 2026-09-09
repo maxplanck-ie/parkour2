@@ -641,7 +641,7 @@ class FlowcellAnalysisViewSet(viewsets.ViewSet):
         analysis on the flow cell's contents
         The keys of the dictionary are projects. The values are then a dictionary
         dictionaries with library name keys and tuple values of (sample/library
-        name, library type, library protocol type, organism).
+        name, analysis type, library protocol type, organism).
         """
         flowcell_id = request.query_params.get("flowcell_id", "")
         flowcell = get_object_or_404(Flowcell, flowcell_id=flowcell_id)
@@ -664,7 +664,7 @@ class FlowcellAnalysisViewSet(viewsets.ViewSet):
 
                 requests[rname][item.barcode] = [
                     item.name,
-                    item.library_type.name,
+                    item.analysis_type.name,
                     item.library_protocol.name,
                     [
                         item.organism.name,

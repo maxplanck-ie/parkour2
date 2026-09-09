@@ -16,7 +16,7 @@ from .models import (
     IndexPair,
     IndexType,
     LibraryProtocol,
-    LibraryType,
+    AnalysisType,
     Organism,
     ReadLength,
 )
@@ -26,7 +26,7 @@ from .serializers import (
     IndexI7Serializer,
     IndexTypeSerializer,
     LibraryProtocolSerializer,
-    LibraryTypeSerializer,
+    AnalysisTypeSerializer,
     OrganismSerializer,
     ReadLengthSerializer,
 )
@@ -206,13 +206,13 @@ class LibraryProtocolInvoicingViewSet(MoveOtherMixin, viewsets.ReadOnlyModelView
         return queryset
 
 
-class LibraryTypeViewSet(MoveOtherMixin, viewsets.ReadOnlyModelViewSet):
+class AnalysisTypeViewSet(MoveOtherMixin, viewsets.ReadOnlyModelViewSet):
     """Get the list of library types."""
 
-    serializer_class = LibraryTypeSerializer
+    serializer_class = AnalysisTypeSerializer
 
     def get_queryset(self):
-        queryset = LibraryType.objects.filter(archived=False).order_by("name")
+        queryset = AnalysisType.objects.filter(archived=False).order_by("name")
         library_protocol = self.request.query_params.get("library_protocol_id", None)
         if library_protocol is not None:
             try:

@@ -39,7 +39,7 @@ class BaseSerializer(ModelSerializer):
         return obj.name
 
     def get_library_strategy(self, obj):
-        return obj.library_type.name
+        return obj.analysis_type.name
 
     def get_library_layout(self, obj):
         return "single" if obj.read_length.name[0] == "1" else "paired"

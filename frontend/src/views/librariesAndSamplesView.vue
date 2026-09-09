@@ -1910,7 +1910,7 @@ export default {
           return getVal(a.name) - getVal(b.name);
         });
         const analysisRes = await axiosRef.get(
-          `${urlStringStart}/api/library_types/`
+          `${urlStringStart}/api/analysis_types/`
         );
         this.analysisTypesList = analysisRes.data.sort((a, b) =>
           a.name.localeCompare(b.name, undefined, { sensitivity: "base" })
@@ -2384,9 +2384,9 @@ export default {
             protocolMap.get(String(record.library_protocol)) ||
             row.library_protocol_name;
         }
-        if (record.library_type !== undefined) {
+        if (record.analysis_type !== undefined) {
           row.analysis_type_name =
-            analysisMap.get(String(record.library_type)) ||
+            analysisMap.get(String(record.analysis_type)) ||
             row.analysis_type_name;
         }
         if (record.sequencing_depth !== undefined) {

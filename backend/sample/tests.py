@@ -9,7 +9,7 @@ from django.utils import timezone
 from library_sample_shared.models import (
     BarcodeCounter,
     LibraryProtocol,
-    LibraryType,
+    AnalysisType,
     Organism,
     ReadLength,
 )
@@ -39,9 +39,9 @@ def create_sample(name, status=0, save=True, read_length=None, index_type=None):
     )
     library_protocol.save()
 
-    library_type = LibraryType(name="Library Type")
-    library_type.save()
-    library_type.library_protocol.add(library_protocol)
+    analysis_type = AnalysisType(name="Library Type")
+    analysis_type.save()
+    analysis_type.library_protocol.add(library_protocol)
 
     nat = NucleicAcidType(name="Nucleic Acid Type")
     nat.save()
@@ -54,7 +54,7 @@ def create_sample(name, status=0, save=True, read_length=None, index_type=None):
         read_length_id=read_length.pk,
         sequencing_depth=1,
         library_protocol_id=library_protocol.pk,
-        library_type_id=library_type.pk,
+        analysis_type_id=analysis_type.pk,
         nucleic_acid_type_id=nat.pk,
     )
 
@@ -214,7 +214,7 @@ class TestSamples(BaseTestCase):
                             "read_length": self.sample.read_length.pk,
                             "sequencing_depth": 1,
                             "library_protocol": self.sample.library_protocol.pk,
-                            "library_type": self.sample.library_type.pk,
+                            "analysis_type": self.sample.analysis_type.pk,
                             "nucleic_acid_type": self.sample.nucleic_acid_type.pk,
                         }
                     ]
@@ -242,7 +242,7 @@ class TestSamples(BaseTestCase):
                             "read_length": self.sample.read_length.pk,
                             "sequencing_depth": 1,
                             "library_protocol": self.sample.library_protocol.pk,
-                            "library_type": self.sample.library_type.pk,
+                            "analysis_type": self.sample.analysis_type.pk,
                             "nucleic_acid_type": self.sample.nucleic_acid_type.pk,
                         },
                         {
@@ -306,7 +306,7 @@ class TestSamples(BaseTestCase):
                             "read_length": sample.read_length.pk,
                             "sequencing_depth": 1,
                             "library_protocol": sample.library_protocol.pk,
-                            "library_type": sample.library_type.pk,
+                            "analysis_type": sample.analysis_type.pk,
                             "nucleic_acid_type": sample.nucleic_acid_type.pk,
                         }
                     ]
@@ -337,7 +337,7 @@ class TestSamples(BaseTestCase):
                             "read_length": sample1.read_length.pk,
                             "sequencing_depth": 1,
                             "library_protocol": sample1.library_protocol.pk,
-                            "library_type": sample1.library_type.pk,
+                            "analysis_type": sample1.analysis_type.pk,
                             "nucleic_acid_type": sample1.nucleic_acid_type.pk,
                         },
                         {
@@ -374,7 +374,7 @@ class TestSamples(BaseTestCase):
                             "read_length": self.sample.read_length.pk,
                             "sequencing_depth": 1,
                             "library_protocol": self.sample.library_protocol.pk,
-                            "library_type": self.sample.library_type.pk,
+                            "analysis_type": self.sample.analysis_type.pk,
                             "nucleic_acid_type": self.sample.nucleic_acid_type.pk,
                         }
                     ]
@@ -403,7 +403,7 @@ class TestSamples(BaseTestCase):
                             "read_length": sample.read_length.pk,
                             "sequencing_depth": 1,
                             "library_protocol": sample.library_protocol.pk,
-                            "library_type": sample.library_type.pk,
+                            "analysis_type": sample.analysis_type.pk,
                             "nucleic_acid_type": sample.nucleic_acid_type.pk,
                         }
                     ]

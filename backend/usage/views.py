@@ -9,7 +9,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 Request = apps.get_model("request", "Request")
-LibraryType = apps.get_model("library_sample_shared", "LibraryType")
+AnalysisType = apps.get_model("library_sample_shared", "AnalysisType")
 Library = apps.get_model("library", "Library")
 Sample = apps.get_model("sample", "Sample")
 PrincipalInvestigator = apps.get_model("common", "PrincipalInvestigator")
@@ -164,17 +164,17 @@ class PrincipalInvestigatorsUsage(APIView):
         return Response(data)
 
 
-class LibraryTypesUsage(APIView):
+class AnalysisTypesUsage(APIView):
     permission_classes = (IsAdminUser,)
 
     def get(self, request):
         start, end = get_date_range(request, "%Y-%m-%dT%H:%M:%S")
 
-        libraries_qs = Library.objects.select_related("library_type").only(
-            "id", "library_type__name"
+        libraries_qs = Library.objects.select_related("analysis_type").only(
+            "id", "analysis_type__name"
         )
-        samples_qs = Sample.objects.select_related("library_type").only(
-            "id", "library_type__name"
+        samples_qs = Sample.objects.select_related("analysis_type").only(
+            "id", "analysis_type__name"
         )
 
         requests = (
@@ -192,12 +192,12 @@ class LibraryTypesUsage(APIView):
         counts = {}
         for req in requests:
             # Extract Library Types
-            library_types = [x.library_type.name for x in req.fetched_libraries]
-            sample_types = [x.library_type.name for x in req.fetched_samples]
+            analysis_types = [x.analysis_type.name for x in req.fetched_libraries]
+            sample_types = [x.analysis_type.name for x in req.fetched_samples]
 
             # Merge the counts
             library_cnt = {
-                x[0]: {"libraries": x[1]} for x in Counter(library_types).items()
+                x[0]: {"libraries": x[1]} for x in Counter(analysis_types).items()
             }
             sample_cnt = {
                 x[0]: {"samples": x[1]} for x in Counter(sample_types).items()
@@ -218,12 +218,12 @@ class LibraryTypesUsage(APIView):
 
         data = [
             {
-                "name": library_type,
+                "name": analysis_type,
                 "data": sum(count.values()),
                 "libraries": count["libraries"],
                 "samples": count["samples"],
             }
-            for library_type, count in counts.items()
+            for analysis_type, count in counts.items()
         ]
 
         data = sorted(data, key=lambda x: x["name"])

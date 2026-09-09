@@ -697,7 +697,7 @@ class SimpleROCrateBuilder:
             for library in Library.objects.filter(id__in=ids)
             .select_related(
                 "library_protocol",
-                "library_type",
+                "analysis_type",
                 "organism",
                 "read_length",
                 "index_type",
@@ -706,7 +706,7 @@ class SimpleROCrateBuilder:
                 "request",
                 "index_type__indices_i7",
                 "index_type__indices_i5",
-                "library_type__library_protocol",
+                "analysis_type__library_protocol",
             )
         }
 
@@ -718,7 +718,7 @@ class SimpleROCrateBuilder:
             .select_related(
                 "nucleic_acid_type",
                 "library_protocol",
-                "library_type",
+                "analysis_type",
                 "organism",
                 "read_length",
                 "index_type",
@@ -727,7 +727,7 @@ class SimpleROCrateBuilder:
                 "request",
                 "index_type__indices_i7",
                 "index_type__indices_i5",
-                "library_type__library_protocol",
+                "analysis_type__library_protocol",
             )
         }
 
@@ -1445,7 +1445,7 @@ class SimpleROCrateBuilder:
             return
         links = (
             ("organism", "organism", "organisms", ISA_ORGANISM_URI),
-            ("libraryType", "library_type", "library_types", ISA_MATERIAL_URI),
+            ("analysisType", "analysis_type", "analysis_types", ISA_MATERIAL_URI),
             ("readLength", "read_length", "read_lengths", None),
             ("indexType", "index_type", "index_types", None),
             (
@@ -1476,22 +1476,22 @@ class SimpleROCrateBuilder:
             )
             if additional_type:
                 _add_additional_type(term, additional_type)
-            if attr_name == "library_type":
+            if attr_name == "analysis_type":
                 try:
-                    self._link_library_type_protocols(term, value)
+                    self._link_analysis_type_protocols(term, value)
                 except Exception:
                     pass
             entity[property_name] = _ref(entity_id)
             self._mention(entity_id)
 
-    def _link_library_type_protocols(self, library_type_entity, library_type):
+    def _link_analysis_type_protocols(self, analysis_type_entity, analysis_type):
         protocol_refs = []
-        for protocol in library_type.library_protocol.all():
+        for protocol in analysis_type.library_protocol.all():
             protocol_id = self._add_protocol(protocol)
             protocol_refs.append(_ref(protocol_id))
         if protocol_refs:
-            library_type_entity["availableProtocols"] = _unique_refs(
-                library_type_entity.get("availableProtocols", []) + protocol_refs
+            analysis_type_entity["availableProtocols"] = _unique_refs(
+                analysis_type_entity.get("availableProtocols", []) + protocol_refs
             )
 
     def _link_index_metadata(self, entity, model, row, section):
@@ -2007,7 +2007,7 @@ class SimpleROCrateBuilder:
             "hasLane": {"@id": "https://w3id.org/isa/hasPart", "@type": "@id"},
             "softwareVersion": "http://schema.org/softwareVersion",
             "organism": {"@id": "http://schema.org/taxonomicRange", "@type": "@id"},
-            "libraryType": {"@id": "http://schema.org/additionalType", "@type": "@id"},
+            "analysisType": {"@id": "http://schema.org/additionalType", "@type": "@id"},
             "readLength": {
                 "@id": "http://schema.org/measurementTechnique",
                 "@type": "@id",
@@ -2065,8 +2065,8 @@ def _entity_section(entity):
         return "protocols"
     if entity_id.startswith("#organism-"):
         return "organisms"
-    if entity_id.startswith("#library-type-"):
-        return "library_types"
+    if entity_id.startswith("#analysis-type-"):
+        return "analysis_types"
     if entity_id.startswith("#read-length-"):
         return "read_lengths"
     if entity_id.startswith("#index-type-"):

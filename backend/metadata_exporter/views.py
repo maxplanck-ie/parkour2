@@ -35,7 +35,7 @@ class MetadataExporterViewSet(viewsets.ViewSet):
                 "organism",
                 "read_length",
                 "library_protocol",
-                "library_type",
+                "analysis_type",
             )
             .only(
                 "name",
@@ -47,7 +47,7 @@ class MetadataExporterViewSet(viewsets.ViewSet):
                 "read_length__name",
                 "mean_fragment_size",
                 "library_protocol__name",
-                "library_type__name",
+                "analysis_type__name",
             )
             .filter(status__gte=5)
         )
@@ -57,7 +57,7 @@ class MetadataExporterViewSet(viewsets.ViewSet):
                 "organism",
                 "read_length",
                 "library_protocol",
-                "library_type",
+                "analysis_type",
                 "librarypreparation",
             )
             .only(
@@ -69,7 +69,7 @@ class MetadataExporterViewSet(viewsets.ViewSet):
                 "organism__scientific_name",
                 "read_length__name",
                 "library_protocol__name",
-                "library_type__name",
+                "analysis_type__name",
                 "librarypreparation__mean_fragment_size",
             )
             .filter(status__gte=5)

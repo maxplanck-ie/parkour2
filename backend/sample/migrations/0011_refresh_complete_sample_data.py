@@ -3,7 +3,7 @@
 import django.contrib.postgres.fields
 from django.db import migrations, models
 
-from common.sql import (
+from common.sql_legacy_pre_analysis_type_rename import (
     SAMPLE_CREATE_TABLE_SQL,
     SAMPLE_DROP_MV_SQL,
     SAMPLE_INDEX_SQL,

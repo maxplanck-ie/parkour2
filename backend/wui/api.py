@@ -26,7 +26,7 @@ from library_sample_shared.views import (
     IndexViewSet,
     LibraryProtocolInvoicingViewSet,
     LibraryProtocolViewSet,
-    LibraryTypeViewSet,
+    AnalysisTypeViewSet,
     OrganismViewSet,
     ReadLengthInvoicingViewSet,
     ReadLengthViewSet,
@@ -74,7 +74,7 @@ router.register(
     ReadLengthInvoicingViewSet,
     basename="read-lengths-invoicing",
 )
-router.register(r"library_types", LibraryTypeViewSet, basename="library-type")
+router.register(r"analysis_types", AnalysisTypeViewSet, basename="analysis-type")
 router.register(
     r"nucleic_acid_types", NucleicAcidTypeViewSet, basename="nucleic-acid-type"
 )

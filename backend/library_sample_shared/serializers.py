@@ -10,7 +10,7 @@ from .models import (
     IndexI7,
     IndexType,
     LibraryProtocol,
-    LibraryType,
+    AnalysisType,
     Organism,
     ReadLength,
 )
@@ -86,15 +86,15 @@ class LibraryProtocolSerializer(ModelSerializer):
         fields = "__all__"
 
 
-class LibraryTypeSerializer(ModelSerializer):
+class AnalysisTypeSerializer(ModelSerializer):
     library_protocol = SerializerMethodField()
 
     class Meta:
-        model = LibraryType
+        model = AnalysisType
         fields = ("id", "name", "library_protocol")
 
     def get_library_protocol(self, obj):
-        return LibraryType.objects.filter(archived=False, pk=obj.pk).values_list(
+        return AnalysisType.objects.filter(archived=False, pk=obj.pk).values_list(
             "library_protocol__id", flat=True
         )
 
@@ -121,7 +121,7 @@ class LibrarySampleBaseSerializer(ModelSerializer):
     request_id = SerializerMethodField()
     request_name = SerializerMethodField()
     library_protocol_name = SerializerMethodField()
-    library_type_name = SerializerMethodField()
+    analysis_type_name = SerializerMethodField()
     read_length_name = SerializerMethodField()
     organism_name = SerializerMethodField()
 
@@ -136,8 +136,8 @@ class LibrarySampleBaseSerializer(ModelSerializer):
             "create_time",
             "library_protocol",
             "library_protocol_name",
-            "library_type",
-            "library_type_name",
+            "analysis_type",
+            "analysis_type_name",
             "volume",
             "organism",
             "read_length",
@@ -157,8 +157,8 @@ class LibrarySampleBaseSerializer(ModelSerializer):
     def get_library_protocol_name(self, obj):
         return obj.library_protocol.name
 
-    def get_library_type_name(self, obj):
-        return obj.library_type.name
+    def get_analysis_type_name(self, obj):
+        return obj.analysis_type.name
 
     def get_read_length_name(self, obj):
         return obj.read_length.name

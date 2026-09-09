@@ -42,7 +42,7 @@ class Command(BaseCommand):
                                   lib_prep.mean_fragment_size as mean_fragment_size,
                                   R.name as request_name,
                                   R.create_time as request_time,
-                                  Lt.name as library_type,
+                                  Lt.name as analysis_type,
                                   Lp.name as library_protocol
                             FROM flowcell_flowcell fc,
                                  jsonb_to_recordset(fc.sequences)
@@ -52,14 +52,14 @@ class Command(BaseCommand):
                                    reads_pf_sequenced float
                                  ),
                                  sample_sample sam,
-                                 library_sample_shared_librarytype Lt,
+                                 library_sample_shared_analysistype Lt,
                                  library_sample_shared_libraryprotocol Lp,
                                  library_sample_shared_organism org,
                                  request_request R,
                                  request_request_samples Rs,
                                  library_preparation_librarypreparation lib_prep
                             WHERE sam.barcode = x.barcode
-                            AND sam.library_type_id = Lt.id
+                            AND sam.analysis_type_id = Lt.id
                             AND sam.library_protocol_id = Lp.id
                             AND sam.organism_id = org.id
                             AND Rs.sample_id = sam.id
@@ -83,7 +83,7 @@ class Command(BaseCommand):
                           lib_prep.mean_fragment_size as mean_fragment_size,
                           R.name as request_name,
                           R.create_time as request_time,
-                          Lt.name as library_type,
+                          Lt.name as analysis_type,
                           Lp.name as library_protocol
                         /* some fields are read as text to avoid failure on empty fields "" */
                         FROM flowcell_flowcell fc,
@@ -104,14 +104,14 @@ class Command(BaseCommand):
                                "rRNA_rate" float
                              ),
                              sample_sample sam,
-                             library_sample_shared_librarytype Lt,
+                             library_sample_shared_analysistype Lt,
                              library_sample_shared_libraryprotocol Lp,
                              library_sample_shared_organism org,
                              request_request R,
                              request_request_samples Rs,
                              library_preparation_librarypreparation lib_prep
                         WHERE sam.barcode = x.barcode
-                        AND sam.library_type_id = Lt.id
+                        AND sam.analysis_type_id = Lt.id
                         AND sam.library_protocol_id = Lp.id
                         AND sam.organism_id = org.id
                         AND Rs.sample_id = sam.id

@@ -35,7 +35,7 @@ class SampleAdmin(SimpleHistoryAdmin):
         "status",
         "request_name",
         "library_protocol",
-        "library_type",
+        "analysis_type",
         "archived",
     )
 
@@ -50,13 +50,13 @@ class SampleAdmin(SimpleHistoryAdmin):
         "name",
         "barcode",
         "library_protocol__name",
-        "library_type__name",
+        "analysis_type__name",
         "request__name",
     )
 
     list_filter = (
         ("library_protocol", RelatedDropdownFilter),
-        ("library_type", RelatedDropdownFilter),
+        ("analysis_type", RelatedDropdownFilter),
         ("nucleic_acid_type", RelatedDropdownFilter),
         ("organism", RelatedDropdownFilter),
         ("read_length", RelatedDropdownFilter),
@@ -82,7 +82,7 @@ class SampleAdmin(SimpleHistoryAdmin):
             {
                 "fields": (
                     "library_protocol",
-                    "library_type",
+                    "analysis_type",
                     "nucleic_acid_type",
                     "measuring_unit",
                     "measured_value",

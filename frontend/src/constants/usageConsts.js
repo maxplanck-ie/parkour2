@@ -33,9 +33,9 @@ export const USAGE_CHARTS = [
     stacked: true
   },
   {
-    key: "libraryTypes",
+    key: "analysisTypes",
     title: "Analysis Types",
-    endpoint: "api/usage/library_types/",
+    endpoint: "api/usage/analysis_types/",
     stacked: true
   }
 ];

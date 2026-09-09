@@ -1,6 +1,6 @@
 [
     {
-        "model": "library_sample_shared.librarytype",
+        "model": "library_sample_shared.analysistype",
         "pk": 1,
         "fields": {
             "name": "Other",
@@ -33,7 +33,7 @@
         }
     },
     {
-        "model": "library_sample_shared.librarytype",
+        "model": "library_sample_shared.analysistype",
         "pk": 2,
         "fields": {
             "name": "RNA-Seq single cell",
@@ -45,7 +45,7 @@
         }
     },
     {
-        "model": "library_sample_shared.librarytype",
+        "model": "library_sample_shared.analysistype",
         "pk": 3,
         "fields": {
             "name": "ChIP-Seq",
@@ -59,7 +59,7 @@
         }
     },
     {
-        "model": "library_sample_shared.librarytype",
+        "model": "library_sample_shared.analysistype",
         "pk": 4,
         "fields": {
             "name": "stranded mRNA-Seq",
@@ -70,7 +70,7 @@
         }
     },
     {
-        "model": "library_sample_shared.librarytype",
+        "model": "library_sample_shared.analysistype",
         "pk": 5,
         "fields": {
             "name": "stranded RNA-Seq",
@@ -81,7 +81,7 @@
         }
     },
     {
-        "model": "library_sample_shared.librarytype",
+        "model": "library_sample_shared.analysistype",
         "pk": 6,
         "fields": {
             "name": "mRNA-Seq",
@@ -92,7 +92,7 @@
         }
     },
     {
-        "model": "library_sample_shared.librarytype",
+        "model": "library_sample_shared.analysistype",
         "pk": 7,
         "fields": {
             "name": "small RNA-Seq",
@@ -101,7 +101,7 @@
         }
     },
     {
-        "model": "library_sample_shared.librarytype",
+        "model": "library_sample_shared.analysistype",
         "pk": 8,
         "fields": {
             "name": "RNA-Seq",
@@ -110,7 +110,7 @@
         }
     },
     {
-        "model": "library_sample_shared.librarytype",
+        "model": "library_sample_shared.analysistype",
         "pk": 9,
         "fields": {
             "name": "WGS",
@@ -121,7 +121,7 @@
         }
     },
     {
-        "model": "library_sample_shared.librarytype",
+        "model": "library_sample_shared.analysistype",
         "pk": 10,
         "fields": {
             "name": "ATAC-Seq",
@@ -134,7 +134,7 @@
         }
     },
     {
-        "model": "library_sample_shared.librarytype",
+        "model": "library_sample_shared.analysistype",
         "pk": 11,
         "fields": {
             "name": "WGBS",
@@ -143,7 +143,7 @@
         }
     },
     {
-        "model": "library_sample_shared.librarytype",
+        "model": "library_sample_shared.analysistype",
         "pk": 12,
         "fields": {
             "name": "Amplicon-Seq",
@@ -154,7 +154,7 @@
         }
     },
     {
-        "model": "library_sample_shared.librarytype",
+        "model": "library_sample_shared.analysistype",
         "pk": 13,
         "fields": {
             "name": "3' mRNA-Seq",
@@ -166,7 +166,7 @@
         }
     },
     {
-        "model": "library_sample_shared.librarytype",
+        "model": "library_sample_shared.analysistype",
         "pk": 14,
         "fields": {
             "name": "Full length transcript Seq",
@@ -175,7 +175,7 @@
         }
     },
     {
-        "model": "library_sample_shared.librarytype",
+        "model": "library_sample_shared.analysistype",
         "pk": 17,
         "fields": {
             "name": "Hi-C",
@@ -186,7 +186,7 @@
         }
     },
     {
-        "model": "library_sample_shared.librarytype",
+        "model": "library_sample_shared.analysistype",
         "pk": 20,
         "fields": {
             "name": "ATAC-Seq single cell",
@@ -197,7 +197,7 @@
         }
     },
     {
-        "model": "library_sample_shared.librarytype",
+        "model": "library_sample_shared.analysistype",
         "pk": 21,
         "fields": {
             "name": "CUTandRUN-seq",
@@ -208,7 +208,7 @@
         }
     },
     {
-        "model": "library_sample_shared.librarytype",
+        "model": "library_sample_shared.analysistype",
         "pk": 22,
         "fields": {
             "name": "CUTandTag-seq",
@@ -219,7 +219,7 @@
         }
     },
     {
-        "model": "library_sample_shared.librarytype",
+        "model": "library_sample_shared.analysistype",
         "pk": 24,
         "fields": {
             "name": "Nanopore cDNA Library",
@@ -232,7 +232,7 @@
         }
     },
     {
-        "model": "library_sample_shared.librarytype",
+        "model": "library_sample_shared.analysistype",
         "pk": 25,
         "fields": {
             "name": "Nanopore DNA Library",
@@ -245,7 +245,7 @@
         }
     },
     {
-        "model": "library_sample_shared.librarytype",
+        "model": "library_sample_shared.analysistype",
         "pk": 26,
         "fields": {
             "name": "Nanopore RNA Library",
