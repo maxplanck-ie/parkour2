@@ -22,7 +22,7 @@ def browser_context_args(browser_context_args):
 def test_login_page(page: Page):
     wrongEmailId = "wrong.email.id@test.com"
     wrongPassword = "wrong.password"
-    forgotPasswordEmailId = "forgot.password.email.id@ie-freiburg.mpg.de"
+    forgotPasswordEmailId = "forgot.password.email.id@omics.dev"
     correctEmailId = utilities.testEmailID
     correctPassword = utilities.testPassword
 

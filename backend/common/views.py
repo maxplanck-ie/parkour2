@@ -334,7 +334,7 @@ def user_details(request):
 
 
 def danke(request):
-    return render(request, "danke.html")
+    return render(request, "danke.html", {"contact_email": settings.SERVER_EMAIL})
 
 
 class PasswordSetConfirmView(auth_views.PasswordResetConfirmView):

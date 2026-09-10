@@ -8,7 +8,7 @@ from urllib.parse import urlparse
 
 from playwright.sync_api import Page, TimeoutError as PlaywrightTimeoutError, expect
 
-testEmailID = "parkour-staff@parkour-demo.ie-freiburg.mpg.de"
+testEmailID = "parkour-staff@parkour-demo.omics.dev"
 testPassword = "parkour-staff"
 
 
