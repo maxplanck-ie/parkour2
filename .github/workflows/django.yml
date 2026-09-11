@@ -125,7 +125,7 @@ jobs:
 
       - name: Verify migrations
         env:
-          DJANGO_SETTINGS_MODULE: wui.settings.prod
+          DJANGO_SETTINGS_MODULE: config.settings.prod
           DATABASE_URL: postgres://postgres:${{ secrets.POSTGRES_PASSWORD }}@127.0.0.1:${{ job.services.postgres.ports['5432'] }}/postgres
           SECRET_KEY: ${{ secrets.SECRET_KEY }}
         run: |
@@ -134,7 +134,7 @@ jobs:
 
       - name: Validate templates
         env:
-          DJANGO_SETTINGS_MODULE: wui.settings.prod
+          DJANGO_SETTINGS_MODULE: config.settings.prod
           DATABASE_URL: postgres://postgres:${{ secrets.POSTGRES_PASSWORD }}@127.0.0.1:${{ job.services.postgres.ports['5432'] }}/postgres
           SECRET_KEY: ${{ secrets.SECRET_KEY }}
         run: |
@@ -143,7 +143,7 @@ jobs:
 
       - name: Run unittests
         env:
-          DJANGO_SETTINGS_MODULE: wui.settings.testing
+          DJANGO_SETTINGS_MODULE: config.settings.testing
           DATABASE_URL: postgres://postgres:${{ secrets.POSTGRES_PASSWORD }}@127.0.0.1:${{ job.services.postgres.ports['5432'] }}/postgres
           SECRET_KEY: ${{ secrets.SECRET_KEY }}
         run: |

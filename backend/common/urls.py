@@ -56,7 +56,6 @@ router.register(
 urlpatterns = [
     path("", views.index, name="index"),
     path("get_navigation_tree/", views.get_navigation_tree, name="get_navigation_tree"),
-    path("media/<path:url_path>", views.protected_media, name="protected_media"),
     path(
         "login/", auth_views.LoginView.as_view(template_name="login.html"), name="login"
     ),
