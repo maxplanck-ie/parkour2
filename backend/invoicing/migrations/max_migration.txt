@@ -1,1 +1,1 @@
-0006_remove_invoicingreport
+0006_delete_invoicingreport

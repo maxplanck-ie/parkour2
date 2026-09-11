@@ -12,7 +12,7 @@ SAMPLE_MEASURING_UNIT_CHOICES = [
 
 class Migration(migrations.Migration):
     dependencies = [
-        ("sample", "0015_complete_sample_data_comment_input_organism_name"),
+        ("sample", "0016_complete_sample_data_comment_input_organism_name"),
     ]
 
     operations = [

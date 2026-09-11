@@ -2,7 +2,7 @@
 
 from django.db import migrations, models
 
-from common.sql_legacy_pre_analysis_type_rename import library_insert_sql
+from common.sql import library_insert_sql
 
 
 POPULATE_SQL = library_insert_sql()
@@ -10,7 +10,7 @@ POPULATE_SQL = library_insert_sql()
 
 class Migration(migrations.Migration):
     dependencies = [
-        ("library", "0010_alter_library_removed_concentration_method_and_more"),
+        ("library", "0011_alter_library_removed_concentration_method_and_more"),
     ]
 
     operations = [

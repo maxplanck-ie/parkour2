@@ -5,7 +5,7 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
     dependencies = [
-        ("sample", "0012_alter_sample_removed_concentration_method_and_more"),
+        ("sample", "0013_alter_sample_removed_concentration_method_and_more"),
     ]
 
     operations = [

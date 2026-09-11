@@ -6,7 +6,7 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
     dependencies = [
-        ("library", "0009_refresh_complete_library_data"),
+        ("library", "0010_refresh_complete_library_data"),
         ("library_sample_shared", "0015_alter_historicallibraryprotocol_name_and_more"),
     ]
 

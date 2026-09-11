@@ -4,7 +4,7 @@ from django.db import migrations
 
 class Migration(migrations.Migration):
     dependencies = [
-        ("sample", "0013_alter_sample_measuring_unit_and_more"),
+        ("sample", "0014_alter_sample_measuring_unit_and_more"),
     ]
 
     operations = [

@@ -3,48 +3,58 @@
 import django.contrib.postgres.fields
 from django.db import migrations, models
 
-from common.sql_legacy_pre_analysis_type_rename import (
-    SAMPLE_CREATE_TABLE_SQL,
-    SAMPLE_DROP_MV_SQL,
-    SAMPLE_INDEX_SQL,
-    sample_create_mv_sql,
-    sample_insert_sql,
+from common.sql import (
+    LIBRARY_CREATE_TABLE_SQL,
+    LIBRARY_DROP_MV_SQL,
+    LIBRARY_DROP_VIEW_SQL,
+    LIBRARY_INDEX_SQL,
+    library_create_mv_sql,
+    library_insert_sql,
 )
 
-DROP_MV_SQL = SAMPLE_DROP_MV_SQL
+DROP_VIEW_SQL = LIBRARY_DROP_VIEW_SQL
 
-CREATE_TABLE_SQL = SAMPLE_CREATE_TABLE_SQL
+DROP_MV_SQL = LIBRARY_DROP_MV_SQL
 
-POPULATE_SQL = sample_insert_sql()
+CREATE_TABLE_SQL = LIBRARY_CREATE_TABLE_SQL
 
-INDEX_SQL = SAMPLE_INDEX_SQL
+POPULATE_SQL = library_insert_sql()
 
-CREATE_MV_SQL = sample_create_mv_sql()
+INDEX_SQL = LIBRARY_INDEX_SQL
+
+CREATE_MV_SQL = library_create_mv_sql()
 
 
 class Migration(migrations.Migration):
     dependencies = [
-        ("sample", "0010_update_sample_measurement_fields"),
+        ("library", "0009_rename_library_type_to_analysis_type"),
+        ("library_sample_shared", "0016_rename_librarytype_analysistype_and_more"),
+        ("request", "0009_historicalrequest"),
+        ("flowcell", "0004_archived_feature"),
     ]
 
     operations = [
         migrations.SeparateDatabaseAndState(
             database_operations=[
                 migrations.RunSQL(
-                    sql=DROP_MV_SQL,
-                    reverse_sql="DROP TABLE IF EXISTS complete_sample_data_mv CASCADE;",
+                    sql=DROP_VIEW_SQL,
+                    reverse_sql=migrations.RunSQL.noop,
                 ),
                 migrations.RunSQL(
-                    sql=CREATE_TABLE_SQL,
+                    sql=DROP_MV_SQL,
                     reverse_sql=CREATE_MV_SQL,
                 ),
                 migrations.RunSQL(
-                    sql="TRUNCATE TABLE complete_sample_data_mv;",
+                    sql=CREATE_TABLE_SQL,
+                    reverse_sql=DROP_MV_SQL,
+                ),
+                migrations.RunSQL(
+                    sql="TRUNCATE TABLE complete_library_data_mv;",
                     reverse_sql=migrations.RunSQL.noop,
                 ),
                 migrations.RunSQL(
                     sql=POPULATE_SQL,
-                    reverse_sql="REFRESH MATERIALIZED VIEW complete_sample_data_mv;",
+                    reverse_sql="REFRESH MATERIALIZED VIEW complete_library_data_mv;",
                 ),
                 migrations.RunSQL(
                     sql=INDEX_SQL,
@@ -53,18 +63,16 @@ class Migration(migrations.Migration):
             ],
             state_operations=[
                 migrations.CreateModel(
-                    name="CompleteSampleData",
+                    name="CompleteLibraryData",
                     fields=[
                         (
-                            "sample_id",
+                            "library_id",
                             models.IntegerField(primary_key=True, serialize=False),
                         ),
                         ("barcode", models.CharField(max_length=100)),
                         ("name", models.CharField(max_length=255)),
                         ("status", models.IntegerField()),
                         ("sequencing_depth", models.FloatField()),
-                        ("nucleic_acid_type_id", models.IntegerField()),
-                        ("nucleic_acid_type_name", models.CharField(max_length=100)),
                         ("measuring_unit", models.CharField(max_length=50)),
                         ("measured_value", models.FloatField()),
                         (
@@ -73,7 +81,7 @@ class Migration(migrations.Migration):
                         ),
                         ("measured_value_facility", models.FloatField()),
                         ("concentration_library", models.FloatField()),
-                        ("gmo", models.BooleanField()),
+                        ("percent_total", models.FloatField()),
                         ("library_protocol_id", models.IntegerField()),
                         (
                             "library_protocol_name",
@@ -90,8 +98,6 @@ class Migration(migrations.Migration):
                             models.CharField(max_length=50, null=True),
                         ),
                         ("average_fragment_size", models.FloatField()),
-                        ("starting_amount", models.FloatField()),
-                        ("pcr_cycles", models.IntegerField()),
                         (
                             "index_type_name",
                             models.CharField(max_length=100, null=True),
@@ -136,7 +142,7 @@ class Migration(migrations.Migration):
                         ),
                     ],
                     options={
-                        "db_table": "complete_sample_data_mv",
+                        "db_table": "complete_library_data_mv",
                         "managed": False,
                     },
                 ),
