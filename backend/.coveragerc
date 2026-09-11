@@ -5,8 +5,8 @@ omit =
     **/migrations/*.py
     manage.py
     __init__.py
-    wui/settings/*.py
-    wui/wsgi.py
+    config/settings/*.py
+    config/wsgi.py
 
 [report]
 ignore_errors = True

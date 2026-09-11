@@ -55,15 +55,15 @@ ENV PATH="/opt/ro-crate-html-js/node_modules/.bin:${PATH}"
 COPY ./backend .
 
 EXPOSE 8000
-ENV DJANGO_SETTINGS_MODULE=wui.settings.prod
-CMD ["gunicorn", "wui.wsgi:application", "--bind=0.0.0.0:8000", "--name=pk2", "--timeout=600", \
+ENV DJANGO_SETTINGS_MODULE=config.settings.prod
+CMD ["gunicorn", "config.wsgi:application", "--bind=0.0.0.0:8000", "--name=pk2", "--timeout=600", \
     "--worker-class=gthread", "--worker-tmp-dir=/dev/shm", "--workers=4", "--threads=6"]
 
 # ----------------------
 FROM pk2_base AS pk2_dev
 RUN echo "from functools import partial\nimport rich\nhelp = partial(rich.inspect, help=True, methods=True)" \
     > /root/.pythonrc
-ENV DJANGO_SETTINGS_MODULE=wui.settings.dev \
+ENV DJANGO_SETTINGS_MODULE=config.settings.dev \
     PYTHONSTARTUP=/root/.pythonrc \
     PYTHONDEVMODE=0 \
     PYTHONBREAKPOINT=ipdb.set_trace \
@@ -75,7 +75,7 @@ CMD ["python", "/usr/src/app/manage.py", "runserver_plus", "--threaded", "0.0.0.
 
 # ----------------------
 FROM pk2_dev AS pk2_testing
-ENV DJANGO_SETTINGS_MODULE=wui.settings.testing
+ENV DJANGO_SETTINGS_MODULE=config.settings.testing
 RUN --mount=type=cache,target=/root/.cache/uv \
     uv pip install -r requirements/${PyVersion}/testing.txt
 ## e2e/playwright runs hit this over real concurrent requests -- runserver_plus
@@ -83,7 +83,7 @@ RUN --mount=type=cache,target=/root/.cache/uv \
 ## reliably even threaded, and caused intermittent session/auth failures under
 ## xdist parallelism. Serve with the same gunicorn setup as prod instead;
 ## nothing here needs live-reload.
-CMD ["gunicorn", "wui.wsgi:application", "--bind=0.0.0.0:8000", "--name=pk2", "--timeout=600", \
+CMD ["gunicorn", "config.wsgi:application", "--bind=0.0.0.0:8000", "--name=pk2", "--timeout=600", \
     "--worker-class=gthread", "--worker-tmp-dir=/dev/shm", "--workers=4", "--threads=6", \
     "--access-logfile=-"]
 
