@@ -143,7 +143,7 @@
 
 <script>
 import { getCurrentInstance } from "vue";
-import { onClickOutside, onKeyStroke } from "@vueuse/core";
+import { onClickOutside, onKeyStroke, useResizeObserver } from "@vueuse/core";
 import {
   createAxiosObject,
   handleError,
@@ -167,6 +167,10 @@ export default {
       (event) => instance.proxy.handleDocumentClick(event)
     );
     onKeyStroke("Escape", (event) => instance.proxy.handleKeyDown(event));
+    useResizeObserver(
+      () => instance.proxy.$refs.appShellBar,
+      () => instance.proxy.updateNavCollapse()
+    );
   },
   data() {
     return {
@@ -181,14 +185,9 @@ export default {
     };
   },
   async mounted() {
-    this.resizeObserver = new ResizeObserver(() => this.updateNavCollapse());
-    this.resizeObserver.observe(this.$refs.appShellBar);
     await Promise.all([this.loadNavigationTree(), this.loadUserDetails()]);
     await this.$nextTick();
     this.updateNavCollapse();
-  },
-  beforeUnmount() {
-    this.resizeObserver?.disconnect();
   },
   methods: {
     navPath(node) {

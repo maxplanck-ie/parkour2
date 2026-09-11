@@ -194,6 +194,9 @@
       v-if="showCostsPanel"
       class="costs-panel-overlay"
       @click.self.stop="closeCostsPanel"
+      v-motion
+      :initial="{ opacity: 0 }"
+      :enter="{ opacity: 1, transition: { duration: 180, ease: 'easeOut' } }"
     >
       <div
         ref="costsDialog"
@@ -202,6 +205,9 @@
         aria-modal="true"
         aria-labelledby="costs-panel-title"
         tabindex="-1"
+        v-motion
+        :initial="{ x: '100%' }"
+        :enter="{ x: 0, transition: { duration: 200, ease: 'easeOut' } }"
       >
         <div class="costs-panel-header">
           <span id="costs-panel-title" class="costs-panel-title">Costs</span>
@@ -1363,16 +1369,6 @@ body,
   flex-direction: column;
   background: #fff;
   box-shadow: -4px 0 12px rgba(0, 0, 0, 0.2);
-  animation: costs-panel-slide-in 0.2s ease-out;
-}
-
-@keyframes costs-panel-slide-in {
-  from {
-    transform: translateX(100%);
-  }
-  to {
-    transform: translateX(0);
-  }
 }
 
 .costs-panel-header {
