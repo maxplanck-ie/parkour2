@@ -3,6 +3,7 @@
 Unreleased
 ==========
 
+- Request editor: saving overlay, confirm dialogs (switch record type, delete rows, close, delete file), and the left-panel collapse now animate smoothly instead of snapping instantly. (PR #347.)
 - Backend settings package renamed from `wui` to `config` (`DJANGO_SETTINGS_MODULE` is now `config.settings.*`); deployments/scripts setting that env var directly need updating. Also added an import-linter check enforcing that the shared `common` app never imports domain apps, catching one existing violation. (Direct commit `5cbc20a4`.)
 - Top nav bar buttons' corner rounding now matches the green header action buttons (Advanced Filters, Select Columns, Export to Excel, etc.) instead of using a fuller pill shape. (Direct commit `8075e97`.)
 - Fixed a fresh database migrate failing outright: the Analysis Type rename shipped without a migration for the model rename itself, and some apps had accumulated conflicting/duplicate migrations from unrelated work. (Direct commit `2d4b3de`.)
