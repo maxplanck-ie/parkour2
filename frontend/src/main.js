@@ -5,6 +5,7 @@ import { createApp } from "vue";
 import App from "./App.vue";
 import router from "./router/appRoutes.js";
 import toast from "vue-toastification";
+import { MotionPlugin } from "@vueuse/motion";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import {
@@ -115,6 +116,7 @@ library.add(
 app.use(router);
 app.use(toast);
 app.use(createPinia());
+app.use(MotionPlugin);
 app.component("font-awesome-icon", FontAwesomeIcon);
 app.config.productionTip = false;
 const tooltip = {
