@@ -5258,6 +5258,7 @@ export default {
   align-items: center;
   justify-content: center;
   z-index: 1001;
+  animation: request-editor-fade-in 0.18s ease-out;
 }
 
 .confirm-modal {
@@ -5269,6 +5270,7 @@ export default {
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  animation: request-editor-pop-in 0.22s ease-out forwards;
 }
 
 .owner-change-modal {
