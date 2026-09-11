@@ -202,6 +202,18 @@ Prevent recurring regressions. No deviate without explicit ask.
   Background: commit `2c8c9b89` (LibraryType -> AnalysisType rename)
   shipped without this migration, which silently broke `migrate` on any
   fresh database until fixed by commit `2d4b3ded`.
+- Never regenerate a migration by deleting the file and rerunning
+  `makemigrations` from current model state. `makemigrations` only diffs
+  schema — it has no way to know about a `RunPython`/`RunSQL` step a prior
+  version of that migration contained (data sanitization, backfills, seed
+  rows), so regenerating silently drops it with no error anywhere, since
+  `makemigrations --check` only compares schema state too. If a migration
+  needs to change, edit it in place, or check `git log -p -- path/to/that_migration.py`
+  first and carry forward any `RunPython`/`RunSQL` operations by hand.
+  This exact mistake dropped the name-sanitization step from `c9db14dd`,
+  the AttachmentFileType seed rows, and the umlaut user-name
+  transliteration while fixing the AnalysisType migration gap above —
+  recovered in commit `d2ea3b0`.
 
 ## Vue.js frontend (`**/*.vue`, `**/*.ts`, `**/*.js`)
 
