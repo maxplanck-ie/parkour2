@@ -5232,6 +5232,7 @@ export default {
   align-items: center;
   justify-content: center;
   z-index: 5;
+  animation: fade-in 0.15s ease-out;
 }
 
 .saving-card {
@@ -5246,6 +5247,7 @@ export default {
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
   font-size: 14px;
   color: #333;
+  animation: request-editor-pop-in 0.22s ease-out forwards;
 }
 
 .confirm-overlay {
