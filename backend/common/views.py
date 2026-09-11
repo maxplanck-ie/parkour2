@@ -1,8 +1,5 @@
 import json
-from mimetypes import guess_type
 import os
-from os.path import basename
-from urllib.parse import quote
 
 from django.conf import settings
 from django.contrib.auth import get_user_model
@@ -11,11 +8,10 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.sites.shortcuts import get_current_site
 from django.core.mail import send_mail
 from django.db.models import Q
-from django.http import Http404, HttpResponse, JsonResponse, FileResponse
+from django.http import JsonResponse, FileResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.template.loader import render_to_string
 from django.utils import timezone
-from request.models import Request
 from rest_framework import status, viewsets
 from rest_framework.authentication import SessionAuthentication
 from rest_framework.decorators import action
@@ -144,54 +140,6 @@ def get_navigation_tree(request):
         ]
 
     return JsonResponse({"text": ".", "children": data})
-
-
-@login_required
-def protected_media(request, *args, **kwargs):
-    """Protected view for media files"""
-
-    allow_download = False
-    url_path = kwargs["url_path"]
-
-    if request.user.is_staff:
-        allow_download = True
-    elif request.user.is_pi:
-        # Master/ PI accounts should be able to access attachments
-        allow_download = (
-            request.user.pi
-            == Request.objects.filter(
-                Q(deep_seq_request=url_path) | Q(files__file=url_path), archived=False
-            )[0].user.pi
-        )
-    else:
-        allow_download = Request.objects.filter(
-            Q(deep_seq_request=url_path) | Q(files__file=url_path),
-            user=request.user,
-            archived=False,
-        ).exists()
-
-    if allow_download:
-        response = HttpResponse()
-
-        # Set file type and encoding
-        mimetype, encoding = guess_type(url_path)
-        response["Content-Type"] = mimetype if mimetype else "application/octet-stream"
-        if encoding:
-            response["Content-Encoding"] = encoding
-
-        # Set internal redirect to protected media
-        response["X-Accel-Redirect"] = f"/protected_media/{url_path}"
-
-        # Set file name
-        file_name = basename(url_path)
-        # Needed for file names that include special, non ascii, characters
-        response["Content-Disposition"] = (
-            f"attachment; filename*=utf-8''{quote(file_name)}"
-        )
-
-        return response
-
-    raise Http404
 
 
 class CostUnitsViewSet(viewsets.ReadOnlyModelViewSet):

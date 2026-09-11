@@ -31,6 +31,8 @@ cffi==2.1.1 ; platform_python_implementation != 'PyPy'
     # via cryptography
 charset-normalizer==3.5.1
     # via requests
+click==8.5.0
+    # via import-linter
 colorama==0.4.6 ; sys_platform == 'win32'
     # via ipython
 contourpy==1.3.2 ; python_full_version < '3.11'
@@ -150,6 +152,8 @@ fpdf2==2.8.8
     # via
     #   -c backend/requirements/3.10/base.txt
     #   -r backend/requirements/base.in
+grimp==3.17
+    # via import-linter
 gunicorn==26.2.0
     # via
     #   -c backend/requirements/3.10/base.txt
@@ -167,6 +171,8 @@ idna==3.19
     #   anyio
     #   httpx2
     #   requests
+import-linter==2.15
+    # via -r backend/requirements/dev.in
 inflection==0.5.1
     # via
     #   -c backend/requirements/3.10/base.txt
@@ -313,7 +319,9 @@ requests==2.34.2
     #   django-sql-explorer
     #   tiktoken
 rich==15.0.0
-    # via -r backend/requirements/dev.in
+    # via
+    #   -r backend/requirements/dev.in
+    #   import-linter
 rpds-py==0.30.0 ; python_full_version < '3.11'
     # via
     #   -c backend/requirements/3.10/base.txt
@@ -357,7 +365,9 @@ tiktoken==0.14.0
 toml==0.10.2
     # via django-migration-linter
 tomli==2.4.1 ; python_full_version < '3.11'
-    # via ipdb
+    # via
+    #   import-linter
+    #   ipdb
 traitlets==5.16.1
     # via
     #   ipython
@@ -374,6 +384,7 @@ typing-extensions==4.16.0
     #   cryptography
     #   exceptiongroup
     #   httpx2
+    #   import-linter
     #   ipython
     #   openai
     #   pydantic

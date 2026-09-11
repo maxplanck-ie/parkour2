@@ -7,6 +7,7 @@ Werkzeug
 rich
 django-migration-linter
 django-schema-viewer
+import-linter
 django-sql-explorer
 openai
 sql_metadata
