@@ -1,14 +1,11 @@
-from django.conf import settings
-from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import include, path, re_path
-from django.views.defaults import page_not_found, server_error
 from drf_spectacular.views import (
     SpectacularAPIView,
     SpectacularRedocView,
     SpectacularSwaggerView,
 )
-
+from request.views import protected_media
 from usage.views import InternalPIsView
 
 from .api import router
@@ -20,6 +17,7 @@ urlpatterns = [
     path("api/", include(router.urls)),
     path("api/internal_pis/", InternalPIsView.as_view(), name="internal-pis"),
     path("api/usage/", include("usage.urls")),
+    path("media/<path:url_path>", protected_media, name="protected_media"),
     path("", include("common.urls")),
     path("openapi/schema/", SpectacularAPIView.as_view(), name="schema"),
     path(

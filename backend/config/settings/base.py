@@ -92,7 +92,7 @@ MIDDLEWARE = [
     "simple_history.middleware.HistoryRequestMiddleware",
 ]
 
-ROOT_URLCONF = "wui.urls"
+ROOT_URLCONF = "config.urls"
 
 TEMPLATES = [
     {
@@ -112,7 +112,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = "wui.wsgi.application"
+WSGI_APPLICATION = "config.wsgi.application"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
