@@ -43,23 +43,6 @@ class Migration(migrations.Migration):
         ),
         migrations.AlterField(
             model_name="sample",
-            name="name",
-            field=models.CharField(
-                max_length=99,
-                validators=[
-                    django.core.validators.RegexValidator(
-                        "^[A-Za-z0-9_-]+$",
-                        "Only letters, numbers, underscores and hyphens are allowed.",
-                    ),
-                    django.core.validators.RegexValidator(
-                        "^.*[A-Za-z0-9]$", "Name must end with a letter or number."
-                    ),
-                ],
-                verbose_name="Name",
-            ),
-        ),
-        migrations.AlterField(
-            model_name="sample",
             name="size_distribution_facility",
             field=models.FloatField(
                 blank=True,
