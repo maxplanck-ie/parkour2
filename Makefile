@@ -522,10 +522,10 @@ enable-explorer:
 	@docker exec parkour2-django python manage.py create_readonly_pg
 	@sed -i -e \
 		's%# \(path("explorer/", include("explorer.urls")),\)%\1%' \
-		backend/wui/urls.py
+		backend/config/urls.py
 	@sed -i -e \
 		's%# \("explorer",\)%\1%' \
-		backend/wui/settings/dev.py
+		backend/config/settings/dev.py
 	@$(MAKE) schema collect-static
 	@docker exec parkour2-django python manage.py create_sample_queries
 
@@ -536,10 +536,10 @@ disable-ollama:
 disable-explorer:
 	@sed -i -e \
 		's%^\(\s*\)\(path("explorer/", include("explorer.urls")),\)%\1# \2%' \
-		backend/wui/urls.py
+		backend/config/urls.py
 	@sed -i -e \
 		's%^\(\s*\)\("explorer",\)%\1# \2%' \
-		backend/wui/settings/dev.py
+		backend/config/settings/dev.py
 
 # aider:
 # 	@export OPENROUTER_API_KEY=$$(grep OPENROUTER_API_KEY misc/parkour.env.ignore | cut -d'=' -f2)
