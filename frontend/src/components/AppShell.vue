@@ -327,7 +327,7 @@ export default {
   align-items: center;
   gap: 6px;
   padding: 6px 12px;
-  border-radius: 18px;
+  border-radius: 8px;
   color: #333;
   text-decoration: none;
   white-space: nowrap;
