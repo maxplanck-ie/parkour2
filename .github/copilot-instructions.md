@@ -213,7 +213,7 @@ Prevent recurring regressions. No deviate without explicit ask.
   This exact mistake dropped the name-sanitization step from `c9db14dd`,
   the AttachmentFileType seed rows, and the umlaut user-name
   transliteration while fixing the AnalysisType migration gap above —
-  recovered in commit `d2ea3b0`.
+  recovered in commit `d2ea3b02`.
 
 ## Vue.js frontend (`**/*.vue`, `**/*.ts`, `**/*.js`)
 
