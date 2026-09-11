@@ -333,10 +333,22 @@ create-admin:
 		"DJANGO_SUPERUSER_PASSWORD=testing.password DJANGO_SUPERUSER_EMAIL=test.user@test.com \
 			python manage.py createsuperuser --no-input"
 
-coverage-xml: down set-testing deploy-webapp
+coverage-xml:  ## Run coverage (xml report), reuse running container when available
+	@if docker compose ps --status running --services | grep -q '^parkour2-django$$'; then \
+		echo "Info: Reusing running parkour2-django container for coverage."; \
+	else \
+		echo "Info: parkour2-django is not running, redeploying test stack first."; \
+		$(MAKE) down set-testing deploy-webapp; \
+	fi
 	@docker compose exec parkour2-django pytest -n auto --cov=./ --cov-config=.coveragerc --cov-report=xml
 
-coverage-html: down set-testing deploy-webapp
+coverage-html:  ## Run coverage (html report), reuse running container when available
+	@if docker compose ps --status running --services | grep -q '^parkour2-django$$'; then \
+		echo "Info: Reusing running parkour2-django container for coverage."; \
+	else \
+		echo "Info: parkour2-django is not running, redeploying test stack first."; \
+		$(MAKE) down set-testing deploy-webapp; \
+	fi
 	@docker compose exec parkour2-django coverage erase
 	@docker compose exec parkour2-django coverage run -m pytest -n auto --cov=./ --cov-config=.coveragerc --cov-report=html
 
