@@ -5442,6 +5442,7 @@ export default {
   grid-template-rows: auto 1fr auto;
   --left-panel-width: 320px;
   --panel-toggle-width: 34px;
+  transition: grid-template-columns 0.2s ease;
 }
 
 .request-editor-content.collapsed {
