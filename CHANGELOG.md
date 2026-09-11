@@ -3,6 +3,8 @@
 Unreleased
 ==========
 
+- Top nav bar buttons' corner rounding now matches the green header action buttons (Advanced Filters, Select Columns, Export to Excel, etc.) instead of using a fuller pill shape. (Direct commit `8075e97`.)
+- Fixed a fresh database migrate failing outright: the Analysis Type rename shipped without a migration for the model rename itself, and some apps had accumulated conflicting/duplicate migrations from unrelated work. (Direct commit `2d4b3de`.)
 - Removed hardcoded institute domain from nginx config, the request-approval page's contact email, and fixture/test data. (Direct commit `6d3cda25`.)
 - "Library Type" renamed to "Analysis Type" end-to-end (model, API fields and endpoints, admin, exports), not just the frontend column label — avoids confusion with Library Protocol. `/api/library_types/` and `/api/usage/library_types/` are now `/api/analysis_types/` and `/api/usage/analysis_types/`; the `library_type`/`library_type_name` JSON keys on libraries/samples/run-statistics/sequences-statistics responses are now `analysis_type`/`analysis_type_name`. (Direct commit `2c8c9b89`.)
 - Dates now display as `YYYY.MM.DD` everywhere (tables, exports, PDFs, filters) instead of the old `DD.MM.YYYY`. Date-range filters (Duties, Libraries & Samples, Load Flowcells, Runs/Sequences Statistics, Usage) use a new masked text input with a calendar picker instead of the browser's native date field. (PR #343.)
