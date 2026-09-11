@@ -189,6 +189,19 @@ Prevent recurring regressions. No deviate without explicit ask.
 - Follow existing naming, module, package conventions in repo.
 - Add/adjust tests for behaviour changes; run with `python manage.py test --parallel`.
 - Type hints where they improve clarity; skip overly generic abstractions.
+- Any model/field rename, add, or removal: run `python manage.py makemigrations
+  --check --dry-run` before committing, and actually apply the result with
+  `python manage.py migrate` against a fresh database, not just a dev DB
+  that already has the old schema — a rename that "works" on your existing
+  local DB can still be missing its migration entirely. django-linear-migrations
+  enforces one straight-line history per app; if `makemigrations` prompts
+  "was X renamed to Y?", that's Django detecting a rename — answer
+  accordingly rather than letting it fall back to drop+add, which loses
+  data on any DB that already has rows.
+
+  Background: commit `2c8c9b89` (LibraryType -> AnalysisType rename)
+  shipped without this migration, which silently broke `migrate` on any
+  fresh database until fixed by commit `2d4b3ded`.
 
 ## Vue.js frontend (`**/*.vue`, `**/*.ts`, `**/*.js`)
 
