@@ -1349,6 +1349,13 @@ import {
   buildExcelDownloadFilename
 } from "../utilities/utilityFunctions";
 import {
+  useLocalStorage,
+  onClickOutside,
+  onKeyStroke,
+  useDebounceFn
+} from "@vueuse/core";
+import { getCurrentInstance } from "vue";
+import {
   librariesAndSamplesGroupHeader,
   librariesAndSamplesColumnDefs,
   librariesAndSamplesExportColumns
@@ -1406,6 +1413,48 @@ export default {
     RequestEditorView,
     ROCratePreviewView,
     RequestActionsPopups
+  },
+  setup() {
+    const instance = getCurrentInstance();
+
+    const columnWidths = useLocalStorage("librariesAndSamplesColumnWidths", {});
+    const columnVisibility = useLocalStorage(
+      "librariesAndSamplesColumnVisibility",
+      {}
+    );
+    const inputColumnMode = useLocalStorage(
+      "librariesAndSamplesInputColumnMode",
+      "mode_user"
+    );
+
+    const debouncedHeaderFilterCallback = useDebounceFn(async () => {
+      await instance.proxy.getLibrariesSamples(1, false, true);
+    }, 2500);
+
+    const debouncedDateChangeCallback = useDebounceFn(async (type, value) => {
+      instance.proxy.updateActualDate(type, value);
+      instance.proxy.validateDateRange();
+      await instance.proxy.getLibrariesSamples(1);
+    }, 500);
+
+    onClickOutside(
+      () => instance.proxy.$el,
+      (event) => {
+        instance.proxy.handleOutsideClick(event);
+      }
+    );
+
+    onKeyStroke("Escape", (event) => {
+      instance.proxy.handleKeyDown(event);
+    });
+
+    return {
+      columnWidths,
+      columnVisibility,
+      inputColumnMode,
+      debouncedHeaderFilterCallback,
+      debouncedDateChangeCallback
+    };
   },
   data() {
     const today = new Date();
@@ -1615,12 +1664,9 @@ export default {
       endDateString: formatDateForInput(today),
       startDateValid: true,
       endDateValid: true,
-      dateChangeTimer: null,
-      headerFilterTimer: null,
       showAdvancedFilters: false,
       showSelectColumns: false,
       showPageHelp: false,
-      inputColumnMode: "mode_user",
       showRequestEditorModal: false,
       requestModalMode: "create",
       requestModalRequestId: null,
@@ -1646,8 +1692,6 @@ export default {
     this.fetchFilterOptions();
     this.fetchStaffStatus();
 
-    document.addEventListener("click", this.handleOutsideClick);
-    document.addEventListener("keydown", this.handleKeyDown);
     window.handleGroupButtonClick = this.handleGroupButtonClick.bind(this);
     window.openRequestEditorById = this.openEditRequestModal.bind(this);
   },
@@ -1655,8 +1699,6 @@ export default {
     this.tabulatorInstance = this.$refs.tabulatorTableRef;
   },
   beforeUnmount() {
-    document.removeEventListener("click", this.handleOutsideClick);
-    document.removeEventListener("keydown", this.handleKeyDown);
     this.cancelROCratePreviewHelpClose();
     this.stopRequestEditorSync();
     window.handleGroupButtonClick = null;
@@ -1987,16 +2029,13 @@ export default {
     },
     handleHeaderFilterChange(field, value) {
       this.filters[field] = value;
-      clearTimeout(this.headerFilterTimer);
-      this.headerFilterTimer = setTimeout(async () => {
-        // Silent: a non-silent refresh flips `loading`, which unmounts and
-        // recreates the whole Tabulator table (v-if on LiteTabulatorTable
-        // below). The new table takes a beat to finish building its
-        // columns, so restoreHeaderFilterValues() -- called right after --
-        // can't find them yet and silently no-ops, leaving every header
-        // filter box blank even though the filters are still applied.
-        await this.getLibrariesSamples(1, false, true);
-      }, 2500);
+      // Silent: a non-silent refresh flips `loading`, which unmounts and
+      // recreates the whole Tabulator table (v-if on LiteTabulatorTable
+      // below). The new table takes a beat to finish building its
+      // columns, so restoreHeaderFilterValues() -- called right after --
+      // can't find them yet and silently no-ops, leaving every header
+      // filter box blank even though the filters are still applied.
+      this.debouncedHeaderFilterCallback();
     },
     syncInputHeaderMode(mode = this.inputColumnMode) {
       const normalizedMode =
@@ -2011,22 +2050,8 @@ export default {
       };
     },
     setColumns() {
-      const storedVisibility = JSON.parse(
-        localStorage.getItem("librariesAndSamplesColumnVisibility") || "{}"
-      );
-      const storedWidths = JSON.parse(
-        localStorage.getItem("librariesAndSamplesColumnWidths") || "{}"
-      );
-
-      const storedInputColumnMode = localStorage.getItem(
-        "librariesAndSamplesInputColumnMode"
-      );
-      if (
-        storedInputColumnMode === "mode_facility" ||
-        storedInputColumnMode === "mode_user"
-      ) {
-        this.inputColumnMode = storedInputColumnMode;
-      }
+      const storedVisibility = this.columnVisibility;
+      const storedWidths = this.columnWidths;
 
       const applySettings = (columns) => {
         return columns.map((column) => {
@@ -2143,7 +2168,7 @@ export default {
       const isEnter = event.key === "Enter";
       if (isEnter && event.target?.closest?.(".tabulator-header-filter")) {
         event.preventDefault();
-        clearTimeout(this.headerFilterTimer);
+        this.debouncedHeaderFilterCallback.cancel();
         this.getLibrariesSamples(1, false, true);
         return;
       }
@@ -2174,14 +2199,9 @@ export default {
       }, 300);
     },
     handleDateChange(type, value) {
-      clearTimeout(this.dateChangeTimer);
       this[`${type}DateValid`] = isValidDate(value);
       if (!this[`${type}DateValid`]) return;
-      this.dateChangeTimer = setTimeout(() => {
-        this.updateActualDate(type, value);
-        this.validateDateRange();
-        this.getLibrariesSamples(1);
-      }, 500);
+      this.debouncedDateChangeCallback(type, value);
     },
     updateActualDate(type, value) {
       const newDate = new Date(value);
@@ -2234,34 +2254,21 @@ export default {
     handleColumnResized(column) {
       const field = column.getField();
       const width = column.getWidth();
-      const storedWidths = JSON.parse(
-        localStorage.getItem("librariesAndSamplesColumnWidths") || "{}"
-      );
       const newWidths = {
-        ...storedWidths,
+        ...this.columnWidths,
         [field]: width
       };
-      localStorage.setItem(
-        "librariesAndSamplesColumnWidths",
-        JSON.stringify(newWidths)
-      );
+      this.columnWidths = newWidths;
       this.fakeLoadingStart();
       setTimeout(() => this.fakeLoadingStop(), 50);
     },
     handleColumnVisibilityChanged(field, visible) {
-      const storedVisibility = JSON.parse(
-        localStorage.getItem("librariesAndSamplesColumnVisibility") || "{}"
-      );
-
       const newVisibility = {
-        ...storedVisibility,
+        ...this.columnVisibility,
         [field]: visible
       };
 
-      localStorage.setItem(
-        "librariesAndSamplesColumnVisibility",
-        JSON.stringify(newVisibility)
-      );
+      this.columnVisibility = newVisibility;
 
       this.fakeLoadingStart();
       setTimeout(() => this.fakeLoadingStop(), 50);
@@ -2272,13 +2279,13 @@ export default {
       }
     },
     resetColumnWidths() {
-      localStorage.removeItem("librariesAndSamplesColumnWidths");
+      this.columnWidths = {};
       this.setColumns();
       this.fakeLoadingStart();
       setTimeout(() => this.fakeLoadingStop(), 300);
     },
     resetColumnVisibility() {
-      localStorage.removeItem("librariesAndSamplesColumnVisibility");
+      this.columnVisibility = {};
       this.setColumns();
       this.fakeLoadingStart();
       setTimeout(() => this.fakeLoadingStop(), 300);
@@ -2290,10 +2297,6 @@ export default {
       this.fakeLoadingStart();
       try {
         this.inputColumnMode = normalizedMode;
-        localStorage.setItem(
-          "librariesAndSamplesInputColumnMode",
-          this.inputColumnMode
-        );
         this.syncInputHeaderMode(normalizedMode);
         this.applyInputColumnMode();
         await this.tabulatorInstance
