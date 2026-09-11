@@ -3,7 +3,7 @@
 Unreleased
 ==========
 
-- Backend settings package renamed from `wui` to `config` (`DJANGO_SETTINGS_MODULE` is now `config.settings.*`); deployments/scripts setting that env var directly need updating. Also added an import-linter check enforcing that the shared `common` app never imports domain apps, catching one existing violation. (Direct commit `5cbc20a`.)
+- Backend settings package renamed from `wui` to `config` (`DJANGO_SETTINGS_MODULE` is now `config.settings.*`); deployments/scripts setting that env var directly need updating. Also added an import-linter check enforcing that the shared `common` app never imports domain apps, catching one existing violation. (Direct commit `5cbc20a4`.)
 - Top nav bar buttons' corner rounding now matches the green header action buttons (Advanced Filters, Select Columns, Export to Excel, etc.) instead of using a fuller pill shape. (Direct commit `8075e97`.)
 - Fixed a fresh database migrate failing outright: the Analysis Type rename shipped without a migration for the model rename itself, and some apps had accumulated conflicting/duplicate migrations from unrelated work. (Direct commit `2d4b3de`.)
 - Fixed the above migration repair having dropped three data-safety steps in the process: sanitizing invalid library/sample names before enforcing the new naming rule, seeding the default Attachment File Types, and transliterating umlauts in existing user names. (Direct commit `d2ea3b02`.)
