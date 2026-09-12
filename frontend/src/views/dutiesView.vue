@@ -228,7 +228,8 @@ import {
   focusFirstElement,
   trapFocus
 } from "../utilities/utilityFunctions";
-import { toRaw } from "vue";
+import { toRaw, getCurrentInstance } from "vue";
+import { onClickOutside, onKeyStroke } from "@vueuse/core";
 import moment from "moment";
 import iconDutiesHeader from "../assets/icons/header_duties.svg";
 import {
@@ -275,18 +276,20 @@ export default {
       addDutyPreviouslyFocusedElement: null
     };
   },
-  setup() {},
+  setup() {
+    const instance = getCurrentInstance();
+    onClickOutside(
+      () => instance.proxy.$el,
+      (event) => instance.proxy.handleOutsideClick(event)
+    );
+    onKeyStroke("Escape", (event) => instance.proxy.handleKeyDown(event));
+    return {};
+  },
   beforeMount() {
     this.getUsers();
   },
-  mounted() {
-    document.addEventListener("click", this.handleOutsideClick);
-    document.addEventListener("keydown", this.handleKeyDown);
-  },
-  beforeUnmount() {
-    document.removeEventListener("click", this.handleOutsideClick);
-    document.removeEventListener("keydown", this.handleKeyDown);
-  },
+  mounted() {},
+  beforeUnmount() {},
   created() {},
   watch: {
     selectedFilter(value) {

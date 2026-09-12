@@ -142,6 +142,8 @@
 </template>
 
 <script>
+import { getCurrentInstance } from "vue";
+import { onClickOutside, onKeyStroke, useResizeObserver } from "@vueuse/core";
 import {
   createAxiosObject,
   handleError,
@@ -158,6 +160,18 @@ const urlStringStart = urlStringStartsWith();
 
 export default {
   name: "AppShell",
+  setup() {
+    const instance = getCurrentInstance();
+    onClickOutside(
+      () => instance.proxy.$refs.appShellNav,
+      (event) => instance.proxy.handleDocumentClick(event)
+    );
+    onKeyStroke("Escape", (event) => instance.proxy.handleKeyDown(event));
+    useResizeObserver(
+      () => instance.proxy.$refs.appShellBar,
+      () => instance.proxy.updateNavCollapse()
+    );
+  },
   data() {
     return {
       navNodes: [],
@@ -171,18 +185,9 @@ export default {
     };
   },
   async mounted() {
-    document.addEventListener("click", this.handleDocumentClick);
-    document.addEventListener("keydown", this.handleKeyDown);
-    this.resizeObserver = new ResizeObserver(() => this.updateNavCollapse());
-    this.resizeObserver.observe(this.$refs.appShellBar);
     await Promise.all([this.loadNavigationTree(), this.loadUserDetails()]);
     await this.$nextTick();
     this.updateNavCollapse();
-  },
-  beforeUnmount() {
-    document.removeEventListener("click", this.handleDocumentClick);
-    document.removeEventListener("keydown", this.handleKeyDown);
-    this.resizeObserver?.disconnect();
   },
   methods: {
     navPath(node) {

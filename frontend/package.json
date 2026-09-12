@@ -19,6 +19,8 @@
     "@fortawesome/free-regular-svg-icons": "7.3.1",
     "@fortawesome/free-solid-svg-icons": "7.3.1",
     "@fortawesome/vue-fontawesome": "3.3.3",
+    "@vueuse/core": "^14.4.0",
+    "@vueuse/motion": "^3.0.3",
     "axios": "1.20.0",
     "bootstrap": "5.3.8",
     "echarts": "^6.1.0",

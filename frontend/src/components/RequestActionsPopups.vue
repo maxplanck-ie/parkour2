@@ -725,6 +725,8 @@
 </template>
 
 <script>
+import { onKeyStroke, useClipboard } from "@vueuse/core";
+import { getCurrentInstance } from "vue";
 import {
   showNotification,
   handleError,
@@ -841,6 +843,18 @@ export default {
       default: false
     }
   },
+  setup() {
+    const instance = getCurrentInstance();
+    const { copy } = useClipboard();
+
+    onKeyStroke("Escape", (event) => {
+      instance.proxy.handleGlobalKeydown(event);
+    });
+
+    return {
+      copyToClipboard: copy
+    };
+  },
   data() {
     return {
       requestActions: REQUEST_ACTIONS,
@@ -951,12 +965,6 @@ export default {
       const canEdit = this.requestContext?.canEditRequest;
       return canEdit === undefined ? true : Boolean(canEdit);
     }
-  },
-  mounted() {
-    document.addEventListener("keydown", this.handleGlobalKeydown);
-  },
-  beforeUnmount() {
-    document.removeEventListener("keydown", this.handleGlobalKeydown);
   },
   watch: {
     activeAction(newVal) {
@@ -1226,7 +1234,7 @@ export default {
     },
     async copyText(text) {
       try {
-        await navigator.clipboard.writeText(text || "");
+        await this.copyToClipboard(text || "");
         showNotification(
           "Path copied to clipboard.",
           NOTIFICATION_TYPES.success

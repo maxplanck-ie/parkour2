@@ -194,6 +194,9 @@
       v-if="showCostsPanel"
       class="costs-panel-overlay"
       @click.self.stop="closeCostsPanel"
+      v-motion
+      :initial="{ opacity: 0 }"
+      :enter="{ opacity: 1, transition: { duration: 180, ease: 'easeOut' } }"
     >
       <div
         ref="costsDialog"
@@ -202,6 +205,9 @@
         aria-modal="true"
         aria-labelledby="costs-panel-title"
         tabindex="-1"
+        v-motion
+        :initial="{ x: '100%' }"
+        :enter="{ x: 0, transition: { duration: 200, ease: 'easeOut' } }"
       >
         <div class="costs-panel-header">
           <span id="costs-panel-title" class="costs-panel-title">Costs</span>
@@ -488,6 +494,8 @@ import {
   formatInvoicingCurrency
 } from "../constants/invoicingConsts";
 import { isValidMonth, formatDateForInput } from "../utilities/dateUtils";
+import { useLocalStorage, onClickOutside, onKeyStroke } from "@vueuse/core";
+import { getCurrentInstance } from "vue";
 import iconHeader from "../assets/icons/header_invoicing.svg";
 import iconExportTemplateFile from "../assets/icons/export_template.svg";
 import iconExportTemplateFileLines from "../assets/icons/export_template_lines.svg";
@@ -534,15 +542,6 @@ function pad2(value) {
   return String(value).padStart(2, "0");
 }
 
-function readStoredObject(key) {
-  try {
-    return JSON.parse(localStorage.getItem(key) || "{}");
-  } catch {
-    localStorage.removeItem(key);
-    return {};
-  }
-}
-
 function todayString() {
   return formatDateForInput(new Date());
 }
@@ -559,6 +558,20 @@ export default {
   name: "InvoicingView",
   components: {
     TabulatorTable
+  },
+  setup() {
+    const columnVisibility = useLocalStorage(COLUMN_VISIBILITY_KEY, {});
+    const columnWidths = useLocalStorage(COLUMN_WIDTHS_KEY, {});
+    const instance = getCurrentInstance();
+    onClickOutside(
+      () => instance.proxy.$el,
+      (event) => instance.proxy.handleOutsideClick(event)
+    );
+    onKeyStroke("Escape", (event) => instance.proxy.handleKeyDown(event));
+    return {
+      columnVisibility,
+      columnWidths
+    };
   },
   data() {
     return {
@@ -678,8 +691,6 @@ export default {
   },
   async mounted() {
     this.setColumns();
-    document.addEventListener("click", this.handleOutsideClick);
-    document.addEventListener("keydown", this.handleKeyDown);
     await this.fetchLookups();
     await this.getInvoicing();
     this.fetchExportTemplates();
@@ -689,13 +700,11 @@ export default {
       clearTimeout(this.dateChangeTimer);
     }
     this.invoicingRequestId += 1;
-    document.removeEventListener("click", this.handleOutsideClick);
-    document.removeEventListener("keydown", this.handleKeyDown);
   },
   methods: {
     setColumns() {
-      const storedVisibility = readStoredObject(COLUMN_VISIBILITY_KEY);
-      const storedWidths = readStoredObject(COLUMN_WIDTHS_KEY);
+      const storedVisibility = this.columnVisibility;
+      const storedWidths = this.columnWidths;
       this.columnsList = invoicingColumnDefs().map((column) => ({
         ...column,
         width: storedWidths[column.field] || column.width,
@@ -857,38 +866,32 @@ export default {
     handleColumnResized(column) {
       const field = column?.getField?.();
       if (!field) return;
-      localStorage.setItem(
-        COLUMN_WIDTHS_KEY,
-        JSON.stringify({
-          ...readStoredObject(COLUMN_WIDTHS_KEY),
-          [field]: column.getWidth()
-        })
-      );
+      this.columnWidths = {
+        ...this.columnWidths,
+        [field]: column.getWidth()
+      };
       this.fakeLoadingStart();
       setTimeout(() => this.fakeLoadingStop(), 50);
     },
     handleColumnVisibilityChanged(field, visible) {
       if (!field) return;
-      localStorage.setItem(
-        COLUMN_VISIBILITY_KEY,
-        JSON.stringify({
-          ...readStoredObject(COLUMN_VISIBILITY_KEY),
-          [field]: visible
-        })
-      );
+      this.columnVisibility = {
+        ...this.columnVisibility,
+        [field]: visible
+      };
       const column = this.columnsList.find((item) => item.field === field);
       if (column) column.visible = visible;
       this.fakeLoadingStart();
       setTimeout(() => this.fakeLoadingStop(), 50);
     },
     resetColumnWidths() {
-      localStorage.removeItem(COLUMN_WIDTHS_KEY);
+      this.columnWidths = {};
       this.setColumns();
       this.fakeLoadingStart();
       setTimeout(() => this.fakeLoadingStop(), 300);
     },
     resetColumnVisibility() {
-      localStorage.removeItem(COLUMN_VISIBILITY_KEY);
+      this.columnVisibility = {};
       this.setColumns();
       this.fakeLoadingStart();
       setTimeout(() => this.fakeLoadingStop(), 300);
@@ -1366,16 +1369,6 @@ body,
   flex-direction: column;
   background: #fff;
   box-shadow: -4px 0 12px rgba(0, 0, 0, 0.2);
-  animation: costs-panel-slide-in 0.2s ease-out;
-}
-
-@keyframes costs-panel-slide-in {
-  from {
-    transform: translateX(100%);
-  }
-  to {
-    transform: translateX(0);
-  }
 }
 
 .costs-panel-header {

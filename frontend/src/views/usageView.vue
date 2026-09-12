@@ -53,7 +53,8 @@
 </template>
 
 <script>
-import { computed, onBeforeUnmount, onMounted, reactive, ref } from "vue";
+import { computed, onMounted, reactive, ref } from "vue";
+import { useDebounceFn } from "@vueuse/core";
 import { use } from "echarts/core";
 import { CanvasRenderer } from "echarts/renderers";
 import { BarChart } from "echarts/charts";
@@ -105,7 +106,6 @@ export default {
     const startDateString = ref(formatDateForInput(oneYearAgo));
     const endDateString = ref(formatDateForInput(today));
     const chartData = reactive({});
-    let reloadTimeout = null;
     let requestId = 0;
 
     const startDateValid = computed(() => isValidDate(startDateString.value));
@@ -158,19 +158,12 @@ export default {
       }
     }
 
-    function scheduleReload() {
-      if (reloadTimeout) {
-        clearTimeout(reloadTimeout);
-      }
-      reloadTimeout = setTimeout(loadUsageData, DATE_FILTER_DEBOUNCE_MS);
-    }
+    const scheduleReload = useDebounceFn(
+      loadUsageData,
+      DATE_FILTER_DEBOUNCE_MS
+    );
 
     onMounted(loadUsageData);
-    onBeforeUnmount(() => {
-      if (reloadTimeout) {
-        clearTimeout(reloadTimeout);
-      }
-    });
 
     return {
       loading,

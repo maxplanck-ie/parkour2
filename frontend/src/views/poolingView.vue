@@ -465,6 +465,8 @@
 <script lang="jsx">
 import TabulatorTable from "../components/TabulatorTableFull.vue";
 import { saveAs } from "file-saver";
+import { useLocalStorage, onClickOutside, onKeyStroke } from "@vueuse/core";
+import { getCurrentInstance } from "vue";
 import {
   showNotification,
   handleError,
@@ -494,6 +496,23 @@ export default {
   name: "Pooling",
   components: {
     TabulatorTable
+  },
+  setup() {
+    const columnWidths = useLocalStorage("poolingColumnWidths", {});
+    const columnVisibility = useLocalStorage("poolingColumnVisibility", {});
+    const instance = getCurrentInstance();
+
+    onClickOutside(
+      () => instance.proxy.$el,
+      (event) => instance.proxy.handleOutsideClick(event)
+    );
+
+    onKeyStroke("Escape", (event) => instance.proxy.handleKeyDown(event));
+
+    return {
+      columnWidths,
+      columnVisibility
+    };
   },
   data() {
     return {
@@ -576,17 +595,12 @@ export default {
     this.setColumns();
     this.fetchExportTemplates();
 
-    document.addEventListener("click", this.handleOutsideClick);
-    document.addEventListener("keydown", this.handleKeyDown);
     window.handleGroupButtonClick = this.handleGroupButtonClick.bind(this);
   },
   updated() {
     this.tabulatorInstance = this.$refs.tabulatorTableRef;
   },
-  beforeUnmount() {
-    document.removeEventListener("click", this.handleOutsideClick);
-    document.removeEventListener("keydown", this.handleKeyDown);
-  },
+  beforeUnmount() {},
   watch: {
     searchQuery(newValue, oldValue) {
       if (newValue !== oldValue) {
@@ -679,12 +693,8 @@ export default {
       }
     },
     setColumns() {
-      const storedVisibility = JSON.parse(
-        localStorage.getItem("poolingColumnVisibility") || "{}"
-      );
-      const storedWidths = JSON.parse(
-        localStorage.getItem("poolingColumnWidths") || "{}"
-      );
+      const storedVisibility = this.columnVisibility || {};
+      const storedWidths = this.columnWidths || {};
 
       const applySettings = (columns) => {
         return columns.map((column) => {
@@ -779,31 +789,24 @@ export default {
     handleColumnResized(column) {
       const field = column.getField();
       const width = column.getWidth();
-      const storedWidths = JSON.parse(
-        localStorage.getItem("poolingColumnWidths") || "{}"
-      );
+      const storedWidths = this.columnWidths || {};
       const newWidths = {
         ...storedWidths,
         [field]: width
       };
-      localStorage.setItem("poolingColumnWidths", JSON.stringify(newWidths));
+      this.columnWidths = newWidths;
       this.fakeLoadingStart();
       setTimeout(() => this.fakeLoadingStop(), 50);
     },
     handleColumnVisibilityChanged(field, visible) {
-      const storedVisibility = JSON.parse(
-        localStorage.getItem("poolingColumnVisibility") || "{}"
-      );
+      const storedVisibility = this.columnVisibility || {};
 
       const newVisibility = {
         ...storedVisibility,
         [field]: visible
       };
 
-      localStorage.setItem(
-        "poolingColumnVisibility",
-        JSON.stringify(newVisibility)
-      );
+      this.columnVisibility = newVisibility;
 
       this.fakeLoadingStart();
       setTimeout(() => this.fakeLoadingStop(), 50);
@@ -814,13 +817,13 @@ export default {
       }
     },
     resetColumnWidths() {
-      localStorage.removeItem("poolingColumnWidths");
+      this.columnWidths = {};
       this.setColumns();
       this.fakeLoadingStart();
       setTimeout(() => this.fakeLoadingStop(), 300);
     },
     resetColumnVisibility() {
-      localStorage.removeItem("poolingColumnVisibility");
+      this.columnVisibility = {};
       this.setColumns();
       this.fakeLoadingStart();
       setTimeout(() => this.fakeLoadingStop(), 300);

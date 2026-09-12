@@ -595,6 +595,8 @@
 <script lang="jsx">
 import TabulatorTable from "../components/TabulatorTableFull.vue";
 import { saveAs } from "file-saver";
+import { useLocalStorage, onClickOutside, onKeyStroke } from "@vueuse/core";
+import { getCurrentInstance } from "vue";
 import {
   showNotification,
   handleError,
@@ -625,6 +627,28 @@ export default {
   name: "IncomingLibrariesAndSamples",
   components: {
     TabulatorTable
+  },
+  setup() {
+    const columnWidths = useLocalStorage(
+      "incomingLibrariesAndSamplesColumnWidths",
+      {}
+    );
+    const columnVisibility = useLocalStorage(
+      "incomingLibrariesAndSamplesColumnVisibility",
+      {}
+    );
+    const instance = getCurrentInstance();
+
+    onClickOutside(
+      () => instance.proxy.$el,
+      (event) => instance.proxy.handleOutsideClick(event)
+    );
+    onKeyStroke("Escape", (event) => instance.proxy.handleKeyDown(event));
+
+    return {
+      columnWidths,
+      columnVisibility
+    };
   },
   data() {
     return {
@@ -709,16 +733,12 @@ export default {
     this.setColumns();
     this.fetchExportTemplates();
 
-    document.addEventListener("click", this.handleOutsideClick);
-    document.addEventListener("keydown", this.handleKeyDown);
     window.handleGroupButtonClick = this.handleGroupButtonClick.bind(this);
   },
   updated() {
     this.tabulatorInstance = this.$refs.tabulatorTableRef;
   },
   beforeUnmount() {
-    document.removeEventListener("click", this.handleOutsideClick);
-    document.removeEventListener("keydown", this.handleKeyDown);
     if (this.pendingEditTimer) {
       clearTimeout(this.pendingEditTimer);
       this.pendingEditTimer = null;
@@ -852,13 +872,8 @@ export default {
       }
     },
     setColumns() {
-      const storedVisibility = JSON.parse(
-        localStorage.getItem("incomingLibrariesAndSamplesColumnVisibility") ||
-          "{}"
-      );
-      const storedWidths = JSON.parse(
-        localStorage.getItem("incomingLibrariesAndSamplesColumnWidths") || "{}"
-      );
+      const storedVisibility = this.columnVisibility;
+      const storedWidths = this.columnWidths;
 
       const applySettings = (columns) => {
         return columns.map((column) => {
@@ -984,36 +999,25 @@ export default {
     handleColumnResized(column) {
       const field = column.getField();
       const width = column.getWidth();
-      const storedWidths = JSON.parse(
-        localStorage.getItem("incomingLibrariesAndSamplesColumnWidths") || "{}"
-      );
+      const storedWidths = this.columnWidths;
       const newWidths = {
         ...storedWidths,
         [field]: width
       };
-      localStorage.setItem(
-        "incomingLibrariesAndSamplesColumnWidths",
-        JSON.stringify(newWidths)
-      );
+      this.columnWidths = newWidths;
       this.fakeLoadingStart();
       setTimeout(() => this.fakeLoadingStop(), 50);
     },
     handleColumnVisibilityChanged(field, visible) {
       if (field !== "from_user" && field !== "from_facility") {
-        const storedVisibility = JSON.parse(
-          localStorage.getItem("incomingLibrariesAndSamplesColumnVisibility") ||
-            "{}"
-        );
+        const storedVisibility = this.columnVisibility;
 
         const newVisibility = {
           ...storedVisibility,
           [field]: visible
         };
 
-        localStorage.setItem(
-          "incomingLibrariesAndSamplesColumnVisibility",
-          JSON.stringify(newVisibility)
-        );
+        this.columnVisibility = newVisibility;
 
         this.fakeLoadingStart();
         setTimeout(() => this.fakeLoadingStop(), 50);
@@ -1025,13 +1029,13 @@ export default {
       }
     },
     resetColumnWidths() {
-      localStorage.removeItem("incomingLibrariesAndSamplesColumnWidths");
+      this.columnWidths = {};
       this.setColumns();
       this.fakeLoadingStart();
       setTimeout(() => this.fakeLoadingStop(), 300);
     },
     resetColumnVisibility() {
-      localStorage.removeItem("incomingLibrariesAndSamplesColumnVisibility");
+      this.columnVisibility = {};
       this.setColumns();
       this.fakeLoadingStart();
       setTimeout(() => this.fakeLoadingStop(), 300);
