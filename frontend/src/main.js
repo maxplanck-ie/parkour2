@@ -2,6 +2,7 @@ import "./assets/css/css_main.css";
 import "vue-toastification/dist/index.css";
 
 import { createApp } from "vue";
+import { useEventListener } from "@vueuse/core";
 import App from "./App.vue";
 import router from "./router/appRoutes.js";
 import toast from "vue-toastification";
@@ -156,7 +157,8 @@ function setupGlobalTooltips() {
     return null;
   };
 
-  document.addEventListener(
+  useEventListener(
+    document,
     "mouseover",
     (event) => {
       const target = findTooltipTarget(event.target);
@@ -179,7 +181,8 @@ function setupGlobalTooltips() {
     true
   );
 
-  document.addEventListener(
+  useEventListener(
+    document,
     "mouseout",
     (event) => {
       if (!tooltip.active) return;
@@ -189,7 +192,8 @@ function setupGlobalTooltips() {
     true
   );
 
-  document.addEventListener(
+  useEventListener(
+    document,
     "mousemove",
     (event) => {
       if (!tooltip.active || !tooltip.el) return;
@@ -211,7 +215,8 @@ function setupGlobalTooltips() {
     true
   );
 
-  document.addEventListener(
+  useEventListener(
+    document,
     "scroll",
     () => {
       if (tooltip.active) hideTooltip();
