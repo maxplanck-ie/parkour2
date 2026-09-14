@@ -26,11 +26,11 @@ attrs==26.1.0
     #   -c backend/requirements/3.11/dev.txt
     #   jsonschema
     #   referencing
-boto3==1.43.89
+boto3==1.43.93
     # via
     #   -c backend/requirements/3.11/dev.txt
     #   -r backend/requirements/dev.in
-botocore==1.43.89
+botocore==1.43.93
     # via
     #   -c backend/requirements/3.11/dev.txt
     #   boto3
@@ -47,16 +47,24 @@ charset-normalizer==3.5.1
     # via
     #   -c backend/requirements/3.11/dev.txt
     #   requests
+click==8.5.0
+    # via
+    #   -c backend/requirements/3.11/dev.txt
+    #   import-linter
 colorama==0.4.6 ; sys_platform == 'win32'
     # via
     #   -c backend/requirements/3.11/dev.txt
     #   ipython
     #   pytest
-contourpy==1.3.3
+contourpy==1.3.3 ; python_full_version < '3.12'
     # via
     #   -c backend/requirements/3.11/dev.txt
     #   matplotlib
-coverage==7.16.0
+contourpy==1.4.0 ; python_full_version >= '3.12'
+    # via
+    #   -c backend/requirements/3.11/dev.txt
+    #   matplotlib
+coverage==7.16.1
     # via pytest-cov
 cryptography==50.0.1
     # via
@@ -158,7 +166,7 @@ django-sql-explorer==5.3
     # via
     #   -c backend/requirements/3.11/dev.txt
     #   -r backend/requirements/dev.in
-djangorestframework==3.18.0
+djangorestframework==3.18.1
     # via
     #   -c backend/requirements/3.11/dev.txt
     #   -r backend/requirements/base.in
@@ -177,7 +185,7 @@ executing==2.2.1
     # via
     #   -c backend/requirements/3.11/dev.txt
     #   stack-data
-fonttools==4.64.0
+fonttools==4.65.0
     # via
     #   -c backend/requirements/3.11/dev.txt
     #   fpdf2
@@ -188,6 +196,10 @@ fpdf2==2.8.8
     #   -r backend/requirements/base.in
 greenlet==3.5.5
     # via playwright
+grimp==3.17
+    # via
+    #   -c backend/requirements/3.11/dev.txt
+    #   import-linter
 gunicorn==26.2.0
     # via
     #   -c backend/requirements/3.11/dev.txt
@@ -214,6 +226,10 @@ idna==3.19
     #   anyio
     #   httpx2
     #   requests
+import-linter==2.15
+    # via
+    #   -c backend/requirements/3.11/dev.txt
+    #   -r backend/requirements/dev.in
 inflection==0.5.1
     # via
     #   -c backend/requirements/3.11/dev.txt
@@ -236,7 +252,7 @@ jedi==0.20.0
     # via
     #   -c backend/requirements/3.11/dev.txt
     #   ipython
-jiter==0.16.0
+jiter==0.17.0
     # via
     #   -c backend/requirements/3.11/dev.txt
     #   openai
@@ -269,7 +285,7 @@ markupsafe==3.0.3
     # via
     #   -c backend/requirements/3.11/dev.txt
     #   werkzeug
-matplotlib==3.11.1
+matplotlib==3.11.2
     # via
     #   -c backend/requirements/3.11/dev.txt
     #   -r backend/requirements/dev.in
@@ -295,7 +311,7 @@ numpy==2.5.3 ; python_full_version >= '3.12'
     #   contourpy
     #   matplotlib
     #   pandas
-openai==3.8.0
+openai==3.13.0
     # via
     #   -c backend/requirements/3.11/dev.txt
     #   -r backend/requirements/dev.in
@@ -346,7 +362,7 @@ psutil==7.2.2 ; sys_platform != 'cygwin' and sys_platform != 'emscripten'
     # via
     #   -c backend/requirements/3.11/dev.txt
     #   ipython
-psycopg2==2.9.12
+psycopg2==2.9.13
     # via
     #   -c backend/requirements/3.11/dev.txt
     #   -r backend/requirements/base.in
@@ -354,7 +370,7 @@ ptyprocess==0.7.0 ; sys_platform != 'emscripten' and sys_platform != 'win32'
     # via
     #   -c backend/requirements/3.11/dev.txt
     #   pexpect
-pure-eval==0.2.3
+pure-eval==0.2.4
     # via
     #   -c backend/requirements/3.11/dev.txt
     #   stack-data
@@ -434,7 +450,7 @@ referencing==0.37.0
     #   -c backend/requirements/3.11/dev.txt
     #   jsonschema
     #   jsonschema-specifications
-regex==2026.9.3
+regex==2026.9.10
     # via
     #   -c backend/requirements/3.11/dev.txt
     #   tiktoken
@@ -448,6 +464,7 @@ rich==15.0.0
     # via
     #   -c backend/requirements/3.11/dev.txt
     #   -r backend/requirements/dev.in
+    #   import-linter
 rpds-py==2026.6.3
     # via
     #   -c backend/requirements/3.11/dev.txt
@@ -518,6 +535,7 @@ typing-extensions==4.16.0
     #   -c backend/requirements/3.11/dev.txt
     #   anyio
     #   httpx2
+    #   import-linter
     #   ipython
     #   openai
     #   pydantic
@@ -530,7 +548,7 @@ typing-inspection==0.4.4
     # via
     #   -c backend/requirements/3.11/dev.txt
     #   pydantic
-tzdata==2026.3 ; python_full_version < '3.12' or sys_platform == 'emscripten' or sys_platform == 'win32'
+tzdata==2026.4 ; python_full_version < '3.12' or sys_platform == 'emscripten' or sys_platform == 'win32'
     # via
     #   -c backend/requirements/3.11/dev.txt
     #   django
