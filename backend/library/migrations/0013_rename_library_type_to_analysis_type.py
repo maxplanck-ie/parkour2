@@ -6,7 +6,7 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
     dependencies = [
-        ("library", "0008_update_library_fields"),
+        ("library", "0012_alter_library_name"),
         ("library_sample_shared", "0016_rename_librarytype_analysistype_and_more"),
     ]
 

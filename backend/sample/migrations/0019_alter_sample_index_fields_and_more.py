@@ -7,7 +7,7 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
     dependencies = [
-        ("sample", "0018_alter_sample_name"),
+        ("sample", "0018_rename_library_type_to_analysis_type"),
     ]
 
     operations = [

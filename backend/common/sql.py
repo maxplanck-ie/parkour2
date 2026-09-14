@@ -408,6 +408,45 @@ CREATE INDEX IF NOT EXISTS idx_csd_mv_search_vector ON complete_sample_data_mv U
 """.strip()
 
 
+# Migrations library.0009/0011 and sample.0011/0015 (and any migration
+# replaying production's historical migration files verbatim, e.g. via
+# `make db-migras`) run before library_sample_shared.0016 renamed
+# LibraryType -> AnalysisType. At the point those migrations execute,
+# library_library/sample_sample still have a library_type_id column, and
+# library_sample_shared_librarytype is still the lookup table's name -- not
+# library_sample_shared_analysistype. Those migrations import the
+# no-arg convenience wrappers below (library_insert_sql, library_create_mv_sql,
+# sample_insert_sql, sample_create_mv_sql), so those wrappers are pinned to
+# this pre-rename JOIN permanently, derived mechanically from the live
+# template so they can never drift out of sync with it except on this one
+# line. The live app (common/mviews.py) never calls these wrappers -- it
+# calls library_select_sql/sample_select_sql and the *_insert_sql_from_select
+# functions directly, which stay on the current, post-rename JOIN. Do not
+# "fix" the wrappers below to use the current JOIN: that breaks replaying
+# production's real migration history from an empty database.
+_LEGACY_LIBRARY_JOIN: Final[str] = (
+    "LEFT JOIN library_sample_shared_librarytype AS lt ON l.library_type_id = lt.id"
+)
+_CURRENT_LIBRARY_JOIN: Final[str] = (
+    "LEFT JOIN library_sample_shared_analysistype AS lt ON l.analysis_type_id = lt.id"
+)
+_LEGACY_SAMPLE_JOIN: Final[str] = (
+    "LEFT JOIN library_sample_shared_librarytype AS lt ON s.library_type_id = lt.id"
+)
+_CURRENT_SAMPLE_JOIN: Final[str] = (
+    "LEFT JOIN library_sample_shared_analysistype AS lt ON s.analysis_type_id = lt.id"
+)
+assert _CURRENT_LIBRARY_JOIN in LIBRARY_SELECT_SQL_TEMPLATE
+assert _CURRENT_SAMPLE_JOIN in SAMPLE_SELECT_SQL_TEMPLATE
+
+_LEGACY_LIBRARY_SELECT_SQL_TEMPLATE: Final[str] = LIBRARY_SELECT_SQL_TEMPLATE.replace(
+    _CURRENT_LIBRARY_JOIN, _LEGACY_LIBRARY_JOIN
+)
+_LEGACY_SAMPLE_SELECT_SQL_TEMPLATE: Final[str] = SAMPLE_SELECT_SQL_TEMPLATE.replace(
+    _CURRENT_SAMPLE_JOIN, _LEGACY_SAMPLE_JOIN
+)
+
+
 def library_select_sql(where_clause: str = "") -> str:
     return LIBRARY_SELECT_SQL_TEMPLATE.format(where_clause=where_clause)
 
@@ -425,15 +464,19 @@ def sample_insert_sql_from_select(select_clause: str) -> str:
 
 
 def library_insert_sql(where_clause: str = "") -> str:
-    return library_insert_sql_from_select(library_select_sql(where_clause))
+    select_sql = _LEGACY_LIBRARY_SELECT_SQL_TEMPLATE.format(where_clause=where_clause)
+    return library_insert_sql_from_select(select_sql)
 
 
 def sample_insert_sql(where_clause: str = "") -> str:
-    return sample_insert_sql_from_select(sample_select_sql(where_clause))
+    select_sql = _LEGACY_SAMPLE_SELECT_SQL_TEMPLATE.format(where_clause=where_clause)
+    return sample_insert_sql_from_select(select_sql)
 
 
 def library_create_mv_sql(where_clause: str = "") -> str:
-    select_sql = library_select_sql(where_clause).strip()
+    select_sql = _LEGACY_LIBRARY_SELECT_SQL_TEMPLATE.format(
+        where_clause=where_clause
+    ).strip()
     return f"""
 CREATE MATERIALIZED VIEW complete_library_data_mv AS
 {select_sql}
@@ -441,7 +484,9 @@ CREATE MATERIALIZED VIEW complete_library_data_mv AS
 
 
 def sample_create_mv_sql(where_clause: str = "") -> str:
-    select_sql = sample_select_sql(where_clause).strip()
+    select_sql = _LEGACY_SAMPLE_SELECT_SQL_TEMPLATE.format(
+        where_clause=where_clause
+    ).strip()
     return f"""
 CREATE MATERIALIZED VIEW complete_sample_data_mv AS
 {select_sql}

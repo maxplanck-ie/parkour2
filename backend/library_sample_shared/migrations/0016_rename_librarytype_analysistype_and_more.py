@@ -7,12 +7,15 @@ from django.db import migrations
 class Migration(migrations.Migration):
     dependencies = [
         ("library_sample_shared", "0015_alter_historicallibraryprotocol_name_and_more"),
-        # Every prior library/sample migration still refers to this model
-        # under its old name (LibraryType); the rename must not land until
-        # all of them have applied, otherwise those earlier migrations fail
-        # to resolve their lazy FK reference against the renamed model.
-        ("library", "0008_update_library_fields"),
-        ("sample", "0010_update_sample_measurement_fields"),
+        # library.0009-0012 and sample.0011-0017 rebuild the
+        # complete_library_data_mv / complete_sample_data_mv summary tables
+        # using common.sql_legacy_pre_analysis_type_rename, which still
+        # reads the library_type_id column/library_sample_shared_librarytype
+        # table under their old names. This rename must not land until all
+        # of them have applied, or that frozen SQL breaks against columns
+        # that no longer exist.
+        ("library", "0012_alter_library_name"),
+        ("sample", "0017_alter_sample_name"),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
     ]
 
