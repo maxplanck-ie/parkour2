@@ -472,7 +472,7 @@
 import TabulatorTable from "../components/TabulatorTableFull.vue";
 import { saveAs } from "file-saver";
 import { getCurrentInstance } from "vue";
-import { useLocalStorage, onClickOutside, onKeyStroke } from "@vueuse/core";
+import { useLocalStorage, useEventListener, onKeyStroke } from "@vueuse/core";
 import {
   showNotification,
   handleError,
@@ -510,9 +510,8 @@ export default {
       {}
     );
     const instance = getCurrentInstance();
-    onClickOutside(
-      () => instance.proxy.$el,
-      (event) => instance.proxy.handleOutsideClick(event)
+    useEventListener(document, "click", (event) =>
+      instance.proxy.handleOutsideClick(event)
     );
     onKeyStroke("Escape", (event) => instance.proxy.handleKeyDown(event));
     return {

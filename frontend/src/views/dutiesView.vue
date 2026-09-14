@@ -282,7 +282,9 @@ export default {
       () => instance.proxy.$el,
       (event) => instance.proxy.handleOutsideClick(event)
     );
-    onKeyStroke("Escape", (event) => instance.proxy.handleKeyDown(event));
+    onKeyStroke(["Escape", "Tab"], (event) =>
+      instance.proxy.handleKeyDown(event)
+    );
     return {};
   },
   beforeMount() {

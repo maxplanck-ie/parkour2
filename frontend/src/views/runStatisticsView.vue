@@ -472,7 +472,7 @@ import {
 import {
   useLocalStorage,
   useDebounceFn,
-  onClickOutside,
+  useEventListener,
   onKeyStroke
 } from "@vueuse/core";
 import { saveAs } from "file-saver";
@@ -1022,7 +1022,7 @@ export default {
 
     const instance = getCurrentInstance();
 
-    onClickOutside(() => instance.proxy.$el, handleDocumentClick);
+    useEventListener(document, "click", handleDocumentClick);
     onKeyStroke("Escape", handleKeyDown);
 
     onMounted(() => {
@@ -1032,6 +1032,7 @@ export default {
     });
 
     onBeforeUnmount(() => {
+      debouncedFetchRows.cancel();
       window.handleGroupButtonClick = null;
     });
 

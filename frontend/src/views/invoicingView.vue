@@ -494,7 +494,7 @@ import {
   formatInvoicingCurrency
 } from "../constants/invoicingConsts";
 import { isValidMonth, formatDateForInput } from "../utilities/dateUtils";
-import { useLocalStorage, onClickOutside, onKeyStroke } from "@vueuse/core";
+import { useLocalStorage, useEventListener, onKeyStroke } from "@vueuse/core";
 import { getCurrentInstance } from "vue";
 import iconHeader from "../assets/icons/header_invoicing.svg";
 import iconExportTemplateFile from "../assets/icons/export_template.svg";
@@ -563,9 +563,8 @@ export default {
     const columnVisibility = useLocalStorage(COLUMN_VISIBILITY_KEY, {});
     const columnWidths = useLocalStorage(COLUMN_WIDTHS_KEY, {});
     const instance = getCurrentInstance();
-    onClickOutside(
-      () => instance.proxy.$el,
-      (event) => instance.proxy.handleOutsideClick(event)
+    useEventListener(document, "click", (event) =>
+      instance.proxy.handleOutsideClick(event)
     );
     onKeyStroke("Escape", (event) => instance.proxy.handleKeyDown(event));
     return {

@@ -1325,7 +1325,7 @@
 
 <script>
 import { getCurrentInstance } from "vue";
-import { onClickOutside, onKeyStroke } from "@vueuse/core";
+import { useEventListener, onKeyStroke } from "@vueuse/core";
 import TabulatorTable from "../components/TabulatorTableFull.vue";
 import {
   applyValueToAllRows,
@@ -1401,13 +1401,11 @@ export default {
   },
   setup() {
     const instance = getCurrentInstance();
-    onClickOutside(
-      () => instance.proxy.$el,
-      (event) => instance.proxy.handleShortcutHelpOutsideClick(event)
+    useEventListener(document, "click", (event) =>
+      instance.proxy.handleShortcutHelpOutsideClick(event)
     );
-    onClickOutside(
-      () => instance.proxy.$el,
-      (event) => instance.proxy.handleFeatureHelpOutsideClick(event)
+    useEventListener(document, "click", (event) =>
+      instance.proxy.handleFeatureHelpOutsideClick(event)
     );
     onKeyStroke("Escape", (event) => instance.proxy.handleKeyDown(event));
   },

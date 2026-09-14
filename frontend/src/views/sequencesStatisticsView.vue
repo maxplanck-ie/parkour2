@@ -465,7 +465,7 @@ import {
 } from "vue";
 import {
   useLocalStorage,
-  onClickOutside,
+  useEventListener,
   onKeyStroke,
   useDebounceFn
 } from "@vueuse/core";
@@ -1028,10 +1028,11 @@ export default {
       window.handleGroupButtonClick = handleGroupButtonClick;
     });
 
-    onClickOutside(() => instance.proxy.$el, handleDocumentClick);
+    useEventListener(document, "click", handleDocumentClick);
     onKeyStroke("Escape", handleKeyDown);
 
     onBeforeUnmount(() => {
+      scheduleDateReload.cancel();
       window.handleGroupButtonClick = null;
     });
 

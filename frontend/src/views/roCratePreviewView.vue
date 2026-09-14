@@ -639,6 +639,7 @@ export default {
   watch: {
     searchInput(newValue) {
       if (!newValue) {
+        this.debouncedSearch.cancel();
         this.debouncedSearchInput = "";
         this.activeSearchResultIndex = -1;
         return;
