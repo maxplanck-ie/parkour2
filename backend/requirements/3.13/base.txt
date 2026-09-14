@@ -40,7 +40,7 @@ django-monthfield==0.1.4
     # via -r backend/requirements/base.in
 django-simple-history==3.13.0
     # via -r backend/requirements/base.in
-djangorestframework==3.18.0
+djangorestframework==3.18.1
     # via
     #   -r backend/requirements/base.in
     #   drf-spectacular
@@ -48,7 +48,7 @@ drf-spectacular==0.30.0
     # via -r backend/requirements/base.in
 et-xmlfile==2.0.0
     # via openpyxl
-fonttools==4.64.0
+fonttools==4.65.0
     # via fpdf2
 fpdf2==2.8.8
     # via -r backend/requirements/base.in
@@ -72,7 +72,7 @@ pandas==3.0.5
     # via -r backend/requirements/base.in
 pillow==12.3.0
     # via fpdf2
-psycopg2==2.9.12
+psycopg2==2.9.13
     # via -r backend/requirements/base.in
 python-dateutil==2.9.0.post0
     # via
@@ -100,7 +100,7 @@ tblib==3.2.2
     # via -r backend/requirements/base.in
 typing-extensions==4.16.0
     # via python-docx
-tzdata==2026.3 ; sys_platform == 'emscripten' or sys_platform == 'win32'
+tzdata==2026.4 ; sys_platform == 'emscripten' or sys_platform == 'win32'
     # via
     #   django
     #   pandas
