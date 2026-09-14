@@ -1350,7 +1350,7 @@ import {
 } from "../utilities/utilityFunctions";
 import {
   useLocalStorage,
-  onClickOutside,
+  useEventListener,
   onKeyStroke,
   useDebounceFn
 } from "@vueuse/core";
@@ -1437,12 +1437,9 @@ export default {
       await instance.proxy.getLibrariesSamples(1);
     }, 500);
 
-    onClickOutside(
-      () => instance.proxy.$el,
-      (event) => {
-        instance.proxy.handleOutsideClick(event);
-      }
-    );
+    useEventListener(document, "click", (event) => {
+      instance.proxy.handleOutsideClick(event);
+    });
 
     onKeyStroke("Escape", (event) => {
       instance.proxy.handleKeyDown(event);
@@ -2199,6 +2196,7 @@ export default {
       }, 300);
     },
     handleDateChange(type, value) {
+      this.debouncedDateChangeCallback.cancel();
       this[`${type}DateValid`] = isValidDate(value);
       if (!this[`${type}DateValid`]) return;
       this.debouncedDateChangeCallback(type, value);

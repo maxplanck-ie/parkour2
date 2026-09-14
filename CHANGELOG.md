@@ -3,6 +3,8 @@
 Unreleased
 ==========
 
+- Fixed several regressions from the VueUse migration (PR #350): click-away no longer closed popups/dialogs (Advanced Filters, Select Columns, Export, help panels) on most in-page clicks across Duties, Incoming, Invoicing, Libraries & Samples, Library Preparation, Load Flowcells, Pooling, Request Editor, Run Statistics, and Sequences Statistics; Tab no longer kept focus trapped in the Add Duty dialog; pending debounced date/search reloads could run after leaving a page or after typing an invalid date; and copying a file path could report success even when the browser didn't actually support clipboard access. Request Editor's animated save-confirmation dialogs also got their missed changelog entry. (PR #TBD.)
+
 - Backend settings package renamed from `wui` to `config` (`DJANGO_SETTINGS_MODULE` is now `config.settings.*`); deployments/scripts setting that env var directly need updating. Also added an import-linter check enforcing that the shared `common` app never imports domain apps, catching one existing violation. (Direct commit `5cbc20a4`.)
 - Top nav bar buttons' corner rounding now matches the green header action buttons (Advanced Filters, Select Columns, Export to Excel, etc.) instead of using a fuller pill shape. (Direct commit `8075e97`.)
 - Fixed a fresh database migrate failing outright: the Analysis Type rename shipped without a migration for the model rename itself, and some apps had accumulated conflicting/duplicate migrations from unrelated work. (Direct commit `2d4b3de`.)

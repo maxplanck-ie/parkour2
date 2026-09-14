@@ -53,7 +53,7 @@
 </template>
 
 <script>
-import { computed, onMounted, reactive, ref } from "vue";
+import { computed, onBeforeUnmount, onMounted, reactive, ref } from "vue";
 import { useDebounceFn } from "@vueuse/core";
 import { use } from "echarts/core";
 import { CanvasRenderer } from "echarts/renderers";
@@ -164,6 +164,9 @@ export default {
     );
 
     onMounted(loadUsageData);
+    onBeforeUnmount(() => {
+      scheduleReload.cancel();
+    });
 
     return {
       loading,

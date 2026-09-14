@@ -845,7 +845,7 @@ export default {
   },
   setup() {
     const instance = getCurrentInstance();
-    const { copy } = useClipboard();
+    const { copy } = useClipboard({ legacy: true });
 
     onKeyStroke("Escape", (event) => {
       instance.proxy.handleGlobalKeydown(event);
