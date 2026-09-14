@@ -238,6 +238,15 @@ Prevent recurring regressions. No deviate without explicit ask.
   its heading, focus moved in on open, Tab-trapped focus, Escape to close,
   click-outside to close, and focus restored to the opener on close.
   Reference: `CostsPanel.vue`, `invoicingView.vue` (export popup, columns dialog).
+- Give overlay + panel an entrance animation instead of a hard pop-in — an
+  abrupt appear/disappear reads as broken UI. Use `@vueuse/motion`
+  (`v-motion`, `:initial`/`:enter` variants) for this — overlay fades in,
+  panel/modal fades+scales in, ~0.15–0.22s ease-out. Don't hand-roll
+  `@keyframes`/CSS `animation`/`transition` per component for this — use the
+  shared directive so every dialog's motion stays consistent and tunable in
+  one place.
+- Not every modal needs this pass — apply it when touching/adding a dialog,
+  don't go back and retrofit every existing one in one sweep.
 
 ### Async fetches triggered by user-changeable filters
 

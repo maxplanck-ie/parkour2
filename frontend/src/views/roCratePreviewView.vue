@@ -331,6 +331,7 @@
 <script>
 import { h } from "vue";
 import { saveAs } from "file-saver";
+import { useDebounceFn } from "@vueuse/core";
 import {
   RO_CRATE_ENDPOINT,
   RO_CRATE_ENTITY_IDS,
@@ -520,6 +521,14 @@ export default {
       default: null
     }
   },
+  setup() {
+    const debouncedSearch = useDebounceFn(function (vm, value) {
+      vm.debouncedSearchInput = value.trim();
+      vm.activeSearchResultIndex = -1;
+    }, RO_CRATE_SEARCH_DEBOUNCE_MS);
+
+    return { debouncedSearch };
+  },
   data() {
     return {
       loading: false,
@@ -527,7 +536,6 @@ export default {
       model: null,
       searchInput: "",
       debouncedSearchInput: "",
-      searchDebounceTimer: null,
       activeSearchResultIndex: -1,
       activePreviewConfig: null,
       exportBusy: false,
@@ -630,18 +638,13 @@ export default {
   },
   watch: {
     searchInput(newValue) {
-      window.clearTimeout(this.searchDebounceTimer);
-
       if (!newValue) {
         this.debouncedSearchInput = "";
         this.activeSearchResultIndex = -1;
         return;
       }
 
-      this.searchDebounceTimer = window.setTimeout(() => {
-        this.debouncedSearchInput = newValue.trim();
-        this.activeSearchResultIndex = -1;
-      }, RO_CRATE_SEARCH_DEBOUNCE_MS);
+      this.debouncedSearch(this, newValue);
     },
     previewConfig: {
       immediate: true,
@@ -654,11 +657,11 @@ export default {
     }
   },
   beforeUnmount() {
-    window.clearTimeout(this.searchDebounceTimer);
+    this.debouncedSearch.cancel();
   },
   methods: {
     clearSearch() {
-      window.clearTimeout(this.searchDebounceTimer);
+      this.debouncedSearch.cancel();
       this.searchInput = "";
       this.debouncedSearchInput = "";
       this.activeSearchResultIndex = -1;
@@ -667,7 +670,7 @@ export default {
     navigateSearchResults(direction = 1) {
       const pendingSearch = this.searchInput.trim();
       if (pendingSearch !== this.debouncedSearchInput) {
-        window.clearTimeout(this.searchDebounceTimer);
+        this.debouncedSearch.cancel();
         this.debouncedSearchInput = pendingSearch;
         this.activeSearchResultIndex = -1;
         this.$nextTick(() => this.navigateSearchResults(direction));

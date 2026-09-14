@@ -471,6 +471,8 @@
 <script lang="jsx">
 import TabulatorTable from "../components/TabulatorTableFull.vue";
 import { saveAs } from "file-saver";
+import { getCurrentInstance } from "vue";
+import { useLocalStorage, onClickOutside, onKeyStroke } from "@vueuse/core";
 import {
   showNotification,
   handleError,
@@ -500,6 +502,23 @@ export default {
   name: "LibraryPreparation",
   components: {
     TabulatorTable
+  },
+  setup() {
+    const columnWidths = useLocalStorage("libraryPreparationColumnWidths", {});
+    const columnVisibility = useLocalStorage(
+      "libraryPreparationColumnVisibility",
+      {}
+    );
+    const instance = getCurrentInstance();
+    onClickOutside(
+      () => instance.proxy.$el,
+      (event) => instance.proxy.handleOutsideClick(event)
+    );
+    onKeyStroke("Escape", (event) => instance.proxy.handleKeyDown(event));
+    return {
+      columnWidths,
+      columnVisibility
+    };
   },
   data() {
     return {
@@ -569,16 +588,12 @@ export default {
     this.setColumns();
     this.fetchExportTemplates();
 
-    document.addEventListener("click", this.handleOutsideClick);
-    document.addEventListener("keydown", this.handleKeyDown);
     window.handleGroupButtonClick = this.handleGroupButtonClick.bind(this);
   },
   updated() {
     this.tabulatorInstance = this.$refs.tabulatorTableRef;
   },
   beforeUnmount() {
-    document.removeEventListener("click", this.handleOutsideClick);
-    document.removeEventListener("keydown", this.handleKeyDown);
     if (this.pendingEditTimer) {
       clearTimeout(this.pendingEditTimer);
       this.pendingEditTimer = null;
@@ -676,12 +691,8 @@ export default {
       }
     },
     setColumns() {
-      const storedVisibility = JSON.parse(
-        localStorage.getItem("libraryPreparationColumnVisibility") || "{}"
-      );
-      const storedWidths = JSON.parse(
-        localStorage.getItem("libraryPreparationColumnWidths") || "{}"
-      );
+      const storedVisibility = this.columnVisibility;
+      const storedWidths = this.columnWidths;
 
       const applySettings = (columns) => {
         return columns.map((column) => {
@@ -778,34 +789,21 @@ export default {
     handleColumnResized(column) {
       const field = column.getField();
       const width = column.getWidth();
-      const storedWidths = JSON.parse(
-        localStorage.getItem("libraryPreparationColumnWidths") || "{}"
-      );
       const newWidths = {
-        ...storedWidths,
+        ...this.columnWidths,
         [field]: width
       };
-      localStorage.setItem(
-        "libraryPreparationColumnWidths",
-        JSON.stringify(newWidths)
-      );
+      this.columnWidths = newWidths;
       this.fakeLoadingStart();
       setTimeout(() => this.fakeLoadingStop(), 50);
     },
     handleColumnVisibilityChanged(field, visible) {
-      const storedVisibility = JSON.parse(
-        localStorage.getItem("libraryPreparationColumnVisibility") || "{}"
-      );
-
       const newVisibility = {
-        ...storedVisibility,
+        ...this.columnVisibility,
         [field]: visible
       };
 
-      localStorage.setItem(
-        "libraryPreparationColumnVisibility",
-        JSON.stringify(newVisibility)
-      );
+      this.columnVisibility = newVisibility;
 
       this.fakeLoadingStart();
       setTimeout(() => this.fakeLoadingStop(), 50);
@@ -816,13 +814,13 @@ export default {
       }
     },
     resetColumnWidths() {
-      localStorage.removeItem("libraryPreparationColumnWidths");
+      this.columnWidths = {};
       this.setColumns();
       this.fakeLoadingStart();
       setTimeout(() => this.fakeLoadingStop(), 300);
     },
     resetColumnVisibility() {
-      localStorage.removeItem("libraryPreparationColumnVisibility");
+      this.columnVisibility = {};
       this.setColumns();
       this.fakeLoadingStart();
       setTimeout(() => this.fakeLoadingStop(), 300);

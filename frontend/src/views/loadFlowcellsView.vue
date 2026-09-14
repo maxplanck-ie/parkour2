@@ -834,6 +834,8 @@
 
 <script lang="jsx">
 import { saveAs } from "file-saver";
+import { getCurrentInstance } from "vue";
+import { useLocalStorage, onClickOutside, onKeyStroke } from "@vueuse/core";
 import TabulatorTable from "../components/TabulatorTableFull.vue";
 import DateInput from "../components/DateInput.vue";
 import {
@@ -879,6 +881,23 @@ export default {
   components: {
     TabulatorTable,
     DateInput
+  },
+  setup() {
+    const columnWidths = useLocalStorage(COLUMN_WIDTHS_KEY, {});
+    const columnVisibility = useLocalStorage(COLUMN_VISIBILITY_KEY, {});
+    const instance = getCurrentInstance();
+
+    onClickOutside(
+      () => instance.proxy.$el,
+      (event) => instance.proxy.handleOutsideClick(event)
+    );
+
+    onKeyStroke("Escape", (event) => instance.proxy.handleKeyDown(event));
+
+    return {
+      columnWidths,
+      columnVisibility
+    };
   },
   data() {
     const now = new Date();
@@ -1038,8 +1057,6 @@ export default {
     this.getFlowcells();
     this.fetchExportTemplates();
     window.handleGroupButtonClick = this.handleGroupButtonClick.bind(this);
-    document.addEventListener("keydown", this.handleKeyDown);
-    document.addEventListener("click", this.handleOutsideClick);
   },
   updated() {
     this.tabulatorInstance = this.$refs.tabulatorTableRef;
@@ -1060,8 +1077,6 @@ export default {
       clearTimeout(this.dateChangeTimer);
     }
     window.handleGroupButtonClick = null;
-    document.removeEventListener("keydown", this.handleKeyDown);
-    document.removeEventListener("click", this.handleOutsideClick);
   },
   methods: {
     handleOutsideClick(event) {
@@ -1153,12 +1168,8 @@ export default {
       return true;
     },
     setColumns() {
-      const storedVisibility = JSON.parse(
-        localStorage.getItem(COLUMN_VISIBILITY_KEY) || "{}"
-      );
-      const storedWidths = JSON.parse(
-        localStorage.getItem(COLUMN_WIDTHS_KEY) || "{}"
-      );
+      const storedVisibility = this.columnVisibility;
+      const storedWidths = this.columnWidths;
       const columns = loadFlowcellsColumnDefs(() => this.tabulatorInstance, {
         onToggleSelected: this.handleRowSelectionToggle,
         onPoolClick: this.openPoolInfoPopup,
@@ -1230,37 +1241,25 @@ export default {
     handleColumnResized(column) {
       const field = column.getField();
       if (!field) return;
-      const storedWidths = JSON.parse(
-        localStorage.getItem(COLUMN_WIDTHS_KEY) || "{}"
-      );
-      localStorage.setItem(
-        COLUMN_WIDTHS_KEY,
-        JSON.stringify({ ...storedWidths, [field]: column.getWidth() })
-      );
+      this.columnWidths = { ...this.columnWidths, [field]: column.getWidth() };
       this.flashTableLoading(50);
     },
     handleColumnVisibilityChanged(field, visible) {
       if (!field) return;
-      const storedVisibility = JSON.parse(
-        localStorage.getItem(COLUMN_VISIBILITY_KEY) || "{}"
-      );
-      localStorage.setItem(
-        COLUMN_VISIBILITY_KEY,
-        JSON.stringify({ ...storedVisibility, [field]: visible })
-      );
+      this.columnVisibility = { ...this.columnVisibility, [field]: visible };
       this.flashTableLoading(50);
     },
     toggleColumnVisibility(column) {
       this.tabulatorInstance?.getTable?.().toggleColumn(column.field);
     },
     resetColumnWidths() {
-      localStorage.removeItem(COLUMN_WIDTHS_KEY);
+      this.columnWidths = {};
       this.setColumns();
       this.tableRenderKey += 1;
       this.flashTableLoading();
     },
     resetColumnVisibility() {
-      localStorage.removeItem(COLUMN_VISIBILITY_KEY);
+      this.columnVisibility = {};
       this.setColumns();
       this.tableRenderKey += 1;
       this.flashTableLoading();

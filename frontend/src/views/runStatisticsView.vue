@@ -462,12 +462,19 @@
 <script>
 import {
   computed,
+  getCurrentInstance,
   nextTick,
   onBeforeUnmount,
   onMounted,
   reactive,
   ref
 } from "vue";
+import {
+  useLocalStorage,
+  useDebounceFn,
+  onClickOutside,
+  onKeyStroke
+} from "@vueuse/core";
 import { saveAs } from "file-saver";
 import LiteTabulatorTable from "../components/TabulatorTableLite.vue";
 import DateInput from "../components/DateInput.vue";
@@ -540,7 +547,12 @@ export default {
       preparation: "",
       analysisType: ""
     });
-    let dateTimer = null;
+    const columnWidths = useLocalStorage(WIDTHS_KEY, {});
+    const columnVisibility = useLocalStorage(VISIBILITY_KEY, {});
+    const debouncedFetchRows = useDebounceFn(
+      fetchRows,
+      DATE_FILTER_DEBOUNCE_MS
+    );
 
     const tableOptions = {
       index: "row_id",
@@ -562,22 +574,18 @@ export default {
       handleColumnResized: (column) => {
         const field = column.getField();
         if (!field) return;
-        const widths = JSON.parse(localStorage.getItem(WIDTHS_KEY) || "{}");
-        localStorage.setItem(
-          WIDTHS_KEY,
-          JSON.stringify({ ...widths, [field]: column.getWidth() })
-        );
+        columnWidths.value = {
+          ...columnWidths.value,
+          [field]: column.getWidth()
+        };
         flashTableLoading(50);
       },
       handleColumnVisibilityChanged: (field, visible) => {
         if (!field) return;
-        const visibility = JSON.parse(
-          localStorage.getItem(VISIBILITY_KEY) || "{}"
-        );
-        localStorage.setItem(
-          VISIBILITY_KEY,
-          JSON.stringify({ ...visibility, [field]: visible })
-        );
+        columnVisibility.value = {
+          ...columnVisibility.value,
+          [field]: visible
+        };
         const definition = columnsList.value.find(
           (column) => column.field === field
         );
@@ -614,10 +622,8 @@ export default {
     );
 
     function setColumns() {
-      const storedVisibility = JSON.parse(
-        localStorage.getItem(VISIBILITY_KEY) || "{}"
-      );
-      const storedWidths = JSON.parse(localStorage.getItem(WIDTHS_KEY) || "{}");
+      const storedVisibility = columnVisibility.value;
+      const storedWidths = columnWidths.value;
 
       const applySettings = (columns) => {
         return columns.map((column) => {
@@ -659,7 +665,7 @@ export default {
         columnsList.value.forEach((column) => {
           if (column.field !== "selected") column.visible = true;
         });
-        localStorage.removeItem(VISIBILITY_KEY);
+        columnVisibility.value = {};
       }
     }
 
@@ -741,8 +747,7 @@ export default {
     }
 
     function scheduleDateReload() {
-      clearTimeout(dateTimer);
-      dateTimer = setTimeout(fetchRows, DATE_FILTER_DEBOUNCE_MS);
+      debouncedFetchRows();
     }
 
     function handleDateChange(type, value) {
@@ -944,14 +949,14 @@ export default {
     }
 
     async function resetColumnVisibility() {
-      localStorage.removeItem(VISIBILITY_KEY);
+      columnVisibility.value = {};
       setColumns();
       flashTableLoading();
       await nextTick();
     }
 
     async function resetColumnWidths() {
-      localStorage.removeItem(WIDTHS_KEY);
+      columnWidths.value = {};
       setColumns();
       flashTableLoading();
       await nextTick();
@@ -1015,19 +1020,19 @@ export default {
       closeExportPopup();
     }
 
+    const instance = getCurrentInstance();
+
+    onClickOutside(() => instance.proxy.$el, handleDocumentClick);
+    onKeyStroke("Escape", handleKeyDown);
+
     onMounted(() => {
       fetchRows();
       fetchExportTemplates();
       window.handleGroupButtonClick = handleGroupButtonClick;
-      document.addEventListener("click", handleDocumentClick);
-      document.addEventListener("keydown", handleKeyDown);
     });
 
     onBeforeUnmount(() => {
-      clearTimeout(dateTimer);
       window.handleGroupButtonClick = null;
-      document.removeEventListener("click", handleDocumentClick);
-      document.removeEventListener("keydown", handleKeyDown);
     });
 
     setColumns();
@@ -1065,6 +1070,8 @@ export default {
       preparationOptions,
       analysisTypeOptions,
       filteredRows,
+      columnWidths,
+      columnVisibility,
       toggleAdvancedFilters,
       toggleSelectColumns,
       resetAdvancedFilters,

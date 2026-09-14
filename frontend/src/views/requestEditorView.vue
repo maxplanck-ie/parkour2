@@ -1,6 +1,9 @@
 ﻿<template>
   <div
     v-if="show"
+    v-motion
+    :initial="{ opacity: 0 }"
+    :enter="{ opacity: 1, transition: { duration: 180, ease: 'easeOut' } }"
     class="request-editor-overlay popup-overlay"
     :class="{ 'drag-over': isDragOver }"
     @dragover.prevent="handleDragOver"
@@ -24,7 +27,16 @@
         </p>
       </div>
     </div>
-    <div class="request-editor-modal">
+    <div
+      v-motion
+      :initial="{ opacity: 0, scale: 0.95 }"
+      :enter="{
+        opacity: 1,
+        scale: 1,
+        transition: { duration: 220, ease: 'easeOut' }
+      }"
+      class="request-editor-modal"
+    >
       <div
         v-if="fakeLoading"
         class="request-editor-loading-overlay"
@@ -996,11 +1008,23 @@
       </div>
       <div
         v-if="saving"
+        v-motion
+        :initial="{ opacity: 0 }"
+        :enter="{ opacity: 1, transition: { duration: 150, ease: 'easeOut' } }"
         class="saving-overlay"
         aria-live="polite"
         aria-busy="true"
       >
-        <div class="saving-card">
+        <div
+          v-motion
+          :initial="{ opacity: 0, scale: 0.95 }"
+          :enter="{
+            opacity: 1,
+            scale: 1,
+            transition: { duration: 220, ease: 'easeOut' }
+          }"
+          class="saving-card"
+        >
           <div class="spinner"></div>
           <p>Saving request, please wait...</p>
         </div>
@@ -1008,11 +1032,23 @@
     </div>
     <div
       v-if="showToggleConfirm"
+      v-motion
+      :initial="{ opacity: 0 }"
+      :enter="{ opacity: 1, transition: { duration: 180, ease: 'easeOut' } }"
       class="confirm-overlay"
       @keydown="handleConfirmKeydown"
       tabindex="0"
     >
-      <div class="confirm-modal">
+      <div
+        v-motion
+        :initial="{ opacity: 0, scale: 0.95 }"
+        :enter="{
+          opacity: 1,
+          scale: 1,
+          transition: { duration: 220, ease: 'easeOut' }
+        }"
+        class="confirm-modal"
+      >
         <div class="confirm-header">
           <span class="confirm-title">Switch record type?</span>
           <button
@@ -1047,11 +1083,23 @@
     </div>
     <div
       v-if="showDeleteConfirm"
+      v-motion
+      :initial="{ opacity: 0 }"
+      :enter="{ opacity: 1, transition: { duration: 180, ease: 'easeOut' } }"
       class="confirm-overlay"
       @keydown="handleDeleteConfirmKeydown"
       tabindex="0"
     >
-      <div class="confirm-modal">
+      <div
+        v-motion
+        :initial="{ opacity: 0, scale: 0.95 }"
+        :enter="{
+          opacity: 1,
+          scale: 1,
+          transition: { duration: 220, ease: 'easeOut' }
+        }"
+        class="confirm-modal"
+      >
         <div class="confirm-header">
           <span class="confirm-title">{{ deleteConfirmTitle }}</span>
           <button
@@ -1086,11 +1134,23 @@
     </div>
     <div
       v-if="showCloseConfirm"
+      v-motion
+      :initial="{ opacity: 0 }"
+      :enter="{ opacity: 1, transition: { duration: 180, ease: 'easeOut' } }"
       class="confirm-overlay"
       @keydown="handleCloseConfirmKeydown"
       tabindex="0"
     >
-      <div class="confirm-modal">
+      <div
+        v-motion
+        :initial="{ opacity: 0, scale: 0.95 }"
+        :enter="{
+          opacity: 1,
+          scale: 1,
+          transition: { duration: 220, ease: 'easeOut' }
+        }"
+        class="confirm-modal"
+      >
         <div class="confirm-header">
           <span class="confirm-title">Discard new request?</span>
           <button
@@ -1120,11 +1180,23 @@
     </div>
     <div
       v-if="showFileDeleteConfirm"
+      v-motion
+      :initial="{ opacity: 0 }"
+      :enter="{ opacity: 1, transition: { duration: 180, ease: 'easeOut' } }"
       class="confirm-overlay"
       @keydown="handleFileDeleteConfirmKeydown"
       tabindex="0"
     >
-      <div class="confirm-modal">
+      <div
+        v-motion
+        :initial="{ opacity: 0, scale: 0.95 }"
+        :enter="{
+          opacity: 1,
+          scale: 1,
+          transition: { duration: 220, ease: 'easeOut' }
+        }"
+        class="confirm-modal"
+      >
         <div class="confirm-header">
           <span class="confirm-title">Delete file?</span>
           <button
@@ -1252,6 +1324,8 @@
 </template>
 
 <script>
+import { getCurrentInstance } from "vue";
+import { onClickOutside, onKeyStroke } from "@vueuse/core";
 import TabulatorTable from "../components/TabulatorTableFull.vue";
 import {
   applyValueToAllRows,
@@ -1324,6 +1398,18 @@ export default {
       type: Object,
       default: null
     }
+  },
+  setup() {
+    const instance = getCurrentInstance();
+    onClickOutside(
+      () => instance.proxy.$el,
+      (event) => instance.proxy.handleShortcutHelpOutsideClick(event)
+    );
+    onClickOutside(
+      () => instance.proxy.$el,
+      (event) => instance.proxy.handleFeatureHelpOutsideClick(event)
+    );
+    onKeyStroke("Escape", (event) => instance.proxy.handleKeyDown(event));
   },
   data() {
     return {
@@ -1527,15 +1613,9 @@ export default {
     if (this.show) {
       this.schedulePrepareRequestEditorModal();
     }
-    document.addEventListener("keydown", this.handleKeyDown);
-    document.addEventListener("click", this.handleShortcutHelpOutsideClick);
-    document.addEventListener("click", this.handleFeatureHelpOutsideClick);
   },
   beforeUnmount() {
     this.unbindRangeSelectionListeners();
-    document.removeEventListener("keydown", this.handleKeyDown);
-    document.removeEventListener("click", this.handleShortcutHelpOutsideClick);
-    document.removeEventListener("click", this.handleFeatureHelpOutsideClick);
     this.cancelShortcutHelpClose();
     this.cancelFeatureHelpClose();
   },
@@ -5166,7 +5246,6 @@ export default {
   justify-content: center;
   padding: 20px;
   z-index: 999;
-  animation: request-editor-fade-in 0.18s ease-out;
   overflow: hidden;
 }
 
@@ -5197,9 +5276,6 @@ export default {
   display: flex;
   flex-direction: column;
   box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
-  transform: scale(0.98);
-  opacity: 0;
-  animation: request-editor-pop-in 0.22s ease-out forwards;
   overflow: hidden;
   position: relative;
   z-index: 1;
@@ -5214,7 +5290,6 @@ export default {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  animation: fade-in 0.15s ease-out forwards;
 }
 
 .request-editor-loading-overlay p {
@@ -6658,28 +6733,6 @@ export default {
 
 .header-button.ghost {
   background: #0f766e;
-}
-
-@keyframes request-editor-fade-in {
-  from {
-    opacity: 0;
-  }
-
-  to {
-    opacity: 1;
-  }
-}
-
-@keyframes request-editor-pop-in {
-  from {
-    opacity: 0;
-    transform: scale(0.98);
-  }
-
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
 }
 
 @media (max-width: 1180px) {
