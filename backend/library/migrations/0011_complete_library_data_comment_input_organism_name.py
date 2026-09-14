@@ -2,15 +2,15 @@
 
 from django.db import migrations, models
 
-from common.sql import sample_insert_sql
+from common.sql import library_insert_sql
 
 
-POPULATE_SQL = sample_insert_sql()
+POPULATE_SQL = library_insert_sql()
 
 
 class Migration(migrations.Migration):
     dependencies = [
-        ("sample", "0015_rename_rna_quality"),
+        ("library", "0010_alter_library_removed_concentration_method_and_more"),
     ]
 
     operations = [
@@ -18,27 +18,27 @@ class Migration(migrations.Migration):
             database_operations=[
                 migrations.RunSQL(
                     sql="""
-ALTER TABLE complete_sample_data_mv
+ALTER TABLE complete_library_data_mv
 ADD COLUMN IF NOT EXISTS comment_input TEXT;
-ALTER TABLE complete_sample_data_mv
+ALTER TABLE complete_library_data_mv
 ADD COLUMN IF NOT EXISTS organism_name VARCHAR(100);
-TRUNCATE TABLE complete_sample_data_mv;
+TRUNCATE TABLE complete_library_data_mv;
 """,
                     reverse_sql=migrations.RunSQL.noop,
                 ),
                 migrations.RunSQL(
                     sql=POPULATE_SQL,
-                    reverse_sql="TRUNCATE TABLE complete_sample_data_mv;",
+                    reverse_sql="TRUNCATE TABLE complete_library_data_mv;",
                 ),
             ],
             state_operations=[
                 migrations.AddField(
-                    model_name="completesampledata",
+                    model_name="completelibrarydata",
                     name="comment_input",
                     field=models.TextField(null=True),
                 ),
                 migrations.AddField(
-                    model_name="completesampledata",
+                    model_name="completelibrarydata",
                     name="organism_name",
                     field=models.CharField(max_length=100, null=True),
                 ),

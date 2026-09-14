@@ -19,25 +19,25 @@ def sanitize_name(name):
 
 
 def fix_invalid_names(apps, schema_editor):
-    Sample = apps.get_model("sample", "Sample")
-    invalid = Sample.objects.filter(
+    Library = apps.get_model("library", "Library")
+    invalid = Library.objects.filter(
         ~Q(name__regex=r"^[A-Za-z0-9_-]{1,%d}$" % NAME_MAX_LENGTH)
         | Q(name__regex=r"[^A-Za-z0-9]$")
     )
-    for sample in invalid.iterator():
-        sample.name = sanitize_name(sample.name)
-        sample.save(update_fields=["name"])
+    for library in invalid.iterator():
+        library.name = sanitize_name(library.name)
+        library.save(update_fields=["name"])
 
 
 class Migration(migrations.Migration):
     dependencies = [
-        ("sample", "0017_reorder_sample_measuring_unit_choices"),
+        ("library", "0011_complete_library_data_comment_input_organism_name"),
     ]
 
     operations = [
         migrations.RunPython(fix_invalid_names, migrations.RunPython.noop),
         migrations.AlterField(
-            model_name="sample",
+            model_name="library",
             name="name",
             field=models.CharField(
                 max_length=99,
