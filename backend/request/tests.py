@@ -365,6 +365,40 @@ class TestRequests(BaseTestCase):
         response = self.client.get("/api/requests/-1/")
         self.assertEqual(response.status_code, 404)
 
+    def test_restrict_permissions_true_for_non_staff_once_processing_starts(self):
+        """Ensure a non-staff owner's request locks once any of its
+        libraries leaves status 0 (Incoming)."""
+        self.login("non-staff@test.io", "test")
+        request = create_request(self.non_staff)
+        library = create_library(get_random_name(), status=1)
+        request.libraries.add(library)
+
+        response = self.client.get(f"/api/requests/{request.pk}/")
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(response.json()["restrict_permissions"])
+
+    def test_restrict_permissions_false_for_non_staff_while_still_incoming(self):
+        """Ensure a non-staff owner's request stays unlocked while every
+        library is still at status 0 (Incoming)."""
+        self.login("non-staff@test.io", "test")
+        request = create_request(self.non_staff)
+        library = create_library(get_random_name(), status=0)
+        request.libraries.add(library)
+
+        response = self.client.get(f"/api/requests/{request.pk}/")
+        self.assertEqual(response.status_code, 200)
+        self.assertFalse(response.json()["restrict_permissions"])
+
+    def test_restrict_permissions_always_false_for_staff(self):
+        """Ensure staff users are never locked out, regardless of status."""
+        request = create_request(self.user)
+        library = create_library(get_random_name(), status=1)
+        request.libraries.add(library)
+
+        response = self.client.get(f"/api/requests/{request.pk}/")
+        self.assertEqual(response.status_code, 200)
+        self.assertFalse(response.json()["restrict_permissions"])
+
     def test_create_request(self):
         """Ensure create request behaves correctly."""
         library = create_library(get_random_name())
