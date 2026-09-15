@@ -1410,5 +1410,50 @@
             ],
             "files": []
         }
+    },
+    {
+        "model": "request.request",
+        "pk": 29,
+        "fields": {
+            "create_time": "2026-09-15T09:00:00.000Z",
+            "update_time": "2026-09-15T09:00:00.000Z",
+            "name": "29_User_LoadFlowcell_Fixture",
+            "description": "Fixture request for e2e Load Flowcells drag-and-drop coverage.",
+            "change_ownership_reason": "",
+            "token": null,
+            "user": 3,
+            "cost_unit": 1,
+            "deep_seq_request": "",
+            "samples_submitted": true,
+            "sequenced": false,
+            "archived": false,
+            "filepaths": {
+                "data": null,
+                "metadata": null
+            },
+            "metapaths": {
+                "nothing": null
+            },
+            "approval": {
+                "TOKEN": null,
+                "TIMESTAMP": null,
+                "HTTP_ACCEPT": null,
+                "REMOTE_ADDR": null,
+                "REMOTE_PORT": null,
+                "HTTP_FORWARDED": null,
+                "HTTP_USER_AGENT": null,
+                "HTTP_ACCEPT_ENCODING": null,
+                "HTTP_ACCEPT_LANGUAGE": null,
+                "HTTP_X_FORWARDED_FOR": null
+            },
+            "qc_completed_at": null,
+            "flowcell_loaded_at": null,
+            "related_requests": [],
+            "libraries": [],
+            "samples": [
+                187
+            ],
+            "files": []
+        }
     }
 ]

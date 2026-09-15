@@ -16,6 +16,30 @@ FLOWCELL_ID = "e5yethethe"
 START_DATE = "2023.07.01"
 END_DATE = "2023.07.31"
 
+# LoadFlowcell_Fixture_1 (sample.Sample pk=187) from request
+# "29_User_LoadFlowcell_Fixture" (request.Request pk=29) ships with fixtures
+# purpose-built for the drag-and-drop test below: status=1 ("Submission
+# Completed"), is_pooled=False, index_type/index_i7/index_i5 all null. It's
+# the only fixture row scoped to this request, so walking it through
+# Incoming -> Index Generator -> Library Preparation -> Pooling -> Load
+# Flowcells can't collide with the FLOWCELL_ID fixture above or any other
+# page-object test's fixture rows.
+REQUEST_GROUP_NAME = "29_User_LoadFlowcell_Fixture"
+SAMPLE_NAME = "LoadFlowcell_Fixture_1"
+
+# IndexType pk=46 ("Bonasio"): single-format, dual-indexed, non-Nanopore,
+# with real seeded indices (10 I7 + 10 I5) -- see index_generator_page.py's
+# note that several single-format IndexType fixture rows ship with zero
+# actual IndexI7/IndexI5 rows.
+INDEX_TYPE_ID = "46"
+
+LIBRARY_PREPARATION_GROUP_NAME = "TruSeq Stranded Total RNA (Gold)"
+
+# flowcell/fixtures/sequencer.json pk=1 "MiSeq": lanes=1, lane_capacity=25.
+# A single-lane sequencer means one dragged pool fills every lane, so the
+# flowcell becomes saveable without needing several ready pools.
+SEQUENCER_ID = "1"
+
 
 def _exact(text):
     return re.compile(rf"{re.escape(text)}(?!\d)")
@@ -81,3 +105,233 @@ def test_destroy_flowcell_frees_its_pool(page: Page):
             has_text=_exact(FLOWCELL_ID),
         )
     ).to_have_count(0, timeout=15000)
+
+
+def _open_incoming_libraries_page(page: Page):
+    utilities.pretest_login_cached(page)
+    utilities.visit_vue_page(page, "incoming_libraries_samples")
+    page.bring_to_front()
+
+    utilities.expect_page_header(page, "Incoming Libraries and Samples")
+    expect(page.locator(".tabulator")).to_be_visible()
+
+
+def _open_index_generator_page(page: Page):
+    utilities.visit_vue_page(page, "index_generator")
+    page.bring_to_front()
+
+    utilities.expect_page_header(page, "Index Generator")
+    expect(page.locator("#indexGeneratorSourceTable")).to_be_visible()
+
+
+def _open_library_preparation_page(page: Page):
+    utilities.visit_vue_page(page, "library_preparation")
+    page.bring_to_front()
+
+    utilities.expect_page_header(page, "Library Preparation")
+    expect(page.locator(".tabulator")).to_be_visible()
+
+
+def _open_pooling_page(page: Page):
+    utilities.visit_vue_page(page, "pooling")
+    page.bring_to_front()
+
+    utilities.expect_page_header(page, "Pooling")
+    expect(page.locator(".tabulator")).to_be_visible()
+
+
+def _mark_quality_checked_passed(page: Page, group_locator, row_locator):
+    row_locator.locator('input[type="checkbox"]').check()
+    group_locator.hover()
+    group_locator.locator('[title="Mark selected as Quality Checked: Passed"]').click()
+
+    confirm_dialog = page.locator(".popup-overlay")
+    expect(confirm_dialog).to_be_visible()
+    expect(confirm_dialog).to_contain_text("Quality Check: Passed")
+    confirm_dialog.locator(".popup-button.yes-button").click()
+    expect(row_locator).to_have_count(0, timeout=15000)
+
+
+def _advance_sample_to_ready_pool(page: Page):
+    """Walks LoadFlowcell_Fixture_1 through Incoming -> Index Generator ->
+    Library Preparation -> Pooling, mirroring
+    stage_advance_chain_page.py's proven chain, and returns the resulting
+    pool's name (e.g. "Pool_23"). By the time this returns, the pool is at
+    status 4 and PoolListSerializer.get_ready() reports it "ready" --
+    exactly what Load Flowcells' drag-and-drop needs to exercise.
+    """
+    # --- Incoming Libraries and Samples -- mark Quality Checked: Passed.
+    _open_incoming_libraries_page(page)
+
+    incoming_group = page.locator(
+        "#tabulatorTable .tabulator-row.tabulator-group",
+        has_text=_exact(REQUEST_GROUP_NAME),
+    )
+    expect(incoming_group).to_have_count(1, timeout=15000)
+
+    incoming_row = page.locator(
+        "#tabulatorTable .tabulator-row", has_text=_exact(SAMPLE_NAME)
+    )
+    if incoming_row.count() == 0:
+        incoming_group.click()
+        expect(incoming_row).to_have_count(1, timeout=15000)
+
+    _mark_quality_checked_passed(page, incoming_group, incoming_row)
+
+    # --- Index Generator -- select, generate indices, save pool.
+    _open_index_generator_page(page)
+
+    source_group = page.locator(
+        "#indexGeneratorSourceTable .tabulator-row.tabulator-group",
+        has_text=_exact(REQUEST_GROUP_NAME),
+    )
+    expect(source_group).to_have_count(1, timeout=15000)
+
+    source_row = page.locator(
+        "#indexGeneratorSourceTable .tabulator-row", has_text=_exact(SAMPLE_NAME)
+    )
+    if source_row.count() == 0:
+        source_group.click()
+        expect(source_row).to_have_count(1, timeout=15000)
+
+    source_row.locator('input[type="checkbox"]').check()
+    page.locator(".add-selected-pool-button").click()
+
+    pool_draft_table = page.locator("#indexGeneratorPoolTable")
+    expect(
+        pool_draft_table.locator(".tabulator-row", has_text=_exact(SAMPLE_NAME))
+    ).to_have_count(1, timeout=15000)
+
+    index_type_select = page.locator("select.apply-index-type-select")
+    expect(index_type_select).to_be_enabled()
+    index_type_select.select_option(value=INDEX_TYPE_ID)
+
+    generate_button = page.get_by_role("button", name="Generate Indices")
+    expect(generate_button).to_be_enabled()
+    generate_button.click()
+
+    draft_row = pool_draft_table.locator(".tabulator-row", has_text=_exact(SAMPLE_NAME))
+    sequence_cells = draft_row.locator(".sequence-column.sequence-text")
+    expect(sequence_cells).to_have_count(2)
+    expect(sequence_cells.first).not_to_have_text("", timeout=15000)
+
+    # Multiplier=1 / Size=1 (index_generator.PoolSize pk=48): smallest real
+    # option once sorted ascending, and small enough to fit MiSeq's
+    # lane_capacity=25 -- the same selection stage_advance_chain_page.py
+    # already proved works end to end.
+    multiplier_select = page.locator("select#index-generator-pool-multiplier")
+    expect(multiplier_select).to_be_enabled()
+    multiplier_select.select_option(index=1)
+
+    size_select = page.locator("select#index-generator-pool-size")
+    expect(size_select).to_be_enabled()
+    size_select.select_option(index=1)
+
+    save_button = page.locator("button.save-pool-button")
+    expect(save_button).to_be_enabled()
+    save_button.click()
+
+    expect(draft_row).to_have_count(0, timeout=15000)
+
+    # --- Library Preparation -- mark Quality Checked: Passed (status 2->3).
+    _open_library_preparation_page(page)
+
+    prep_group = page.locator(
+        "#tabulatorTable .tabulator-row.tabulator-group",
+        has_text=_exact(LIBRARY_PREPARATION_GROUP_NAME),
+    )
+    expect(prep_group).to_have_count(1, timeout=15000)
+
+    prep_row = page.locator(
+        "#tabulatorTable .tabulator-row", has_text=_exact(SAMPLE_NAME)
+    )
+    if prep_row.count() == 0:
+        prep_group.click()
+        expect(prep_row).to_have_count(1, timeout=15000)
+
+    _mark_quality_checked_passed(page, prep_group, prep_row)
+
+    # --- Pooling -- find the sample's group/pool name, then mark Quality
+    # Checked: Passed (status 3->4), which is what makes the pool "ready".
+    _open_pooling_page(page)
+
+    pooling_groups = page.locator("#tabulatorTable .tabulator-row.tabulator-group")
+    expect(pooling_groups).not_to_have_count(0, timeout=15000)
+    for i in range(pooling_groups.count()):
+        pooling_groups.nth(i).click()
+
+    pooling_row = page.locator(
+        "#tabulatorTable .tabulator-row", has_text=_exact(SAMPLE_NAME)
+    )
+    expect(pooling_row).to_have_count(1, timeout=15000)
+
+    # Tabulator renders group headers and member rows as flat siblings
+    # within the same table body (not nested), so find the enclosing group
+    # via the nearest preceding ".tabulator-row.tabulator-group" sibling.
+    pool_group = pooling_row.locator(
+        "xpath=preceding-sibling::div"
+        "[contains(concat(' ', normalize-space(@class), ' '), ' tabulator-group ')][1]"
+    )
+    expect(pool_group).to_have_count(1)
+    pool_group_text = pool_group.inner_text()
+    pool_name_match = re.search(r"Pool_\d+", pool_group_text)
+    assert pool_name_match, (
+        f"Could not find a 'Pool_<id>' name in pooling group text: {pool_group_text!r}"
+    )
+    pool_name = pool_name_match.group(0)
+
+    _mark_quality_checked_passed(page, pool_group, pooling_row)
+
+    return pool_name
+
+
+def test_drag_ready_pool_onto_lane_and_save_flowcell(page: Page):
+    pool_name = _advance_sample_to_ready_pool(page)
+
+    # --- Load Flowcells -- drag the now-ready pool onto MiSeq's single lane
+    # and save. This is the actual UI drag-and-drop path, not just a
+    # readiness check (stage_advance_chain_page.py already covers that the
+    # pool merely *appears* ready; here it's placed on a lane and the
+    # flowcell is created).
+    _open_load_flowcells_page(page)
+
+    page.locator("button.header-button", has_text="Load").click()
+
+    load_popup = page.locator(".popup-overlay.load-flowcell-overlay")
+    expect(load_popup).to_be_visible(timeout=15000)
+
+    pool_row = load_popup.locator(".load-pool-row", has_text=_exact(pool_name))
+    expect(pool_row).to_have_count(1, timeout=15000)
+    expect(pool_row).to_have_class(re.compile(r"\bready\b"))
+    expect(pool_row).not_to_have_class(re.compile(r"\bdisabled\b"))
+
+    sequencer_select = load_popup.locator("select").first
+    sequencer_select.select_option(value=SEQUENCER_ID)
+
+    lane_card = load_popup.locator(".lane-drop-card").first
+    expect(lane_card).to_have_count(1, timeout=15000)
+    expect(lane_card.locator(".lane-drop-card-title")).to_have_text("Lane 1")
+
+    # HTML5 drag-and-drop needs a real dispatched dragstart/drop sequence --
+    # Playwright's drag_to() handles that; a bare click wouldn't trigger the
+    # component's @dragstart/@drop handlers.
+    pool_row.drag_to(lane_card)
+
+    expect(lane_card).to_have_class(re.compile(r"\bloaded\b"), timeout=15000)
+    expect(lane_card.locator(".lane-drop-card-pool")).to_contain_text(pool_name)
+
+    flowcell_id_input = load_popup.locator('input[type="text"]')
+    flowcell_id_input.fill(f"E2E_{pool_name}")
+
+    save_button = load_popup.locator("button.popup-button.yes-button")
+    save_button.click()
+
+    expect(load_popup).to_have_count(0, timeout=15000)
+
+    # Saving creates a real Flowcell -- it should now appear, grouped by
+    # flowcell_id, in the main Load Flowcells table.
+    flowcell_group = page.locator(
+        "#tabulatorTable .tabulator-row.tabulator-group",
+        has_text=_exact(f"E2E_{pool_name}"),
+    )
+    expect(flowcell_group).to_have_count(1, timeout=15000)
