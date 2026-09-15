@@ -3,7 +3,7 @@
 Unreleased
 ==========
 
-- Libraries & Samples table now shows a "Flowcell Created" column with the creation date of each flowcell a library/sample was sequenced on, aligned to the existing Flowcell IDs column — lays the groundwork for computing turnaround time from request approval to sequencing start. (PR #TBD.)
+- Libraries & Samples table now shows a "Flowcell Created" column with the creation date of each flowcell a library/sample was sequenced on, aligned to the existing Flowcell IDs column — lays the groundwork for computing turnaround time from request approval to sequencing start. (PR #354.)
 - Adopted VueUse composables and Motion across the frontend (browser listeners, storage, debounce, clipboard, resize, and dialog animations), including animated save-confirmation dialogs in the Request Editor. (PRs #350, #352.)
 - Added Playwright e2e coverage for Request Editor (edit/delete a request), Invoicing (billing-month view, Excel export), Load Flowcells (sample sheet download, destroy flowcell), and Runs/Sequences Statistics. (Direct commit `a3e63cc3`.)
 
