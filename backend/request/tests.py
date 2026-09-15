@@ -237,6 +237,149 @@ class RequestRelatedRequestsHistoryTest(TestCase):
         self.assertIn("related_requests", delta.changed_fields)
 
 
+class TestApprovalFlow(BaseTestCase):
+    """solicit_approval (email a PI a one-time link) and the ApproveViewSet
+    endpoint that link points at (AllowAny -- the PI never logs in) are
+    marked `# pragma: no cover` in request/views.py, but both are plain
+    Django/DRF logic and fully testable without a browser."""
+
+    def setUp(self):
+        self.org = Organization(name=get_random_name())
+        self.org.save()
+
+        self.pi = PrincipalInvestigator(
+            name=get_random_name(),
+            organization=self.org,
+            email="pi@test.io",
+        )
+        self.pi.save()
+
+        self.owner = User.objects.create_user(
+            first_name="Foo",
+            last_name="Bar",
+            email="owner@test.io",
+            password="foo-foo",
+            organization=self.org,
+            pi=self.pi,
+        )
+
+        self.staff = self.create_user()
+        self.login()
+
+        self.request = create_request(self.owner)
+        self.library = create_library(get_random_name(), status=0)
+        self.request.libraries.add(self.library)
+
+    def _solicit(self, **overrides):
+        payload = {
+            "subject": "Please approve",
+            "message": "Kindly approve this request.",
+            "include_records": "true",
+        }
+        payload.update(overrides)
+        return self.client.post(
+            f"/api/requests/{self.request.pk}/solicit_approval/", payload
+        )
+
+    def test_solicit_approval_emails_pi_and_sets_token(self):
+        response = self._solicit()
+        self.assertEqual(response.status_code, 200)
+        body = response.json()
+        self.assertTrue(body["success"])
+        self.assertEqual(body["error"], "")
+
+        self.request.refresh_from_db()
+        self.assertTrue(self.request.token)
+
+        self.assertEqual(len(mail.outbox), 1)
+        sent = mail.outbox[0]
+        self.assertIn(self.pi.email, sent.to)
+        html = sent.alternatives[0][0]
+        self.assertIn(f"token={self.request.token}", html)
+        self.assertIn(f"pk={self.request.id}", html)
+
+    def test_solicit_approval_rejects_archived_pi(self):
+        self.pi.archived = True
+        self.pi.save()
+
+        response = self._solicit()
+        body = response.json()
+        self.assertFalse(body["success"])
+        self.assertIn("no longer enrolled", body["error"])
+        self.assertEqual(len(mail.outbox), 0)
+
+    def test_solicit_approval_rejects_pi_without_email(self):
+        self.pi.email = "Unset"
+        self.pi.save()
+
+        response = self._solicit()
+        body = response.json()
+        self.assertFalse(body["success"])
+        self.assertIn("no e-mail address", body["error"])
+        self.assertEqual(len(mail.outbox), 0)
+
+    def test_solicit_approval_rejects_when_a_record_already_progressed(self):
+        self.library.status = 1
+        self.library.save()
+
+        response = self._solicit()
+        body = response.json()
+        self.assertFalse(body["success"])
+        self.assertIn("Not all records have status of zero", body["error"])
+        self.assertEqual(len(mail.outbox), 0)
+
+    def test_approve_this_valid_token_advances_status_and_emails_owner_and_pi(self):
+        self._solicit()
+        self.request.refresh_from_db()
+        token = self.request.token
+
+        response = self.client.get(
+            "/api/approve/this/", {"pk": self.request.pk, "token": token}
+        )
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.url, "/danke")
+
+        self.library.refresh_from_db()
+        self.assertEqual(self.library.status, 1)
+
+        self.request.refresh_from_db()
+        self.assertIsNone(self.request.token)
+        self.assertEqual(self.request.approval["TOKEN"], token)
+
+        # The solicitation email plus one approval-confirmation email each
+        # to the owner and the PI (they have distinct addresses here).
+        self.assertEqual(len(mail.outbox), 3)
+        approval_recipients = {
+            recipient for sent in mail.outbox[1:] for recipient in sent.to
+        }
+        self.assertIn(self.owner.email, approval_recipients)
+        self.assertIn(self.pi.email, approval_recipients)
+
+    def test_approve_this_wrong_token_shows_expired_page(self):
+        self._solicit()
+
+        response = self.client.get(
+            "/api/approve/this/", {"pk": self.request.pk, "token": "not-the-token"}
+        )
+        self.assertEqual(response.status_code, 400)
+
+        self.library.refresh_from_db()
+        self.assertEqual(self.library.status, 0)
+
+    def test_approve_this_rejects_once_a_record_already_progressed(self):
+        self._solicit()
+        self.request.refresh_from_db()
+        token = self.request.token
+
+        self.library.status = 1
+        self.library.save()
+
+        response = self.client.get(
+            "/api/approve/this/", {"pk": self.request.pk, "token": token}
+        )
+        self.assertEqual(response.status_code, 400)
+
+
 # Views
 
 
