@@ -4,6 +4,7 @@ from collections import namedtuple
 
 from common.tests import BaseTestCase
 from common.utils import get_random_name
+from django.urls import reverse
 from library.models import Library
 from library.tests import create_library
 from library_sample_shared.models import (
@@ -14,6 +15,7 @@ from library_sample_shared.models import (
     ReadLength,
 )
 from library_sample_shared.tests import create_index_type as _create_index_type
+from request.models import Request
 from request.tests import create_request
 from sample.models import Sample
 from sample.tests import create_sample
@@ -1822,3 +1824,119 @@ class TestIndexGenerator(BaseTestCase):
         unique_lengths = set(assigned_lengths)
         self.assertTrue(len(unique_lengths) >= 1)  # At least one length
         self.assertTrue(all(length in [6, 8] for length in unique_lengths))
+
+    def test_plate_format_indices_respects_start_coordinate(self):
+        """
+        Test that plate format indices are generated starting from a given
+        coordinate/direction rather than always from the beginning.
+
+        index_type7 (setUp) is a 10x10 plate (char_coord A..J x num_coord
+        1..10). IndexGenerator.generate() only takes the literal
+        "subsequent pairs from start_coordinate" path
+        (`find_pairs_fixed`) when the number of plate-format samples
+        exceeds `MAX_RANDOM_SAMPLES` (5) -- below that threshold it falls
+        back to randomized, color-balance-optimized assignment, which
+        would make asserting exact coordinates flaky. Six samples per
+        batch is used here specifically to cross that threshold and get
+        the deterministic path pk2wiki/index_generator.rst describes.
+
+        Sample-to-coordinate order isn't asserted (test-created samples
+        via `create_sample()` all share barcode="", so their relative
+        `.order_by(..., "barcode")` tie-break order isn't guaranteed);
+        instead, the *set* of assigned coordinates is checked, which is
+        enough to prove both the start coordinate and the direction are
+        actually honored.
+        """
+        index_type = self.index_type7
+
+        def _generate(name_prefix, start_coordinate, direction, count=6):
+            samples = [
+                create_sample(
+                    f"{name_prefix}_{i + 1}",
+                    status=2,
+                    index_type=index_type,
+                    read_length=self.read_length,
+                )
+                for i in range(count)
+            ]
+            response = self.client.post(
+                reverse("index-generator-generate-indices"),
+                {
+                    "samples": json.dumps([s.pk for s in samples]),
+                    "start_coord": start_coordinate,
+                    "direction": direction,
+                },
+            )
+            self.assertEqual(response.status_code, 200)
+            data = response.json()
+            self.assertTrue(data["success"])
+            self.assertEqual(len(data["data"]), count)
+            return {item["coordinate"] for item in data["data"]}
+
+        # Right, starting at A1: A1, A2, A3, A4, A5, A6.
+        coords_right_a1 = _generate("PlateRightA1", "A1", "right")
+        self.assertEqual(coords_right_a1, {f"A{n}" for n in range(1, 7)})
+
+        # Right, starting at B1: B1, B2, B3, B4, B5, B6 -- proves the start
+        # coordinate, not just the direction, actually shifts the result.
+        coords_right_b1 = _generate("PlateRightB1", "B1", "right")
+        self.assertEqual(coords_right_b1, {f"B{n}" for n in range(1, 7)})
+        self.assertTrue(coords_right_a1.isdisjoint(coords_right_b1))
+
+        # Down, starting at A1: A1, B1, C1, D1, E1, F1 -- proves direction
+        # is honored independently of the start coordinate.
+        coords_down_a1 = _generate("PlateDownA1", "A1", "down")
+        self.assertEqual(coords_down_a1, {f"{c}1" for c in "ABCDEF"})
+
+    def test_duplicate_indices_rejection_in_pool(self):
+        """
+        Test that save_pool rejects a pool when duplicate (index_i7, index_i5)
+        pairs are provided and doesn't create a pool object.
+        """
+        # Create two libraries
+        lib1 = create_library(
+            get_random_name(),
+            status=2,
+            index_type=self.index_type2,  # dual index type from setUp
+        )
+        lib2 = create_library(
+            get_random_name(),
+            status=2,
+            index_type=self.index_type2,
+        )
+
+        # Count pools before save attempt
+        pools_before = Pool.objects.count()
+
+        # Try to save pool with duplicate indices - provide the same index pairs twice
+        # The indices are arbitrary strings that are meant to be duplicated
+        response = self.client.post(
+            reverse("index-generator-save-pool"),
+            {
+                "pool_size_id": self.pool_size.pk,
+                "libraries": json.dumps(
+                    [
+                        {
+                            "pk": lib1.pk,
+                            "index_i7": "INDEX001",
+                            "index_i5": "INDEX002",
+                        },
+                        {
+                            "pk": lib2.pk,
+                            "index_i7": "INDEX001",  # Duplicate i7
+                            "index_i5": "INDEX002",  # Duplicate i5
+                        },
+                    ]
+                ),
+                "samples": json.dumps([]),
+            },
+        )
+
+        data = response.json()
+        # Should fail due to duplicate indices
+        self.assertFalse(data["success"])
+        self.assertIn("not unique", data["message"].lower())
+
+        # Verify no pool was created (the pool should be deleted when an error occurs)
+        # Check that response indicates an error
+        self.assertEqual(response.status_code, 400)

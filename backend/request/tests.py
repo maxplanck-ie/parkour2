@@ -12,6 +12,7 @@ from django.core.files.uploadedfile import SimpleUploadedFile
 
 # from django.core.files.base import ContentFile
 from django.test import TestCase
+from django.urls import reverse
 from django.utils import timezone
 from library.tests import create_library
 from sample.tests import create_sample
@@ -1213,3 +1214,54 @@ class RequestEmailFlowsTest(BaseTestCase):
 #             }
 #         )
 #         self.assertEqual(response.status_code, 200)
+
+
+# Views - Download endpoints
+
+
+class TestRequestDownloadEndpoints(BaseTestCase):
+    """Tests for request download endpoints."""
+
+    def setUp(self):
+        user = self.create_user()
+        self.user = user
+        self.request = create_request(user)
+
+    def test_download_relacs_pellets_abs_form(self):
+        """
+        Test that RELACS Pellets Abs form download endpoint returns 200,
+        correct content-type, and non-empty body.
+        """
+        self.login()
+        # Use direct API path for the action
+        response = self.client.get("/api/requests/download_RELACS_Pellets_Abs_form/")
+
+        self.assertEqual(response.status_code, 200)
+        self.assertIn("application", response["Content-Type"])
+        # Check that response has content
+        self.assertGreater(len(response.content), 0)
+
+    def test_download_deep_sequencing_request_pdf(self):
+        """
+        Test that deep sequencing request PDF download endpoint returns 200,
+        correct content-type (application/pdf), and non-empty body.
+        """
+        self.login()
+
+        # Add a library and sample to the request for complete data
+        library = create_library(get_random_name(), status=1)
+        sample = create_sample(get_random_name(), status=1)
+        self.request.libraries.add(library)
+        self.request.samples.add(sample)
+
+        # Use direct API path for the detail action
+        response = self.client.get(
+            f"/api/requests/{self.request.pk}/download_deep_sequencing_request/"
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertIn("application/pdf", response["Content-Type"])
+        # Check that response has content and looks like a PDF
+        self.assertGreater(len(response.content), 0)
+        # PDF files start with %PDF
+        self.assertTrue(response.content.startswith(b"%PDF"))

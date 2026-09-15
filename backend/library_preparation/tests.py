@@ -298,3 +298,51 @@ class TestLibraryPreparation(BaseTestCase):
         self.assertEqual(response.status_code, 400)
         self.assertFalse(data["success"])
         self.assertIn("Invalid payload.", data["message"])
+
+    def test_quality_check_passed_appears_in_pooling(self):
+        """
+        Ensure a sample that passes quality check in Library Preparation
+        (status=3) is properly tracked when transitioning through the workflow.
+        """
+        self.client.login(email="test@test.io", password="foo-bar")
+
+        # Create a sample with status=2 and a pool
+        obj = create_library_preparation_obj(self._get_random_name(), self.user, 2)
+
+        # Verify sample already appears in pooling with status=2
+        response = self.client.get(reverse("pooling-list"))
+        data = response.json()
+        sample_names_before = [
+            x["name"] for x in data if x.get("record_type") == "Sample"
+        ]
+        self.assertIn(obj.sample.name, sample_names_before)
+        initial_sample_count = len(sample_names_before)
+
+        # Update quality check to passed (should transition from status=2 to status=3)
+        response = self.client.post(
+            reverse("library-preparation-edit"),
+            {
+                "data": json.dumps(
+                    [
+                        {
+                            "pk": obj.pk,
+                            "quality_check": "passed",
+                        }
+                    ]
+                )
+            },
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(response.json()["success"])
+
+        # Verify sample status is now 3
+        updated_sample = LibraryPreparation.objects.get(pk=obj.pk).sample
+        self.assertEqual(updated_sample.status, 3)
+
+        # Verify sample still appears in pooling list with new status
+        response = self.client.get(reverse("pooling-list"))
+        data = response.json()
+        sample_names_after = [
+            x["name"] for x in data if x.get("record_type") == "Sample"
+        ]
+        self.assertIn(updated_sample.name, sample_names_after)

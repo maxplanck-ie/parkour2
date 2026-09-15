@@ -220,3 +220,79 @@ class TestIncomingLibraries(BaseTestCase):
         self.assertEqual(response.status_code, 400)
         self.assertFalse(data["success"])
         self.assertIn("Invalid payload.", data["message"])
+
+    def test_quality_check_passed_appears_in_index_generator(self):
+        """
+        Ensure a library with passed quality check appears in
+        IndexGenerator list.
+        """
+        self.login()
+        library = create_library(self._get_random_name(), status=1)
+        # Add library to an existing request so it shows up in index generator
+        self.request.libraries.add(library)
+
+        # Verify library doesn't appear in index generator before update
+        response = self.client.get(reverse("index-generator-list"))
+        data = response.json()
+        library_names = [x["name"] for x in data if x["record_type"] == "Library"]
+        self.assertNotIn(library.name, library_names)
+
+        # Update quality check to passed (status=2)
+        self.client.post(
+            reverse("incoming-libraries-edit"),
+            {
+                "data": json.dumps(
+                    [
+                        {
+                            "pk": library.pk,
+                            "record_type": "Library",
+                            "quality_check": "passed",
+                        }
+                    ]
+                )
+            },
+        )
+
+        # Verify library now appears in index generator
+        response = self.client.get(reverse("index-generator-list"))
+        data = response.json()
+        library_names = [x["name"] for x in data if x["record_type"] == "Library"]
+        self.assertIn(library.name, library_names)
+
+    def test_quality_check_compromised_appears_in_index_generator(self):
+        """
+        Ensure a library with compromised quality check appears in
+        IndexGenerator list.
+        """
+        self.login()
+        library = create_library(self._get_random_name(), status=1)
+        # Add library to an existing request so it shows up in index generator
+        self.request.libraries.add(library)
+
+        # Verify library doesn't appear in index generator before update
+        response = self.client.get(reverse("index-generator-list"))
+        data = response.json()
+        library_names = [x["name"] for x in data if x["record_type"] == "Library"]
+        self.assertNotIn(library.name, library_names)
+
+        # Update quality check to compromised (status=-2)
+        self.client.post(
+            reverse("incoming-libraries-edit"),
+            {
+                "data": json.dumps(
+                    [
+                        {
+                            "pk": library.pk,
+                            "record_type": "Library",
+                            "quality_check": "compromised",
+                        }
+                    ]
+                )
+            },
+        )
+
+        # Verify library now appears in index generator
+        response = self.client.get(reverse("index-generator-list"))
+        data = response.json()
+        library_names = [x["name"] for x in data if x["record_type"] == "Library"]
+        self.assertIn(library.name, library_names)
