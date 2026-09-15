@@ -123,5 +123,58 @@
                 2
             ]
         }
+    },
+    {
+        "model": "flowcell.flowcell",
+        "pk": 25,
+        "fields": {
+            "create_time": "2026-08-21T10:00:00.000Z",
+            "update_time": "2026-08-21T10:00:00.000Z",
+            "flowcell_id": "TESTRUNSTATS1",
+            "sequencer": 3,
+            "matrix": [
+                {
+                    "name": "Lane 1",
+                    "reads_pf": 150000000,
+                    "undetermined_indices": 5000000,
+                    "read_1": 75000000,
+                    "read_2": 75000000,
+                    "cluster_pf": 155000000
+                }
+            ],
+            "sequences": null,
+            "archived": false,
+            "lanes": [
+                25
+            ],
+            "requests": [
+                26
+            ]
+        }
+    },
+    {
+        "model": "flowcell.flowcell",
+        "pk": 26,
+        "fields": {
+            "create_time": "2026-08-22T10:00:00.000Z",
+            "update_time": "2026-08-22T10:00:00.000Z",
+            "flowcell_id": "TESTSEQSTATS1",
+            "sequencer": 5,
+            "matrix": null,
+            "sequences": [
+                {
+                    "barcode": "26L000156",
+                    "reads_pf_sequenced": 2000000,
+                    "confident_reads": 1900000
+                }
+            ],
+            "archived": false,
+            "lanes": [
+                26
+            ],
+            "requests": [
+                26
+            ]
+        }
     }
 ]

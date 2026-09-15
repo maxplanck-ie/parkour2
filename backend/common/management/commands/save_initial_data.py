@@ -32,7 +32,7 @@ class Command(BaseCommand):
             self.dumpdata_wrapper(model=m, app_label="index_generator")
         for m in ("sequencer", "lane", "flowcell"):
             self.dumpdata_wrapper(model=m, app_label="flowcell")
-        for m in ("organization", "principalinvestigator", "costunit", "user"):
+        for m in ("organization", "principalinvestigator", "costunit", "user", "duty"):
             self.dumpdata_wrapper(model=m, app_label="common")
         self.dumpdata_wrapper(model="pooling", app_label="pooling")
         self.stdout.write(self.style.SUCCESS("Successfully saved initial data."))

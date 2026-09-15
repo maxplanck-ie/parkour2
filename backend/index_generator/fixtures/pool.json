@@ -532,5 +532,45 @@
             "libraries": [],
             "samples": []
         }
+    },
+    {
+        "model": "index_generator.pool",
+        "pk": 21,
+        "fields": {
+            "create_time": "2018-08-21T17:29:37.181Z",
+            "update_time": "2018-08-21T17:29:37.187Z",
+            "name": "Pool_21",
+            "user": 3,
+            "size": 3,
+            "loaded": 0,
+            "comment": "",
+            "archived": false,
+            "libraries": [
+                150,
+                151,
+                152,
+                153,
+                154
+            ],
+            "samples": []
+        }
+    },
+    {
+        "model": "index_generator.pool",
+        "pk": 22,
+        "fields": {
+            "create_time": "2026-08-01T09:00:00.000Z",
+            "update_time": "2026-08-01T09:00:00.000Z",
+            "name": "Pool_22",
+            "user": 3,
+            "size": 1,
+            "loaded": 1,
+            "comment": "",
+            "archived": false,
+            "libraries": [
+                156
+            ],
+            "samples": []
+        }
     }
 ]

@@ -1,0 +1,41 @@
+[
+  {
+    "model": "common.duty",
+    "pk": 1,
+    "fields": {
+      "main_name": 1,
+      "backup_name": 2,
+      "start_date": "2026-01-05T09:00:00.000Z",
+      "end_date": "2026-01-11T18:00:00.000Z",
+      "platform": "short",
+      "comment": "",
+      "archived": false
+    }
+  },
+  {
+    "model": "common.duty",
+    "pk": 2,
+    "fields": {
+      "main_name": 2,
+      "backup_name": 3,
+      "start_date": "2026-01-12T09:00:00.000Z",
+      "end_date": "2026-01-18T18:00:00.000Z",
+      "platform": "long",
+      "comment": "",
+      "archived": false
+    }
+  },
+  {
+    "model": "common.duty",
+    "pk": 3,
+    "fields": {
+      "main_name": 3,
+      "backup_name": 1,
+      "start_date": "2026-01-19T09:00:00.000Z",
+      "end_date": "2026-01-25T18:00:00.000Z",
+      "platform": "shortlong",
+      "comment": "",
+      "archived": false
+    }
+  }
+]

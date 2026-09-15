@@ -141,5 +141,27 @@
             "phix": null,
             "completed": false
         }
+    },
+    {
+        "model": "flowcell.lane",
+        "pk": 25,
+        "fields": {
+            "name": "Lane 1",
+            "pool": 22,
+            "loading_concentration": 3.0,
+            "phix": 1.0,
+            "completed": false
+        }
+    },
+    {
+        "model": "flowcell.lane",
+        "pk": 26,
+        "fields": {
+            "name": "Lane 1",
+            "pool": 22,
+            "loading_concentration": 3.0,
+            "phix": 1.0,
+            "completed": false
+        }
     }
 ]

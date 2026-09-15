@@ -4,6 +4,7 @@ Unreleased
 ==========
 
 - Adopted VueUse composables and Motion across the frontend (browser listeners, storage, debounce, clipboard, resize, and dialog animations), including animated save-confirmation dialogs in the Request Editor. (PRs #350, #352.)
+- Added Playwright e2e coverage for Request Editor (edit/delete a request), Invoicing (billing-month view, Excel export), Load Flowcells (sample sheet download, destroy flowcell), and Runs/Sequences Statistics. (Direct commit `a3e63cc3`.)
 
 - Backend settings package renamed from `wui` to `config` (`DJANGO_SETTINGS_MODULE` is now `config.settings.*`); deployments/scripts setting that env var directly need updating. Also added an import-linter check enforcing that the shared `common` app never imports domain apps, catching one existing violation. (Direct commit `5cbc20a4`.)
 - Top nav bar buttons' corner rounding now matches the green header action buttons (Advanced Filters, Select Columns, Export to Excel, etc.) instead of using a fuller pill shape. (Direct commit `8075e97`.)

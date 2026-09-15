@@ -8,7 +8,7 @@ class Command(BaseCommand):
     help = "Installs the fixture(s) in the database."
 
     def handle(self, *args, **options):
-        for m in ("organization", "principalinvestigator", "costunit", "user"):
+        for m in ("organization", "principalinvestigator", "costunit", "user", "duty"):
             self.loaddata_wrapper(model=m, app_label="common")
         for m in (
             "organism",
@@ -26,9 +26,9 @@ class Command(BaseCommand):
         for m in ("nucleicacidtype", "sample"):
             self.loaddata_wrapper(model=m, app_label="sample")
         self.loaddata_wrapper(model="library", app_label="library")
-        # self.loaddata_wrapper(
-        #     model="librarypreparation", app_label="library_preparation"
-        # )
+        self.loaddata_wrapper(
+            model="librarypreparation", app_label="library_preparation"
+        )
         self.loaddata_wrapper(model="pooling", app_label="pooling")
         for m in ("poolsize", "pool"):
             self.loaddata_wrapper(model=m, app_label="index_generator")

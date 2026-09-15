@@ -949,5 +949,375 @@
                 19
             ]
         }
+    },
+    {
+        "model": "request.request",
+        "pk": 19,
+        "fields": {
+            "create_time": "2026-01-05T09:00:00.000Z",
+            "update_time": "2026-01-05T09:00:00.000Z",
+            "name": "19_User_Nanopore_DNAseq_Celegans",
+            "description": "Nanopore long-read genomic DNA, C. elegans wild isolate panel",
+            "change_ownership_reason": "",
+            "token": null,
+            "user": 2,
+            "cost_unit": 6,
+            "deep_seq_request": "deep_sequencing_requests/2026/01/05/0019_26010105_001.pdf",
+            "samples_submitted": true,
+            "sequenced": false,
+            "archived": false,
+            "filepaths": {
+                "data": null,
+                "metadata": null
+            },
+            "metapaths": {
+                "nothing": null
+            },
+            "approval": {
+                "TOKEN": null,
+                "TIMESTAMP": null,
+                "HTTP_ACCEPT": null,
+                "REMOTE_ADDR": null,
+                "REMOTE_PORT": null,
+                "HTTP_FORWARDED": null,
+                "HTTP_USER_AGENT": null,
+                "HTTP_ACCEPT_ENCODING": null,
+                "HTTP_ACCEPT_LANGUAGE": null,
+                "HTTP_X_FORWARDED_FOR": null
+            },
+            "qc_completed_at": null,
+            "flowcell_loaded_at": null,
+            "related_requests": [],
+            "libraries": [],
+            "samples": [
+                180,
+                181
+            ],
+            "files": []
+        }
+    },
+    {
+        "model": "request.request",
+        "pk": 20,
+        "fields": {
+            "create_time": "2026-01-06T09:00:00.000Z",
+            "update_time": "2026-01-06T09:00:00.000Z",
+            "name": "20_User_10x_scRNA_Mouse",
+            "description": "10x Genomics single-cell 3' gene expression, mouse embryonic tissue",
+            "change_ownership_reason": "",
+            "token": null,
+            "user": 3,
+            "cost_unit": 1,
+            "deep_seq_request": "deep_sequencing_requests/2026/01/06/0020_26020105_001.pdf",
+            "samples_submitted": true,
+            "sequenced": false,
+            "archived": false,
+            "filepaths": {
+                "data": null,
+                "metadata": null
+            },
+            "metapaths": {
+                "nothing": null
+            },
+            "approval": {
+                "TOKEN": null,
+                "TIMESTAMP": null,
+                "HTTP_ACCEPT": null,
+                "REMOTE_ADDR": null,
+                "REMOTE_PORT": null,
+                "HTTP_FORWARDED": null,
+                "HTTP_USER_AGENT": null,
+                "HTTP_ACCEPT_ENCODING": null,
+                "HTTP_ACCEPT_LANGUAGE": null,
+                "HTTP_X_FORWARDED_FOR": null
+            },
+            "qc_completed_at": null,
+            "flowcell_loaded_at": null,
+            "related_requests": [],
+            "libraries": [
+                143,
+                144
+            ],
+            "samples": [],
+            "files": []
+        }
+    },
+    {
+        "model": "request.request",
+        "pk": 21,
+        "fields": {
+            "create_time": "2026-01-07T09:00:00.000Z",
+            "update_time": "2026-01-07T09:00:00.000Z",
+            "name": "21_User_ATACseq_Dmel",
+            "description": "ATAC-seq chromatin accessibility profiling, D. melanogaster embryos",
+            "change_ownership_reason": "",
+            "token": null,
+            "user": 4,
+            "cost_unit": 10,
+            "deep_seq_request": "deep_sequencing_requests/2026/01/07/0021_26030105_001.pdf",
+            "samples_submitted": true,
+            "sequenced": false,
+            "archived": false,
+            "filepaths": {
+                "data": null,
+                "metadata": null
+            },
+            "metapaths": {
+                "nothing": null
+            },
+            "approval": {
+                "TOKEN": null,
+                "TIMESTAMP": null,
+                "HTTP_ACCEPT": null,
+                "REMOTE_ADDR": null,
+                "REMOTE_PORT": null,
+                "HTTP_FORWARDED": null,
+                "HTTP_USER_AGENT": null,
+                "HTTP_ACCEPT_ENCODING": null,
+                "HTTP_ACCEPT_LANGUAGE": null,
+                "HTTP_X_FORWARDED_FOR": null
+            },
+            "qc_completed_at": null,
+            "flowcell_loaded_at": null,
+            "related_requests": [],
+            "libraries": [
+                145,
+                146,
+                147
+            ],
+            "samples": [],
+            "files": []
+        }
+    },
+    {
+        "model": "request.request",
+        "pk": 22,
+        "fields": {
+            "create_time": "2026-01-08T09:00:00.000Z",
+            "update_time": "2026-01-08T09:00:00.000Z",
+            "name": "22_User_HiC_Zebrafish",
+            "description": "Hi-C chromosome conformation capture, D. rerio whole embryo",
+            "change_ownership_reason": "",
+            "token": null,
+            "user": 2,
+            "cost_unit": 3,
+            "deep_seq_request": "deep_sequencing_requests/2026/01/08/0022_26040105_001.pdf",
+            "samples_submitted": true,
+            "sequenced": false,
+            "archived": false,
+            "filepaths": {
+                "data": null,
+                "metadata": null
+            },
+            "metapaths": {
+                "nothing": null
+            },
+            "approval": {
+                "TOKEN": null,
+                "TIMESTAMP": null,
+                "HTTP_ACCEPT": null,
+                "REMOTE_ADDR": null,
+                "REMOTE_PORT": null,
+                "HTTP_FORWARDED": null,
+                "HTTP_USER_AGENT": null,
+                "HTTP_ACCEPT_ENCODING": null,
+                "HTTP_ACCEPT_LANGUAGE": null,
+                "HTTP_X_FORWARDED_FOR": null
+            },
+            "qc_completed_at": null,
+            "flowcell_loaded_at": null,
+            "related_requests": [],
+            "libraries": [],
+            "samples": [
+                182,
+                183
+            ],
+            "files": []
+        }
+    },
+    {
+        "model": "request.request",
+        "pk": 23,
+        "fields": {
+            "create_time": "2026-01-09T09:00:00.000Z",
+            "update_time": "2026-01-09T09:00:00.000Z",
+            "name": "23_User_SmallRNA_Human",
+            "description": "Small RNA-Seq, human plasma exosome fraction",
+            "change_ownership_reason": "",
+            "token": null,
+            "user": 3,
+            "cost_unit": 15,
+            "deep_seq_request": "deep_sequencing_requests/2026/01/09/0023_26050105_001.pdf",
+            "samples_submitted": true,
+            "sequenced": false,
+            "archived": false,
+            "filepaths": {
+                "data": null,
+                "metadata": null
+            },
+            "metapaths": {
+                "nothing": null
+            },
+            "approval": {
+                "TOKEN": null,
+                "TIMESTAMP": null,
+                "HTTP_ACCEPT": null,
+                "REMOTE_ADDR": null,
+                "REMOTE_PORT": null,
+                "HTTP_FORWARDED": null,
+                "HTTP_USER_AGENT": null,
+                "HTTP_ACCEPT_ENCODING": null,
+                "HTTP_ACCEPT_LANGUAGE": null,
+                "HTTP_X_FORWARDED_FOR": null
+            },
+            "qc_completed_at": null,
+            "flowcell_loaded_at": null,
+            "related_requests": [],
+            "libraries": [
+                148,
+                149
+            ],
+            "samples": [],
+            "files": []
+        }
+    },
+    {
+        "model": "request.request",
+        "pk": 24,
+        "fields": {
+            "create_time": "2026-01-10T09:00:00.000Z",
+            "update_time": "2026-01-10T09:00:00.000Z",
+            "name": "24_User_QC_Fail_Fixture",
+            "description": "Fixture request for e2e quality-check-fail coverage (Pooling stage).",
+            "change_ownership_reason": "",
+            "token": null,
+            "user": 3,
+            "cost_unit": 1,
+            "deep_seq_request": "deep_sequencing_requests/2026/01/10/0024_26050105_001.pdf",
+            "samples_submitted": true,
+            "sequenced": false,
+            "archived": false,
+            "filepaths": {
+                "data": null,
+                "metadata": null
+            },
+            "metapaths": {
+                "nothing": null
+            },
+            "approval": {
+                "TOKEN": null,
+                "TIMESTAMP": null,
+                "HTTP_ACCEPT": null,
+                "REMOTE_ADDR": null,
+                "REMOTE_PORT": null,
+                "HTTP_FORWARDED": null,
+                "HTTP_USER_AGENT": null,
+                "HTTP_ACCEPT_ENCODING": null,
+                "HTTP_ACCEPT_LANGUAGE": null,
+                "HTTP_X_FORWARDED_FOR": null
+            },
+            "qc_completed_at": null,
+            "flowcell_loaded_at": null,
+            "related_requests": [],
+            "libraries": [
+                150,
+                151,
+                152,
+                153,
+                154
+            ],
+            "samples": [],
+            "files": []
+        }
+    },
+    {
+        "model": "request.request",
+        "pk": 25,
+        "fields": {
+            "create_time": "2026-02-01T09:00:00.000Z",
+            "update_time": "2026-02-01T09:00:00.000Z",
+            "name": "25_User_Manke",
+            "description": "Fixture request for e2e Request Editor CRUD coverage.",
+            "change_ownership_reason": "",
+            "token": null,
+            "user": 3,
+            "cost_unit": 1,
+            "deep_seq_request": "",
+            "samples_submitted": false,
+            "sequenced": false,
+            "archived": false,
+            "filepaths": {
+                "data": null,
+                "metadata": null
+            },
+            "metapaths": {
+                "nothing": null
+            },
+            "approval": {
+                "TOKEN": null,
+                "TIMESTAMP": null,
+                "HTTP_ACCEPT": null,
+                "REMOTE_ADDR": null,
+                "REMOTE_PORT": null,
+                "HTTP_FORWARDED": null,
+                "HTTP_USER_AGENT": null,
+                "HTTP_ACCEPT_ENCODING": null,
+                "HTTP_ACCEPT_LANGUAGE": null,
+                "HTTP_X_FORWARDED_FOR": null
+            },
+            "qc_completed_at": null,
+            "flowcell_loaded_at": null,
+            "related_requests": [],
+            "libraries": [
+                155
+            ],
+            "samples": [],
+            "files": []
+        }
+    },
+    {
+        "model": "request.request",
+        "pk": 26,
+        "fields": {
+            "create_time": "2026-08-01T09:00:00.000Z",
+            "update_time": "2026-08-01T09:00:00.000Z",
+            "name": "26_User_Stats_Fixture",
+            "description": "Fixture request for e2e Run/Sequences Statistics coverage.",
+            "change_ownership_reason": "",
+            "token": null,
+            "user": 3,
+            "cost_unit": 1,
+            "deep_seq_request": "",
+            "samples_submitted": true,
+            "sequenced": true,
+            "archived": false,
+            "filepaths": {
+                "data": null,
+                "metadata": null
+            },
+            "metapaths": {
+                "nothing": null
+            },
+            "approval": {
+                "TOKEN": null,
+                "TIMESTAMP": null,
+                "HTTP_ACCEPT": null,
+                "REMOTE_ADDR": null,
+                "REMOTE_PORT": null,
+                "HTTP_FORWARDED": null,
+                "HTTP_USER_AGENT": null,
+                "HTTP_ACCEPT_ENCODING": null,
+                "HTTP_ACCEPT_LANGUAGE": null,
+                "HTTP_X_FORWARDED_FOR": null
+            },
+            "qc_completed_at": null,
+            "flowcell_loaded_at": null,
+            "related_requests": [],
+            "libraries": [
+                156
+            ],
+            "samples": [],
+            "files": []
+        }
     }
 ]
