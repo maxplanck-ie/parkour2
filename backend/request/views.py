@@ -16,6 +16,7 @@ from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.contrib.sites.shortcuts import get_current_site
+from django.contrib.staticfiles.finders import find as find_static
 from django.core.mail import send_mail
 from django.db import transaction
 from django.db.models import Prefetch, Q
@@ -636,10 +637,9 @@ class RequestViewSet(viewsets.ModelViewSet):
 
     @action(methods=["get"], detail=False)
     def download_RELACS_Pellets_Abs_form(self, request):
-        file_path = os.path.join(
-            settings.STATIC_ROOT,
-            "docs/RELACS_submission_form.xlsx",
-        )
+        file_path = find_static("docs/RELACS_submission_form.xlsx")
+        if not file_path:
+            raise Http404("RELACS submission form not found")
 
         with open(file_path, "rb") as fh:
             response = HttpResponse(fh.read(), content_type="application/vnd.ms-excel")
@@ -690,7 +690,7 @@ class RequestViewSet(viewsets.ModelViewSet):
         pdf.add_font(
             "glyphicons",
             "",
-            "/usr/src/app/static/fonts/glyphicons-halflings-regular.ttf",
+            find_static("fonts/glyphicons-halflings-regular.ttf"),
             uni=True,
         )
         pdf.set_draw_color(217, 217, 217)
