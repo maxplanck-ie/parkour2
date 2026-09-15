@@ -1885,6 +1885,11 @@ export default {
               Array.isArray(e.flowcell_ids) && e.flowcell_ids.length > 0
                 ? e.flowcell_ids.join(", ")
                 : "",
+            flowcell_create_times:
+              Array.isArray(e.flowcell_create_times) &&
+              e.flowcell_create_times.length > 0
+                ? e.flowcell_create_times.map(getFormattedDate).join(", ")
+                : "",
             sequencer_names:
               Array.isArray(e.sequencer_names) && e.sequencer_names.length > 0
                 ? e.sequencer_names.join(", ")

@@ -817,6 +817,21 @@ export function librariesAndSamplesColumnDefs(
       }
     },
     {
+      title: "Flowcell Created",
+      field: "flowcell_create_times",
+      minWidth: 60,
+      width: "5.5%",
+      headerVertical: false,
+      visible: true,
+      cssClass: "regular-column",
+      contextMenu: () =>
+        cellContextMenu(true, false, false, getTabulatorInstance),
+      formatter: (cell) => {
+        const finalString = cell.getValue() || "-";
+        return ellipsisContainer(finalString);
+      }
+    },
+    {
       title: "Sequencers",
       field: "sequencer_names",
       minWidth: 60,
@@ -898,6 +913,7 @@ export function librariesAndSamplesExportColumns() {
       excelType: "number"
     },
     { header: "Flowcell IDs", key: "flowcell_ids", width: 20 },
+    { header: "Flowcell Created", key: "flowcell_create_times", width: 20 },
     { header: "Sequencers", key: "sequencer_names", width: 20 }
   ];
 }

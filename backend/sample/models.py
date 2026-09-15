@@ -164,6 +164,7 @@ class CompleteSampleData(models.Model):
     create_time = models.DateTimeField()
     pool_names = ArrayField(models.CharField(max_length=100), null=True)
     flowcell_ids = ArrayField(models.CharField(max_length=50), null=True)
+    flowcell_create_times = ArrayField(models.DateTimeField(), null=True)
     sequencer_ids = ArrayField(models.IntegerField(), null=True)
     sequencer_names = ArrayField(models.CharField(max_length=50), null=True)
 
