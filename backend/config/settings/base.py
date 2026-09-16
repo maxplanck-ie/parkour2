@@ -287,4 +287,4 @@ SETUP_ADMIN_PASSWORD = os.environ.get("SETUP_ADMIN_PASSWORD", None)
 
 # Facilities
 DEEPSEQ = os.environ.get("DEEPSEQ", "DeepSeq")
-BIOINFO = os.environ.get("BIOINFO", "Fatou Diallo")
+BIOINFO = os.environ.get("BIOINFO", "Bioinfo")
