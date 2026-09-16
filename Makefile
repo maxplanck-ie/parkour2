@@ -168,6 +168,9 @@ demo: down set-demo deploy-webapp deploy-caddy collect-static load-fixtures  ## 
 reset-demo:  ## Truncate + reload fixtures on the running demo instance (wire to an hourly cron/scheduler)
 	@docker compose exec parkour2-django python manage.py reset_demo
 
+fly-deploy: check-rootdir  ## (Re)deploy the public demo to Fly.io -- see misc/fly.toml's header comment for one-time setup
+	@flyctl deploy --config misc/fly.toml --ha=false .
+
 set-dev: hardreset-caddyfile-dev
 	@sed -i -e 's#\(target:\) pk2_.*#\1 pk2_dev#' docker-compose.yml
 	@sed -i -e 's#\(^CMD \["npm", "run", "start-\).*\]#\1dev"\]#' frontend.Dockerfile
