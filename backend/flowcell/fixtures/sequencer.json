@@ -1,202 +1,482 @@
 [
-    {
-        "model": "flowcell.sequencer",
-        "pk": 1,
-        "fields": {
-            "name": "MiSeq",
-            "lanes": 1,
-            "lane_capacity": 25,
-            "archived": false
-        }
-    },
-    {
-        "model": "flowcell.sequencer",
-        "pk": 2,
-        "fields": {
-            "name": "NextSeq MID",
-            "lanes": 1,
-            "lane_capacity": 130,
-            "archived": false
-        }
-    },
-    {
-        "model": "flowcell.sequencer",
-        "pk": 3,
-        "fields": {
-            "name": "NextSeq HIGH",
-            "lanes": 1,
-            "lane_capacity": 400,
-            "archived": false
-        }
-    },
-    {
-        "model": "flowcell.sequencer",
-        "pk": 4,
-        "fields": {
-            "name": "HiSeq2500",
-            "lanes": 8,
-            "lane_capacity": 200,
-            "archived": false
-        }
-    },
-    {
-        "model": "flowcell.sequencer",
-        "pk": 5,
-        "fields": {
-            "name": "HiSeq3000",
-            "lanes": 8,
-            "lane_capacity": 300,
-            "archived": false
-        }
-    },
-    {
-        "model": "flowcell.sequencer",
-        "pk": 6,
-        "fields": {
-            "name": "HiSeq Rapid",
-            "lanes": 1,
-            "lane_capacity": 300,
-            "archived": false
-        }
-    },
-    {
-        "model": "flowcell.sequencer",
-        "pk": 7,
-        "fields": {
-            "name": "MiSeq",
-            "lanes": 1,
-            "lane_capacity": 25,
-            "archived": false
-        }
-    },
-    {
-        "model": "flowcell.sequencer",
-        "pk": 8,
-        "fields": {
-            "name": "NextSeq MID",
-            "lanes": 1,
-            "lane_capacity": 130,
-            "archived": false
-        }
-    },
-    {
-        "model": "flowcell.sequencer",
-        "pk": 9,
-        "fields": {
-            "name": "NextSeq HIGH",
-            "lanes": 1,
-            "lane_capacity": 400,
-            "archived": false
-        }
-    },
-    {
-        "model": "flowcell.sequencer",
-        "pk": 10,
-        "fields": {
-            "name": "NovaSeq S1",
-            "lanes": 1,
-            "lane_capacity": 1600,
-            "archived": false
-        }
-    },
-    {
-        "model": "flowcell.sequencer",
-        "pk": 11,
-        "fields": {
-            "name": "NovaSeq S1 XP 1.6B",
-            "lanes": 2,
-            "lane_capacity": 800,
-            "archived": false
-        }
-    },
-    {
-        "model": "flowcell.sequencer",
-        "pk": 20,
-        "fields": {
-            "name": "NovaSeq SP XP 800M",
-            "lanes": 2,
-            "lane_capacity": 400,
-            "archived": false
-        }
-    },
-    {
-        "model": "flowcell.sequencer",
-        "pk": 12,
-        "fields": {
-            "name": "NovaSeq S2",
-            "lanes": 1,
-            "lane_capacity": 4000,
-            "archived": false
-        }
-    },
-    {
-        "model": "flowcell.sequencer",
-        "pk": 13,
-        "fields": {
-            "name": "NovaSeq S2 (XP)",
-            "lanes": 2,
-            "lane_capacity": 2000,
-            "archived": false
-        }
-    },
-    {
-        "model": "flowcell.sequencer",
-        "pk": 14,
-        "fields": {
-            "name": "NovaSeq S4",
-            "lanes": 1,
-            "lane_capacity": 8000,
-            "archived": false
-        }
-    },
-    {
-        "model": "flowcell.sequencer",
-        "pk": 15,
-        "fields": {
-            "name": "NovaSeq S4 (XP)",
-            "lanes": 4,
-            "lane_capacity": 2000,
-            "archived": false
-        }
-    },
-    {
-        "model": "flowcell.sequencer",
-        "pk": 16,
-        "fields": {
-            "name": "MinION MK1B",
-            "lanes": 1,
-            "lane_capacity": 10,
-            "archived": false
-        }
-    },
-    {
-        "model": "flowcell.sequencer",
-        "pk": 17,
-        "fields": {
-            "name": "GridION Mk1",
-            "lanes": 1,
-            "lane_capacity": 1000,
-            "archived": false
-        }
-    },
-    {
-        "model": "flowcell.sequencer",
-        "pk": 18,
-        "fields": {
-            "name": "P2Solo",
-            "lanes": 1,
-            "lane_capacity": 200,
-            "archived": false
-        }
-    },
-    {
-        "model": "flowcell.sequencer",
-        "pk": 19,
-        "fields": {
-            "name": "ONT wash",
-            "lanes": 1,
-            "lane_capacity": 200,
-            "archived": false
-        }
+{
+    "model": "flowcell.sequencer",
+    "pk": 1,
+    "fields": {
+        "name": "MiSeq",
+        "lanes": 1,
+        "lane_capacity": 25,
+        "archived": true
     }
+},
+{
+    "model": "flowcell.sequencer",
+    "pk": 2,
+    "fields": {
+        "name": "NextSeq MID",
+        "lanes": 1,
+        "lane_capacity": 130,
+        "archived": true
+    }
+},
+{
+    "model": "flowcell.sequencer",
+    "pk": 3,
+    "fields": {
+        "name": "NextSeq HIGH",
+        "lanes": 1,
+        "lane_capacity": 400,
+        "archived": true
+    }
+},
+{
+    "model": "flowcell.sequencer",
+    "pk": 4,
+    "fields": {
+        "name": "HiSeq2500",
+        "lanes": 8,
+        "lane_capacity": 200,
+        "archived": true
+    }
+},
+{
+    "model": "flowcell.sequencer",
+    "pk": 5,
+    "fields": {
+        "name": "HiSeq3000",
+        "lanes": 8,
+        "lane_capacity": 300,
+        "archived": true
+    }
+},
+{
+    "model": "flowcell.sequencer",
+    "pk": 6,
+    "fields": {
+        "name": "HiSeq Rapid",
+        "lanes": 1,
+        "lane_capacity": 300,
+        "archived": true
+    }
+},
+{
+    "model": "flowcell.sequencer",
+    "pk": 8,
+    "fields": {
+        "name": "NovaSeq SP (XP)",
+        "lanes": 2,
+        "lane_capacity": 400,
+        "archived": true
+    }
+},
+{
+    "model": "flowcell.sequencer",
+    "pk": 9,
+    "fields": {
+        "name": "NovaSeq SP",
+        "lanes": 1,
+        "lane_capacity": 800,
+        "archived": true
+    }
+},
+{
+    "model": "flowcell.sequencer",
+    "pk": 10,
+    "fields": {
+        "name": "NovaSeq S1",
+        "lanes": 1,
+        "lane_capacity": 1600,
+        "archived": true
+    }
+},
+{
+    "model": "flowcell.sequencer",
+    "pk": 11,
+    "fields": {
+        "name": "NovaSeq S1 (XP)",
+        "lanes": 2,
+        "lane_capacity": 800,
+        "archived": true
+    }
+},
+{
+    "model": "flowcell.sequencer",
+    "pk": 12,
+    "fields": {
+        "name": "NovaSeq S2",
+        "lanes": 1,
+        "lane_capacity": 4000,
+        "archived": true
+    }
+},
+{
+    "model": "flowcell.sequencer",
+    "pk": 13,
+    "fields": {
+        "name": "NovaSeq S2 (XP)",
+        "lanes": 2,
+        "lane_capacity": 2000,
+        "archived": true
+    }
+},
+{
+    "model": "flowcell.sequencer",
+    "pk": 14,
+    "fields": {
+        "name": "NovaSeq S4",
+        "lanes": 1,
+        "lane_capacity": 8000,
+        "archived": true
+    }
+},
+{
+    "model": "flowcell.sequencer",
+    "pk": 15,
+    "fields": {
+        "name": "NovaSeq S4 (XP)",
+        "lanes": 4,
+        "lane_capacity": 2500,
+        "archived": true
+    }
+},
+{
+    "model": "flowcell.sequencer",
+    "pk": 16,
+    "fields": {
+        "name": "MinION MK1B",
+        "lanes": 1,
+        "lane_capacity": 10,
+        "archived": true
+    }
+},
+{
+    "model": "flowcell.sequencer",
+    "pk": 17,
+    "fields": {
+        "name": "GridION Mk1",
+        "lanes": 1,
+        "lane_capacity": 1000,
+        "archived": true
+    }
+},
+{
+    "model": "flowcell.sequencer",
+    "pk": 18,
+    "fields": {
+        "name": "P2Solo",
+        "lanes": 1,
+        "lane_capacity": 200,
+        "archived": true
+    }
+},
+{
+    "model": "flowcell.sequencer",
+    "pk": 19,
+    "fields": {
+        "name": "ONT wash",
+        "lanes": 1,
+        "lane_capacity": 200,
+        "archived": false
+    }
+},
+{
+    "model": "flowcell.sequencer",
+    "pk": 20,
+    "fields": {
+        "name": "PromethION 24",
+        "lanes": 1,
+        "lane_capacity": 100,
+        "archived": false
+    }
+},
+{
+    "model": "flowcell.sequencer",
+    "pk": 21,
+    "fields": {
+        "name": "AVITI24 High",
+        "lanes": 1,
+        "lane_capacity": 1500,
+        "archived": true
+    }
+},
+{
+    "model": "flowcell.sequencer",
+    "pk": 24,
+    "fields": {
+        "name": "AVITI24 2x75 High",
+        "lanes": 2,
+        "lane_capacity": 750,
+        "archived": true
+    }
+},
+{
+    "model": "flowcell.sequencer",
+    "pk": 25,
+    "fields": {
+        "name": "AVITI24 2x75 Medium",
+        "lanes": 2,
+        "lane_capacity": 375,
+        "archived": true
+    }
+},
+{
+    "model": "flowcell.sequencer",
+    "pk": 26,
+    "fields": {
+        "name": "AVITI24 2x75 Low",
+        "lanes": 2,
+        "lane_capacity": 75,
+        "archived": true
+    }
+},
+{
+    "model": "flowcell.sequencer",
+    "pk": 27,
+    "fields": {
+        "name": "AVITI24 2x150 High",
+        "lanes": 2,
+        "lane_capacity": 750,
+        "archived": true
+    }
+},
+{
+    "model": "flowcell.sequencer",
+    "pk": 28,
+    "fields": {
+        "name": "AVITI24 2x150 Medium",
+        "lanes": 2,
+        "lane_capacity": 375,
+        "archived": true
+    }
+},
+{
+    "model": "flowcell.sequencer",
+    "pk": 29,
+    "fields": {
+        "name": "AVITI24 2x150 Low",
+        "lanes": 2,
+        "lane_capacity": 187,
+        "archived": true
+    }
+},
+{
+    "model": "flowcell.sequencer",
+    "pk": 30,
+    "fields": {
+        "name": "AVITI24 2x300 High",
+        "lanes": 2,
+        "lane_capacity": 150,
+        "archived": true
+    }
+},
+{
+    "model": "flowcell.sequencer",
+    "pk": 31,
+    "fields": {
+        "name": "AVITI24 2x300 Medium",
+        "lanes": 2,
+        "lane_capacity": 50,
+        "archived": true
+    }
+},
+{
+    "model": "flowcell.sequencer",
+    "pk": 32,
+    "fields": {
+        "name": "NovaSeq SP XP 800M",
+        "lanes": 2,
+        "lane_capacity": 400,
+        "archived": false
+    }
+},
+{
+    "model": "flowcell.sequencer",
+    "pk": 33,
+    "fields": {
+        "name": "NovaSeq S1 XP 1.6B",
+        "lanes": 2,
+        "lane_capacity": 800,
+        "archived": false
+    }
+},
+{
+    "model": "flowcell.sequencer",
+    "pk": 34,
+    "fields": {
+        "name": "NovaSeq S2 XP 4B",
+        "lanes": 2,
+        "lane_capacity": 2000,
+        "archived": false
+    }
+},
+{
+    "model": "flowcell.sequencer",
+    "pk": 35,
+    "fields": {
+        "name": "NovaSeq S4 XP 10B",
+        "lanes": 4,
+        "lane_capacity": 2500,
+        "archived": false
+    }
+},
+{
+    "model": "flowcell.sequencer",
+    "pk": 36,
+    "fields": {
+        "name": "AVITI24 2x75 Low 150M",
+        "lanes": 2,
+        "lane_capacity": 75,
+        "archived": false
+    }
+},
+{
+    "model": "flowcell.sequencer",
+    "pk": 37,
+    "fields": {
+        "name": "AVITI24 2x75 Med 750M",
+        "lanes": 2,
+        "lane_capacity": 375,
+        "archived": false
+    }
+},
+{
+    "model": "flowcell.sequencer",
+    "pk": 38,
+    "fields": {
+        "name": "AVITI24 2x75 High 1.5B",
+        "lanes": 2,
+        "lane_capacity": 750,
+        "archived": false
+    }
+},
+{
+    "model": "flowcell.sequencer",
+    "pk": 39,
+    "fields": {
+        "name": "AVITI24 2x150 Low 375M",
+        "lanes": 2,
+        "lane_capacity": 187,
+        "archived": false
+    }
+},
+{
+    "model": "flowcell.sequencer",
+    "pk": 40,
+    "fields": {
+        "name": "AVITI24 2x150 Med 750M",
+        "lanes": 2,
+        "lane_capacity": 375,
+        "archived": false
+    }
+},
+{
+    "model": "flowcell.sequencer",
+    "pk": 41,
+    "fields": {
+        "name": "AVITI24 2x150 High 1.5B",
+        "lanes": 2,
+        "lane_capacity": 750,
+        "archived": false
+    }
+},
+{
+    "model": "flowcell.sequencer",
+    "pk": 42,
+    "fields": {
+        "name": "AVITI24 2x300 Med 100M",
+        "lanes": 2,
+        "lane_capacity": 50,
+        "archived": false
+    }
+},
+{
+    "model": "flowcell.sequencer",
+    "pk": 43,
+    "fields": {
+        "name": "AVITI24 2x300 High 300M",
+        "lanes": 2,
+        "lane_capacity": 150,
+        "archived": false
+    }
+},
+{
+    "model": "flowcell.sequencer",
+    "pk": 44,
+    "fields": {
+        "name": "AVITI 2x75 Low 100M",
+        "lanes": 2,
+        "lane_capacity": 50,
+        "archived": false
+    }
+},
+{
+    "model": "flowcell.sequencer",
+    "pk": 45,
+    "fields": {
+        "name": "AVITI 2x75 Med 500M",
+        "lanes": 2,
+        "lane_capacity": 250,
+        "archived": false
+    }
+},
+{
+    "model": "flowcell.sequencer",
+    "pk": 46,
+    "fields": {
+        "name": "AVITI 2x75 High 1B",
+        "lanes": 2,
+        "lane_capacity": 500,
+        "archived": false
+    }
+},
+{
+    "model": "flowcell.sequencer",
+    "pk": 47,
+    "fields": {
+        "name": "AVITI 2x150 Low 250M",
+        "lanes": 2,
+        "lane_capacity": 125,
+        "archived": false
+    }
+},
+{
+    "model": "flowcell.sequencer",
+    "pk": 48,
+    "fields": {
+        "name": "AVITI 2x150 Med 500M",
+        "lanes": 2,
+        "lane_capacity": 250,
+        "archived": false
+    }
+},
+{
+    "model": "flowcell.sequencer",
+    "pk": 49,
+    "fields": {
+        "name": "AVITI 2x150 High 1B",
+        "lanes": 2,
+        "lane_capacity": 500,
+        "archived": false
+    }
+},
+{
+    "model": "flowcell.sequencer",
+    "pk": 50,
+    "fields": {
+        "name": "AVITI 2x300 Med 100M",
+        "lanes": 2,
+        "lane_capacity": 50,
+        "archived": false
+    }
+},
+{
+    "model": "flowcell.sequencer",
+    "pk": 51,
+    "fields": {
+        "name": "AVITI 2x300 High 300M",
+        "lanes": 2,
+        "lane_capacity": 150,
+        "archived": false
+    }
+}
 ]
