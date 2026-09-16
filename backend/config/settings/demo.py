@@ -2,8 +2,12 @@ from .prod import *
 
 DEMO_MODE = True
 
-# A bare Fly Machine has no fronting Caddy container the way the docker-compose
-# deploy does, so gunicorn serves collectstatic output directly via whitenoise.
+# A bare Fly Machine has no fronting Caddy/nginx (misc/nginx-server.conf) or
+# separate parkour2-vite container, so gunicorn serves both Django's own
+# collectstatic output *and* the Vue SPA's prod build (folded in by
+# backend.Dockerfile's pk2_demo stage, see BASE_DIR/vue_static/vue/) via
+# whitenoise. ROOT_URLCONF swaps to urls_demo, which adds the vue-router SPA
+# fallback nginx used to provide via `npx serve -s dist`.
 MIDDLEWARE = list(MIDDLEWARE)
 MIDDLEWARE.insert(
     MIDDLEWARE.index("django.middleware.security.SecurityMiddleware") + 1,
@@ -17,6 +21,8 @@ STORAGES = {
         "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage"
     },
 }
+WHITENOISE_ROOT = os.path.join(BASE_DIR, "vue_static")
+ROOT_URLCONF = "config.urls_demo"
 
 # Fixture staff user (backend/common/fixtures/user.json, pk=2) that every request
 # gets auto-authenticated as. Overridable so a different demo dataset can point
