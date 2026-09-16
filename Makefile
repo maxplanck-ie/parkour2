@@ -145,6 +145,8 @@ dev-easy: down set-dev deploy-webapp deploy-caddy collect-static clean  ## Deplo
 
 dev: down set-dev deploy-webapp deploy-nginx collect-static clean  ## Deploy Werkzeug instance with Nginx (incl. TLS)
 
+dev-fix: dev load-fixtures  ## Like 'dev', but loads demo fixture data instead of an empty DB
+
 set-dev: hardreset-caddyfile-dev
 	@sed -i -e 's#\(target:\) pk2_.*#\1 pk2_dev#' docker-compose.yml
 	@sed -i -e 's#\(^CMD \["npm", "run", "start-\).*\]#\1dev"\]#' frontend.Dockerfile

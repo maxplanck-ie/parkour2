@@ -161,7 +161,7 @@
             },
             "approval": {
                 "TOKEN": null,
-                "TIMESTAMP": null,
+                "TIMESTAMP": "2026-02-28T08:32:02.002345+00:00",
                 "HTTP_ACCEPT": null,
                 "REMOTE_ADDR": null,
                 "REMOTE_PORT": null,
@@ -172,7 +172,7 @@
                 "HTTP_X_FORWARDED_FOR": null
             },
             "qc_completed_at": null,
-            "flowcell_loaded_at": null,
+            "flowcell_loaded_at": "2026-03-20T08:32:02.000Z",
             "related_requests": [],
             "libraries": [
                 1,
@@ -246,7 +246,7 @@
             },
             "approval": {
                 "TOKEN": null,
-                "TIMESTAMP": null,
+                "TIMESTAMP": "2026-04-19T08:32:02.002345+00:00",
                 "HTTP_ACCEPT": null,
                 "REMOTE_ADDR": null,
                 "REMOTE_PORT": null,
@@ -257,7 +257,7 @@
                 "HTTP_X_FORWARDED_FOR": null
             },
             "qc_completed_at": null,
-            "flowcell_loaded_at": null,
+            "flowcell_loaded_at": "2026-05-09T08:32:02.000Z",
             "related_requests": [],
             "libraries": [
                 40,
@@ -362,7 +362,7 @@
             },
             "approval": {
                 "TOKEN": null,
-                "TIMESTAMP": null,
+                "TIMESTAMP": "2025-11-20T08:32:02.002345+00:00",
                 "HTTP_ACCEPT": null,
                 "REMOTE_ADDR": null,
                 "REMOTE_PORT": null,
@@ -373,7 +373,7 @@
                 "HTTP_X_FORWARDED_FOR": null
             },
             "qc_completed_at": null,
-            "flowcell_loaded_at": null,
+            "flowcell_loaded_at": "2025-12-20T08:32:02.000Z",
             "related_requests": [],
             "libraries": [
                 64,
@@ -779,7 +779,7 @@
             },
             "approval": {
                 "TOKEN": null,
-                "TIMESTAMP": null,
+                "TIMESTAMP": "2026-06-08T08:32:02.002345+00:00",
                 "HTTP_ACCEPT": null,
                 "REMOTE_ADDR": null,
                 "REMOTE_PORT": null,
@@ -790,7 +790,7 @@
                 "HTTP_X_FORWARDED_FOR": null
             },
             "qc_completed_at": null,
-            "flowcell_loaded_at": null,
+            "flowcell_loaded_at": "2026-06-23T08:32:02.000Z",
             "related_requests": [],
             "libraries": [
                 85,
@@ -851,7 +851,7 @@
             },
             "approval": {
                 "TOKEN": null,
-                "TIMESTAMP": null,
+                "TIMESTAMP": "2026-01-09T08:32:02.002345+00:00",
                 "HTTP_ACCEPT": null,
                 "REMOTE_ADDR": null,
                 "REMOTE_PORT": null,
@@ -862,7 +862,7 @@
                 "HTTP_X_FORWARDED_FOR": null
             },
             "qc_completed_at": null,
-            "flowcell_loaded_at": null,
+            "flowcell_loaded_at": "2026-02-28T08:32:02.000Z",
             "related_requests": [],
             "libraries": [
                 111,
@@ -909,7 +909,7 @@
             },
             "approval": {
                 "TOKEN": null,
-                "TIMESTAMP": null,
+                "TIMESTAMP": "2026-07-18T08:32:02.002345+00:00",
                 "HTTP_ACCEPT": null,
                 "REMOTE_ADDR": null,
                 "REMOTE_PORT": null,
@@ -920,7 +920,7 @@
                 "HTTP_X_FORWARDED_FOR": null
             },
             "qc_completed_at": null,
-            "flowcell_loaded_at": null,
+            "flowcell_loaded_at": "2026-08-02T08:32:02.000Z",
             "related_requests": [],
             "libraries": [
                 128,
@@ -975,7 +975,7 @@
             },
             "approval": {
                 "TOKEN": null,
-                "TIMESTAMP": null,
+                "TIMESTAMP": "2026-02-28T08:32:02.002345+00:00",
                 "HTTP_ACCEPT": null,
                 "REMOTE_ADDR": null,
                 "REMOTE_PORT": null,
@@ -986,7 +986,7 @@
                 "HTTP_X_FORWARDED_FOR": null
             },
             "qc_completed_at": null,
-            "flowcell_loaded_at": null,
+            "flowcell_loaded_at": "2026-04-09T08:32:02.000Z",
             "related_requests": [],
             "libraries": [],
             "samples": [
@@ -1067,7 +1067,7 @@
             },
             "approval": {
                 "TOKEN": null,
-                "TIMESTAMP": null,
+                "TIMESTAMP": "2026-05-19T08:32:02.002345+00:00",
                 "HTTP_ACCEPT": null,
                 "REMOTE_ADDR": null,
                 "REMOTE_PORT": null,
@@ -1078,7 +1078,7 @@
                 "HTTP_X_FORWARDED_FOR": null
             },
             "qc_completed_at": null,
-            "flowcell_loaded_at": null,
+            "flowcell_loaded_at": "2026-06-13T08:32:02.000Z",
             "related_requests": [],
             "libraries": [
                 145,
@@ -1114,7 +1114,7 @@
             },
             "approval": {
                 "TOKEN": null,
-                "TIMESTAMP": null,
+                "TIMESTAMP": "2026-06-28T08:32:02.002345+00:00",
                 "HTTP_ACCEPT": null,
                 "REMOTE_ADDR": null,
                 "REMOTE_PORT": null,
@@ -1125,7 +1125,7 @@
                 "HTTP_X_FORWARDED_FOR": null
             },
             "qc_completed_at": null,
-            "flowcell_loaded_at": null,
+            "flowcell_loaded_at": "2026-07-23T08:32:02.000Z",
             "related_requests": [],
             "libraries": [],
             "samples": [
@@ -1160,7 +1160,7 @@
             },
             "approval": {
                 "TOKEN": null,
-                "TIMESTAMP": null,
+                "TIMESTAMP": "2026-06-18T08:32:02.002345+00:00",
                 "HTTP_ACCEPT": null,
                 "REMOTE_ADDR": null,
                 "REMOTE_PORT": null,
@@ -1171,7 +1171,7 @@
                 "HTTP_X_FORWARDED_FOR": null
             },
             "qc_completed_at": null,
-            "flowcell_loaded_at": null,
+            "flowcell_loaded_at": "2026-07-08T08:32:02.000Z",
             "related_requests": [],
             "libraries": [
                 148,
@@ -1206,7 +1206,7 @@
             },
             "approval": {
                 "TOKEN": null,
-                "TIMESTAMP": null,
+                "TIMESTAMP": "2026-08-07T08:32:02.002345+00:00",
                 "HTTP_ACCEPT": null,
                 "REMOTE_ADDR": null,
                 "REMOTE_PORT": null,
@@ -1217,7 +1217,7 @@
                 "HTTP_X_FORWARDED_FOR": null
             },
             "qc_completed_at": null,
-            "flowcell_loaded_at": null,
+            "flowcell_loaded_at": "2026-08-22T08:32:02.000Z",
             "related_requests": [],
             "libraries": [
                 150,
