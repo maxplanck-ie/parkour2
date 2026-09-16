@@ -1,6 +1,7 @@
-// Reserved for the Libraries/Samples split -- used by stacked charts and by
-// the Records chart's own two bars. Keep the semantics consistent: index 0
-// is always "Libraries", index 1 is always "Samples".
+// One shared palette for the whole Usage page. Index 0/1 always mean
+// "Libraries"/"Samples" (the Records chart's own bars, and every stacked
+// chart's split). Any other per-category chart starts at index 2 instead of
+// restarting at 0, so it never reuses the blue/orange Libraries/Samples pair.
 export const USAGE_CHART_COLORS = [
   "#5DA5DA",
   "#FAA43A",
@@ -11,21 +12,6 @@ export const USAGE_CHART_COLORS = [
   "#DECF3F",
   "#F15854",
   "#4D4D4D"
-];
-
-// Used for per-category coloring in any non-stacked chart other than
-// Records, so those charts don't restart at the same blue/orange pair that
-// means "Libraries/Samples" elsewhere.
-export const USAGE_CHART_COLORS_SECONDARY = [
-  "#8DA0CB",
-  "#E78AC3",
-  "#A6D854",
-  "#FFD92F",
-  "#E5C494",
-  "#B3B3B3",
-  "#66C2A5",
-  "#FC8D62",
-  "#7570B3"
 ];
 
 const AXIS_LABEL_MAX_CHARS = 18;
@@ -107,7 +93,7 @@ export function buildUsageChartOption(chartDef, data) {
   const names = data.map((row) => row.name);
   const categoryColors = chartDef.usesPrimaryPalette
     ? USAGE_CHART_COLORS
-    : USAGE_CHART_COLORS_SECONDARY;
+    : USAGE_CHART_COLORS.slice(2);
 
   let series;
   if (chartDef.type === "boxplot") {
