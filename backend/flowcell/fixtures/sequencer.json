@@ -103,9 +103,19 @@
         "model": "flowcell.sequencer",
         "pk": 11,
         "fields": {
-            "name": "NovaSeq S1 (XP)",
+            "name": "NovaSeq S1 XP 1.6B",
             "lanes": 2,
             "lane_capacity": 800,
+            "archived": false
+        }
+    },
+    {
+        "model": "flowcell.sequencer",
+        "pk": 20,
+        "fields": {
+            "name": "NovaSeq SP XP 800M",
+            "lanes": 2,
+            "lane_capacity": 400,
             "archived": false
         }
     },
