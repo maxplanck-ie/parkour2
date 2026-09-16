@@ -44,6 +44,7 @@ CREATE TABLE IF NOT EXISTS complete_library_data_mv (
     create_time TIMESTAMP WITH TIME ZONE,
     pool_names VARCHAR(100)[],
     flowcell_ids VARCHAR(50)[],
+    flowcell_create_times TIMESTAMP WITH TIME ZONE[],
     sequencer_ids INTEGER[],
     sequencer_names VARCHAR(50)[],
     search_vector TSVECTOR
@@ -87,6 +88,7 @@ CREATE TABLE IF NOT EXISTS complete_sample_data_mv (
     create_time TIMESTAMP WITH TIME ZONE,
     pool_names VARCHAR(100)[],
     flowcell_ids VARCHAR(50)[],
+    flowcell_create_times TIMESTAMP WITH TIME ZONE[],
     sequencer_ids INTEGER[],
     sequencer_names VARCHAR(50)[],
     search_vector TSVECTOR
@@ -130,6 +132,7 @@ SELECT DISTINCT ON (l.id, r.id)
     r.create_time AS create_time,
     pools.pool_names,
     fcids.flowcell_ids,
+    fcids.flowcell_create_times,
     fcids.sequencer_ids,
     fcids.sequencer_names,
     to_tsvector('simple',
@@ -175,16 +178,24 @@ LEFT JOIN LATERAL (
 ) pools ON TRUE
 LEFT JOIN LATERAL (
     SELECT
-        array_agg(DISTINCT fc.flowcell_id) AS flowcell_ids,
-        array_agg(DISTINCT seq.id::integer) AS sequencer_ids,
-        array_agg(DISTINCT seq.name) AS sequencer_names
-    FROM index_generator_pool_libraries ipl2
-    JOIN index_generator_pool p2 ON ipl2.pool_id = p2.id
-    JOIN flowcell_lane lane2 ON lane2.pool_id = p2.id
-    JOIN flowcell_flowcell_lanes fc_lane ON fc_lane.lane_id = lane2.id
-    JOIN flowcell_flowcell fc ON fc_lane.flowcell_id = fc.id
-    LEFT JOIN flowcell_sequencer seq ON fc.sequencer_id = seq.id
-    WHERE ipl2.library_id = l.id
+        array_agg(fc_agg.flowcell_id ORDER BY fc_agg.flowcell_id) AS flowcell_ids,
+        array_agg(fc_agg.create_time ORDER BY fc_agg.flowcell_id) AS flowcell_create_times,
+        array_agg(DISTINCT fc_agg.sequencer_id) AS sequencer_ids,
+        array_agg(DISTINCT fc_agg.sequencer_name) AS sequencer_names
+    FROM (
+        SELECT DISTINCT
+            fc.flowcell_id,
+            fc.create_time,
+            seq.id::integer AS sequencer_id,
+            seq.name AS sequencer_name
+        FROM index_generator_pool_libraries ipl2
+        JOIN index_generator_pool p2 ON ipl2.pool_id = p2.id
+        JOIN flowcell_lane lane2 ON lane2.pool_id = p2.id
+        JOIN flowcell_flowcell_lanes fc_lane ON fc_lane.lane_id = lane2.id
+        JOIN flowcell_flowcell fc ON fc_lane.flowcell_id = fc.id
+        LEFT JOIN flowcell_sequencer seq ON fc.sequencer_id = seq.id
+        WHERE ipl2.library_id = l.id
+    ) fc_agg
 ) fcids ON TRUE
 {where_clause}
 ORDER BY l.id, r.id;
@@ -231,6 +242,7 @@ SELECT DISTINCT ON (s.id, r.id)
     r.create_time AS create_time,
     pools.pool_names,
     fcids.flowcell_ids,
+    fcids.flowcell_create_times,
     fcids.sequencer_ids,
     fcids.sequencer_names,
     to_tsvector('simple',
@@ -278,16 +290,24 @@ LEFT JOIN LATERAL (
 ) pools ON TRUE
 LEFT JOIN LATERAL (
     SELECT
-        array_agg(DISTINCT fc.flowcell_id) AS flowcell_ids,
-        array_agg(DISTINCT seq.id::integer) AS sequencer_ids,
-        array_agg(DISTINCT seq.name) AS sequencer_names
-    FROM index_generator_pool_samples ps2
-    JOIN index_generator_pool p2 ON ps2.pool_id = p2.id
-    JOIN flowcell_lane lane2 ON lane2.pool_id = p2.id
-    JOIN flowcell_flowcell_lanes fc_lane ON fc_lane.lane_id = lane2.id
-    JOIN flowcell_flowcell fc ON fc_lane.flowcell_id = fc.id
-    LEFT JOIN flowcell_sequencer seq ON fc.sequencer_id = seq.id
-    WHERE ps2.sample_id = s.id
+        array_agg(fc_agg.flowcell_id ORDER BY fc_agg.flowcell_id) AS flowcell_ids,
+        array_agg(fc_agg.create_time ORDER BY fc_agg.flowcell_id) AS flowcell_create_times,
+        array_agg(DISTINCT fc_agg.sequencer_id) AS sequencer_ids,
+        array_agg(DISTINCT fc_agg.sequencer_name) AS sequencer_names
+    FROM (
+        SELECT DISTINCT
+            fc.flowcell_id,
+            fc.create_time,
+            seq.id::integer AS sequencer_id,
+            seq.name AS sequencer_name
+        FROM index_generator_pool_samples ps2
+        JOIN index_generator_pool p2 ON ps2.pool_id = p2.id
+        JOIN flowcell_lane lane2 ON lane2.pool_id = p2.id
+        JOIN flowcell_flowcell_lanes fc_lane ON fc_lane.lane_id = lane2.id
+        JOIN flowcell_flowcell fc ON fc_lane.flowcell_id = fc.id
+        LEFT JOIN flowcell_sequencer seq ON fc.sequencer_id = seq.id
+        WHERE ps2.sample_id = s.id
+    ) fc_agg
 ) fcids ON TRUE
 {where_clause}
 ORDER BY s.id, r.id;
@@ -326,6 +346,7 @@ INSERT INTO complete_library_data_mv (
     create_time,
     pool_names,
     flowcell_ids,
+    flowcell_create_times,
     sequencer_ids,
     sequencer_names,
     search_vector
@@ -370,6 +391,7 @@ INSERT INTO complete_sample_data_mv (
     create_time,
     pool_names,
     flowcell_ids,
+    flowcell_create_times,
     sequencer_ids,
     sequencer_names,
     search_vector

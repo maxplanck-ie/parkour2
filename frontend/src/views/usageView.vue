@@ -32,21 +32,41 @@
     </div>
 
     <div class="charts-grid">
-      <div
-        v-for="chartDef in usageCharts"
-        :key="chartDef.key"
-        class="chart-card"
-      >
-        <div class="chart-title">{{ chartDef.title }}</div>
-        <p v-if="!chartHasData(chartDef.key)" class="chart-empty-text">
-          No Data
-        </p>
-        <VChart
-          v-else
-          class="chart-canvas"
-          :option="chartOptions[chartDef.key]"
-          autoresize
-        />
+      <div class="charts-row charts-row-top">
+        <div
+          v-for="chartDef in topRowCharts"
+          :key="chartDef.key"
+          class="chart-card"
+        >
+          <div class="chart-title">{{ chartDef.title }}</div>
+          <p v-if="!chartHasData(chartDef.key)" class="chart-empty-text">
+            No Data
+          </p>
+          <VChart
+            v-else
+            class="chart-canvas"
+            :option="chartOptions[chartDef.key]"
+            autoresize
+          />
+        </div>
+      </div>
+      <div class="charts-row charts-row-bottom">
+        <div
+          v-for="chartDef in bottomRowCharts"
+          :key="chartDef.key"
+          class="chart-card"
+        >
+          <div class="chart-title">{{ chartDef.title }}</div>
+          <p v-if="!chartHasData(chartDef.key)" class="chart-empty-text">
+            No Data
+          </p>
+          <VChart
+            v-else
+            class="chart-canvas"
+            :option="chartOptions[chartDef.key]"
+            autoresize
+          />
+        </div>
       </div>
     </div>
   </div>
@@ -57,7 +77,7 @@ import { computed, onBeforeUnmount, onMounted, reactive, ref } from "vue";
 import { useDebounceFn } from "@vueuse/core";
 import { use } from "echarts/core";
 import { CanvasRenderer } from "echarts/renderers";
-import { BarChart } from "echarts/charts";
+import { BarChart, BoxplotChart, ScatterChart } from "echarts/charts";
 import {
   GridComponent,
   LegendComponent,
@@ -82,6 +102,8 @@ import iconUsageHeader from "../assets/icons/header_usage.svg";
 use([
   CanvasRenderer,
   BarChart,
+  BoxplotChart,
+  ScatterChart,
   GridComponent,
   LegendComponent,
   TooltipComponent
@@ -112,6 +134,8 @@ export default {
     const endDateValid = computed(() => isValidDate(endDateString.value));
 
     const usageCharts = USAGE_CHARTS;
+    const topRowCharts = usageCharts.slice(0, 2);
+    const bottomRowCharts = usageCharts.slice(2);
 
     const chartOptions = computed(() => {
       const options = {};
@@ -140,9 +164,14 @@ export default {
 
       try {
         const responses = await Promise.all(
-          usageCharts.map((chartDef) =>
-            axiosRef.get(`${urlStringStart}/${chartDef.endpoint}`, { params })
-          )
+          usageCharts.map((chartDef) => {
+            const chartParams = chartDef.extraParams
+              ? { ...params, ...chartDef.extraParams }
+              : params;
+            return axiosRef.get(`${urlStringStart}/${chartDef.endpoint}`, {
+              params: chartParams
+            });
+          })
         );
         if (thisRequestId !== requestId) return;
         usageCharts.forEach((chartDef, index) => {
@@ -175,6 +204,8 @@ export default {
       startDateValid,
       endDateValid,
       usageCharts,
+      topRowCharts,
+      bottomRowCharts,
       chartOptions,
       chartHasData,
       scheduleReload,
@@ -199,6 +230,17 @@ export default {
   gap: 6px;
   color: white;
   white-space: nowrap;
+  margin-bottom: 0;
+}
+
+.filter-item.date-filter-item label {
+  display: inline;
+  padding: 0;
+  margin: 0;
+  border: none;
+  background-color: transparent;
+  font-weight: normal;
+  color: white;
 }
 
 .filter-item.date-filter-item input {
@@ -215,14 +257,21 @@ export default {
 
 .charts-grid {
   flex: 1;
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  display: flex;
+  flex-direction: column;
   gap: 14px;
   overflow-y: auto;
 }
 
-@media (max-width: 991px) {
-  .charts-grid {
+.charts-row {
+  flex: 1;
+  display: grid;
+  gap: 14px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+@media (max-width: 767px) {
+  .charts-row {
     grid-template-columns: 1fr;
   }
 }

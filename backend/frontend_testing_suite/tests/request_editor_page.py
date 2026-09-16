@@ -5,17 +5,17 @@ from playwright.sync_api import Page, expect
 
 from . import utilities
 
-# Request pk=25 ("25_User_Manke") ships with the fixtures, dedicated to this
-# file: it owns exactly one library (pk=155, "RequestEditorFixture_1",
+# Request pk=25 ("25_User_Bioinfo") ships with the fixtures, dedicated to
+# this file: it owns exactly one library (pk=155, "RequestEditorFixture_1",
 # status 1) and nothing else references it, so editing its description and
 # eventually deleting it can't collide with any other test's fixture data.
 # Its name intentionally already matches what request.edit's save() would
 # regenerate anyway (f"{id}_{user.last_name}_{user.pi.name}" for owner
-# pk=3, "LIMS User" / PI "Manke") -- the backend re-derives Request.name
+# pk=3, "LIMS User" / PI "Bioinfo") -- the backend re-derives Request.name
 # from the owner on every staff save regardless of what was submitted, so a
 # name that didn't already match this pattern would silently change after
 # the very first edit.
-REQUEST_GROUP_NAME = "25_User_Manke"
+REQUEST_GROUP_NAME = "25_User_Bioinfo"
 LIBRARY_NAME = "RequestEditorFixture_1"
 UPDATED_DESCRIPTION = "Updated via Request Editor e2e test."
 

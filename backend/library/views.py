@@ -35,7 +35,12 @@ SAMPLE_PREPARATION_FIELDS = (
 )
 LIBRARY_MEASURE_FIELDS = ("concentration_library", "average_fragment_size")
 SAMPLE_ONLY_FIELDS = ("starting_amount", "pcr_cycles")
-SEQUENCING_FIELDS = ("flowcell_ids", "sequencer_ids", "sequencer_names")
+SEQUENCING_FIELDS = (
+    "flowcell_ids",
+    "flowcell_create_times",
+    "sequencer_ids",
+    "sequencer_names",
+)
 
 POST_INCOMING_STATUSES = (-2, -1, 2, 3, 4, 5, 6)
 POST_PREPARATION_STATUSES = (-1, 3, 4, 5, 6)

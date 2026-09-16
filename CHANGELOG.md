@@ -3,11 +3,12 @@
 Unreleased
 ==========
 
+- Libraries & Samples table now shows a "Flowcell Created" column with the creation date of each flowcell a library/sample was sequenced on, aligned to the existing Flowcell IDs column, so turnaround time from request approval to sequencing start can be computed. (PR #354.)
+- Added two box plots to the Usage page, "Turnaround Time by Analysis Type" and "Turnaround Time by PI", showing the spread (min/median/max, plus individual points for any outliers beyond the whiskers) of days from request approval to sequencing start. The Usage page now shows 4 charts in a 2x2 layout — Principal Investigators and Analysis Types on top, their matching Turnaround Time box plots below — and long x-axis labels (over 18 characters) are truncated with an ellipsis. All Usage charts share one 3-color palette: purple/orange for the Libraries/Samples split, green for the box plots. (PR #354.)
+- Added a `make dev-fix` target: deploys like `make dev`, but also loads demo fixture data. `make dev-ez` now loads demo fixture data instead of an empty DB. (PR #354.)
 - Adopted VueUse composables and Motion across the frontend (browser listeners, storage, debounce, clipboard, resize, and dialog animations), including animated save-confirmation dialogs in the Request Editor. (PRs #350, #352.)
 - Added Playwright e2e coverage for Request Editor (edit/delete a request), Invoicing (billing-month view, Excel export), Load Flowcells (sample sheet download, destroy flowcell), and Runs/Sequences Statistics. (Direct commit `a3e63cc3`.)
-
 - Backend settings package renamed from `wui` to `config` (`DJANGO_SETTINGS_MODULE` is now `config.settings.*`); deployments/scripts setting that env var directly need updating. Also added an import-linter check enforcing that the shared `common` app never imports domain apps, catching one existing violation. (Direct commit `5cbc20a4`.)
-- Top nav bar buttons' corner rounding now matches the green header action buttons (Advanced Filters, Select Columns, Export to Excel, etc.) instead of using a fuller pill shape. (Direct commit `8075e97`.)
 - Fixed a fresh database migrate failing outright: the Analysis Type rename shipped without a migration for the model rename itself, and some apps had accumulated conflicting/duplicate migrations from unrelated work. (Direct commit `2d4b3de`.)
 - Fixed the above migration repair having dropped three data-safety steps in the process: sanitizing invalid library/sample names before enforcing the new naming rule, seeding the default Attachment File Types, and transliterating umlauts in existing user names. (Direct commit `d2ea3b02`.)
 - Removed hardcoded institute domain from nginx config, the request-approval page's contact email, and fixture/test data. (Direct commit `6d3cda25`.)
@@ -20,7 +21,7 @@ Unreleased
 - Index I7/I5, Mean Fragment Size, and Size Distribution validation rules are now also enforced on the backend, closing gaps where the API accepted values the frontend would have rejected. (Direct commit `a6165393`.)
 - Added header tooltips to the request editor's Index I7/I5 columns explaining the allowed characters and max length. (Direct commit `81347594`.)
 - Libraries & Samples: column search now filters across the full result set server-side (not just the loaded page), Advanced Filters gained Index range filters and its dropdown shortcuts back, "Plate Coord" is now computed correctly and consistently, and global search now finds records by Index Type. Incoming, Preparation, Load FCs, Pooling, Run Statistics, and Sequences Statistics got the same filter hint-text and per-column filtering treatment. (PRs #337, #338, #339, #340.)
-- Removed the legacy ExtJS shell in favor of a native Vue app shell and navigation, with a restyled top nav bar. (PRs #329, #330, #331, #332, #333, #334, #335.)
+- Removed the legacy ExtJS shell in favor of a native Vue app shell and navigation, with a restyled top nav bar. (PRs #329, #330, #331, #332, #333, #334, #335. Direct commit `8075e97`.)
 - Emails: fixed an outdated logo in notification headers, and gave transactional emails (approval, password-change, expired-link) a consistent styled layout. (PR #323, direct commit `fce24478`.)
 - Fixed Load Flowcells "Apply to All" not persisting loading concentration/PhiX values. (PR #328.)
 - CI: fixed the weekly dependency-update workflow failing due to a stricter zizmor action-pinning requirement. (Direct commits `e681af9c`, `a00ba038`.)

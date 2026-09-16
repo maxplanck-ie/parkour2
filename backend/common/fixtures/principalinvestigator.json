@@ -3,7 +3,7 @@
         "model": "common.principalinvestigator",
         "pk": 1,
         "fields": {
-            "name": "Akhtar",
+            "name": "Margaret Dayhoff",
             "organization": 2,
             "email": "Unset",
             "archived": false
@@ -13,8 +13,8 @@
         "model": "common.principalinvestigator",
         "pk": 2,
         "fields": {
-            "name": "Boehm",
-            "organization": 2,
+            "name": "Alec Jeffreys",
+            "organization": 4,
             "email": "Unset",
             "archived": false
         }
@@ -23,8 +23,8 @@
         "model": "common.principalinvestigator",
         "pk": 3,
         "fields": {
-            "name": "Grosschedl",
-            "organization": 2,
+            "name": "Minoru Kanehisa",
+            "organization": 5,
             "email": "Unset",
             "archived": false
         }
@@ -33,8 +33,8 @@
         "model": "common.principalinvestigator",
         "pk": 4,
         "fields": {
-            "name": "Manke",
-            "organization": 2,
+            "name": "Andres Moreno-Estrada",
+            "organization": 6,
             "email": "Unset",
             "archived": false
         }
@@ -43,8 +43,8 @@
         "model": "common.principalinvestigator",
         "pk": 5,
         "fields": {
-            "name": "Iovino",
-            "organization": 2,
+            "name": "Himla Soodyall",
+            "organization": 7,
             "email": "Unset",
             "archived": false
         }
@@ -53,8 +53,8 @@
         "model": "common.principalinvestigator",
         "pk": 6,
         "fields": {
-            "name": "Jenuwein",
-            "organization": 2,
+            "name": "Emmanuelle Charpentier",
+            "organization": 8,
             "email": "Unset",
             "archived": false
         }
@@ -63,8 +63,8 @@
         "model": "common.principalinvestigator",
         "pk": 7,
         "fields": {
-            "name": "Kemler",
-            "organization": 2,
+            "name": "Jenny Graves",
+            "organization": 9,
             "email": "Unset",
             "archived": false
         }
@@ -73,8 +73,8 @@
         "model": "common.principalinvestigator",
         "pk": 8,
         "fields": {
-            "name": "Laemmermann",
-            "organization": 2,
+            "name": "Bioinfo",
+            "organization": 3,
             "email": "Unset",
             "archived": false
         }
@@ -83,268 +83,8 @@
         "model": "common.principalinvestigator",
         "pk": 9,
         "fields": {
-            "name": "PearceEd",
-            "organization": 2,
-            "email": "Unset",
-            "archived": false
-        }
-    },
-    {
-        "model": "common.principalinvestigator",
-        "pk": 10,
-        "fields": {
-            "name": "Pearce",
-            "organization": 2,
-            "email": "Unset",
-            "archived": false
-        }
-    },
-    {
-        "model": "common.principalinvestigator",
-        "pk": 11,
-        "fields": {
-            "name": "Pichler",
-            "organization": 2,
-            "email": "Unset",
-            "archived": false
-        }
-    },
-    {
-        "model": "common.principalinvestigator",
-        "pk": 12,
-        "fields": {
-            "name": "Pospisilik",
-            "organization": 2,
-            "email": "Unset",
-            "archived": false
-        }
-    },
-    {
-        "model": "common.principalinvestigator",
-        "pk": 13,
-        "fields": {
-            "name": "Rambold",
-            "organization": 2,
-            "email": "Unset",
-            "archived": false
-        }
-    },
-    {
-        "model": "common.principalinvestigator",
-        "pk": 14,
-        "fields": {
-            "name": "Reth",
-            "organization": 2,
-            "email": "Unset",
-            "archived": false
-        }
-    },
-    {
-        "model": "common.principalinvestigator",
-        "pk": 15,
-        "fields": {
-            "name": "Sawarkar",
-            "organization": 2,
-            "email": "Unset",
-            "archived": false
-        }
-    },
-    {
-        "model": "common.principalinvestigator",
-        "pk": 16,
-        "fields": {
-            "name": "Trompouki",
-            "organization": 2,
-            "email": "Unset",
-            "archived": false
-        }
-    },
-    {
-        "model": "common.principalinvestigator",
-        "pk": 17,
-        "fields": {
-            "name": "A01_Jenuwein",
-            "organization": 3,
-            "email": "Unset",
-            "archived": false
-        }
-    },
-    {
-        "model": "common.principalinvestigator",
-        "pk": 18,
-        "fields": {
-            "name": "A02_Akhtar",
-            "organization": 3,
-            "email": "Unset",
-            "archived": false
-        }
-    },
-    {
-        "model": "common.principalinvestigator",
-        "pk": 19,
-        "fields": {
-            "name": "A03_Vogel",
-            "organization": 3,
-            "email": "Unset",
-            "archived": false
-        }
-    },
-    {
-        "model": "common.principalinvestigator",
-        "pk": 20,
-        "fields": {
-            "name": "A04_Jung",
-            "organization": 3,
-            "email": "Unset",
-            "archived": false
-        }
-    },
-    {
-        "model": "common.principalinvestigator",
-        "pk": 22,
-        "fields": {
-            "name": "B01_Schuele",
-            "organization": 3,
-            "email": "Unset",
-            "archived": false
-        }
-    },
-    {
-        "model": "common.principalinvestigator",
-        "pk": 23,
-        "fields": {
-            "name": "B02_Pahl",
-            "organization": 3,
-            "email": "Unset",
-            "archived": false
-        }
-    },
-    {
-        "model": "common.principalinvestigator",
-        "pk": 24,
-        "fields": {
-            "name": "B03_Hein",
-            "organization": 3,
-            "email": "Unset",
-            "archived": false
-        }
-    },
-    {
-        "model": "common.principalinvestigator",
-        "pk": 25,
-        "fields": {
-            "name": "B05_Huber",
-            "organization": 3,
-            "email": "Unset",
-            "archived": false
-        }
-    },
-    {
-        "model": "common.principalinvestigator",
-        "pk": 26,
-        "fields": {
-            "name": "C02_Prinz",
-            "organization": 3,
-            "email": "Unset",
-            "archived": false
-        }
-    },
-    {
-        "model": "common.principalinvestigator",
-        "pk": 27,
-        "fields": {
-            "name": "C03_Lassmann",
-            "organization": 3,
-            "email": "Unset",
-            "archived": false
-        }
-    },
-    {
-        "model": "common.principalinvestigator",
-        "pk": 28,
-        "fields": {
-            "name": "C04_Luebbert",
-            "organization": 3,
-            "email": "Unset",
-            "archived": false
-        }
-    },
-    {
-        "model": "common.principalinvestigator",
-        "pk": 29,
-        "fields": {
-            "name": "C05_Flotho",
-            "organization": 3,
-            "email": "Unset",
-            "archived": false
-        }
-    },
-    {
-        "model": "common.principalinvestigator",
-        "pk": 30,
-        "fields": {
-            "name": "Z01_Backofen",
-            "organization": 3,
-            "email": "Unset",
-            "archived": false
-        }
-    },
-    {
-        "model": "common.principalinvestigator",
-        "pk": 31,
-        "fields": {
-            "name": "Z01_Manke",
-            "organization": 3,
-            "email": "Unset",
-            "archived": false
-        }
-    },
-    {
-        "model": "common.principalinvestigator",
-        "pk": 32,
-        "fields": {
-            "name": "Z02_Breit",
-            "organization": 3,
-            "email": "Unset",
-            "archived": false
-        }
-    },
-    {
-        "model": "common.principalinvestigator",
-        "pk": 33,
-        "fields": {
-            "name": "Z02_Einsle",
-            "organization": 3,
-            "email": "Unset",
-            "archived": false
-        }
-    },
-    {
-        "model": "common.principalinvestigator",
-        "pk": 34,
-        "fields": {
-            "name": "Z02_Hunte",
-            "organization": 3,
-            "email": "Unset",
-            "archived": false
-        }
-    },
-    {
-        "model": "common.principalinvestigator",
-        "pk": 35,
-        "fields": {
             "name": "DeepSeq",
-            "organization": 2,
-            "email": "Unset",
-            "archived": false
-        }
-    },
-    {
-        "model": "common.principalinvestigator",
-        "pk": 36,
-        "fields": {
-            "name": "Cabezas-Wallscheid",
-            "organization": 2,
+            "organization": 3,
             "email": "Unset",
             "archived": false
         }

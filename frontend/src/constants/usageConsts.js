@@ -1,31 +1,19 @@
-export const USAGE_CHART_COLORS = [
-  "#5DA5DA",
-  "#FAA43A",
-  "#60BD68",
-  "#F17CB0",
-  "#B2912F",
-  "#B276B2",
-  "#DECF3F",
-  "#F15854",
-  "#4D4D4D"
-];
+// Whole Usage page shares this 3-color palette: purple/orange for the
+// "Libraries"/"Samples" split on stacked charts, green for boxplot charts.
+export const USAGE_CHART_COLORS = ["#8064A2", "#FAA43A", "#60A060"];
+
+const AXIS_LABEL_MAX_CHARS = 18;
+
+function truncateAxisLabel(value) {
+  return value.length > AXIS_LABEL_MAX_CHARS
+    ? `${value.slice(0, AXIS_LABEL_MAX_CHARS)}…`
+    : value;
+}
 
 // `stacked: true` charts break each bar down into libraries/samples
-// (matching what the API already returns); `stacked: false` charts only
-// have a single "data" value per bar.
+// (matching what the API already returns). `type: "boxplot"` charts plot a
+// [min, q1, median, q3, max] array per bar instead of a single value.
 export const USAGE_CHARTS = [
-  {
-    key: "records",
-    title: "Libraries & Samples",
-    endpoint: "api/usage/records/",
-    stacked: false
-  },
-  {
-    key: "organizations",
-    title: "Organizations",
-    endpoint: "api/usage/organizations/",
-    stacked: false
-  },
   {
     key: "principalInvestigators",
     title: "Principal Investigators",
@@ -37,56 +25,80 @@ export const USAGE_CHARTS = [
     title: "Analysis Types",
     endpoint: "api/usage/analysis_types/",
     stacked: true
+  },
+  {
+    key: "turnaroundPrincipalInvestigator",
+    title: "Turnaround Time by PI (days)",
+    endpoint: "api/usage/turnaround_time/",
+    type: "boxplot",
+    extraParams: { group_by: "pi" }
+  },
+  {
+    key: "turnaroundAnalysisType",
+    title: "Turnaround Time by Analysis Type (days)",
+    endpoint: "api/usage/turnaround_time/",
+    type: "boxplot",
+    extraParams: { group_by: "analysis_type" }
   }
 ];
 
-// The API always returns one row per known category (e.g. "records"
+// The API always returns one row per known category (e.g. a stacked chart
 // always returns both "Libraries" and "Samples"), even when every value in
 // range is zero -- so an empty range still yields a non-empty array. Sum
 // the actual values instead of checking array length to decide whether
 // there's anything to plot.
 export function usageChartTotal(chartDef, data) {
+  if (chartDef.type === "boxplot") {
+    return data.length;
+  }
   return data.reduce((sum, row) => {
-    return (
-      sum +
-      (chartDef.stacked
-        ? (row.libraries || 0) + (row.samples || 0)
-        : row.data || 0)
-    );
+    return sum + (row.libraries || 0) + (row.samples || 0);
   }, 0);
 }
 
 export function buildUsageChartOption(chartDef, data) {
   const names = data.map((row) => row.name);
 
-  const series = chartDef.stacked
-    ? [
-        {
-          name: "Libraries",
-          type: "bar",
-          stack: "total",
-          data: data.map((row) => row.libraries || 0),
-          color: USAGE_CHART_COLORS[0]
-        },
-        {
-          name: "Samples",
-          type: "bar",
-          stack: "total",
-          data: data.map((row) => row.samples || 0),
-          color: USAGE_CHART_COLORS[1]
-        }
-      ]
-    : [
-        {
-          name: chartDef.title,
-          type: "bar",
-          data: data.map((row) => row.data || 0),
-          itemStyle: {
-            color: (params) =>
-              USAGE_CHART_COLORS[params.dataIndex % USAGE_CHART_COLORS.length]
-          }
-        }
-      ];
+  let series;
+  if (chartDef.type === "boxplot") {
+    series = [
+      {
+        name: chartDef.title,
+        type: "boxplot",
+        data: data.map((row) => row.data),
+        itemStyle: { color: USAGE_CHART_COLORS[2] }
+      }
+    ];
+    const outlierPoints = data.flatMap((row, index) =>
+      (row.outliers || []).map((value) => [index, value])
+    );
+    if (outlierPoints.length) {
+      series.push({
+        name: "Outliers",
+        type: "scatter",
+        data: outlierPoints,
+        symbolSize: 6,
+        itemStyle: { color: USAGE_CHART_COLORS[2] }
+      });
+    }
+  } else {
+    series = [
+      {
+        name: "Libraries",
+        type: "bar",
+        stack: "total",
+        data: data.map((row) => row.libraries || 0),
+        color: USAGE_CHART_COLORS[0]
+      },
+      {
+        name: "Samples",
+        type: "bar",
+        stack: "total",
+        data: data.map((row) => row.samples || 0),
+        color: USAGE_CHART_COLORS[1]
+      }
+    ];
+  }
 
   return {
     grid: {
@@ -98,7 +110,7 @@ export function buildUsageChartOption(chartDef, data) {
     },
     legend: chartDef.stacked ? { top: 0 } : undefined,
     tooltip: {
-      trigger: "axis",
+      trigger: chartDef.type === "boxplot" ? "item" : "axis",
       axisPointer: { type: "shadow" }
     },
     xAxis: {
@@ -106,12 +118,13 @@ export function buildUsageChartOption(chartDef, data) {
       data: names,
       axisLabel: {
         rotate: 45,
-        interval: 0
+        interval: 0,
+        formatter: truncateAxisLabel
       }
     },
     yAxis: {
       type: "value",
-      minInterval: 1
+      minInterval: chartDef.type === "boxplot" ? undefined : 1
     },
     series
   };

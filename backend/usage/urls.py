@@ -19,4 +19,9 @@ urlpatterns = [
         views.AnalysisTypesUsage.as_view(),
         name="analysis-types-usage",
     ),
+    re_path(
+        "turnaround_time/",
+        views.TurnaroundTimeUsage.as_view(),
+        name="turnaround-time-usage",
+    ),
 ]

@@ -13,8 +13,8 @@
             "first_name": "Daniel",
             "last_name": "Hernandez",
             "phone": null,
-            "organization": 2,
-            "pi": 35,
+            "organization": 3,
+            "pi": 9,
             "is_pi": false,
             "groups": [],
             "user_permissions": [],
@@ -35,8 +35,8 @@
             "first_name": "Test",
             "last_name": "Staff",
             "phone": null,
-            "organization": 2,
-            "pi": 6,
+            "organization": 3,
+            "pi": 8,
             "is_pi": false,
             "groups": [],
             "user_permissions": [],
@@ -59,8 +59,8 @@
             "first_name": "LIMS",
             "last_name": "User",
             "phone": null,
-            "organization": 2,
-            "pi": 4,
+            "organization": 3,
+            "pi": 8,
             "is_pi": false,
             "groups": [],
             "user_permissions": [],
@@ -84,13 +84,79 @@
             "last_name": "User2",
             "phone": null,
             "organization": 2,
-            "pi": 5,
+            "pi": 1,
             "is_pi": false,
             "groups": [],
             "user_permissions": [],
             "cost_unit": [
                 1
             ]
+        }
+    },
+    {
+        "model": "common.user",
+        "pk": 5,
+        "fields": {
+            "password": "pbkdf2_sha256$36000$fJgu2huZkqEI$x5ucxGa+dWeSrdBefSexsc7XpYgPOh6gs1aq8zpFgjU=",
+            "last_login": null,
+            "is_superuser": false,
+            "email": "adaeze.okafor@parkour-demo.omics.dev",
+            "is_staff": false,
+            "is_active": true,
+            "date_joined": "2025-01-06T09:00:00.000Z",
+            "first_name": "Adaeze",
+            "last_name": "Okafor",
+            "phone": null,
+            "organization": 4,
+            "pi": 2,
+            "is_pi": false,
+            "groups": [],
+            "user_permissions": [],
+            "cost_unit": []
+        }
+    },
+    {
+        "model": "common.user",
+        "pk": 6,
+        "fields": {
+            "password": "pbkdf2_sha256$36000$fJgu2huZkqEI$x5ucxGa+dWeSrdBefSexsc7XpYgPOh6gs1aq8zpFgjU=",
+            "last_login": null,
+            "is_superuser": false,
+            "email": "sumaya.ali@parkour-demo.omics.dev",
+            "is_staff": false,
+            "is_active": true,
+            "date_joined": "2025-02-10T09:00:00.000Z",
+            "first_name": "Sumaya",
+            "last_name": "Ali",
+            "phone": null,
+            "organization": 5,
+            "pi": 3,
+            "is_pi": false,
+            "groups": [],
+            "user_permissions": [],
+            "cost_unit": []
+        }
+    },
+    {
+        "model": "common.user",
+        "pk": 7,
+        "fields": {
+            "password": "pbkdf2_sha256$36000$fJgu2huZkqEI$x5ucxGa+dWeSrdBefSexsc7XpYgPOh6gs1aq8zpFgjU=",
+            "last_login": null,
+            "is_superuser": false,
+            "email": "marisol.cruz@parkour-demo.omics.dev",
+            "is_staff": false,
+            "is_active": true,
+            "date_joined": "2025-03-14T09:00:00.000Z",
+            "first_name": "Marisol",
+            "last_name": "Cruz",
+            "phone": null,
+            "organization": 6,
+            "pi": 4,
+            "is_pi": false,
+            "groups": [],
+            "user_permissions": [],
+            "cost_unit": []
         }
     }
 ]

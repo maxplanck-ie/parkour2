@@ -126,12 +126,12 @@ def get_navigation_tree(request):
                         "leaf": True,
                     },
                     {
-                        "text": "Primary",
+                        "text": "Per Lane",
                         "viewType": "run-statistics-vue",
                         "leaf": True,
                     },
                     {
-                        "text": "Secondary",
+                        "text": "Per S/L",
                         "viewType": "sequences-statistics-vue",
                         "leaf": True,
                     },

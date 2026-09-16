@@ -1,4 +1,6 @@
+import statistics
 from collections import Counter
+from datetime import datetime
 
 from common.utils import transliterate_name
 from django.apps import apps
@@ -225,6 +227,96 @@ class AnalysisTypesUsage(APIView):
             }
             for analysis_type, count in counts.items()
         ]
+
+        data = sorted(data, key=lambda x: x["name"])
+        return Response(data)
+
+
+class TurnaroundTimeUsage(APIView):
+    permission_classes = (IsAdminUser,)
+
+    def get(self, request):
+        start, end = get_date_range(request, "%Y-%m-%dT%H:%M:%S")
+        group_by = request.query_params.get("group_by", "pi")
+
+        libraries_qs = Library.objects.select_related("analysis_type").only(
+            "id", "analysis_type__name"
+        )
+        samples_qs = Sample.objects.select_related("analysis_type").only(
+            "id", "analysis_type__name"
+        )
+
+        requests = (
+            Request.objects.filter(
+                archived=False,
+                flowcell_loaded_at__isnull=False,
+                flowcell_loaded_at__gte=start,
+                flowcell_loaded_at__lte=end,
+            )
+            .select_related("user", "user__pi")
+            .prefetch_related(
+                Prefetch(
+                    "libraries", queryset=libraries_qs, to_attr="fetched_libraries"
+                ),
+                Prefetch("samples", queryset=samples_qs, to_attr="fetched_samples"),
+            )
+            .only("id", "approval", "flowcell_loaded_at", "user__pi__name")
+        )
+
+        groups = {}
+        for req in requests:
+            timestamp = (req.approval or {}).get("TIMESTAMP")
+            if not timestamp:
+                continue
+            try:
+                approved_at = datetime.fromisoformat(timestamp)
+            except (TypeError, ValueError):
+                continue
+
+            turnaround_days = (
+                req.flowcell_loaded_at - approved_at
+            ).total_seconds() / 86400
+            if turnaround_days < 0:
+                continue
+
+            if group_by == "analysis_type":
+                names = {x.analysis_type.name for x in req.fetched_libraries} | {
+                    x.analysis_type.name for x in req.fetched_samples
+                }
+            else:
+                pi = req.user.pi
+                names = {pi.name if pi else "None"}
+
+            for name in names:
+                groups.setdefault(name, []).append(turnaround_days)
+
+        data = []
+        for name, values in groups.items():
+            values.sort()
+            if len(values) >= 2:
+                q1, _, q3 = statistics.quantiles(values, n=4, method="inclusive")
+            else:
+                q1 = q3 = values[0]
+
+            iqr = q3 - q1
+            lower_fence = q1 - 1.5 * iqr
+            upper_fence = q3 + 1.5 * iqr
+            inliers = [v for v in values if lower_fence <= v <= upper_fence]
+            outliers = [v for v in values if v < lower_fence or v > upper_fence]
+
+            data.append(
+                {
+                    "name": name,
+                    "data": [
+                        min(inliers) if inliers else values[0],
+                        q1,
+                        statistics.median(values),
+                        q3,
+                        max(inliers) if inliers else values[-1],
+                    ],
+                    "outliers": outliers,
+                }
+            )
 
         data = sorted(data, key=lambda x: x["name"])
         return Response(data)
