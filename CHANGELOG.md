@@ -8,7 +8,7 @@ Unreleased
 - Added two box plots to the Usage page, "Turnaround Time by Analysis Type" and "Turnaround Time by PI", showing the spread (min/median/max, plus individual points for any outliers beyond the whiskers) of days from request approval to sequencing start. The Usage page now shows 4 charts in a 2x2 layout — Principal Investigators and Analysis Types on top, their matching Turnaround Time box plots below — and long x-axis labels (over 18 characters) are truncated with an ellipsis. All Usage charts share one 3-color palette: purple/orange for the Libraries/Samples split, green for the box plots. (PR #354.)
 - Added a `make dev-fix` target: deploys like `make dev`, but also loads demo fixture data. `make dev-ez` now loads demo fixture data instead of an empty DB. (PR #354.)
 - Adopted VueUse composables and Motion across the frontend (browser listeners, storage, debounce, clipboard, resize, and dialog animations), including animated save-confirmation dialogs in the Request Editor. (PRs #350, #352.)
-- Added Playwright e2e coverage for Request Editor (edit/delete a request), Invoicing (billing-month view, Excel export), Load Flowcells (sample sheet download, destroy flowcell), and Runs/Sequences Statistics. (Direct commit `a3e63cc3`.)
+- Added Playwright e2e coverage for Request Editor (edit/delete a request), Invoicing (billing-month view, Excel export), Load Flowcells (sample sheet download, destroy flowcell), and Runs/Sequences Statistics. (Direct commit `9380fb48`.)
 - Backend settings package renamed from `wui` to `config` (`DJANGO_SETTINGS_MODULE` is now `config.settings.*`); deployments/scripts setting that env var directly need updating. Also added an import-linter check enforcing that the shared `common` app never imports domain apps, catching one existing violation. (Direct commit `5cbc20a4`.)
 - Fixed a fresh database migrate failing outright: the Analysis Type rename shipped without a migration for the model rename itself, and some apps had accumulated conflicting/duplicate migrations from unrelated work. (Direct commit `2d4b3de`.)
 - Fixed the above migration repair having dropped three data-safety steps in the process: sanitizing invalid library/sample names before enforcing the new naming rule, seeding the default Attachment File Types, and transliterating umlauts in existing user names. (Direct commit `d2ea3b02`.)
@@ -34,7 +34,7 @@ Unreleased
 - Removed unused staff-only pages. (PR #323.)
 - Add/Edit Request: clarified "Minimum Read Length" labeling, fixed index dropdowns picking the wrong I7/I5 pair for kits with duplicate sequences, fixed admin errors on large index assignments, and save confirmations now include the request ID. (Direct commits `168ea9a6`, `dec032c1`, `a9fe1c99`, `b2bb16be`.)
 - `make djtest` now stops at the first failure instead of running the full suite. (Direct commit `f6ccb691`.)
-- Fixed CI's Playwright job intermittently failing on a fresh runner because tests started before the frontend build had finished starting up. (Direct commit `e764a4ae`.)
+- Fixed CI's Playwright job intermittently failing on a fresh runner because tests started before the frontend build had finished starting up. (PR #341.)
 
 
 26.07.28
