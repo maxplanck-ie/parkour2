@@ -49,12 +49,6 @@ export const USAGE_CHARTS = [
     usesPrimaryPalette: true
   },
   {
-    key: "turnaroundTime",
-    title: "Turnaround Time (days)",
-    endpoint: "api/usage/turnaround_time/",
-    type: "boxplot"
-  },
-  {
     key: "organizations",
     title: "Organizations",
     endpoint: "api/usage/organizations/",
@@ -71,6 +65,20 @@ export const USAGE_CHARTS = [
     title: "Analysis Types",
     endpoint: "api/usage/analysis_types/",
     stacked: true
+  },
+  {
+    key: "turnaroundAnalysisType",
+    title: "Turnaround Time by Analysis Type (days)",
+    endpoint: "api/usage/turnaround_time/",
+    type: "boxplot",
+    extraParams: { group_by: "analysis_type" }
+  },
+  {
+    key: "turnaroundPrincipalInvestigator",
+    title: "Turnaround Time by PI (days)",
+    endpoint: "api/usage/turnaround_time/",
+    type: "boxplot",
+    extraParams: { group_by: "pi" }
   }
 ];
 

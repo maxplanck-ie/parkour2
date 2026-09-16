@@ -38,29 +38,6 @@
         class="chart-card"
       >
         <div class="chart-title">{{ chartDef.title }}</div>
-        <div
-          v-if="chartDef.key === 'turnaroundTime'"
-          class="btn-group btn-group-sm mb-2"
-          role="group"
-          aria-label="Group turnaround time by"
-        >
-          <button
-            type="button"
-            class="btn btn-outline-secondary"
-            :class="{ active: turnaroundGroupBy === 'pi' }"
-            @click="setTurnaroundGroupBy('pi')"
-          >
-            Principal Investigator
-          </button>
-          <button
-            type="button"
-            class="btn btn-outline-secondary"
-            :class="{ active: turnaroundGroupBy === 'analysis_type' }"
-            @click="setTurnaroundGroupBy('analysis_type')"
-          >
-            Analysis Type
-          </button>
-        </div>
         <p v-if="!chartHasData(chartDef.key)" class="chart-empty-text">
           No Data
         </p>
@@ -130,7 +107,6 @@ export default {
     const startDateString = ref(formatDateForInput(oneYearAgo));
     const endDateString = ref(formatDateForInput(today));
     const chartData = reactive({});
-    const turnaroundGroupBy = ref("pi");
     let requestId = 0;
 
     const startDateValid = computed(() => isValidDate(startDateString.value));
@@ -166,10 +142,9 @@ export default {
       try {
         const responses = await Promise.all(
           usageCharts.map((chartDef) => {
-            const chartParams =
-              chartDef.key === "turnaroundTime"
-                ? { ...params, group_by: turnaroundGroupBy.value }
-                : params;
+            const chartParams = chartDef.extraParams
+              ? { ...params, ...chartDef.extraParams }
+              : params;
             return axiosRef.get(`${urlStringStart}/${chartDef.endpoint}`, {
               params: chartParams
             });
@@ -194,12 +169,6 @@ export default {
       DATE_FILTER_DEBOUNCE_MS
     );
 
-    function setTurnaroundGroupBy(value) {
-      if (turnaroundGroupBy.value === value) return;
-      turnaroundGroupBy.value = value;
-      loadUsageData();
-    }
-
     onMounted(loadUsageData);
     onBeforeUnmount(() => {
       scheduleReload.cancel();
@@ -215,8 +184,6 @@ export default {
       chartOptions,
       chartHasData,
       scheduleReload,
-      turnaroundGroupBy,
-      setTurnaroundGroupBy,
       iconUsageHeader
     };
   }
@@ -255,12 +222,18 @@ export default {
 .charts-grid {
   flex: 1;
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 14px;
   overflow-y: auto;
 }
 
-@media (max-width: 991px) {
+@media (max-width: 1199px) {
+  .charts-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 767px) {
   .charts-grid {
     grid-template-columns: 1fr;
   }
