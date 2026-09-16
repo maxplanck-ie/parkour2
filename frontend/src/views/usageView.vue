@@ -32,21 +32,41 @@
     </div>
 
     <div class="charts-grid">
-      <div
-        v-for="chartDef in usageCharts"
-        :key="chartDef.key"
-        class="chart-card"
-      >
-        <div class="chart-title">{{ chartDef.title }}</div>
-        <p v-if="!chartHasData(chartDef.key)" class="chart-empty-text">
-          No Data
-        </p>
-        <VChart
-          v-else
-          class="chart-canvas"
-          :option="chartOptions[chartDef.key]"
-          autoresize
-        />
+      <div class="charts-row charts-row-top">
+        <div
+          v-for="chartDef in topRowCharts"
+          :key="chartDef.key"
+          class="chart-card"
+        >
+          <div class="chart-title">{{ chartDef.title }}</div>
+          <p v-if="!chartHasData(chartDef.key)" class="chart-empty-text">
+            No Data
+          </p>
+          <VChart
+            v-else
+            class="chart-canvas"
+            :option="chartOptions[chartDef.key]"
+            autoresize
+          />
+        </div>
+      </div>
+      <div class="charts-row charts-row-bottom">
+        <div
+          v-for="chartDef in bottomRowCharts"
+          :key="chartDef.key"
+          class="chart-card"
+        >
+          <div class="chart-title">{{ chartDef.title }}</div>
+          <p v-if="!chartHasData(chartDef.key)" class="chart-empty-text">
+            No Data
+          </p>
+          <VChart
+            v-else
+            class="chart-canvas"
+            :option="chartOptions[chartDef.key]"
+            autoresize
+          />
+        </div>
       </div>
     </div>
   </div>
@@ -113,6 +133,8 @@ export default {
     const endDateValid = computed(() => isValidDate(endDateString.value));
 
     const usageCharts = USAGE_CHARTS;
+    const topRowCharts = usageCharts.slice(0, 3);
+    const bottomRowCharts = usageCharts.slice(3);
 
     const chartOptions = computed(() => {
       const options = {};
@@ -181,6 +203,8 @@ export default {
       startDateValid,
       endDateValid,
       usageCharts,
+      topRowCharts,
+      bottomRowCharts,
       chartOptions,
       chartHasData,
       scheduleReload,
@@ -232,21 +256,36 @@ export default {
 
 .charts-grid {
   flex: 1;
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  grid-auto-rows: 1fr;
+  display: flex;
+  flex-direction: column;
   gap: 14px;
   overflow-y: auto;
 }
 
+.charts-row {
+  flex: 1;
+  display: grid;
+  gap: 14px;
+}
+
+.charts-row-top {
+  grid-template-columns: 1fr 1fr 2fr;
+}
+
+.charts-row-bottom {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
 @media (max-width: 1199px) {
-  .charts-grid {
+  .charts-row-top,
+  .charts-row-bottom {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
 @media (max-width: 767px) {
-  .charts-grid {
+  .charts-row-top,
+  .charts-row-bottom {
     grid-template-columns: 1fr;
   }
 }
