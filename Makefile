@@ -132,18 +132,22 @@ clearpy:  ## Removes some files, created by 'prod' deployment and owned by root.
 	@docker compose exec parkour2-django find . -type d -name "__pycache__" -exec /bin/rm -rf {} +;
 	@#docker compose exec parkour2-vite find . -type d -name "dist" -exec /bin/rm -rf {} +;
 
-prod: down set-prod check-prod-tls deploy-webapp deploy-nginx collect-static deploy-rsnapshot clean  ## Deploy Gunicorn instance with Nginx, and rsnapshot service
+prod: down set-prod check-prod-tls deploy-webapp deploy-nginx collect-static deploy-rsnapshot  ## Deploy Gunicorn instance with Nginx, and rsnapshot service
+	@$(MAKE) clean
 
 check-prod-tls:
 	@test -e ./misc/cert.pem || { echo "ERROR: Missing TLS certificate: ./misc/cert.pem (required for 'make prod')."; exit 1; }
 	@test -e ./misc/key.pem || { echo "ERROR: Missing TLS private key: ./misc/key.pem (required for 'make prod')."; exit 1; }
 
-prod-ci: down set-prod deploy-webapp collect-static apply-migrations clean
+prod-ci: down set-prod deploy-webapp collect-static apply-migrations
 	@docker exec parkour2-django python manage.py check
+	@$(MAKE) clean
 
-dev-easy: down set-dev deploy-webapp deploy-caddy collect-static clean  ## Deploy Werkzeug instance with Caddy
+dev-easy: down set-dev deploy-webapp deploy-caddy collect-static  ## Deploy Werkzeug instance with Caddy
+	@$(MAKE) clean
 
-dev: down set-dev deploy-webapp deploy-nginx collect-static clean  ## Deploy Werkzeug instance with Nginx (incl. TLS)
+dev: down set-dev deploy-webapp deploy-nginx collect-static  ## Deploy Werkzeug instance with Nginx (incl. TLS)
+	@$(MAKE) clean
 
 dev-fix: dev load-fixtures  ## Like 'dev', but loads demo fixture data instead of an empty DB
 
