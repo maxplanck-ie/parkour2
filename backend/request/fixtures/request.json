@@ -1455,5 +1455,141 @@
             ],
             "files": []
         }
+    },
+    {
+        "model": "request.request",
+        "pk": 30,
+        "fields": {
+            "create_time": "2026-07-03T09:05:55.000Z",
+            "update_time": "2026-07-23T09:05:55.000Z",
+            "name": "30_User_SmallRNA_Okafor",
+            "description": "",
+            "change_ownership_reason": "",
+            "token": null,
+            "user": 5,
+            "cost_unit": 1,
+            "deep_seq_request": "",
+            "samples_submitted": true,
+            "sequenced": true,
+            "archived": false,
+            "filepaths": {
+                "data": null,
+                "metadata": null
+            },
+            "metapaths": {
+                "nothing": null
+            },
+            "approval": {
+                "TOKEN": null,
+                "TIMESTAMP": "2026-07-08T09:05:55.920326+00:00",
+                "HTTP_ACCEPT": null,
+                "REMOTE_ADDR": null,
+                "REMOTE_PORT": null,
+                "HTTP_FORWARDED": null,
+                "HTTP_USER_AGENT": null,
+                "HTTP_ACCEPT_ENCODING": null,
+                "HTTP_ACCEPT_LANGUAGE": null,
+                "HTTP_X_FORWARDED_FOR": null
+            },
+            "qc_completed_at": null,
+            "flowcell_loaded_at": "2026-07-23T09:05:55.000Z",
+            "related_requests": [],
+            "libraries": [],
+            "samples": [
+                188,
+                189
+            ],
+            "files": []
+        }
+    },
+    {
+        "model": "request.request",
+        "pk": 31,
+        "fields": {
+            "create_time": "2026-05-24T09:05:55.000Z",
+            "update_time": "2026-06-18T09:05:55.000Z",
+            "name": "31_User_HiC_Ali",
+            "description": "",
+            "change_ownership_reason": "",
+            "token": null,
+            "user": 6,
+            "cost_unit": 1,
+            "deep_seq_request": "",
+            "samples_submitted": true,
+            "sequenced": true,
+            "archived": false,
+            "filepaths": {
+                "data": null,
+                "metadata": null
+            },
+            "metapaths": {
+                "nothing": null
+            },
+            "approval": {
+                "TOKEN": null,
+                "TIMESTAMP": "2026-05-29T09:05:55.920326+00:00",
+                "HTTP_ACCEPT": null,
+                "REMOTE_ADDR": null,
+                "REMOTE_PORT": null,
+                "HTTP_FORWARDED": null,
+                "HTTP_USER_AGENT": null,
+                "HTTP_ACCEPT_ENCODING": null,
+                "HTTP_ACCEPT_LANGUAGE": null,
+                "HTTP_X_FORWARDED_FOR": null
+            },
+            "qc_completed_at": null,
+            "flowcell_loaded_at": "2026-06-18T09:05:55.000Z",
+            "related_requests": [],
+            "libraries": [
+                157
+            ],
+            "samples": [],
+            "files": []
+        }
+    },
+    {
+        "model": "request.request",
+        "pk": 32,
+        "fields": {
+            "create_time": "2026-07-28T09:05:55.000Z",
+            "update_time": "2026-08-17T09:05:55.000Z",
+            "name": "32_User_HiC_Cruz",
+            "description": "",
+            "change_ownership_reason": "",
+            "token": null,
+            "user": 7,
+            "cost_unit": 1,
+            "deep_seq_request": "",
+            "samples_submitted": true,
+            "sequenced": true,
+            "archived": false,
+            "filepaths": {
+                "data": null,
+                "metadata": null
+            },
+            "metapaths": {
+                "nothing": null
+            },
+            "approval": {
+                "TOKEN": null,
+                "TIMESTAMP": "2026-08-02T09:05:55.920326+00:00",
+                "HTTP_ACCEPT": null,
+                "REMOTE_ADDR": null,
+                "REMOTE_PORT": null,
+                "HTTP_FORWARDED": null,
+                "HTTP_USER_AGENT": null,
+                "HTTP_ACCEPT_ENCODING": null,
+                "HTTP_ACCEPT_LANGUAGE": null,
+                "HTTP_X_FORWARDED_FOR": null
+            },
+            "qc_completed_at": null,
+            "flowcell_loaded_at": "2026-08-17T09:05:55.000Z",
+            "related_requests": [],
+            "libraries": [
+                158
+            ],
+            "samples": [],
+            "files": []
+        }
     }
 ]

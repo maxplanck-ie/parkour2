@@ -9,18 +9,31 @@
     },
     {
         "model": "common.organization",
-        "pk": 2,
+        "pk": 3,
         "fields": {
-            "name": "MPI-IE",
+            "name": "University Freiburg",
             "archived": false
         }
     },
     {
         "model": "common.organization",
-        "pk": 3,
+        "pk": 4,
         "fields": {
-            "name": "University Freiburg",
-            "archived": false
+            "name": "Baobab Genomics Institute"
+        }
+    },
+    {
+        "model": "common.organization",
+        "pk": 5,
+        "fields": {
+            "name": "Andina Bioinformatics Collective"
+        }
+    },
+    {
+        "model": "common.organization",
+        "pk": 6,
+        "fields": {
+            "name": "Mekong Sequence Center"
         }
     }
 ]
