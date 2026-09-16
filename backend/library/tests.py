@@ -247,6 +247,7 @@ class TestLibrarySampleTree(BaseTestCase):
                     "concentration_library": 3.25,
                     "average_fragment_size": 280,
                     "flowcell_ids": ["FC001"],
+                    "flowcell_create_times": ["2026-01-01T00:00:00Z"],
                     "sequencer_ids": [7],
                     "sequencer_names": ["NovaSeq"],
                 }
@@ -276,6 +277,10 @@ class TestLibrarySampleTree(BaseTestCase):
                     ["FC001"] if show_sequencing else None,
                 )
                 self.assertEqual(
+                    record["flowcell_create_times"],
+                    ["2026-01-01T00:00:00Z"] if show_sequencing else None,
+                )
+                self.assertEqual(
                     record["sequencer_ids"],
                     [7] if show_sequencing else None,
                 )
@@ -295,6 +300,7 @@ class TestLibrarySampleTree(BaseTestCase):
             "concentration_library": 2.5,
             "average_fragment_size": 320,
             "flowcell_ids": ["FC001"],
+            "flowcell_create_times": ["2026-01-01T00:00:00Z"],
             "sequencer_ids": [7],
             "sequencer_names": ["NovaSeq"],
         }
@@ -308,6 +314,7 @@ class TestLibrarySampleTree(BaseTestCase):
         self.assertEqual(failed_record["concentration_library"], 2.5)
         self.assertEqual(failed_record["average_fragment_size"], 320)
         self.assertIsNone(failed_record["flowcell_ids"])
+        self.assertIsNone(failed_record["flowcell_create_times"])
         self.assertIsNone(failed_record["sequencer_ids"])
         self.assertIsNone(failed_record["sequencer_names"])
 
