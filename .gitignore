@@ -24,3 +24,4 @@ node_modules/
 .aider*
 db.sqlite3
 /media
+backend/coverage_html_report/
