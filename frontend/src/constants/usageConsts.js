@@ -28,7 +28,7 @@ export const USAGE_CHART_COLORS_SECONDARY = [
   "#7570B3"
 ];
 
-const AXIS_LABEL_MAX_CHARS = 22;
+const AXIS_LABEL_MAX_CHARS = 18;
 
 function truncateAxisLabel(value) {
   return value.length > AXIS_LABEL_MAX_CHARS
@@ -46,13 +46,15 @@ export const USAGE_CHARTS = [
     title: "Libraries & Samples",
     endpoint: "api/usage/records/",
     stacked: false,
-    usesPrimaryPalette: true
+    usesPrimaryPalette: true,
+    horizontalLabels: true
   },
   {
     key: "organizations",
     title: "Organizations",
     endpoint: "api/usage/organizations/",
-    stacked: false
+    stacked: false,
+    horizontalLabels: true
   },
   {
     key: "principalInvestigators",
@@ -165,7 +167,7 @@ export function buildUsageChartOption(chartDef, data) {
       type: "category",
       data: names,
       axisLabel: {
-        rotate: 45,
+        rotate: chartDef.horizontalLabels ? 0 : 45,
         interval: 0,
         formatter: truncateAxisLabel
       }
