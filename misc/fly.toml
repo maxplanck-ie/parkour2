@@ -1,7 +1,7 @@
 # Public demo instance on Fly.io. `make fly-deploy` redeploys (routine,
 # repeatable). See the routing/DNS side of this in the separate `flights`
 # repo (omics.dev's gw gateway, Porkbun DNS, tinyauth exemption) --
-# flights/parkour/README.md, not yet written.
+# flights/parkour/README.md.
 #
 # Before first deploy (one-time):
 #   1. flyctl apps create parkour-demo
