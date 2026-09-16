@@ -501,7 +501,7 @@ put-old-migras:
 		{ echo -n 'Symlink seems to be broken, '; ls -L misc/migras.tar.gz; exit 1; }
 
 dev-migras: dev db-migras
-dev-ez: dev-easy db-migras
+dev-ez: dev-easy load-fixtures-migras
 
 db-migras: put-old-migras db put-new-migras  ## Useful after 'git checkout <tag> && tar-old-migras && git switch -'
 

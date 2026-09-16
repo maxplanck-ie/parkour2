@@ -297,16 +297,24 @@ class TurnaroundTimeUsage(APIView):
                 q1, _, q3 = statistics.quantiles(values, n=4, method="inclusive")
             else:
                 q1 = q3 = values[0]
+
+            iqr = q3 - q1
+            lower_fence = q1 - 1.5 * iqr
+            upper_fence = q3 + 1.5 * iqr
+            inliers = [v for v in values if lower_fence <= v <= upper_fence]
+            outliers = [v for v in values if v < lower_fence or v > upper_fence]
+
             data.append(
                 {
                     "name": name,
                     "data": [
-                        values[0],
+                        min(inliers) if inliers else values[0],
                         q1,
                         statistics.median(values),
                         q3,
-                        values[-1],
+                        max(inliers) if inliers else values[-1],
                     ],
+                    "outliers": outliers,
                 }
             )
 

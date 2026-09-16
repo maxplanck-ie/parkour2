@@ -77,7 +77,7 @@ import { computed, onBeforeUnmount, onMounted, reactive, ref } from "vue";
 import { useDebounceFn } from "@vueuse/core";
 import { use } from "echarts/core";
 import { CanvasRenderer } from "echarts/renderers";
-import { BarChart, BoxplotChart } from "echarts/charts";
+import { BarChart, BoxplotChart, ScatterChart } from "echarts/charts";
 import {
   GridComponent,
   LegendComponent,
@@ -103,6 +103,7 @@ use([
   CanvasRenderer,
   BarChart,
   BoxplotChart,
+  ScatterChart,
   GridComponent,
   LegendComponent,
   TooltipComponent
@@ -133,8 +134,8 @@ export default {
     const endDateValid = computed(() => isValidDate(endDateString.value));
 
     const usageCharts = USAGE_CHARTS;
-    const topRowCharts = usageCharts.slice(0, 3);
-    const bottomRowCharts = usageCharts.slice(3);
+    const topRowCharts = usageCharts.slice(0, 2);
+    const bottomRowCharts = usageCharts.slice(2);
 
     const chartOptions = computed(() => {
       const options = {};
@@ -266,26 +267,11 @@ export default {
   flex: 1;
   display: grid;
   gap: 14px;
-}
-
-.charts-row-top {
-  grid-template-columns: 1fr 1fr 2fr;
-}
-
-.charts-row-bottom {
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-}
-
-@media (max-width: 1199px) {
-  .charts-row-top,
-  .charts-row-bottom {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
+  grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
 @media (max-width: 767px) {
-  .charts-row-top,
-  .charts-row-bottom {
+  .charts-row {
     grid-template-columns: 1fr;
   }
 }
