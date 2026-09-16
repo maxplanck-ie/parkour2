@@ -7,6 +7,7 @@ from flowcell.models import Flowcell, Lane, Sequencer
 from index_generator.models import Pool
 from index_generator.tests import create_pool
 from library.tests import create_library
+from library_preparation.models import LibraryPreparation
 from request.models import Request
 from sample.tests import create_sample
 
@@ -99,6 +100,101 @@ class TestPoolingModel(BaseTestCase):
         sample = sample.__class__.objects.get(pk=sample.pk)
 
         sample.status = 3  # passed quality check
+        sample.save()
+
+        self.assertEqual(Pooling.objects.filter(sample=sample).count(), 1)
+
+
+# Signals (characterization tests for pooling/signals.py)
+
+
+class TestPoolingSignals(BaseTestCase):
+    """
+    Pins down current behavior of pooling/signals.py before any
+    cross-domain signal cleanup (issue #346). These describe what the
+    signals do today, not what they should do.
+    """
+
+    def setUp(self):
+        self.user = self.create_user()
+
+    def test_adding_library_sets_is_pooled_for_every_library_in_pool(self):
+        """
+        update_libraries_create_pooling_obj re-marks ALL libraries
+        currently in the pool as pooled, not just the one just added.
+        """
+        library1 = create_library(get_random_name())
+        library2 = create_library(get_random_name())
+        pool = create_pool(self.user)
+
+        pool.libraries.add(library1)
+        pool.libraries.add(library2)
+
+        library1.refresh_from_db()
+        library2.refresh_from_db()
+        self.assertTrue(library1.is_pooled)
+        self.assertTrue(library2.is_pooled)
+
+    def test_adding_library_is_idempotent_for_pooling_object(self):
+        """Re-adding the same library to the pool doesn't duplicate Pooling."""
+        library = create_library(get_random_name())
+        pool = create_pool(self.user)
+
+        pool.libraries.add(library)
+        pool.libraries.remove(library)
+        pool.libraries.add(library)
+
+        self.assertEqual(Pooling.objects.filter(library=library).count(), 1)
+
+    def test_sample_save_ignored_when_not_pooled(self):
+        """
+        create_pooling_objects_sample no-ops for a sample that was never
+        added to a pool, even if its status is set to 3.
+        """
+        sample = create_sample(get_random_name(), status=2)
+        sample.status = 3
+        sample.save()
+
+        self.assertFalse(Pooling.objects.filter(sample=sample).exists())
+
+    def test_sample_save_ignored_without_library_preparation(self):
+        """
+        create_pooling_objects_sample requires a LibraryPreparation
+        object to exist for the sample, even if it is pooled and status=3.
+        """
+        sample = create_sample(get_random_name(), status=2)
+        pool = create_pool(self.user)
+        pool.samples.add(sample)
+
+        LibraryPreparation.objects.filter(sample=sample).delete()
+
+        sample = sample.__class__.objects.get(pk=sample.pk)
+        sample.status = 3
+        sample.save()
+
+        self.assertFalse(Pooling.objects.filter(sample=sample).exists())
+
+    def test_sample_save_ignored_when_status_is_not_3(self):
+        """create_pooling_objects_sample requires status == 3 exactly."""
+        sample = create_sample(get_random_name(), status=2)
+        pool = create_pool(self.user)
+        pool.samples.add(sample)
+
+        sample = sample.__class__.objects.get(pk=sample.pk)
+        sample.status = 4
+        sample.save()
+
+        self.assertFalse(Pooling.objects.filter(sample=sample).exists())
+
+    def test_sample_save_is_idempotent_for_pooling_object(self):
+        """Saving a passed sample twice doesn't duplicate Pooling."""
+        sample = create_sample(get_random_name(), status=2)
+        pool = create_pool(self.user)
+        pool.samples.add(sample)
+
+        sample = sample.__class__.objects.get(pk=sample.pk)
+        sample.status = 3
+        sample.save()
         sample.save()
 
         self.assertEqual(Pooling.objects.filter(sample=sample).count(), 1)
@@ -363,6 +459,41 @@ class TestPooling(BaseTestCase):
         self.assertEqual(sample.status, 2)
         self.assertFalse(sample.is_pooled)
         self.assertFalse(sample.pool.exists())
+        self.assertFalse(Pool.objects.filter(pk=pool.pk).exists())
+
+    def test_return_to_pooling_reverts_converted_sample(self):
+        """
+        When a pooled sample still has status 2 (not yet quality-checked),
+        return_to_pooling reverts library-preparation-specific state by
+        hand: is_converted, barcode L->S, index fields, and it deletes the
+        LibraryPreparation object. This mirrors, in reverse, what
+        library_preparation.signals.update_samples does on pool add.
+        """
+        sample = create_sample(get_random_name(), status=2)
+        pool = create_pool(self.user)
+        pool.samples.add(sample)
+
+        sample.refresh_from_db()
+        self.assertTrue(sample.is_converted)
+        self.assertIn("L", sample.barcode)
+        self.assertTrue(LibraryPreparation.objects.filter(sample=sample).exists())
+
+        sample.index_i7 = "AAAA"
+        sample.index_i5 = "TTTT"
+        sample.save()
+
+        response = self.client.post(f"/api/pooling/{pool.pk}/return_to_pooling/")
+
+        self.assertEqual(response.status_code, 200)
+        sample.refresh_from_db()
+        self.assertEqual(sample.status, 2)
+        self.assertFalse(sample.is_pooled)
+        self.assertFalse(sample.is_converted)
+        self.assertNotIn("L", sample.barcode)
+        self.assertIsNone(sample.index_i7)
+        self.assertIsNone(sample.index_i5)
+        self.assertIsNone(sample.index_type)
+        self.assertFalse(LibraryPreparation.objects.filter(sample=sample).exists())
         self.assertFalse(Pool.objects.filter(pk=pool.pk).exists())
 
     def test_return_to_pooling_handles_negative_library_status(self):

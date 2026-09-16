@@ -55,6 +55,58 @@ class TestLibraryPreparationModel(BaseTestCase):
         self.assertEqual(LibraryPreparation.objects.filter(sample=sample).count(), 1)
 
 
+# Signals (characterization tests for library_preparation/signals.py)
+
+
+class TestLibraryPreparationSignals(BaseTestCase):
+    """
+    Pins down current behavior of library_preparation/signals.py before
+    any cross-domain signal cleanup (issue #346). These describe what the
+    signal does today, not what it should do.
+    """
+
+    def setUp(self):
+        self.user = self.create_user()
+
+    def test_adding_sample_sets_is_pooled_and_is_converted_for_every_sample_in_pool(
+        self,
+    ):
+        sample1 = create_sample(get_random_name(), status=2)
+        sample2 = create_sample(get_random_name(), status=2)
+        pool = create_pool(self.user)
+
+        pool.samples.add(sample1)
+        pool.samples.add(sample2)
+
+        sample1.refresh_from_db()
+        sample2.refresh_from_db()
+        self.assertTrue(sample1.is_pooled)
+        self.assertTrue(sample1.is_converted)
+        self.assertTrue(sample2.is_pooled)
+        self.assertTrue(sample2.is_converted)
+
+    def test_adding_sample_rewrites_barcode_prefix_from_s_to_l(self):
+        sample = create_sample(get_random_name(), status=2)
+        original_barcode = sample.barcode
+        pool = create_pool(self.user)
+
+        pool.samples.add(sample)
+
+        sample.refresh_from_db()
+        self.assertEqual(sample.barcode, original_barcode.replace("S", "L"))
+
+    def test_adding_sample_is_idempotent_for_library_preparation_object(self):
+        """Re-adding the same sample to the pool doesn't duplicate LibraryPreparation."""
+        sample = create_sample(get_random_name(), status=2)
+        pool = create_pool(self.user)
+
+        pool.samples.add(sample)
+        pool.samples.remove(sample)
+        pool.samples.add(sample)
+
+        self.assertEqual(LibraryPreparation.objects.filter(sample=sample).count(), 1)
+
+
 # Views
 
 
