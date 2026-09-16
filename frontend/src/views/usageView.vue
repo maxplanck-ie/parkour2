@@ -205,6 +205,17 @@ export default {
   gap: 6px;
   color: white;
   white-space: nowrap;
+  margin-bottom: 0;
+}
+
+.filter-item.date-filter-item label {
+  display: inline;
+  padding: 0;
+  margin: 0;
+  border: none;
+  background-color: transparent;
+  font-weight: normal;
+  color: white;
 }
 
 .filter-item.date-filter-item input {
@@ -223,6 +234,7 @@ export default {
   flex: 1;
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-auto-rows: 1fr;
   gap: 14px;
   overflow-y: auto;
 }
