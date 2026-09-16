@@ -28,7 +28,7 @@
             "password": "pbkdf2_sha256$36000$fJgu2huZkqEI$x5ucxGa+dWeSrdBefSexsc7XpYgPOh6gs1aq8zpFgjU=",
             "last_login": "2023-08-28T11:09:16.277Z",
             "is_superuser": false,
-            "email": "parkour-staff@parkour-demo.omics.dev",
+            "email": "staff@omics.dev",
             "is_staff": true,
             "is_active": true,
             "date_joined": "2018-08-14T00:03:52.760Z",

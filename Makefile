@@ -151,6 +151,23 @@ dev: down set-dev deploy-webapp deploy-nginx collect-static  ## Deploy Werkzeug 
 
 dev-fix: dev load-fixtures  ## Like 'dev', but loads demo fixture data instead of an empty DB
 
+set-demo: hardreset-caddyfile-prod
+	@sed -i -e 's#\(target:\) pk2_.*#\1 pk2_demo#' docker-compose.yml
+	@sed -i -e 's#\(^CMD \["npm", "run", "start-\).*\]#\1prod"\]#' frontend.Dockerfile
+	@test -e ./misc/parkour.env.ignore && cp ./misc/parkour.env.ignore ./misc/parkour.env || :
+	@test -e ./misc/parkour.env && grep -qE '^INSTANCE_VERSION=.+' ./misc/parkour.env || { \
+		ver=$$(date +%y.%m.%d).demo+g$$(git rev-parse --short=9 HEAD); \
+		sed -i '/^INSTANCE_VERSION=/d' ./misc/parkour.env 2>/dev/null; \
+		echo "INSTANCE_VERSION=$$ver" >> ./misc/parkour.env; \
+	}
+	@grep -qE '^DEMO_MODE=' ./misc/parkour.env 2>/dev/null || echo "DEMO_MODE=true" >> ./misc/parkour.env
+
+demo: down set-demo deploy-webapp deploy-caddy collect-static load-fixtures  ## Public-demo mode: staff auto-login, gunicorn-served, resettable hourly (see reset-demo)
+	@$(MAKE) clean
+
+reset-demo:  ## Truncate + reload fixtures on the running demo instance (wire to an hourly cron/scheduler)
+	@docker compose exec parkour2-django python manage.py reset_demo
+
 set-dev: hardreset-caddyfile-dev
 	@sed -i -e 's#\(target:\) pk2_.*#\1 pk2_dev#' docker-compose.yml
 	@sed -i -e 's#\(^CMD \["npm", "run", "start-\).*\]#\1dev"\]#' frontend.Dockerfile

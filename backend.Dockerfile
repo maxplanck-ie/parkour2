@@ -60,6 +60,15 @@ CMD ["gunicorn", "config.wsgi:application", "--bind=0.0.0.0:8000", "--name=pk2",
     "--worker-class=gthread", "--worker-tmp-dir=/dev/shm", "--workers=4", "--threads=6"]
 
 # ----------------------
+FROM pk2_base AS pk2_demo
+## Public demo: gunicorn (not the Werkzeug dev server) since this is meant to be
+## reachable from the internet -- same serving posture as pk2_base/prod, just with
+## DEMO_MODE settings layered on top (auto-login + hourly self-reset allowed).
+ENV DJANGO_SETTINGS_MODULE=config.settings.demo
+CMD ["gunicorn", "config.wsgi:application", "--bind=0.0.0.0:8000", "--name=pk2", "--timeout=600", \
+    "--worker-class=gthread", "--worker-tmp-dir=/dev/shm", "--workers=4", "--threads=6"]
+
+# ----------------------
 FROM pk2_base AS pk2_dev
 RUN echo "from functools import partial\nimport rich\nhelp = partial(rich.inspect, help=True, methods=True)" \
     > /root/.pythonrc
