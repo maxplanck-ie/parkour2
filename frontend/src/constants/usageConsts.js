@@ -1,3 +1,6 @@
+// Reserved for the Libraries/Samples split -- used by stacked charts and by
+// the Records chart's own two bars. Keep the semantics consistent: index 0
+// is always "Libraries", index 1 is always "Samples".
 export const USAGE_CHART_COLORS = [
   "#5DA5DA",
   "#FAA43A",
@@ -10,15 +13,46 @@ export const USAGE_CHART_COLORS = [
   "#4D4D4D"
 ];
 
+// Used for per-category coloring in any non-stacked chart other than
+// Records, so those charts don't restart at the same blue/orange pair that
+// means "Libraries/Samples" elsewhere.
+export const USAGE_CHART_COLORS_SECONDARY = [
+  "#8DA0CB",
+  "#E78AC3",
+  "#A6D854",
+  "#FFD92F",
+  "#E5C494",
+  "#B3B3B3",
+  "#66C2A5",
+  "#FC8D62",
+  "#7570B3"
+];
+
+const AXIS_LABEL_MAX_CHARS = 22;
+
+function truncateAxisLabel(value) {
+  return value.length > AXIS_LABEL_MAX_CHARS
+    ? `${value.slice(0, AXIS_LABEL_MAX_CHARS)}…`
+    : value;
+}
+
 // `stacked: true` charts break each bar down into libraries/samples
 // (matching what the API already returns); `stacked: false` charts only
-// have a single "data" value per bar.
+// have a single "data" value per bar. `type: "boxplot"` charts plot a
+// [min, q1, median, q3, max] array per bar instead of a single value.
 export const USAGE_CHARTS = [
   {
     key: "records",
     title: "Libraries & Samples",
     endpoint: "api/usage/records/",
-    stacked: false
+    stacked: false,
+    usesPrimaryPalette: true
+  },
+  {
+    key: "turnaroundTime",
+    title: "Turnaround Time (days)",
+    endpoint: "api/usage/turnaround_time/",
+    type: "boxplot"
   },
   {
     key: "organizations",
@@ -46,6 +80,9 @@ export const USAGE_CHARTS = [
 // the actual values instead of checking array length to decide whether
 // there's anything to plot.
 export function usageChartTotal(chartDef, data) {
+  if (chartDef.type === "boxplot") {
+    return data.length;
+  }
   return data.reduce((sum, row) => {
     return (
       sum +
@@ -58,35 +95,50 @@ export function usageChartTotal(chartDef, data) {
 
 export function buildUsageChartOption(chartDef, data) {
   const names = data.map((row) => row.name);
+  const categoryColors = chartDef.usesPrimaryPalette
+    ? USAGE_CHART_COLORS
+    : USAGE_CHART_COLORS_SECONDARY;
 
-  const series = chartDef.stacked
-    ? [
-        {
-          name: "Libraries",
-          type: "bar",
-          stack: "total",
-          data: data.map((row) => row.libraries || 0),
-          color: USAGE_CHART_COLORS[0]
-        },
-        {
-          name: "Samples",
-          type: "bar",
-          stack: "total",
-          data: data.map((row) => row.samples || 0),
-          color: USAGE_CHART_COLORS[1]
+  let series;
+  if (chartDef.type === "boxplot") {
+    series = [
+      {
+        name: chartDef.title,
+        type: "boxplot",
+        data: data.map((row) => row.data),
+        itemStyle: { color: categoryColors[0] }
+      }
+    ];
+  } else if (chartDef.stacked) {
+    series = [
+      {
+        name: "Libraries",
+        type: "bar",
+        stack: "total",
+        data: data.map((row) => row.libraries || 0),
+        color: USAGE_CHART_COLORS[0]
+      },
+      {
+        name: "Samples",
+        type: "bar",
+        stack: "total",
+        data: data.map((row) => row.samples || 0),
+        color: USAGE_CHART_COLORS[1]
+      }
+    ];
+  } else {
+    series = [
+      {
+        name: chartDef.title,
+        type: "bar",
+        data: data.map((row) => row.data || 0),
+        itemStyle: {
+          color: (params) =>
+            categoryColors[params.dataIndex % categoryColors.length]
         }
-      ]
-    : [
-        {
-          name: chartDef.title,
-          type: "bar",
-          data: data.map((row) => row.data || 0),
-          itemStyle: {
-            color: (params) =>
-              USAGE_CHART_COLORS[params.dataIndex % USAGE_CHART_COLORS.length]
-          }
-        }
-      ];
+      }
+    ];
+  }
 
   return {
     grid: {
@@ -98,7 +150,7 @@ export function buildUsageChartOption(chartDef, data) {
     },
     legend: chartDef.stacked ? { top: 0 } : undefined,
     tooltip: {
-      trigger: "axis",
+      trigger: chartDef.type === "boxplot" ? "item" : "axis",
       axisPointer: { type: "shadow" }
     },
     xAxis: {
@@ -106,12 +158,13 @@ export function buildUsageChartOption(chartDef, data) {
       data: names,
       axisLabel: {
         rotate: 45,
-        interval: 0
+        interval: 0,
+        formatter: truncateAxisLabel
       }
     },
     yAxis: {
       type: "value",
-      minInterval: 1
+      minInterval: chartDef.type === "boxplot" ? undefined : 1
     },
     series
   };

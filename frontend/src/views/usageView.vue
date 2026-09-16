@@ -38,6 +38,29 @@
         class="chart-card"
       >
         <div class="chart-title">{{ chartDef.title }}</div>
+        <div
+          v-if="chartDef.key === 'turnaroundTime'"
+          class="btn-group btn-group-sm mb-2"
+          role="group"
+          aria-label="Group turnaround time by"
+        >
+          <button
+            type="button"
+            class="btn btn-outline-secondary"
+            :class="{ active: turnaroundGroupBy === 'pi' }"
+            @click="setTurnaroundGroupBy('pi')"
+          >
+            Principal Investigator
+          </button>
+          <button
+            type="button"
+            class="btn btn-outline-secondary"
+            :class="{ active: turnaroundGroupBy === 'analysis_type' }"
+            @click="setTurnaroundGroupBy('analysis_type')"
+          >
+            Analysis Type
+          </button>
+        </div>
         <p v-if="!chartHasData(chartDef.key)" class="chart-empty-text">
           No Data
         </p>
@@ -57,7 +80,7 @@ import { computed, onBeforeUnmount, onMounted, reactive, ref } from "vue";
 import { useDebounceFn } from "@vueuse/core";
 import { use } from "echarts/core";
 import { CanvasRenderer } from "echarts/renderers";
-import { BarChart } from "echarts/charts";
+import { BarChart, BoxplotChart } from "echarts/charts";
 import {
   GridComponent,
   LegendComponent,
@@ -82,6 +105,7 @@ import iconUsageHeader from "../assets/icons/header_usage.svg";
 use([
   CanvasRenderer,
   BarChart,
+  BoxplotChart,
   GridComponent,
   LegendComponent,
   TooltipComponent
@@ -106,6 +130,7 @@ export default {
     const startDateString = ref(formatDateForInput(oneYearAgo));
     const endDateString = ref(formatDateForInput(today));
     const chartData = reactive({});
+    const turnaroundGroupBy = ref("pi");
     let requestId = 0;
 
     const startDateValid = computed(() => isValidDate(startDateString.value));
@@ -140,9 +165,15 @@ export default {
 
       try {
         const responses = await Promise.all(
-          usageCharts.map((chartDef) =>
-            axiosRef.get(`${urlStringStart}/${chartDef.endpoint}`, { params })
-          )
+          usageCharts.map((chartDef) => {
+            const chartParams =
+              chartDef.key === "turnaroundTime"
+                ? { ...params, group_by: turnaroundGroupBy.value }
+                : params;
+            return axiosRef.get(`${urlStringStart}/${chartDef.endpoint}`, {
+              params: chartParams
+            });
+          })
         );
         if (thisRequestId !== requestId) return;
         usageCharts.forEach((chartDef, index) => {
@@ -163,6 +194,12 @@ export default {
       DATE_FILTER_DEBOUNCE_MS
     );
 
+    function setTurnaroundGroupBy(value) {
+      if (turnaroundGroupBy.value === value) return;
+      turnaroundGroupBy.value = value;
+      loadUsageData();
+    }
+
     onMounted(loadUsageData);
     onBeforeUnmount(() => {
       scheduleReload.cancel();
@@ -178,6 +215,8 @@ export default {
       chartOptions,
       chartHasData,
       scheduleReload,
+      turnaroundGroupBy,
+      setTurnaroundGroupBy,
       iconUsageHeader
     };
   }
