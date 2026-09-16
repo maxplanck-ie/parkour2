@@ -1,6 +1,10 @@
-import subprocess
+import os
+import re
 
+from django.core.management import call_command
 from django.core.management.base import BaseCommand
+
+SAFE_IDENTIFIER_RE = re.compile(r"^[A-Za-z0-9_]+$")
 
 
 class Command(BaseCommand):
@@ -38,15 +42,11 @@ class Command(BaseCommand):
         self.stdout.write(self.style.SUCCESS("Successfully saved initial data."))
 
     def dumpdata_wrapper(self, model, app_label):
-        with open(
-            app_label + "/fixtures/" + model + ".json", "w", encoding="utf-8"
-        ) as f:
-            # django.core.management.call_command("dumpdata", app_label + "." + model, stdout=f)
-            subprocess.run(
-                """
-            python manage.py dumpdata {} | tail -1 |
-            python -m json.tool""".format(app_label + "." + model),
-                stdout=f,
-                shell=True,
-                check=True,
-            )
+        for name in (model, app_label):
+            if not SAFE_IDENTIFIER_RE.match(name):
+                raise ValueError(f"Invalid model/app_label identifier: {name}")
+        fixture_path = os.path.join(
+            os.path.basename(app_label), "fixtures", os.path.basename(model) + ".json"
+        )
+        with open(fixture_path, "w", encoding="utf-8") as f:
+            call_command("dumpdata", app_label + "." + model, indent=4, stdout=f)
