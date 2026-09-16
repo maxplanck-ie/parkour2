@@ -88,6 +88,18 @@ Prevent recurring regressions. No deviate without explicit ask.
   --oneline`), or `(Direct commit \`sha\`)` for a commit pushed straight to
   `develop` with no PR suffix. Multiple sources: list all, e.g.
   `(PRs #337, #338.)` or `(Direct commits \`abc1234\`, \`def5678\`.)`.
+- Only cite `(Direct commit \`sha\`)` for a sha that is currently an ancestor
+  of `origin/develop` (verify with `git merge-base --is-ancestor <sha>
+  origin/develop`) — never a sha from a feature branch, even one already
+  pushed. A branch can still be rebased/amended/force-pushed before merge,
+  which rewrites its shas and silently invalidates the changelog reference.
+  If work is still on a feature branch with no open PR yet, leave the
+  changelog bullet without a source reference (or hold off adding the bullet)
+  until either the PR opens (cite `(PR #NNN)`) or the commit lands on
+  `develop` directly (cite its `develop` sha). Fix a stale/dangling sha by
+  finding what it became — `git log origin/develop --oneline --grep="<msg
+  fragment>" -i` or `git log origin/develop --oneline -S"<code fragment>" --
+  <file>` — then correct the bullet, don't just drop the reference.
 
 ## Commands
 
