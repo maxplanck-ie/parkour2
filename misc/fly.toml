@@ -1,0 +1,71 @@
+# Public demo instance on Fly.io. `make fly-deploy` redeploys (routine,
+# repeatable). See the routing/DNS side of this in the separate `flights`
+# repo (omics.dev's gw gateway, Porkbun DNS, tinyauth exemption) --
+# flights/parkour/README.md.
+#
+# Before first deploy (one-time):
+#   1. flyctl apps create parkour-demo
+#   2. Create a Neon project, set its connection string:
+#      flyctl secrets set -a parkour-demo DATABASE_URL='postgres://...'
+#   3. flyctl secrets set -a parkour-demo SECRET_KEY="$(openssl rand -hex 32)"
+#   4. make fly-deploy
+#   5. flyctl ssh console -a parkour-demo -C "python manage.py migrate"
+#      flyctl ssh console -a parkour-demo -C "python manage.py load_initial_data"
+#   6. Allocate a Flycast private IP so gw can reach it (not automatic just
+#      from [http_service] -- see flights AGENTS.md's Flycast checklist):
+#      flyctl ips allocate-v6 --private -a parkour-demo
+#   7. Hourly reset: create a separate scheduled Machine running the same
+#      image (not part of this fly.toml's own "app" process group):
+#      flyctl machine run . --config misc/fly.toml --schedule=hourly \
+#        --command "python manage.py reset_demo" -a parkour-demo
+#      (confirm the exact flag names against `flyctl machine run --help` --
+#      untested against a live Fly account as of this writing.)
+#   8. Wire the gw/Caddyfile routing block + Porkbun DNS + cert for
+#      parkour.omics.dev, ungated (see flights repo's cal.omics.dev /
+#      meet.omics.dev two-hostname precedent for the "public, no tinyauth"
+#      shape -- this app only ever needs the one, ungated, hostname).
+
+app = 'parkour-demo'
+primary_region = 'fra'
+kill_signal = 'SIGINT'
+kill_timeout = '5s'
+
+[build]
+  dockerfile = 'backend.Dockerfile'
+  target = 'pk2_demo'
+
+[env]
+  CSRF_TRUSTED_ORIGINS = 'https://parkour.omics.dev'
+  # DATABASE_URL (Neon) and SECRET_KEY are Fly secrets, not set here.
+
+[[vm]]
+  size = 'shared-cpu-1x'
+  memory = '512'
+
+[processes]
+  # shared-cpu-1x/512MB can't usefully run pk2_demo's Dockerfile-default
+  # --workers=4 --threads=6 (sized for real prod hardware) -- each gunicorn
+  # worker is a separate process with its own full Django import, so 4 of
+  # them risks OOM on a machine this small. [::] (not the Dockerfile
+  # default 0.0.0.0) because Fly's 6PN/Flycast is IPv6-only; see AGENTS.md's
+  # Flycast checklist in the flights repo (vwd hit the same gotcha).
+  app = 'gunicorn config.wsgi:application --bind=[::]:8000 --name=pk2 --timeout=600 --worker-class=gthread --worker-tmp-dir=/dev/shm --workers=1 --threads=4'
+
+[http_service]
+  internal_port = 8000
+  # NOT force_https -- flyproxy applies it to Flycast (internal) traffic
+  # too, breaking gw's plain-http reverse_proxy to *.flycast. See flights
+  # repo's AGENTS.md Flycast checklist.
+  auto_stop_machines = true
+  auto_start_machines = true
+  processes = ['app']
+
+  [[http_service.checks]]
+    interval = '30s'
+    timeout = '5s'
+    # DEMO_MODE auto-login (common.middleware.DemoAutoLoginMiddleware) hits
+    # the DB on every request, so use a real authenticated page, not just a
+    # 200-on-anything path.
+    grace_period = '20s'
+    method = 'GET'
+    path = '/vue/'

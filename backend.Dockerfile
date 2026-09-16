@@ -4,6 +4,20 @@ FROM node:24-bullseye AS ro_crate_html_tool
 WORKDIR /opt/ro-crate-html-js
 RUN npm install ro-crate-html-js
 
+## Vue SPA prod build, folded into pk2_demo below -- a bare Fly Machine has no
+## separate parkour2-vite container (docker-compose.yml) or nginx path-router
+## (misc/nginx-server.conf) to serve it, so pk2_demo serves it itself.
+FROM node:24-bullseye AS pk2_demo_frontend
+WORKDIR /usr/src/app
+COPY ./frontend/package.json ./frontend/package-lock.json* ./
+RUN npm install
+## docker-compose normally bind-mounts this at runtime (`./shared:/usr/src/shared:ro`)
+## for src/constants/roCratePreviewConsts.js's `../../../shared/*.json` imports --
+## a real `vite build` needs it on disk too, not just at dev-server runtime.
+COPY ./shared /usr/src/shared
+COPY ./frontend .
+RUN npm run build
+
 FROM python:3.12-bookworm AS pk2_base
 ARG PyVersion=3.12
 
@@ -65,6 +79,24 @@ FROM pk2_base AS pk2_demo
 ## reachable from the internet -- same serving posture as pk2_base/prod, just with
 ## DEMO_MODE settings layered on top (auto-login + hourly self-reset allowed).
 ENV DJANGO_SETTINGS_MODULE=config.settings.demo
+## demo.txt adds whitenoise on top of base.txt -- serves collectstatic output
+## directly from gunicorn, since a bare Fly Machine has no fronting Caddy
+## container the way the docker-compose deploy does.
+RUN --mount=type=cache,target=/root/.cache/uv \
+    uv pip install -r requirements/${PyVersion}/demo.txt
+## Nested under vue/ to match Vite's `base: "/vue/"` -- WHITENOISE_ROOT
+## (config/settings/demo.py) serves this tree straight off the domain root,
+## so /usr/src/app/vue_static/vue/vue-assets/x.js answers /vue/vue-assets/x.js.
+COPY --from=pk2_demo_frontend /usr/src/app/dist vue_static/vue
+## docker-compose normally bind-mounts this at runtime (`./shared:/usr/src/shared:ro`)
+## too -- library/ro_crate.py reads /usr/src/shared/*.json unconditionally at import
+## time. Fly has no host mount to supply it, so bake it into the image instead.
+COPY ./shared /usr/src/shared
+## Baked into the image (not left to a Fly release_command) -- collectstatic
+## is pure filesystem work and doesn't need the real runtime secret/DB, just
+## *a* SECRET_KEY (prod.py refuses the hard-coded default) and DATABASE_URL's
+## working sqlite default (config/settings/base.py).
+RUN SECRET_KEY=build-time-collectstatic-only python manage.py collectstatic --no-input
 CMD ["gunicorn", "config.wsgi:application", "--bind=0.0.0.0:8000", "--name=pk2", "--timeout=600", \
     "--worker-class=gthread", "--worker-tmp-dir=/dev/shm", "--workers=4", "--threads=6"]
 
