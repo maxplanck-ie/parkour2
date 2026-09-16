@@ -111,9 +111,9 @@ class PDF(FPDF):  # pragma: no cover
         for i in range(len(values)):
             if i > 0:
                 self.cell(35, 4, "")
-            self.set_font("glyphicons", size=11)
-            self.cell(1, 4, "")
-            self.set_font(self.font, size=11)
+            x, y = self.get_x(), self.get_y()
+            self.rect(x, y + 0.5, 3, 3)
+            self.set_x(x + 4)
             self.multi_cell(0, 5, values[i])
             self.ln(1)
         self.ln(1)
@@ -687,12 +687,6 @@ class RequestViewSet(viewsets.ModelViewSet):
         ]
 
         pdf = PDF("Deep Sequencing Request")
-        pdf.add_font(
-            "glyphicons",
-            "",
-            find_static("fonts/glyphicons-halflings-regular.ttf"),
-            uni=True,
-        )
         pdf.set_draw_color(217, 217, 217)
         pdf.alias_nb_pages()
         pdf.add_page()
