@@ -141,6 +141,16 @@ jobs:
           python backend/manage.py validate_templates
 
 
+      - name: Validate demo settings
+        env:
+          DJANGO_SETTINGS_MODULE: config.settings.demo
+          DATABASE_URL: postgres://postgres:${{ secrets.POSTGRES_PASSWORD }}@127.0.0.1:${{ job.services.postgres.ports['5432'] }}/postgres
+          SECRET_KEY: ${{ secrets.SECRET_KEY }}
+        run: |
+          uv pip install -r backend/requirements/${{ matrix.python-version }}/demo.txt
+          python backend/manage.py check
+
+
       - name: Run unittests
         env:
           DJANGO_SETTINGS_MODULE: config.settings.testing

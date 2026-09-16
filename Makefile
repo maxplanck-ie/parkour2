@@ -441,6 +441,8 @@ compile:
 			backend/requirements/dev.in -c $$this/base.txt -o $$this/dev.txt; \
 		uv pip compile --upgrade --quiet --no-progress --universal --python-version $$version \
 			backend/requirements/testing.in -c $$this/dev.txt -o $$this/testing.txt; \
+		uv pip compile --upgrade --quiet --no-progress --universal --python-version $$version \
+			backend/requirements/demo.in -c $$this/base.txt -o $$this/demo.txt; \
 	done
 
 ncu:

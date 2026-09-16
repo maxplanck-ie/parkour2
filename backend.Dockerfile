@@ -65,6 +65,11 @@ FROM pk2_base AS pk2_demo
 ## reachable from the internet -- same serving posture as pk2_base/prod, just with
 ## DEMO_MODE settings layered on top (auto-login + hourly self-reset allowed).
 ENV DJANGO_SETTINGS_MODULE=config.settings.demo
+## demo.txt adds whitenoise on top of base.txt -- serves collectstatic output
+## directly from gunicorn, since a bare Fly Machine has no fronting Caddy
+## container the way the docker-compose deploy does.
+RUN --mount=type=cache,target=/root/.cache/uv \
+    uv pip install -r requirements/${PyVersion}/demo.txt
 CMD ["gunicorn", "config.wsgi:application", "--bind=0.0.0.0:8000", "--name=pk2", "--timeout=600", \
     "--worker-class=gthread", "--worker-tmp-dir=/dev/shm", "--workers=4", "--threads=6"]
 
