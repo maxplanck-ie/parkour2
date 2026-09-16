@@ -145,6 +145,65 @@ def test_destroy_pool_and_reuse_its_records_in_a_new_pool(page: Page):
     expect(reused_row).to_have_count(1, timeout=15000)
 
 
+def test_destroy_pool_reverts_converted_sample_state(page: Page):
+    """Pool_17 (WGS_1..4 samples, pks 176-179, status 2, is_converted=True,
+    barcode 18L0002.., loaded 0) ships with the fixtures, each with its own
+    LibraryPreparation row. Returning this pool to Index Generator exercises
+    pooling.views.PoolingViewSet._return_pool_to_pooling's sample-status==2
+    branch: is_converted reverts to False, barcode goes back to an "S"
+    prefix, and the LibraryPreparation row is deleted -- the manual, signal-
+    independent inverse of library_preparation.signals.update_samples. Uses
+    a separate pool from test_destroy_pool_and_reuse (Pool_16, libraries
+    only) and from library_preparation_page.py (Pool_15) to avoid xdist
+    cross-file interference.
+    """
+    _open_pooling_page(page)
+
+    pool_name = "Pool_17"
+    request_group_name = "15_User_Principle Investigator"
+    sample_names = [f"WGS_{i}" for i in range(1, 5)]
+
+    group_header = page.locator(
+        "#tabulatorTable .tabulator-row.tabulator-group", has_text=_exact(pool_name)
+    )
+    expect(group_header).to_have_count(1, timeout=15000)
+
+    group_header.hover()
+    group_header.locator('[title="Return Pool to Index Generator"]').click()
+
+    confirm_dialog = page.locator(".popup-overlay")
+    expect(confirm_dialog).to_be_visible()
+    expect(confirm_dialog).to_contain_text(pool_name)
+    confirm_dialog.locator(".popup-button.yes-button").click()
+
+    # Pool deleted server-side -- its group disappears from Pooling.
+    expect(group_header).to_have_count(0, timeout=15000)
+
+    # The reverted samples go back to "Quality Check Approved" (status 2,
+    # is_pooled False, is_converted False) -- visible again on the Index
+    # Generator source table, same as a never-pooled sample.
+    _open_index_generator_page(page)
+
+    source_group = page.locator(
+        "#indexGeneratorSourceTable .tabulator-row.tabulator-group",
+        has_text=_exact(request_group_name),
+    )
+    expect(source_group).to_have_count(1, timeout=15000)
+
+    first_row = page.locator(
+        "#indexGeneratorSourceTable .tabulator-row", has_text=_exact(sample_names[0])
+    )
+    if first_row.count() == 0:
+        source_group.click()
+        expect(first_row).to_have_count(1, timeout=15000)
+
+    for name in sample_names:
+        row = page.locator(
+            "#indexGeneratorSourceTable .tabulator-row", has_text=_exact(name)
+        )
+        expect(row).to_have_count(1, timeout=15000)
+
+
 def test_fail_quality_check_removes_library_from_pooling(page: Page):
     """Pool_21 (TestFail_1..5 libraries, status 2) has 5 members. Mark
     TestFail_1 as quality-check failed. Status becomes -1, which is outside
