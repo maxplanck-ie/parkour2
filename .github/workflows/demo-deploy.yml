@@ -1,0 +1,85 @@
+name: Deploy demo
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    if: github.repository == 'maxplanck-ie/parkour2'
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:18
+        env:
+          POSTGRES_USER: parkour
+          POSTGRES_PASSWORD: parkour
+          POSTGRES_DB: parkour
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    steps:
+      - name: Resolve latest release tag (workflow_dispatch only)
+        if: github.event_name == 'workflow_dispatch'
+        id: latest
+        run: echo "tag=$(gh api repos/${{ github.repository }}/releases/latest --jq .tag_name)" >> "$GITHUB_OUTPUT"
+        env:
+          GH_TOKEN: ${{ github.token }}
+
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+          ref: ${{ github.event_name == 'workflow_dispatch' && steps.latest.outputs.tag || github.event.release.tag_name }}
+
+      - name: Set up Python
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: '3.12'
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@20cfd1bf945f4377ade1205e4dbc17946fc9a30d # v10.0.1
+
+      - name: Install backend deps
+        run: |
+          uv pip install --system setuptools wheel
+          uv pip install --system -r backend/requirements/3.12/base.txt
+
+      - name: Migrate + load fixtures into ephemeral Postgres
+        working-directory: backend
+        env:
+          DATABASE_URL: postgres://parkour:parkour@localhost:5432/parkour
+          DJANGO_SETTINGS_MODULE: config.settings.prod
+          SECRET_KEY: ci-only-not-secret
+        run: |
+          python manage.py migrate
+          python manage.py load_initial_data
+
+      - name: Dump fixture data (data-only, custom format)
+        env:
+          PGPASSWORD: parkour
+        run: |
+          pg_dump \
+            --host=localhost --username=parkour --dbname=parkour \
+            --data-only --format=custom \
+            --exclude-table-data=django_content_type \
+            --exclude-table-data=auth_permission \
+            --exclude-table-data=django_migrations \
+            --exclude-table-data=django_session \
+            --file=backend/fixtures_snapshot.dump
+
+      - name: Set up flyctl
+        uses: superfly/flyctl-actions/setup-flyctl@master
+
+      - name: Build and push demo image, then deploy
+        run: |
+          flyctl deploy --config misc/fly.toml --local-only --push --ha=false .
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
