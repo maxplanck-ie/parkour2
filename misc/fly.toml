@@ -32,7 +32,7 @@ kill_timeout = '5s'
 
 [build]
   dockerfile = '../backend.Dockerfile'
-  target = 'pk2_demo'
+  build-target = 'pk2_demo'
 
 [env]
   CSRF_TRUSTED_ORIGINS = 'https://parkour.omics.dev'
