@@ -3,7 +3,15 @@ name: Deploy demo
 on:
   release:
     types: [published]
-  workflow_dispatch: {}
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: >-
+          Git ref to deploy: a branch (e.g. develop), a tag, or an existing
+          draft release's tag name. Leave empty to deploy the latest
+          published release.
+        required: false
+        type: string
 
 permissions:
   contents: read
@@ -27,27 +35,38 @@ jobs:
           --health-timeout 5s
           --health-retries 5
     steps:
-      - name: Resolve latest release tag (workflow_dispatch only)
+      - name: Resolve deploy ref (workflow_dispatch only)
         if: github.event_name == 'workflow_dispatch'
-        id: latest
-        ## `echo "tag=$(gh api ...)"` on its own does NOT fail the step when
+        id: resolve_ref
+        ## An explicit input.ref (branch, tag, or draft release's tag) wins.
+        ## Otherwise fall back to the latest *published* release -- note this
+        ## API call excludes drafts and pre-releases by design, so deploying
+        ## an unpublished draft release always requires passing its tag via
+        ## input.ref explicitly.
+        ##
+        ## `echo "ref=$(gh api ...)"` on its own does NOT fail the step when
         ## the API call fails -- only echo's own exit status counts. An empty
-        ## tag then falls through the checkout ref expression to
+        ## ref then falls through the checkout ref expression to
         ## github.event.release.tag_name (also empty on a dispatch event), and
         ## actions/checkout silently takes the default branch instead. Hence
         ## the explicit pipefail + non-empty check below.
         run: |
           set -euo pipefail
-          tag="$(gh api repos/${{ github.repository }}/releases/latest --jq .tag_name)"
-          [ -n "$tag" ] && [ "$tag" != "null" ] || { echo "::error::could not resolve latest release tag"; exit 1; }
-          echo "tag=$tag" >> "$GITHUB_OUTPUT"
+          if [ -n "$INPUT_REF" ]; then
+            ref="$INPUT_REF"
+          else
+            ref="$(gh api repos/${{ github.repository }}/releases/latest --jq .tag_name)"
+            [ -n "$ref" ] && [ "$ref" != "null" ] || { echo "::error::could not resolve latest release tag"; exit 1; }
+          fi
+          echo "ref=$ref" >> "$GITHUB_OUTPUT"
         env:
           GH_TOKEN: ${{ github.token }}
+          INPUT_REF: ${{ inputs.ref }}
 
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
-          ref: ${{ github.event_name == 'workflow_dispatch' && steps.latest.outputs.tag || github.event.release.tag_name }}
+          ref: ${{ github.event_name == 'workflow_dispatch' && steps.resolve_ref.outputs.ref || github.event.release.tag_name }}
 
       - name: Set up Python
         uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
