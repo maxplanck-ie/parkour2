@@ -62,6 +62,32 @@ jobs:
           python manage.py migrate
           python manage.py load_initial_data
 
+      ## The postgres service container above is pinned to postgres:18, but
+      ## ubuntu-latest's own apt repo only ships postgresql-client up to 16/17
+      ## -- pg_dump refuses to dump from a server newer than its own client
+      ## version (unlike psql, which tolerates this), so the PGDG apt repo is
+      ## added here to install postgresql-client-18 specifically. Mirrors
+      ## backend.Dockerfile's pk2_base stage, which does the same for the
+      ## same reason.
+      - name: Install postgresql-client-18 (PGDG apt repo)
+        run: |
+          sudo install -d /usr/share/postgresql-common/pgdg
+          sudo curl -o /usr/share/postgresql-common/pgdg/apt.postgresql.org.asc --fail https://www.postgresql.org/media/keys/ACCC4CF8.asc
+          echo "deb [signed-by=/usr/share/postgresql-common/pgdg/apt.postgresql.org.asc] https://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" | sudo tee /etc/apt/sources.list.d/pgdg.list
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends postgresql-client-18
+
+      ## --data-only with no --disable-triggers means FK checks are NOT
+      ## deferred at the dump/restore-schema level -- --disable-triggers
+      ## needs superuser privileges the demo DB role likely won't have (e.g.
+      ## on Neon), so it's intentionally not used here. This is mitigated on
+      ## the restore side instead: reset_demo.py's pg_restore invocation
+      ## uses --single-transaction, and this project's models use Django's
+      ## default DEFERRABLE INITIALLY DEFERRED FK constraints, so FK checks
+      ## are deferred to COMMIT time within that single transaction rather
+      ## than enforced row-by-row during restore. Still, verify actual
+      ## restore ordering during the plan's manual dry-run step before
+      ## relying on this in production.
       - name: Dump fixture data (data-only, custom format)
         env:
           PGPASSWORD: parkour
@@ -74,12 +100,14 @@ jobs:
             --exclude-table-data=django_migrations \
             --exclude-table-data=django_session \
             --file=backend/fixtures_snapshot.dump
+          test -s backend/fixtures_snapshot.dump || (echo "::error::fixtures_snapshot.dump is empty" && exit 1)
 
       - name: Set up flyctl
-        uses: superfly/flyctl-actions/setup-flyctl@master
+        uses: superfly/flyctl-actions/setup-flyctl@ed8efb33836e8b2096c7fd3ba1c8afe303ebbff1 # v1.6
 
       - name: Build and push demo image, then deploy
         run: |
-          flyctl deploy --config misc/fly.toml --local-only --push --ha=false .
+          flyctl deploy --config misc/fly.toml --local-only --push --ha=false \
+            --build-arg VITE_GOATCOUNTER_URL=https://pk2demo.stats.omics.dev/count .
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
