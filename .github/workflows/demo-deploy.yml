@@ -146,6 +146,13 @@ jobs:
           createdb --host=localhost --username=parkour restore_smoketest
           DATABASE_URL=postgres://parkour:parkour@localhost:5432/restore_smoketest \
             python manage.py migrate
+          ## migrate's own RunPython seed data (e.g. AttachmentFileType rows)
+          ## already exists in this fresh DB *and* in the dump (reset_demo's
+          ## real flush() truncates it away first) -- without an equivalent
+          ## flush here, pg_restore collides on those rows' primary keys and
+          ## the whole --single-transaction restore aborts on every run.
+          DATABASE_URL=postgres://parkour:parkour@localhost:5432/restore_smoketest \
+            python manage.py flush --noinput
           pg_restore --data-only --single-transaction \
             --host=localhost --username=parkour --dbname=restore_smoketest \
             fixtures_snapshot.dump
