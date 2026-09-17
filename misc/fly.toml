@@ -9,17 +9,14 @@
 # backend/fixtures_snapshot.dump that pk2_demo copies and that the hourly
 # reset restores from.
 #
-# !! AFTER EVERY DEPLOY, one required manual step: update the hourly reset
-# !! Machine to the newly-deployed image. That Machine was created with
-# !! `flyctl machine run` and is deliberately NOT in this fly.toml's `app`
-# !! process group (step 6 below), so `flyctl deploy` does not touch it --
-# !! it keeps running whatever image it was created with, including an old
-# !! or missing fixture snapshot. Run:
-# !!   img=$(flyctl status -a parkour-demo --json | jq -r '.ImageDetails | "\(.Repository):\(.Tag)"')
-# !!   flyctl machine list -a parkour-demo      # find the hourly reset Machine ID
-# !!   flyctl machine update <MACHINE_ID> -a parkour-demo --image "$img"
-# !! (Scripting this is fine; it is left manual for now because it needs the
-# !! concrete Machine ID of a live machine on shared infrastructure.)
+# Hourly reset ships as this app's own "reset" process (see [processes]
+# below), not a separate `flyctl machine run --schedule=hourly` Machine
+# outside this fly.toml's process groups. That used to require a manual
+# `flyctl machine update` after every deploy, because `flyctl deploy` only
+# touches machines in its own [processes] -- an out-of-band Machine silently
+# kept running whatever image it was created with (this is what caused the
+# demo DB staying empty: see git history). Being an in-image process now
+# means every deploy updates it for free, same as `app`.
 #
 # See the routing/DNS side of this in the separate `flights` repo (omics.dev's
 # gw gateway, Porkbun DNS, tinyauth exemption) -- flights/parkour/README.md.
@@ -39,21 +36,16 @@
 #   5. Allocate a Flycast private IP so gw can reach it (not automatic just
 #      from [http_service] -- see flights AGENTS.md's Flycast checklist):
 #      flyctl ips allocate-v6 --private -a parkour-demo
-#   6. Hourly reset: create a separate scheduled Machine running the same
-#      image (not part of this fly.toml's own "app" process group -- hence
-#      the post-deploy manual update above):
-#      flyctl machine run registry.fly.io/parkour-demo:<tag> \
-#        --config misc/fly.toml --schedule=hourly -a parkour-demo \
-#        -- python manage.py reset_demo
-#      (the command is a TRAILING POSITIONAL argument list after `--`, not
-#      `--command` -- that flag is unrelated, only used with `--shell`. A
-#      single-string command here produces a malformed unsplit argv and the
-#      Machine crash-loops with "No such file or directory". Confirmed
-#      working 2026-09-17.)
-#   7. Wire the gw/Caddyfile routing block + Porkbun DNS + cert for
+#   6. Wire the gw/Caddyfile routing block + Porkbun DNS + cert for
 #      parkour.omics.dev, ungated (see flights repo's cal.omics.dev /
 #      meet.omics.dev two-hostname precedent for the "public, no tinyauth"
 #      shape -- this app only ever needs the one, ungated, hostname).
+#
+# One-time cleanup when adopting the in-image "reset" process on an
+# already-deployed app: destroy the old standalone scheduled Machine so it
+# doesn't double-reset the DB alongside the new one --
+#   flyctl machine list -a parkour-demo         # find its ID
+#   flyctl machine destroy <MACHINE_ID> -a parkour-demo
 
 app = 'parkour-demo'
 primary_region = 'fra'
@@ -86,6 +78,23 @@ kill_timeout = '5s'
   # default 0.0.0.0) because Fly's 6PN/Flycast is IPv6-only; see AGENTS.md's
   # Flycast checklist in the flights repo (vwd hit the same gotcha).
   app = 'gunicorn config.wsgi:application --bind=[::]:8000 --name=pk2 --timeout=600 --worker-class=gthread --worker-tmp-dir=/dev/shm --workers=1 --threads=4'
+  # Hourly self-reset, running as one of this app's own machines (see the
+  # header comment above) instead of an out-of-band scheduled Machine.
+  # pk2_demo's base image (python:3.12-bookworm) has no cron daemon, and
+  # installing one just for a single fixed interval is unwarranted -- a
+  # plain sh/sleep loop needs no extra dependency and is exactly as
+  # reliable here. Sleeps first so a fresh deploy doesn't immediately
+  # flush-and-restore data that collectstatic/migrate/release_command just
+  # finished setting up. `|| true` keeps one failed reset from crash-looping
+  # the whole Machine; the next attempt an hour later gets a fresh try.
+  #
+  # Cost tradeoff vs. the old scheduled Machine: this "reset" process isn't
+  # listed in [http_service], so it never autostops -- it's a second
+  # shared-cpu-1x/512MB machine running continuously (idle/sleeping most of
+  # the time), instead of a Machine Fly's scheduler started for seconds
+  # once an hour. Traded that small extra always-on cost for no more
+  # manual per-deploy image sync.
+  reset = 'sh -c "while true; do sleep 3600; python manage.py reset_demo || true; done"'
 
 [http_service]
   internal_port = 8000

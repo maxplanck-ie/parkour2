@@ -483,7 +483,8 @@ import {
   buildExcelExportFilename,
   buildExcelDownloadFilename,
   trackModalOpen,
-  trackModalSave
+  trackModalSave,
+  trackQcEvent
 } from "../utilities/utilityFunctions";
 import {
   libraryPreparationColumnDefs,
@@ -1046,6 +1047,12 @@ export default {
           "Quality check status updated successfully.",
           "success"
         );
+        if (qualityCheck === "failed") {
+          trackQcEvent(
+            "library-preparation-failed",
+            `${groupRows.length} record(s) marked failed`
+          );
+        }
         await this.getLibrariesSamples();
       } catch (error) {
         handleError(error);

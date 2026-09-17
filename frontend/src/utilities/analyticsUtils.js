@@ -13,3 +13,10 @@ export function trackModalOpen(name, title) {
 export function trackModalSave(name, title) {
   trackEvent(`save-${name}`, title);
 }
+
+// QC gate outcomes: fired whenever a library/sample status is set to a
+// negative statusMap value (Quality Check Failed / Compromised), wherever
+// that action lives in the app.
+export function trackQcEvent(name, title) {
+  trackEvent(`qc-${name}`, title);
+}

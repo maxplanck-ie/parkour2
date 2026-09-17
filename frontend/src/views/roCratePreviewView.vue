@@ -348,7 +348,8 @@ import {
   createAxiosObject,
   handleError,
   showNotification,
-  urlStringStartsWith
+  urlStringStartsWith,
+  trackModalSave
 } from "../utilities/utilityFunctions";
 
 const axiosRef = createAxiosObject();
@@ -815,6 +816,7 @@ export default {
           ) || this.fallbackArchiveFilename();
         saveAs(response?.data, filename);
         showNotification("RO-Crate exported successfully.", "success");
+        trackModalSave("rocrate-preview-export", "RO-Crate exported");
       } catch (error) {
         handleError(error);
       } finally {
@@ -844,6 +846,7 @@ export default {
           ) || this.fallbackPdfFilename();
         saveAs(response?.data, filename);
         showNotification("PDF exported successfully.", "success");
+        trackModalSave("rocrate-preview-pdf", "RO-Crate PDF exported");
       } catch (error) {
         handleError(error);
       } finally {

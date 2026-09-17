@@ -477,7 +477,8 @@ import {
   buildExcelExportFilename,
   buildExcelDownloadFilename,
   trackModalOpen,
-  trackModalSave
+  trackModalSave,
+  trackQcEvent
 } from "../utilities/utilityFunctions";
 import {
   poolingColumnDefs,
@@ -1083,6 +1084,12 @@ export default {
           "Quality check status updated successfully.",
           "success"
         );
+        if (qualityCheck === "failed") {
+          trackQcEvent(
+            "pooling-failed",
+            `${groupRows.length} record(s) marked failed`
+          );
+        }
         await this.getLibrariesSamples();
       } catch (error) {
         handleError(error);

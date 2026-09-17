@@ -75,6 +75,13 @@ jobs:
 
       - name: Install uv
         uses: astral-sh/setup-uv@20cfd1bf945f4377ade1205e4dbc17946fc9a30d # v10.0.1
+        with:
+          ## Default glob (`**/*requirements*.txt` etc.) matches on FILENAME,
+          ## and backend/requirements/3.12/base.txt's own filename ("base.txt")
+          ## has no "requirements" in it -- only its directory does. Nothing
+          ## ever matched, so the cache key was constant and never
+          ## invalidated. Point it at the actual lock-like input instead.
+          cache-dependency-glob: 'backend/requirements/**/*.txt'
 
       - name: Install backend deps
         run: |

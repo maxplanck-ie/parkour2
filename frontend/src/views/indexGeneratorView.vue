@@ -308,7 +308,8 @@ import {
   handleError,
   showNotification,
   showUndoNotification,
-  urlStringStartsWith
+  urlStringStartsWith,
+  trackModalSave
 } from "../utilities/utilityFunctions";
 import iconIndexGeneratorHeader from "../assets/icons/header_index_generator.svg";
 import iconSelectAll from "../assets/icons/action_select_all.svg";
@@ -1916,6 +1917,7 @@ export default {
         }
 
         showNotification("Pool saved successfully.", "success");
+        trackModalSave("index-generator-save-pool", "Pool saved");
         this.poolRows = [];
         this.generatedIndexRowKeys = [];
         this.selectedPoolSizeId = null;

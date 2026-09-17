@@ -607,7 +607,8 @@ import {
   buildExcelExportFilename,
   buildExcelDownloadFilename,
   trackModalOpen,
-  trackModalSave
+  trackModalSave,
+  trackQcEvent
 } from "../utilities/utilityFunctions";
 import {
   incomingLibrariesSamplesGroupHeader,
@@ -1354,6 +1355,17 @@ export default {
           "Quality check status updated successfully.",
           "success"
         );
+        if (qualityCheck === "failed") {
+          trackQcEvent(
+            "incoming-failed",
+            `${groupRows.length} record(s) marked failed`
+          );
+        } else if (qualityCheck === "compromised") {
+          trackQcEvent(
+            "incoming-compromised",
+            `${groupRows.length} record(s) marked compromised`
+          );
+        }
         await this.getLibrariesSamples();
       } catch (error) {
         handleError(error);
