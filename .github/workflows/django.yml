@@ -84,7 +84,7 @@ jobs:
       postgres:
         env:
           POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
-        image: postgres:latest
+        image: postgres:18
         ports:
           - 5432/tcp
         options: >-
