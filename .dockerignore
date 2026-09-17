@@ -12,7 +12,6 @@ models*.pdf
 models.png
 models.svg
 models.dot
-backend/static/
 backend/coverage_html_report/
 backend/playwright/results/playwright-tests-*/
 **/.*_cache/
