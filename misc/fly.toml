@@ -37,6 +37,9 @@ kill_timeout = '5s'
   [build.args]
     VITE_GOATCOUNTER_URL = 'https://pk2demo.stats.omics.dev/count'
 
+[deploy]
+  release_command = 'python manage.py migrate'
+
 [env]
   CSRF_TRUSTED_ORIGINS = 'https://parkour.omics.dev'
   # DATABASE_URL (Neon) and SECRET_KEY are Fly secrets, not set here.
