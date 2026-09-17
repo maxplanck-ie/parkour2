@@ -42,10 +42,14 @@
 #   6. Hourly reset: create a separate scheduled Machine running the same
 #      image (not part of this fly.toml's own "app" process group -- hence
 #      the post-deploy manual update above):
-#      flyctl machine run . --config misc/fly.toml --schedule=hourly \
-#        --command "python manage.py reset_demo" -a parkour-demo
-#      (confirm the exact flag names against `flyctl machine run --help` --
-#      untested against a live Fly account as of this writing.)
+#      flyctl machine run registry.fly.io/parkour-demo:<tag> \
+#        --config misc/fly.toml --schedule=hourly -a parkour-demo \
+#        -- python manage.py reset_demo
+#      (the command is a TRAILING POSITIONAL argument list after `--`, not
+#      `--command` -- that flag is unrelated, only used with `--shell`. A
+#      single-string command here produces a malformed unsplit argv and the
+#      Machine crash-loops with "No such file or directory". Confirmed
+#      working 2026-09-17.)
 #   7. Wire the gw/Caddyfile routing block + Porkbun DNS + cert for
 #      parkour.omics.dev, ungated (see flights repo's cal.omics.dev /
 #      meet.omics.dev two-hostname precedent for the "public, no tinyauth"

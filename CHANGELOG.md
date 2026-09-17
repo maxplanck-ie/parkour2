@@ -3,6 +3,7 @@
 Unreleased
 ==========
 
+- Fixed the public demo site's hourly data reset, which had never actually run: the scheduled Fly Machine's startup command was malformed (a single unsplit string instead of separate arguments), so every hourly attempt crashed immediately without resetting anything, leaving the demo database empty.
 - Added optional self-hosted GoatCounter web analytics, configured per
   deployment (dev/test/prod/demo each point at their own site) via
   VITE_GOATCOUNTER_URL; unset by default, so this is a no-op unless a
