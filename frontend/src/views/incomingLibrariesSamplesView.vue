@@ -605,7 +605,9 @@ import {
   createExcelExportBlob,
   isSupportedExcelTemplateFile,
   buildExcelExportFilename,
-  buildExcelDownloadFilename
+  buildExcelDownloadFilename,
+  trackModalOpen,
+  trackModalSave
 } from "../utilities/utilityFunctions";
 import {
   incomingLibrariesSamplesGroupHeader,
@@ -1435,6 +1437,7 @@ export default {
       );
       this.exportSelection = this.hasSelectedRows ? "selected" : "all";
       this.showExportPopup = true;
+      trackModalOpen("incoming-libraries-samples-export");
     },
     async handleExport() {
       try {
@@ -1502,6 +1505,10 @@ export default {
             this.selectedFile !== "without-file" ? this.selectedFile.name : ""
           )
         );
+        trackModalSave(
+          "incoming-libraries-samples-export",
+          "Incoming libraries and samples file exported"
+        );
       } catch (error) {
         showNotification(
           "Error during export. Please try again.\n" + error,
@@ -1562,13 +1569,17 @@ export default {
       this.popupContents.popupTitle = popupTitle;
       this.popupContents.popupDescription = popupDescription;
       this.popupContents.popupList = popupList;
-      this.popupContents.onYes = onYes;
+      this.popupContents.onYes = () => {
+        trackModalSave("incoming-libraries-samples-confirm", popupTitle);
+        if (typeof onYes === "function") onYes();
+      };
       this.popupContents.onNo = onNo;
       if (popupWidth && popupHeight) {
         this.popupContents.popupHeight = popupHeight;
         this.popupContents.popupWidth = popupWidth;
       }
       this.showPopupWindow = true;
+      trackModalOpen("incoming-libraries-samples-confirm", popupTitle);
     }
   }
 };

@@ -849,7 +849,9 @@ import {
   formatDisplayDate,
   isSupportedExcelTemplateFile,
   isValidDate,
-  applyValueToAllRows
+  applyValueToAllRows,
+  trackModalOpen,
+  trackModalSave
 } from "../utilities/utilityFunctions";
 import {
   loadFlowcellsGroupHeader,
@@ -1066,6 +1068,9 @@ export default {
     },
     endDateString(newVal) {
       this.handleDateChange("end", newVal);
+    },
+    showConfirmPopup(newVal) {
+      if (newVal) trackModalOpen("flowcell-confirm", this.confirmPopup?.title);
     }
   },
   beforeUnmount() {
@@ -1466,6 +1471,7 @@ export default {
     },
     runConfirmPopupAction() {
       if (typeof this.confirmPopup.onConfirm === "function") {
+        trackModalSave("flowcell-confirm", this.confirmPopup?.title);
         this.confirmPopup.onConfirm();
       }
     },
@@ -1485,6 +1491,7 @@ export default {
       }
 
       this.showPoolInfoPopup = true;
+      trackModalOpen("flowcell-pool-info");
       this.poolInfoTitle = title;
       this.poolInfoRecords = [];
       this.poolInfoLoading = true;
@@ -1688,6 +1695,7 @@ export default {
     handleExportClick() {
       this.exportSelection = this.hasSelectedRows ? "selected" : "all";
       this.showExportPopup = true;
+      trackModalOpen("flowcell-export");
     },
     async handleExport() {
       try {
@@ -1751,6 +1759,7 @@ export default {
           templateFileName
         });
         saveAs(blob, buildExcelExportFilename(filename, templateFileName));
+        trackModalSave("flowcell-export", "Load-flowcells file exported");
       } catch (error) {
         showNotification(
           "Error during export. Please try again.\n" + error,
@@ -1794,6 +1803,7 @@ export default {
     },
     async openLoadPopup() {
       this.showLoadPopup = true;
+      trackModalOpen("flowcell-load");
       this.loadSequencerError = false;
       this.flowcellIdError = false;
       this.loadForm = {
@@ -2042,6 +2052,7 @@ export default {
           }
         );
         showNotification("Flowcell has been successfully loaded.", "success");
+        trackModalSave("flowcell-load", "Flowcell loaded");
         const warnings = response?.data?.warnings;
         if (Array.isArray(warnings) && warnings.length) {
           showNotification(warnings.join(" "), "warning");

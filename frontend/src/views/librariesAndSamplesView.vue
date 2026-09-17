@@ -1346,7 +1346,9 @@ import {
   createExcelExportBlob,
   isSupportedExcelTemplateFile,
   buildExcelExportFilename,
-  buildExcelDownloadFilename
+  buildExcelDownloadFilename,
+  trackModalOpen,
+  trackModalSave
 } from "../utilities/utilityFunctions";
 import {
   useLocalStorage,
@@ -2427,6 +2429,7 @@ export default {
       this.requestModalRequestId = null;
       this.activeRequestMeta = null;
       this.showRequestEditorModal = true;
+      trackModalOpen("request-editor-create");
     },
     closeRequestEditorModal() {
       this.showRequestEditorModal = false;
@@ -2437,6 +2440,7 @@ export default {
     },
     handleRequestEditorSaved(payload) {
       if (payload?.mode === "edit" && payload?.request_id) {
+        trackModalSave("request-editor-edit", "Request updated");
         this.pendingSavedMode = "edit";
         this.applyRequestEditorUpdate(payload);
         const requestId = payload.request_id;
@@ -2466,6 +2470,7 @@ export default {
         this.finishRequestEditorSync();
         return;
       }
+      trackModalSave("request-editor-create", "Request added");
       // New requests may be hidden by active search/filters; clear them so sync polling can detect the saved request.
       this.searchQuery = "";
       this.filters = {
@@ -2553,6 +2558,7 @@ export default {
       this.requestModalRequestId = requestId;
       this.activeRequestMeta = this.requestMetaById?.[requestId] || null;
       this.showRequestEditorModal = true;
+      trackModalOpen("request-editor-edit");
     },
     openRequestActionModal(action, context) {
       this.activeRequestAction = action;
@@ -2567,6 +2573,7 @@ export default {
       this.cancelROCratePreviewHelpClose();
       this.showROCratePreviewHelp = false;
       this.showROCratePreviewModal = true;
+      trackModalOpen("rocrate-preview");
       this.$nextTick(() => {
         document.querySelector(".rocrate-preview-overlay")?.focus?.();
       });
@@ -2900,6 +2907,7 @@ export default {
       );
       this.exportSelection = this.hasSelectedRows ? "selected" : "all";
       this.showExportPopup = true;
+      trackModalOpen("libraries-samples-export");
     },
     getSelectedLibrariesSamplesRows() {
       return this.librariesSamplesList.filter((row) => row.selected);
@@ -3024,6 +3032,10 @@ export default {
             filename,
             this.selectedFile !== "without-file" ? this.selectedFile.name : ""
           )
+        );
+        trackModalSave(
+          "libraries-samples-export",
+          "Libraries and samples file exported"
         );
       } catch {
         showNotification("Export failed. Please try again.", "error");

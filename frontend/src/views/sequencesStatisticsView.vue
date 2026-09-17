@@ -490,7 +490,9 @@ import {
   createExcelExportBlob,
   buildExcelExportFilename,
   buildExcelDownloadFilename,
-  isSupportedExcelTemplateFile
+  isSupportedExcelTemplateFile,
+  trackModalOpen,
+  trackModalSave
 } from "../utilities/utilityFunctions";
 import iconExportTemplateFile from "../assets/icons/export_template.svg";
 import iconExportTemplateFileLines from "../assets/icons/export_template_lines.svg";
@@ -783,6 +785,7 @@ export default {
       isDragOver.value = false;
       showAdvancedFilters.value = false;
       showSelectColumns.value = false;
+      trackModalOpen("sequences-statistics-export");
     }
 
     function closeExportPopup() {
@@ -925,6 +928,10 @@ export default {
         saveAs(
           blob,
           buildExcelExportFilename(filename, selectedTemplate?.name || "")
+        );
+        trackModalSave(
+          "sequences-statistics-export",
+          "Sequences statistics file exported"
         );
       } catch (error) {
         showNotification(

@@ -1332,7 +1332,9 @@ import {
   showNotification,
   handleError,
   createAxiosObject,
-  urlStringStartsWith
+  urlStringStartsWith,
+  trackModalOpen,
+  trackModalSave
 } from "../utilities/utilityFunctions";
 import {
   getRequestEditorLibraryColumns,
@@ -2113,9 +2115,11 @@ export default {
         return;
       }
       this.showCloseConfirm = true;
+      trackModalOpen("request-editor-discard");
     },
     confirmCloseModal() {
       this.showCloseConfirm = false;
+      trackModalSave("request-editor-discard", "Request editor discarded");
       this.emitClose();
     },
     cancelCloseModal() {
@@ -2873,9 +2877,11 @@ export default {
       if (this.isEditMode && !this.canEditRequest) return;
       if (!this.selectedDraftRowIds.length) return;
       this.showDeleteConfirm = true;
+      trackModalOpen("request-editor-delete-rows");
     },
     confirmDeleteSelectedRows() {
       this.showDeleteConfirm = false;
+      trackModalSave("request-editor-delete-rows", "Draft rows removed");
       this.deleteSelectedDraftRows();
     },
     cancelDeleteSelectedRows() {
@@ -2963,6 +2969,7 @@ export default {
       if (this.requestEditorDraftRows.length > 0) {
         this.pendingToggleMode = normalized;
         this.showToggleConfirm = true;
+        trackModalOpen("request-editor-toggle-mode");
         if (event?.target) {
           event.target.checked = this.requestEditorMode === "sample";
         }
@@ -2978,6 +2985,7 @@ export default {
       const nextMode = this.pendingToggleMode;
       this.pendingToggleMode = null;
       this.showToggleConfirm = false;
+      trackModalSave("request-editor-toggle-mode", "Record type switched");
       this.handleRecordTypeSwitch(nextMode);
     },
     cancelToggleSwitch() {
@@ -4239,6 +4247,7 @@ export default {
       if (!this.canEditRequest) return;
       this.pendingFileDelete = file;
       this.showFileDeleteConfirm = true;
+      trackModalOpen("request-editor-delete-file");
     },
     cancelFileDelete() {
       this.showFileDeleteConfirm = false;
@@ -4246,6 +4255,7 @@ export default {
     },
     confirmFileDelete() {
       if (this.pendingFileDelete?.id) {
+        trackModalSave("request-editor-delete-file", "Request file removed");
         this.removeUploadedFile(this.pendingFileDelete.id);
       }
       this.showFileDeleteConfirm = false;
@@ -4338,6 +4348,7 @@ export default {
         fileTypeChoice: "",
         customFileType: ""
       }));
+      trackModalOpen("request-editor-file-type-selection");
     },
     cancelRequestFileUpload() {
       this.pendingRequestFiles = [];
@@ -4383,6 +4394,10 @@ export default {
           this.pendingRequestFiles = [];
           await this.fetchUploadedFilesDetails();
           showNotification("Files uploaded successfully.", "success");
+          trackModalSave(
+            "request-editor-file-type-selection",
+            "Request files uploaded"
+          );
         } else {
           showNotification("File upload failed.", "error");
         }

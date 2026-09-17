@@ -76,7 +76,10 @@
 import { TabulatorFull as Tabulator } from "tabulator-tables";
 import * as XLSX from "xlsx";
 import "tabulator-tables/dist/css/tabulator_bootstrap5.min.css";
-import { showNotification } from "../utilities/utilityFunctions";
+import {
+  showNotification,
+  trackModalOpen
+} from "../utilities/utilityFunctions";
 import { markRaw } from "vue";
 import iconPasteError from "../assets/icons/alert_confirmation.svg";
 
@@ -689,6 +692,7 @@ export default {
                 errorsPopupWidth: PASTE_ERROR_POPUP.defaultWidth
               };
               this.showErrorsWindow = true;
+              trackModalOpen("table-paste-errors");
             }
             if (blockedPaste) {
               if (blockedFields.has(TABLE_FIELDS.barcode)) {

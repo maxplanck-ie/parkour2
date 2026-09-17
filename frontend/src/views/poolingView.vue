@@ -475,7 +475,9 @@ import {
   createExcelExportBlob,
   isSupportedExcelTemplateFile,
   buildExcelExportFilename,
-  buildExcelDownloadFilename
+  buildExcelDownloadFilename,
+  trackModalOpen,
+  trackModalSave
 } from "../utilities/utilityFunctions";
 import {
   poolingColumnDefs,
@@ -1196,6 +1198,7 @@ export default {
         return;
       }
       this.showExportPopup = true;
+      trackModalOpen("pooling-export");
     },
     async handleExport() {
       try {
@@ -1254,6 +1257,7 @@ export default {
             this.selectedFile !== "without-file" ? this.selectedFile.name : ""
           )
         );
+        trackModalSave("pooling-export", "Pooling file exported");
       } finally {
         this.fakeLoadingStop();
         this.showExportPopup = false;
@@ -1309,13 +1313,17 @@ export default {
       this.popupContents.popupTitle = popupTitle;
       this.popupContents.popupDescription = popupDescription;
       this.popupContents.popupList = popupList;
-      this.popupContents.onYes = onYes;
+      this.popupContents.onYes = () => {
+        trackModalSave("pooling-confirm", popupTitle);
+        if (typeof onYes === "function") onYes();
+      };
       this.popupContents.onNo = onNo;
       if (popupWidth && popupHeight) {
         this.popupContents.popupHeight = popupHeight;
         this.popupContents.popupWidth = popupWidth;
       }
       this.showPopupWindow = true;
+      trackModalOpen("pooling-confirm", popupTitle);
     }
   }
 };

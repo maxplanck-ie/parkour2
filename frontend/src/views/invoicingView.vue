@@ -486,7 +486,9 @@ import {
   buildExcelDownloadFilename,
   isSupportedExcelTemplateFile,
   focusFirstElement,
-  trapFocus
+  trapFocus,
+  trackModalOpen,
+  trackModalSave
 } from "../utilities/utilityFunctions";
 import {
   invoicingColumnDefs,
@@ -799,6 +801,7 @@ export default {
       this.rememberFocus();
       this.showExportPopup = false;
       this.showSelectColumns = true;
+      trackModalOpen("invoicing-select-columns");
       this.$nextTick(() => focusFirstElement(this.$refs.columnsDialog));
     },
     closeSelectColumns() {
@@ -812,6 +815,7 @@ export default {
       this.previouslyFocusedElement = null;
       this.costsPreviouslyFocusedElement = document.activeElement;
       this.showCostsPanel = true;
+      trackModalOpen("invoicing-costs");
       this.fetchAllCostSections();
       this.$nextTick(() => focusFirstElement(this.$refs.costsDialog));
     },
@@ -1117,6 +1121,7 @@ export default {
       this.showExportHelpTooltip = false;
       this.isDragOver = false;
       this.showExportPopup = true;
+      trackModalOpen("invoicing-export");
       this.$nextTick(() => focusFirstElement(this.$refs.exportDialog));
     },
     closeExportPopup() {
@@ -1180,6 +1185,7 @@ export default {
             this.selectedFile !== "without-file" ? this.selectedFile.name : ""
           )
         );
+        trackModalSave("invoicing-export", "Invoicing file exported");
       } catch (error) {
         showNotification(
           "Error during export. Please try again.\n" + error,

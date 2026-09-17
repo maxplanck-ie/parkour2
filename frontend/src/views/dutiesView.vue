@@ -226,7 +226,9 @@ import {
   urlStringStartsWith,
   createAxiosObject,
   focusFirstElement,
-  trapFocus
+  trapFocus,
+  trackModalOpen,
+  trackModalSave
 } from "../utilities/utilityFunctions";
 import { toRaw, getCurrentInstance } from "vue";
 import { onClickOutside, onKeyStroke } from "@vueuse/core";
@@ -308,6 +310,7 @@ export default {
     openAddDutyDialog() {
       this.addDutyPreviouslyFocusedElement = document.activeElement;
       this.showAddDutyDialog = true;
+      trackModalOpen("duty-add");
       this.$nextTick(() => focusFirstElement(this.$refs.addDutyDialog));
     },
     closeAddDutyDialog() {
@@ -381,6 +384,7 @@ export default {
               this.getFilteredDuties(true, "all");
             else this.selectedFilter = "all";
             showNotification("Duty added successfully.", "success");
+            trackModalSave("duty-add", "Duty added");
           })
           .catch((error) => {
             this.getFilteredDuties(true, this.selectedFilter);

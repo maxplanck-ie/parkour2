@@ -496,7 +496,9 @@ import {
   createExcelExportBlob,
   buildExcelExportFilename,
   buildExcelDownloadFilename,
-  isSupportedExcelTemplateFile
+  isSupportedExcelTemplateFile,
+  trackModalOpen,
+  trackModalSave
 } from "../utilities/utilityFunctions";
 import iconExportTemplateFile from "../assets/icons/export_template.svg";
 import iconExportTemplateFileLines from "../assets/icons/export_template_lines.svg";
@@ -788,6 +790,7 @@ export default {
       isDragOver.value = false;
       showAdvancedFilters.value = false;
       showSelectColumns.value = false;
+      trackModalOpen("run-statistics-export");
     }
 
     function closeExportPopup() {
@@ -928,6 +931,7 @@ export default {
           blob,
           buildExcelExportFilename(filename, selectedTemplate?.name || "")
         );
+        trackModalSave("run-statistics-export", "Run statistics file exported");
       } catch (error) {
         showNotification(
           "Error during export. Please try again.\n" + error,

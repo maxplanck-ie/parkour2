@@ -2,6 +2,7 @@ export * from "./notificationUtils";
 export * from "./apiUtils";
 export * from "./dateUtils";
 export * from "./excelUtils";
+export * from "./analyticsUtils";
 
 export function getProp(object, keys, defaultVal) {
   keys = Array.isArray(keys) ? keys : keys.split(".");

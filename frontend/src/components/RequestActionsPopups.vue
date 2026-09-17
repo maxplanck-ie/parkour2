@@ -731,7 +731,9 @@ import {
   showNotification,
   handleError,
   createAxiosObject,
-  urlStringStartsWith
+  urlStringStartsWith,
+  trackModalOpen,
+  trackModalSave
 } from "../utilities/utilityFunctions";
 import {
   REQUEST_FILE_TYPE_OPTIONS,
@@ -754,6 +756,15 @@ const REQUEST_ACTIONS = {
   solicitApproval: "solicitApproval",
   deleteRequest: "deleteRequest",
   attachments: "attachments"
+};
+
+const REQUEST_ACTION_EVENT_NAMES = {
+  [REQUEST_ACTIONS.uploadSigned]: "request-upload-signed",
+  [REQUEST_ACTIONS.filePaths]: "request-file-paths",
+  [REQUEST_ACTIONS.composeEmail]: "request-compose-email",
+  [REQUEST_ACTIONS.solicitApproval]: "request-solicit-approval",
+  [REQUEST_ACTIONS.deleteRequest]: "request-delete",
+  [REQUEST_ACTIONS.attachments]: "request-attachments"
 };
 
 const REQUEST_ACTION_DEFAULT_REFS = {
@@ -969,6 +980,8 @@ export default {
   watch: {
     activeAction(newVal) {
       if (!newVal) return;
+      const eventName = REQUEST_ACTION_EVENT_NAMES[newVal];
+      if (eventName) trackModalOpen(eventName);
       this.resetStateForAction(newVal);
       if (newVal === REQUEST_ACTIONS.filePaths) {
         this.fetchFilepaths();
@@ -1143,6 +1156,7 @@ export default {
             "Signed request uploaded successfully.",
             NOTIFICATION_TYPES.success
           );
+          trackModalSave("request-upload-signed", "Signed request uploaded");
           this.$emit("refresh");
           this.close();
         } else {
@@ -1378,6 +1392,7 @@ export default {
           "Email sent successfully.",
           NOTIFICATION_TYPES.success
         );
+        trackModalSave("request-compose-email", "Request email sent");
         this.close();
       } catch (error) {
         handleError(error);
@@ -1422,6 +1437,7 @@ export default {
             "Approval email sent to PI.",
             NOTIFICATION_TYPES.success
           );
+          trackModalSave("request-solicit-approval", "Approval email sent");
           this.close();
         } else {
           showNotification("Approval email failed.", NOTIFICATION_TYPES.error);
@@ -1483,6 +1499,7 @@ export default {
             "Request deleted successfully.",
             NOTIFICATION_TYPES.success
           );
+          trackModalSave("request-delete", "Request deleted");
           this.$emit("refresh");
           this.close();
         } else {
@@ -1747,6 +1764,7 @@ export default {
             "Files uploaded successfully.",
             NOTIFICATION_TYPES.success
           );
+          trackModalSave("request-attachments", "Request attachments uploaded");
         } else {
           showNotification("File upload failed.", NOTIFICATION_TYPES.error);
         }
