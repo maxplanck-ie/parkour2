@@ -11,6 +11,11 @@
 
 <body>
   <div id="app"></div>
+  <!-- Self-hosted GoatCounter analytics. VITE_GOATCOUNTER_URL is per-deployment
+       (misc/parkour.env for docker-compose envs, fly.toml [build.args] for the
+       Fly demo); count.js no-ops when data-goatcounter is empty, so this is
+       safe to leave unset (e.g. local dev). -->
+  <script data-goatcounter="%VITE_GOATCOUNTER_URL%" async src="//gc.zgo.at/count.js"></script>
   <script type="module" src="/src/main.js"></script>
 </body>
 

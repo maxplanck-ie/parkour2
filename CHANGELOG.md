@@ -3,6 +3,10 @@
 Unreleased
 ==========
 
+- Added optional self-hosted GoatCounter web analytics, configured per
+  deployment (dev/test/prod/demo each point at their own site) via
+  VITE_GOATCOUNTER_URL; unset by default, so this is a no-op unless a
+  deployment's env file opts in. (Direct commit, see develop history.)
 - Removed unused legacy static assets (DataTables, jQuery, noty, daterangepicker, underscore, Bootstrap 3, glyphicon fonts) that had no remaining references anywhere in the app; server-rendered pages (login, password reset, error pages) now use Bootstrap 5 instead of Bootstrap 3. No user-visible change other than faster page loads. (PR #358.)
 - Libraries & Samples table now shows a "Flowcell Created" column with the creation date of each flowcell a library/sample was sequenced on, aligned to the existing Flowcell IDs column, so turnaround time from request approval to sequencing start can be computed. (PR #354.)
 - Added two box plots to the Usage page, "Turnaround Time by Analysis Type" and "Turnaround Time by PI", showing the spread (min/median/max, plus individual points for any outliers beyond the whiskers) of days from request approval to sequencing start. The Usage page now shows 4 charts in a 2x2 layout — Principal Investigators and Analysis Types on top, their matching Turnaround Time box plots below — and long x-axis labels (over 18 characters) are truncated with an ellipsis. All Usage charts share one 3-color palette: purple/orange for the Libraries/Samples split, green for the box plots. (PR #354.)

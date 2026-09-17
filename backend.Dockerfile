@@ -9,6 +9,10 @@ RUN npm install ro-crate-html-js
 ## (misc/nginx-server.conf) to serve it, so pk2_demo serves it itself.
 FROM node:24-bullseye AS pk2_demo_frontend
 WORKDIR /usr/src/app
+## Set via fly.toml's [build.args] -- baked in at build time since this stage
+## runs `vite build` itself (no docker-compose env_file at this point).
+ARG VITE_GOATCOUNTER_URL=""
+ENV VITE_GOATCOUNTER_URL=$VITE_GOATCOUNTER_URL
 COPY ./frontend/package.json ./frontend/package-lock.json* ./
 RUN npm install
 ## docker-compose normally bind-mounts this at runtime (`./shared:/usr/src/shared:ro`)
