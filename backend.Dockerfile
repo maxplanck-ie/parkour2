@@ -40,8 +40,24 @@ ENV \
     PYTHONIOENCODING="UTF-8" \
     PYTHONUTF8=1
 
+## postgresql-client pinned to match docker-compose.yml's `postgres:18` pin
+## and the demo's Neon Postgres version -- pg_restore of a custom-format
+## dump only restores forward (an older client reading a newer dump can
+## fail), so this must never trail behind either. Confirm Neon's actual
+## Postgres version (`flyctl postgres`/Neon dashboard) before this ships.
+## Debian bookworm's own apt repo only carries postgresql-client 15
+## (`apt-cache policy postgresql-client` -> 15+248+deb12u1), so the
+## PostgreSQL APT repository (apt.postgresql.org) is added here to get
+## postgresql-client-18 specifically. curl/gpg/ca-certificates are already
+## present in the python:3.12-bookworm base, so nothing extra to install
+## for that step.
 RUN apt-get update --fix-missing \
     && apt-get install -y --no-install-recommends less locales \
+    && install -d /usr/share/postgresql-common/pgdg \
+    && curl -o /usr/share/postgresql-common/pgdg/apt.postgresql.org.asc --fail https://www.postgresql.org/media/keys/ACCC4CF8.asc \
+    && echo "deb [signed-by=/usr/share/postgresql-common/pgdg/apt.postgresql.org.asc] https://apt.postgresql.org/pub/repos/apt bookworm-pgdg main" > /etc/apt/sources.list.d/pgdg.list \
+    && apt-get update \
+    && apt-get install -y --no-install-recommends postgresql-client-18 \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
@@ -101,6 +117,10 @@ COPY ./shared /usr/src/shared
 ## *a* SECRET_KEY (prod.py refuses the hard-coded default) and DATABASE_URL's
 ## working sqlite default (config/settings/base.py).
 RUN SECRET_KEY=build-time-collectstatic-only python manage.py collectstatic --no-input
+## Baked in by the release CI workflow (.github/workflows/demo-deploy.yml)
+## before `docker build` runs -- see reset_demo.py's DUMP_PATH constant,
+## which must match this destination exactly. Never committed to the repo.
+COPY backend/fixtures_snapshot.dump /app/fixtures_snapshot.dump
 CMD ["gunicorn", "config.wsgi:application", "--bind=0.0.0.0:8000", "--name=pk2", "--timeout=600", \
     "--worker-class=gthread", "--worker-tmp-dir=/dev/shm", "--workers=4", "--threads=6"]
 

@@ -25,3 +25,4 @@ node_modules/
 db.sqlite3
 /media
 backend/coverage_html_report/
+backend/fixtures_snapshot.dump

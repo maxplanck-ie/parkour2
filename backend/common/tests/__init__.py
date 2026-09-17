@@ -8,8 +8,13 @@ from django.test import TestCase
 from django.urls import reverse
 from rest_framework.test import APITestCase
 
-from .models import AttachmentFileType, CostUnit, Organization, PrincipalInvestigator
-from .utils import transliterate_name
+from common.models import (
+    AttachmentFileType,
+    CostUnit,
+    Organization,
+    PrincipalInvestigator,
+)
+from common.utils import transliterate_name
 
 User = get_user_model()
 

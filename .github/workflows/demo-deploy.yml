@@ -1,0 +1,202 @@
+name: Deploy demo
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    if: github.repository == 'maxplanck-ie/parkour2'
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:18
+        env:
+          POSTGRES_USER: parkour
+          POSTGRES_PASSWORD: parkour
+          POSTGRES_DB: parkour
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    steps:
+      - name: Resolve latest release tag (workflow_dispatch only)
+        if: github.event_name == 'workflow_dispatch'
+        id: latest
+        ## `echo "tag=$(gh api ...)"` on its own does NOT fail the step when
+        ## the API call fails -- only echo's own exit status counts. An empty
+        ## tag then falls through the checkout ref expression to
+        ## github.event.release.tag_name (also empty on a dispatch event), and
+        ## actions/checkout silently takes the default branch instead. Hence
+        ## the explicit pipefail + non-empty check below.
+        run: |
+          set -euo pipefail
+          tag="$(gh api repos/${{ github.repository }}/releases/latest --jq .tag_name)"
+          [ -n "$tag" ] && [ "$tag" != "null" ] || { echo "::error::could not resolve latest release tag"; exit 1; }
+          echo "tag=$tag" >> "$GITHUB_OUTPUT"
+        env:
+          GH_TOKEN: ${{ github.token }}
+
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+          ref: ${{ github.event_name == 'workflow_dispatch' && steps.latest.outputs.tag || github.event.release.tag_name }}
+
+      - name: Set up Python
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: '3.12'
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@20cfd1bf945f4377ade1205e4dbc17946fc9a30d # v10.0.1
+
+      - name: Install backend deps
+        run: |
+          uv pip install --system setuptools wheel
+          uv pip install --system -r backend/requirements/3.12/base.txt
+
+      - name: Migrate + load fixtures into ephemeral Postgres
+        working-directory: backend
+        env:
+          DATABASE_URL: postgres://parkour:parkour@localhost:5432/parkour
+          DJANGO_SETTINGS_MODULE: config.settings.prod
+          SECRET_KEY: ci-only-not-secret
+        run: |
+          python manage.py migrate
+          python manage.py load_initial_data
+
+      ## The postgres service container above is pinned to postgres:18, but
+      ## ubuntu-latest's own apt repo only ships postgresql-client up to 16/17
+      ## -- pg_dump refuses to dump from a server newer than its own client
+      ## version (unlike psql, which tolerates this), so the PGDG apt repo is
+      ## added here to install postgresql-client-18 specifically. Mirrors
+      ## backend.Dockerfile's pk2_base stage, which does the same for the
+      ## same reason.
+      - name: Install postgresql-client-18 (PGDG apt repo)
+        run: |
+          sudo install -d /usr/share/postgresql-common/pgdg
+          sudo curl -o /usr/share/postgresql-common/pgdg/apt.postgresql.org.asc --fail https://www.postgresql.org/media/keys/ACCC4CF8.asc
+          echo "deb [signed-by=/usr/share/postgresql-common/pgdg/apt.postgresql.org.asc] https://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" | sudo tee /etc/apt/sources.list.d/pgdg.list
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends postgresql-client-18
+
+      ## --data-only with no --disable-triggers means FK checks are NOT
+      ## deferred at the dump/restore-schema level -- --disable-triggers
+      ## needs superuser privileges the demo DB role likely won't have (e.g.
+      ## on Neon), so it's intentionally not used here. This is mitigated on
+      ## the restore side instead: reset_demo.py's pg_restore invocation
+      ## uses --single-transaction, and this project's models use Django's
+      ## default DEFERRABLE INITIALLY DEFERRED FK constraints, so FK checks
+      ## are deferred to COMMIT time within that single transaction rather
+      ## than enforced row-by-row during restore. Still, verify actual
+      ## restore ordering during the plan's manual dry-run step before
+      ## relying on this in production.
+      ##
+      ## Excluded tables, and why each one must stay excluded:
+      ##   django_content_type, auth_permission -- reset_demo's flush()
+      ##     recreates these via post_migrate; restoring them doubles them.
+      ##   django_migrations -- flush() never truncates it; the live demo DB's
+      ##     own migration history is authoritative.
+      ##   django_session -- stale sessions must not be replayed.
+      ##   complete_library_data_mv, complete_sample_data_mv -- derived,
+      ##     denormalized data, populated here by load_initial_data's closing
+      ##     refresh_now_blocking(full_refresh=True). Both are managed=False,
+      ##     so Django's sql_flush skips them and their rows SURVIVE
+      ##     reset_demo's flush(); a restored second copy would collide on
+      ##     idx_cld_mv_pk / idx_csd_mv_pk (backend/common/sql.py) and abort
+      ##     the whole --single-transaction restore, leaving the demo DB
+      ##     empty. reset_demo rebuilds them from scratch after the restore
+      ##     instead, which is the only sensible thing to do with derived data.
+      - name: Dump fixture data (data-only, custom format)
+        env:
+          PGPASSWORD: parkour
+        run: |
+          pg_dump \
+            --host=localhost --username=parkour --dbname=parkour \
+            --data-only --format=custom \
+            --exclude-table-data=django_content_type \
+            --exclude-table-data=auth_permission \
+            --exclude-table-data=django_migrations \
+            --exclude-table-data=django_session \
+            --exclude-table-data=complete_library_data_mv \
+            --exclude-table-data=complete_sample_data_mv \
+            --file=backend/fixtures_snapshot.dump
+          test -s backend/fixtures_snapshot.dump || (echo "::error::fixtures_snapshot.dump is empty" && exit 1)
+
+      ## A non-empty dump file proves nothing about whether it can actually be
+      ## restored -- and an unrestorable dump means every hourly reset flushes
+      ## the demo DB and then fails, leaving it empty. So rehearse the exact
+      ## runtime path here: fresh DB, schema only (no fixtures), then the same
+      ## `pg_restore --data-only --single-transaction` reset_demo runs.
+      - name: Smoke-test the dump restores into a fresh database
+        working-directory: backend
+        env:
+          PGPASSWORD: parkour
+          DJANGO_SETTINGS_MODULE: config.settings.prod
+          SECRET_KEY: ci-only-not-secret
+        run: |
+          set -euo pipefail
+          createdb --host=localhost --username=parkour restore_smoketest
+          DATABASE_URL=postgres://parkour:parkour@localhost:5432/restore_smoketest \
+            python manage.py migrate
+          ## migrate's own RunPython seed data (e.g. AttachmentFileType rows)
+          ## already exists in this fresh DB *and* in the dump (reset_demo's
+          ## real flush() truncates it away first) -- without an equivalent
+          ## flush here, pg_restore collides on those rows' primary keys and
+          ## the whole --single-transaction restore aborts on every run.
+          DATABASE_URL=postgres://parkour:parkour@localhost:5432/restore_smoketest \
+            python manage.py flush --noinput
+          pg_restore --data-only --single-transaction \
+            --host=localhost --username=parkour --dbname=restore_smoketest \
+            fixtures_snapshot.dump
+          ## Sanity check: the restore succeeding on an empty dump would be
+          ## vacuously true, so assert a couple of core tables have rows.
+          for table in request_request library_library sample_sample; do
+            count="$(psql --host=localhost --username=parkour --dbname=restore_smoketest \
+              -tAc "SELECT count(*) FROM $table")"
+            echo "$table: $count rows"
+            [ "$count" -gt 0 ] || { echo "::error::$table is empty after restore"; exit 1; }
+          done
+
+      - name: Set up flyctl
+        uses: superfly/flyctl-actions/setup-flyctl@ed8efb33836e8b2096c7fd3ba1c8afe303ebbff1 # v1.6
+
+      - name: Build and push demo image, then deploy
+        run: |
+          flyctl deploy --config misc/fly.toml --local-only --push --ha=false \
+            --build-arg VITE_GOATCOUNTER_URL=https://pk2demo.stats.omics.dev/count .
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+
+      ## REQUIRED MANUAL FOLLOW-UP -- the hourly reset is NOT updated by the
+      ## deploy above.
+      ##
+      ## The hourly `reset_demo` Machine was created with `flyctl machine run`
+      ## and is deliberately NOT part of this fly.toml's `app` process group
+      ## (see misc/fly.toml's one-time-setup notes). `flyctl deploy` only
+      ## updates machines in the app's process groups, so the scheduled
+      ## machine keeps running whatever image it was created with -- including
+      ## the old, slow, 20-minute `load_initial_data` reset, and an old
+      ## baked-in dump (or none at all).
+      ##
+      ## After this workflow succeeds, whoever owns the deploy must point the
+      ## scheduled machine at the image just deployed:
+      ##
+      ##   img=$(flyctl status -a parkour-demo --json | jq -r '.ImageDetails | "\(.Repository):\(.Tag)"')
+      ##   flyctl machine list -a parkour-demo          # find the hourly reset machine's ID
+      ##   flyctl machine update <MACHINE_ID> -a parkour-demo --image "$img"
+      ##
+      ## This is intentionally NOT automated here: it needs the concrete
+      ## Machine ID of a live machine on shared infrastructure, and getting it
+      ## wrong restarts/reconfigures the wrong machine. Automate it only after
+      ## the plan's manual dry run has confirmed the exact commands and IDs.
+      - name: Reminder — update the hourly reset Machine manually
+        run: |
+          echo "::warning title=Hourly reset Machine not updated::flyctl deploy does not touch the scheduled reset_demo Machine (it is outside this fly.toml's process groups). Run 'flyctl machine update <ID> -a parkour-demo --image <just-deployed image>' by hand, or the hourly reset keeps running the old image. See the comment above this step in .github/workflows/demo-deploy.yml."

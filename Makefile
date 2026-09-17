@@ -168,8 +168,19 @@ demo: down set-demo deploy-webapp deploy-caddy collect-static load-fixtures  ## 
 reset-demo:  ## Truncate + reload fixtures on the running demo instance (wire to an hourly cron/scheduler)
 	@docker compose exec parkour2-django python manage.py reset_demo
 
-fly-deploy: check-rootdir  ## (Re)deploy the public demo to Fly.io -- see misc/fly.toml's header comment for one-time setup
-	@flyctl deploy --config misc/fly.toml --ha=false .
+fly-deploy:  ## Retired -- the public demo now deploys from CI (.github/workflows/demo-deploy.yml)
+	@echo "make fly-deploy is retired: the public demo deploys from CI."
+	@echo
+	@echo "backend.Dockerfile's pk2_demo stage copies backend/fixtures_snapshot.dump,"
+	@echo "a pg_dump snapshot built against a throwaway Postgres by"
+	@echo ".github/workflows/demo-deploy.yml. It is gitignored and never exists in a"
+	@echo "clean checkout, so a local 'flyctl deploy' cannot build this image."
+	@echo
+	@echo "To deploy: publish a GitHub Release, or run the workflow manually"
+	@echo "(gh workflow run demo-deploy.yml) -- manual runs always deploy whatever"
+	@echo "release is currently marked Latest. See misc/fly.toml's header comment,"
+	@echo "including the required post-deploy update of the hourly reset Machine."
+	@exit 1
 
 set-dev: hardreset-caddyfile-dev
 	@sed -i -e 's#\(target:\) pk2_.*#\1 pk2_dev#' docker-compose.yml
