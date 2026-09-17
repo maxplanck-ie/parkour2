@@ -31,7 +31,7 @@ kill_signal = 'SIGINT'
 kill_timeout = '5s'
 
 [build]
-  dockerfile = 'backend.Dockerfile'
+  dockerfile = '../backend.Dockerfile'
   target = 'pk2_demo'
 
 [env]
