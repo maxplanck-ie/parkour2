@@ -231,6 +231,11 @@ Prevent recurring regressions. No deviate without explicit ask.
   the AttachmentFileType seed rows, and the umlaut user-name
   transliteration while fixing the AnalysisType migration gap above —
   recovered in commit `d2ea3b02`.
+- `make dev-ez` checks out `backend/*/migrations/` from Git as part of its
+  historic-migration replay (snapshot/restore around the legacy archive
+  unpack). Commit new/changed migration files before running it — an
+  uncommitted migration gets silently reverted by the checkout, and the
+  replay then fails or conflicts against a stale migration tree.
 
 ## Vue.js frontend (`**/*.vue`, `**/*.ts`, `**/*.js`)
 
