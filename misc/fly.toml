@@ -1,26 +1,52 @@
-# Public demo instance on Fly.io. `make fly-deploy` redeploys (routine,
-# repeatable). See the routing/DNS side of this in the separate `flights`
-# repo (omics.dev's gw gateway, Porkbun DNS, tinyauth exemption) --
-# flights/parkour/README.md.
+# Public demo instance on Fly.io.
+#
+# DEPLOYS RUN IN CI, NOT BY HAND. `.github/workflows/demo-deploy.yml` is the
+# deploy path: it fires on every published GitHub Release (and on manual
+# workflow_dispatch, which always resolves the latest release), builds the
+# fixture data into a pg_dump snapshot on a throwaway CI Postgres, bakes that
+# snapshot into the pk2_demo image, and deploys with this config. `make
+# fly-deploy` is retired -- a local build cannot produce the baked-in
+# backend/fixtures_snapshot.dump that pk2_demo copies and that the hourly
+# reset restores from.
+#
+# !! AFTER EVERY DEPLOY, one required manual step: update the hourly reset
+# !! Machine to the newly-deployed image. That Machine was created with
+# !! `flyctl machine run` and is deliberately NOT in this fly.toml's `app`
+# !! process group (step 6 below), so `flyctl deploy` does not touch it --
+# !! it keeps running whatever image it was created with, including an old
+# !! or missing fixture snapshot. Run:
+# !!   img=$(flyctl status -a parkour-demo --json | jq -r '.ImageDetails | "\(.Repository):\(.Tag)"')
+# !!   flyctl machine list -a parkour-demo      # find the hourly reset Machine ID
+# !!   flyctl machine update <MACHINE_ID> -a parkour-demo --image "$img"
+# !! (Scripting this is fine; it is left manual for now because it needs the
+# !! concrete Machine ID of a live machine on shared infrastructure.)
+#
+# See the routing/DNS side of this in the separate `flights` repo (omics.dev's
+# gw gateway, Porkbun DNS, tinyauth exemption) -- flights/parkour/README.md.
 #
 # Before first deploy (one-time):
 #   1. flyctl apps create parkour-demo
 #   2. Create a Neon project, set its connection string:
 #      flyctl secrets set -a parkour-demo DATABASE_URL='postgres://...'
 #   3. flyctl secrets set -a parkour-demo SECRET_KEY="$(openssl rand -hex 32)"
-#   4. make fly-deploy
-#   5. flyctl ssh console -a parkour-demo -C "python manage.py migrate"
-#      flyctl ssh console -a parkour-demo -C "python manage.py load_initial_data"
-#   6. Allocate a Flycast private IP so gw can reach it (not automatic just
+#   4. Create the FLY_API_TOKEN GitHub Actions secret the workflow needs:
+#      flyctl tokens create deploy -a parkour-demo
+#      ...then run .github/workflows/demo-deploy.yml (workflow_dispatch) for
+#      the first deploy. [deploy] release_command below runs `migrate`, and
+#      demo data comes from the image's baked-in snapshot via the hourly
+#      `reset_demo` (run it once by hand to seed immediately) -- there is no
+#      manual `load_initial_data` step any more.
+#   5. Allocate a Flycast private IP so gw can reach it (not automatic just
 #      from [http_service] -- see flights AGENTS.md's Flycast checklist):
 #      flyctl ips allocate-v6 --private -a parkour-demo
-#   7. Hourly reset: create a separate scheduled Machine running the same
-#      image (not part of this fly.toml's own "app" process group):
+#   6. Hourly reset: create a separate scheduled Machine running the same
+#      image (not part of this fly.toml's own "app" process group -- hence
+#      the post-deploy manual update above):
 #      flyctl machine run . --config misc/fly.toml --schedule=hourly \
 #        --command "python manage.py reset_demo" -a parkour-demo
 #      (confirm the exact flag names against `flyctl machine run --help` --
 #      untested against a live Fly account as of this writing.)
-#   8. Wire the gw/Caddyfile routing block + Porkbun DNS + cert for
+#   7. Wire the gw/Caddyfile routing block + Porkbun DNS + cert for
 #      parkour.omics.dev, ungated (see flights repo's cal.omics.dev /
 #      meet.omics.dev two-hostname precedent for the "public, no tinyauth"
 #      shape -- this app only ever needs the one, ungated, hostname).
