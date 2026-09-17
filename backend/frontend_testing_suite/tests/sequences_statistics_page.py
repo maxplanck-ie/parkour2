@@ -64,3 +64,10 @@ def test_sequences_statistics_shows_uploaded_sequences_data(page: Page):
     # confident_reads=1900000 displays as-is ("Conf. Off-species").
     expect(row).to_contain_text("2.00")
     expect(row).to_contain_text("1900000.00")
+
+
+def test_sequences_statistics_export_stub():
+    # sequences-statistics-export tracked event: deferred with the other
+    # export flows (library-preparation/flowcell/run-statistics/libraries
+    # -samples exports) -- no coverage yet. Stub kept as a marker.
+    pass

@@ -108,3 +108,10 @@ def test_horizontal_scroll_survives_header_filter_refresh(page: Page):
     page.wait_for_timeout(HEADER_FILTER_DEBOUNCE_MS + REFRESH_MARGIN_MS)
 
     assert holder.evaluate("el => el.scrollLeft") == scroll_left
+
+
+def test_libraries_samples_export_stub():
+    # libraries-samples-export tracked event: deferred with the other
+    # export flows (library-preparation/flowcell/run-statistics/sequences
+    # -statistics exports) -- no coverage yet. Stub kept as a marker.
+    pass

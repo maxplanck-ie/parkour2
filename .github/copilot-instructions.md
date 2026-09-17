@@ -76,6 +76,11 @@ Prevent recurring regressions. No deviate without explicit ask.
   date when recording change. Every change (bug fix, feature, refactor with
   user-visible/behavioral impact) MUST add bullet under `Unreleased` heading
   at top of file. Create `Unreleased` heading if missing.
+- A small follow-up to a bullet already under `Unreleased` (same feature,
+  still unreleased, not yet cited by its own PR/commit reference) may be
+  folded into that existing bullet instead of adding a new one — use
+  judgment, don't force a new bullet per commit for work that reads as one
+  change to an end user.
 - Dates added manually, only at release time, by renaming `Unreleased` to
   `yy.mm.dd` release date. Never add or guess date yourself.
 - Keep entries terse, specific (what changed, why matters), match

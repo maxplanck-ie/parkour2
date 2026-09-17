@@ -102,3 +102,10 @@ def test_fail_quality_check_removes_sample_from_library_preparation(page: Page):
         ).first.click()
     expect(failed_row).to_have_count(1, timeout=15000)
     expect(failed_row.locator('[title="Quality Check Failed"]')).to_have_count(1)
+
+
+def test_library_preparation_export_stub():
+    # library-preparation-export tracked event: deferred with the other
+    # export flows (flowcell/run-statistics/sequences-statistics/libraries
+    # -samples exports) -- no coverage yet. Stub kept as a marker.
+    pass

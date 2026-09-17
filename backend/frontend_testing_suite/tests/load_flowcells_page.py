@@ -359,3 +359,10 @@ def test_drag_ready_pool_onto_lane_and_save_flowcell(page: Page):
         has_text=_exact(f"E2E_{pool_name_1}"),
     )
     expect(flowcell_group).to_have_count(1, timeout=15000)
+
+
+def test_flowcell_export_stub():
+    # flowcell-export tracked event: deferred with the other export flows
+    # (library-preparation/run-statistics/sequences-statistics/libraries
+    # -samples exports) -- no coverage yet. Stub kept as a marker.
+    pass

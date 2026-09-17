@@ -133,6 +133,26 @@ def test_create_new_request_end_to_end(page: Page):
     row = draft_table.locator(".tabulator-row").first
     expect(row).to_have_count(1, timeout=15000)
 
+    # Toggle the Library/Sample switch with a draft row present -- this is
+    # gated behind a "Switch record type?" confirm dialog (clearing the
+    # draft table is destructive), exercising the request-editor-toggle-mode
+    # tracked event on both open and confirm.
+    record_type_switch = page.locator(".record-type-switch input")
+    record_type_switch.check(force=True)
+
+    toggle_confirm = page.locator(".confirm-overlay", has_text="Switch record type?")
+    expect(toggle_confirm).to_be_visible()
+    toggle_confirm.locator(".confirm-footer .popup-button.yes-button").click()
+    expect(toggle_confirm).to_have_count(0, timeout=5000)
+    expect(draft_table.locator(".tabulator-row")).to_have_count(0, timeout=5000)
+
+    # Switch back to Library mode -- no draft rows exist yet, so this
+    # applies immediately with no confirm dialog -- then re-add the row the
+    # rest of the test expects.
+    record_type_switch.uncheck(force=True)
+    page.get_by_test_id("add-records-button").click()
+    expect(row).to_have_count(1, timeout=15000)
+
     _fill_required_library_fields(page, row, NEW_LIBRARY_NAME)
 
     save_button = page.locator(".request-editor-footer .popup-button.yes-button")
@@ -228,3 +248,18 @@ def test_apply_to_all_bulk_edit(page: Page):
     expect(second_row_protocol_cell).to_contain_text(
         LIBRARY_PROTOCOL_TEXT, timeout=15000
     )
+
+    # Select the first row and delete it -- exercises the
+    # request-editor-delete-rows tracked event (confirm-dialog-gated) on
+    # both open and confirm.
+    _row_cell(first_row, "selected").locator('input[type="checkbox"]').check()
+
+    delete_button = page.locator("button", has_text="Delete Selected")
+    expect(delete_button).to_be_enabled(timeout=5000)
+    delete_button.click()
+
+    delete_confirm = page.locator(".confirm-overlay", has_text="permanently remove")
+    expect(delete_confirm).to_be_visible()
+    delete_confirm.locator(".confirm-footer .popup-button.yes-button").click()
+    expect(delete_confirm).to_have_count(0, timeout=5000)
+    expect(rows).to_have_count(1, timeout=15000)

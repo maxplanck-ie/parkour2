@@ -62,3 +62,10 @@ def test_run_statistics_shows_uploaded_matrix_data(page: Page):
     expect(row).to_contain_text("150.0")
     expect(row).to_contain_text("155000000.00")
     expect(row).to_contain_text("5000000")
+
+
+def test_run_statistics_export_stub():
+    # run-statistics-export tracked event: deferred with the other export
+    # flows (library-preparation/flowcell/sequences-statistics/libraries
+    # -samples exports) -- no coverage yet. Stub kept as a marker.
+    pass

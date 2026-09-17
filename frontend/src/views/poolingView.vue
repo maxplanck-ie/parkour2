@@ -1039,6 +1039,11 @@ export default {
         return;
       }
 
+      trackModalOpen(
+        "pooling-return-to-index-generator",
+        "Return Pool to Index Generator"
+      );
+
       this.createPopupWindow(
         "Return Pool to Index Generator",
         `Are you sure you want to return the pool <span style="font-weight: bold">'${poolName}'</span> to Index Generator? This removes the pool and makes its records available in the Index Generator.`,
@@ -1052,6 +1057,10 @@ export default {
             showNotification(
               "Pool returned to Index Generator successfully.",
               "success"
+            );
+            trackModalSave(
+              "pooling-return-to-index-generator",
+              `Pool '${poolName}' returned to Index Generator`
             );
             this.showPopupWindow = false;
             await this.getLibrariesSamples();
