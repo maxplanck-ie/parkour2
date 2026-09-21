@@ -68,7 +68,7 @@ numpy==2.5.3
     #   pandas
 openpyxl==3.1.5
     # via -r backend/requirements/base.in
-pandas==3.0.5
+pandas==3.0.6
     # via -r backend/requirements/base.in
 pillow==12.3.0
     # via fpdf2
