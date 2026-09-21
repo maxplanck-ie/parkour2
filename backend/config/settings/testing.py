@@ -1,3 +1,21 @@
+import warnings
+
+## Suppress warnings that are expected/known in the test environment:
+## - RuntimeWarning: naive datetime when time zone support is active (test
+##   fixtures intentionally use naive datetimes).
+## - DeprecationWarning from fpdf2 (arial font substitution, deprecated `ln`
+##   cell parameter).
+## Must be set BEFORE any Django apps are loaded (before base import).
+warnings.filterwarnings(
+    "ignore", category=RuntimeWarning, message=".*received a naive datetime.*"
+)
+warnings.filterwarnings(
+    "ignore", category=DeprecationWarning, message=".*Substituting font.*"
+)
+warnings.filterwarnings(
+    "ignore", category=DeprecationWarning, message='.*parameter "ln" is deprecated.*'
+)
+
 from .base import *
 
 DEBUG = True
@@ -41,19 +59,29 @@ LOGGING["handlers"] = {
 
 LOGGING["loggers"] = {
     "django.request": {
-        "handlers": ["rich_console"],
+        "handlers": [],
         "level": "ERROR",
-        "propagate": True,
+        "propagate": False,
     },
     "django": {
-        "handlers": ["rich_console"],
+        "handlers": [],
         "propagate": False,
     },
     "django.db.backends": {
-        "handlers": ["rich_console"],
+        "handlers": [],
         "propagate": False,
     },
     "db": {
-        "handlers": ["rich_console"],
+        "handlers": [],
+    },
+    "requests.packages.urllib3": {
+        "handlers": [],
+        "level": "ERROR",
+        "propagate": False,
+    },
+    "fPDF": {
+        "handlers": [],
+        "level": "ERROR",
+        "propagate": False,
     },
 }
