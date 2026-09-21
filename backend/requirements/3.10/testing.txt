@@ -26,11 +26,11 @@ attrs==26.1.0
     #   -c backend/requirements/3.10/dev.txt
     #   jsonschema
     #   referencing
-boto3==1.43.93
+boto3==1.43.98
     # via
     #   -c backend/requirements/3.10/dev.txt
     #   -r backend/requirements/dev.in
-botocore==1.43.93
+botocore==1.43.98
     # via
     #   -c backend/requirements/3.10/dev.txt
     #   boto3
@@ -205,7 +205,7 @@ fpdf2==2.8.8
     # via
     #   -c backend/requirements/3.10/dev.txt
     #   -r backend/requirements/base.in
-greenlet==3.5.5
+greenlet==3.5.6
     # via playwright
 grimp==3.17
     # via
@@ -219,11 +219,11 @@ h11==0.16.0 ; sys_platform != 'emscripten'
     # via
     #   -c backend/requirements/3.10/dev.txt
     #   httpcore2
-httpcore2==2.12.0 ; sys_platform != 'emscripten'
+httpcore2==2.13.0 ; sys_platform != 'emscripten'
     # via
     #   -c backend/requirements/3.10/dev.txt
     #   httpx2
-httpx2==2.12.0
+httpx2==2.13.0
     # via
     #   -c backend/requirements/3.10/dev.txt
     #   openai
@@ -231,7 +231,7 @@ httpx2-jsfetch==1.0 ; python_full_version >= '3.12' and sys_platform == 'emscrip
     # via
     #   -c backend/requirements/3.10/dev.txt
     #   httpx2
-idna==3.19
+idna==3.20
     # via
     #   -c backend/requirements/3.10/dev.txt
     #   anyio
@@ -330,7 +330,7 @@ numpy==2.5.3 ; python_full_version >= '3.12'
     #   contourpy
     #   matplotlib
     #   pandas
-openai==3.13.0
+openai==3.16.2
     # via
     #   -c backend/requirements/3.10/dev.txt
     #   -r backend/requirements/dev.in
@@ -349,7 +349,7 @@ pandas==2.3.3 ; python_full_version < '3.12'
     #   -c backend/requirements/3.10/dev.txt
     #   -r backend/requirements/base.in
     #   -r backend/requirements/dev.in
-pandas==3.0.5 ; python_full_version >= '3.12'
+pandas==3.0.6 ; python_full_version >= '3.12'
     # via
     #   -c backend/requirements/3.10/dev.txt
     #   -r backend/requirements/base.in
@@ -367,7 +367,7 @@ pillow==12.3.0
     #   -c backend/requirements/3.10/dev.txt
     #   fpdf2
     #   matplotlib
-playwright==1.62.0
+playwright==1.63.0
     # via pytest-playwright
 pluggy==1.6.0
     # via
@@ -414,7 +414,7 @@ pygments==2.21.0
     #   ipython-pygments-lexers
     #   pytest
     #   rich
-pyparsing==3.3.2
+pyparsing==3.3.3
     # via
     #   -c backend/requirements/3.10/dev.txt
     #   matplotlib
@@ -434,7 +434,7 @@ pytest-django==4.14.0
     # via -r backend/requirements/testing.in
 pytest-playwright==0.9.0
     # via -r backend/requirements/testing.in
-pytest-rerunfailures==16.6.1
+pytest-rerunfailures==16.7
     # via -r backend/requirements/testing.in
 pytest-xdist==3.8.0
     # via -r backend/requirements/testing.in
@@ -589,12 +589,12 @@ uritemplate==4.2.0
     # via
     #   -c backend/requirements/3.10/dev.txt
     #   drf-spectacular
-urllib3==2.7.0
+urllib3==2.8.0
     # via
     #   -c backend/requirements/3.10/dev.txt
     #   botocore
     #   requests
-wcwidth==0.8.3
+wcwidth==0.8.4
     # via
     #   -c backend/requirements/3.10/dev.txt
     #   prompt-toolkit
