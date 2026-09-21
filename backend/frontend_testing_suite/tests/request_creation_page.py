@@ -137,8 +137,8 @@ def test_create_new_request_end_to_end(page: Page):
     # gated behind a "Switch record type?" confirm dialog (clearing the
     # draft table is destructive), exercising the request-editor-toggle-mode
     # tracked event on both open and confirm.
-    record_type_switch = page.locator(".record-type-switch input")
-    record_type_switch.check(force=True)
+    record_type_slider = page.locator(".record-type-switch .slider")
+    record_type_slider.click()
 
     toggle_confirm = page.locator(".confirm-overlay", has_text="Switch record type?")
     expect(toggle_confirm).to_be_visible()
@@ -149,7 +149,7 @@ def test_create_new_request_end_to_end(page: Page):
     # Switch back to Library mode -- no draft rows exist yet, so this
     # applies immediately with no confirm dialog -- then re-add the row the
     # rest of the test expects.
-    record_type_switch.uncheck(force=True)
+    record_type_slider.click()
     page.get_by_test_id("add-records-button").click()
     expect(row).to_have_count(1, timeout=15000)
 
