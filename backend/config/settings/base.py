@@ -1,4 +1,13 @@
 import os
+import warnings
+
+## Suppress expected warnings that occur during test fixture loading
+## (must be at module level before Django models are imported)
+warnings.filterwarnings(
+    "ignore", category=RuntimeWarning, message=".*received a naive datetime.*"
+)
+warnings.filterwarnings("ignore", message=".*Substituting font.*")
+warnings.filterwarnings("ignore", message='.*parameter "ln" is deprecated.*')
 
 import dj_database_url
 

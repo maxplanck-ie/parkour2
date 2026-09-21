@@ -307,7 +307,7 @@ deploy-rsnapshot: ensure-media-dir
 djtest:  ## Run Backend tests (reuse running container when available)
 	@if docker compose ps --status running --services | grep -q '^parkour2-django$$'; then \
 		echo "Info: Reusing running parkour2-django container for tests."; \
-		docker compose exec parkour2-django python manage.py test --parallel --failfast; \
+		docker compose exec -e DJANGO_SETTINGS_MODULE=config.settings.testing -e PYTHONWARNINGS="ignore::RuntimeWarning:django.db.models.fields::1671,ignore::DeprecationWarning::fpdf2" parkour2-django python manage.py test --parallel --failfast; \
 	else \
 		echo "Info: parkour2-django is not running, redeploying test stack first."; \
 		$(MAKE) down set-testing deploy-webapp clean; \
