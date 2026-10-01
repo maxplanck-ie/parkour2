@@ -26,11 +26,11 @@ attrs==26.1.0
     #   -c backend/requirements/3.11/dev.txt
     #   jsonschema
     #   referencing
-boto3==1.43.98
+boto3==1.43.103
     # via
     #   -c backend/requirements/3.11/dev.txt
     #   -r backend/requirements/dev.in
-botocore==1.43.98
+botocore==1.43.103
     # via
     #   -c backend/requirements/3.11/dev.txt
     #   boto3
@@ -64,7 +64,7 @@ contourpy==1.4.0 ; python_full_version >= '3.12'
     # via
     #   -c backend/requirements/3.11/dev.txt
     #   matplotlib
-coverage==7.16.1
+coverage==7.16.2
     # via pytest-cov
 cryptography==50.0.1
     # via
@@ -162,7 +162,7 @@ django-simple-history==3.13.0
     # via
     #   -c backend/requirements/3.11/dev.txt
     #   -r backend/requirements/base.in
-django-sql-explorer==5.3
+django-sql-explorer==5.3.1
     # via
     #   -c backend/requirements/3.11/dev.txt
     #   -r backend/requirements/dev.in
@@ -185,7 +185,7 @@ executing==2.2.1
     # via
     #   -c backend/requirements/3.11/dev.txt
     #   stack-data
-fonttools==4.65.0
+fonttools==4.66.0
     # via
     #   -c backend/requirements/3.11/dev.txt
     #   fpdf2
@@ -208,11 +208,11 @@ h11==0.16.0 ; sys_platform != 'emscripten'
     # via
     #   -c backend/requirements/3.11/dev.txt
     #   httpcore2
-httpcore2==2.13.0 ; sys_platform != 'emscripten'
+httpcore2==2.13.1 ; sys_platform != 'emscripten'
     # via
     #   -c backend/requirements/3.11/dev.txt
     #   httpx2
-httpx2==2.13.0
+httpx2==2.13.1
     # via
     #   -c backend/requirements/3.11/dev.txt
     #   openai
@@ -311,7 +311,7 @@ numpy==2.5.3 ; python_full_version >= '3.12'
     #   contourpy
     #   matplotlib
     #   pandas
-openai==3.16.2
+openai==3.19.2
     # via
     #   -c backend/requirements/3.11/dev.txt
     #   -r backend/requirements/dev.in
@@ -433,7 +433,7 @@ python-docx==1.2.0
     #   -r backend/requirements/base.in
 python-slugify==8.0.4
     # via pytest-playwright
-pytz==2026.3.post1 ; python_full_version < '3.12'
+pytz==2026.4 ; python_full_version < '3.12'
     # via
     #   -c backend/requirements/3.11/dev.txt
     #   pandas
@@ -486,7 +486,7 @@ sql-metadata==3.0.1
     # via
     #   -c backend/requirements/3.11/dev.txt
     #   -r backend/requirements/dev.in
-sqlglot==30.18.0
+sqlglot==30.20.0
     # via
     #   -c backend/requirements/3.11/dev.txt
     #   sql-metadata
@@ -562,11 +562,11 @@ urllib3==2.8.0
     #   -c backend/requirements/3.11/dev.txt
     #   botocore
     #   requests
-wcwidth==0.8.4
+wcwidth==0.9.1
     # via
     #   -c backend/requirements/3.11/dev.txt
     #   prompt-toolkit
-werkzeug==3.1.8
+werkzeug==3.1.9
     # via
     #   -c backend/requirements/3.11/dev.txt
     #   -r backend/requirements/dev.in
