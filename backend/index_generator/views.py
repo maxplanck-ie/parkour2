@@ -3,6 +3,7 @@ import json
 import logging
 
 from common.mixins import LibrarySampleMultiEditMixin
+from common.utils import hamming_distance
 from django.apps import apps
 from django.conf import settings
 from django.db.models import Prefetch, Q
@@ -73,6 +74,36 @@ class PoolSizeViewSet(viewsets.ReadOnlyModelViewSet):
 
     queryset = PoolSize.objects.all().filter(archived=False)
     serializer_class = PoolSizeSerializer
+
+
+MIN_HAMMING_DISTANCE = 3  # 2 * (1 allowed mismatch) + 1, platform default
+
+
+def compute_index_warnings(records):
+    """
+    Pairwise Hamming distances per index read (i7 vs i7, i5 vs i5) between
+    all records of a pool. Only pairs closer than MIN_HAMMING_DISTANCE are
+    reported, keyed symmetrically by record pk:
+    {pk: {other_pk: {"distance": d, "index_read": "i7" | "i5"}}}.
+    If both reads of a pair are too close, the closer one is reported.
+    """
+    warnings = {}
+    for i, a in enumerate(records):
+        for b in records[i + 1 :]:
+            worst = None
+            for read in ("i7", "i5"):
+                seq_a, seq_b = a[f"index_{read}"], b[f"index_{read}"]
+                if not seq_a or not seq_b:
+                    continue
+                d = hamming_distance(seq_a, seq_b)
+                if d < MIN_HAMMING_DISTANCE and (worst is None or d < worst[0]):
+                    worst = (d, read)
+            if worst is None:
+                continue
+            entry = {"distance": worst[0], "index_read": worst[1]}
+            warnings.setdefault(str(a["pk"]), {})[str(b["pk"])] = entry
+            warnings.setdefault(str(b["pk"]), {})[str(a["pk"])] = dict(entry)
+    return warnings
 
 
 class IndexGeneratorViewSet(viewsets.ViewSet, LibrarySampleMultiEditMixin):
@@ -376,4 +407,8 @@ class IndexGeneratorViewSet(viewsets.ViewSet, LibrarySampleMultiEditMixin):
         pool.libraries.add(*library_ids)
         pool.samples.add(*sample_ids)
 
-        return Response({"success": True})
+        warnings = compute_index_warnings(libraries + samples)
+        pool.index_warnings = warnings
+        pool.save(update_fields=["index_warnings"])
+
+        return Response({"success": True, "warnings": warnings})

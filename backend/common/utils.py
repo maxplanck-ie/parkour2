@@ -133,3 +133,19 @@ def cast_index_number(index_number):
         if "v" in index_number.lower()
         else int(index_number)
     )
+
+
+def hamming_distance(a, b):
+    """
+    Number of differing positions between two index sequences. Compares only
+    the overlapping prefix (`zip` truncates), which matches how a sequencer
+    scores indices of unequal length: it can only compare cycles both share.
+
+    >>> hamming_distance("AAAA", "AAAT")
+    1
+    >>> hamming_distance("ACGT", "ACGT")
+    0
+    >>> hamming_distance("AAAAAA", "AAAAAAAA")
+    0
+    """
+    return sum(x != y for x, y in zip(a, b))

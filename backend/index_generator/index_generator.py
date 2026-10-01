@@ -21,7 +21,7 @@ class IndexRegistry:
     Class for storing fetched and sorted indices i7/i5 and index pairs.
     """
 
-    def __init__(self, mode, index_types, start_coord="A1", direction="right"):
+    def __init__(self, index_types, start_coord="A1", direction="right"):
         self.indices = {}
         self.pairs = {}
 
@@ -29,7 +29,6 @@ class IndexRegistry:
         start_coord = start_coord if start_coord else "A1"
         direction = direction if direction else "right"
 
-        self.mode = mode
         self.index_types = index_types
         char_coord, num_coord = self.split_coordinate(start_coord)
 
@@ -52,7 +51,7 @@ class IndexRegistry:
             index_type.indices_i7.all(),
         )
 
-        if self.mode == "dual":
+        if index_type.is_dual:
             self.indices[index_type.pk]["i5"] = self.to_list(
                 index_type.format,
                 index_type.pk,
@@ -75,7 +74,7 @@ class IndexRegistry:
         ).select_related("index1", "index2")
 
         # For dual mode, also ensure index2 is not null
-        if self.mode == "dual":
+        if index_type.is_dual:
             index_pairs = index_pairs.filter(index2__isnull=False)
 
         # Sort index pairs according to the chosen direction
@@ -116,7 +115,7 @@ class IndexRegistry:
                 pair.coordinate,
             )
 
-            if self.mode == "dual":
+            if index_type.is_dual:
                 # Check if pair.index2 is None for dual mode
                 if pair.index2 is None:
                     raise ValueError(
@@ -304,9 +303,7 @@ class IndexGenerator:
 
         index_types = self.validate_index_types(records)
 
-        self.index_registry = IndexRegistry(
-            self.mode, index_types, start_coord, direction
-        )
+        self.index_registry = IndexRegistry(index_types, start_coord, direction)
 
     def validate_index_types(self, records):
         """Check the compatibility of provided libraries and samples."""
@@ -497,7 +494,7 @@ class IndexGenerator:
             index_i7 = idx_dict(IndexI7, object.index_i7, object.index_type, is_library)
             index_i5 = self.index_registry.create_index_dict(is_library=is_library)
 
-            if self.mode == "dual":
+            if object.index_type.is_dual:
                 index_i5 = idx_dict(
                     IndexI5, object.index_i5, object.index_type, is_library
                 )
@@ -530,7 +527,7 @@ class IndexGenerator:
                 self.index_registry.get_indices(sample.index_type.pk, "i7")
             )
             index_i5 = self.index_registry.create_index_dict()
-            if self.mode == "dual":
+            if sample.index_type.is_dual:
                 index_i5 = random.choice(
                     self.index_registry.get_indices(sample.index_type.pk, "i5")
                 )
@@ -578,7 +575,7 @@ class IndexGenerator:
         random.shuffle(indices)
 
         # Ensure uniqueness
-        if self.mode == "single":
+        if not sample.index_type.is_dual:
             indices = [x for x in indices if x["index"] not in indices_in_result]
 
         # Calculate color distribution
@@ -634,10 +631,10 @@ class IndexGenerator:
         random.shuffle(pairs)
 
         # Ensure uniqueness
-        if self.mode == "single":
+        if not sample.index_type.is_dual:
             pairs = [x for x in pairs if (x.index1, x.index2) not in current_pairs]
 
-        if self.mode == "single":
+        if not sample.index_type.is_dual:
             indices_in_result = list(map(lambda x: x[0]["index"], current_pairs))
         else:
             indices_in_result = list(

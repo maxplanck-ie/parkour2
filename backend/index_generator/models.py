@@ -42,6 +42,7 @@ class Pool(DateTimeMixin):
     samples = models.ManyToManyField(Sample, related_name="pool", blank=True)
     comment = models.TextField(verbose_name="Comment", blank=True)
     archived = models.BooleanField("Archived", default=False)
+    index_warnings = models.JSONField("Index warnings", default=dict, blank=True)
 
     # def get_size(self):
     #     size = 0

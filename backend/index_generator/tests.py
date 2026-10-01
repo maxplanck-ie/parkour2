@@ -433,21 +433,21 @@ class TestIndexRegistry(BaseTestCase):
             index_pair.save()
 
     def test_format_tube(self):
-        index_registry = IndexRegistry("single", [self.index_type1])
+        index_registry = IndexRegistry([self.index_type1])
         self.assertEqual(len(index_registry.indices.keys()), 1)
         self.assertIn(self.index_type1.pk, index_registry.indices.keys())
         self.assertEqual(len(index_registry.indices[self.index_type1.pk]["i7"]), 6)
         self.assertEqual(len(index_registry.indices[self.index_type1.pk]["i5"]), 0)
 
     def test_format_plate_mode_single(self):
-        index_registry = IndexRegistry("single", [self.index_type3])
+        index_registry = IndexRegistry([self.index_type3])
         pairs = index_registry.pairs[self.index_type3.pk]
         self.assertEqual(len(pairs), 6)
         coordinates = [x.coordinate for x in pairs]
         self.assertEqual(coordinates, ["A1", "A2", "A3", "B1", "B2", "B3"])
 
     def test_format_plate_mode_dual(self):
-        index_registry = IndexRegistry("dual", [self.index_type2])
+        index_registry = IndexRegistry([self.index_type2])
         pairs = index_registry.pairs[self.index_type2.pk]
         self.assertEqual(len(pairs), 25)
         coordinates = [x.coordinate for x in pairs][:10]
@@ -456,11 +456,11 @@ class TestIndexRegistry(BaseTestCase):
         )
 
     # def test_format_plate_filter_by_start_coord(self):
-    #     index_registry = IndexRegistry('dual', [self.index_type2], 'B3')
+    #     index_registry = IndexRegistry([self.index_type2], 'B3')
     #     self.assertEqual(len(index_registry.pairs[self.index_type2.pk]), 18)
 
     def test_format_plate_direction_right(self):
-        index_registry = IndexRegistry("dual", [self.index_type2], "C3", "right")
+        index_registry = IndexRegistry([self.index_type2], "C3", "right")
         coordinates = [x.coordinate for x in index_registry.pairs[self.index_type2.pk]][
             :5
         ]
@@ -468,7 +468,7 @@ class TestIndexRegistry(BaseTestCase):
         self.assertEqual(coordinates, ["C3", "C4", "C5", "D1", "D2"])
 
     def test_format_plate_direction_down(self):
-        index_registry = IndexRegistry("dual", [self.index_type2], "C3", "down")
+        index_registry = IndexRegistry([self.index_type2], "C3", "down")
         coordinates = [x.coordinate for x in index_registry.pairs[self.index_type2.pk]][
             :5
         ]
@@ -476,7 +476,7 @@ class TestIndexRegistry(BaseTestCase):
         self.assertEqual(coordinates, ["C3", "D3", "E3", "A4", "B4"])
 
     def test_format_plate_direction_diagonal(self):
-        index_registry = IndexRegistry("dual", [self.index_type2], "B4", "diagonal")
+        index_registry = IndexRegistry([self.index_type2], "B4", "diagonal")
         coordinates = [x.coordinate for x in index_registry.pairs[self.index_type2.pk]][
             :8
         ]
@@ -485,12 +485,12 @@ class TestIndexRegistry(BaseTestCase):
 
     def test_invalid_start_coordinate(self):
         with self.assertRaises(ValueError) as context:
-            IndexRegistry("dual", [self.index_type2], "test")
+            IndexRegistry([self.index_type2], "test")
         self.assertEqual(str(context.exception), "Invalid start coordinate.")
 
     def test_no_index_pairs(self):
         with self.assertRaises(ValueError) as context:
-            IndexRegistry("dual", [self.index_type2], "Z50")
+            IndexRegistry([self.index_type2], "Z50")
         self.assertIn("No index pairs", str(context.exception))
 
 
@@ -1523,6 +1523,56 @@ class TestIndexGenerator(BaseTestCase):
             data["message"],
             "Index Type must be set " + "for all libraries and samples.",
         )
+
+    def _save_mixed_pool(self, single_i7, dual_i7, dual_i5):
+        library = create_library(
+            get_random_name(),
+            read_length=self.read_length,
+            index_type=self.index_type1,
+        )
+        sample = create_sample(
+            get_random_name(),
+            read_length=self.read_length,
+            index_type=self.index_type2,
+        )
+        response = self.client.post(
+            "/api/index_generator/save_pool/",
+            {
+                "pool_size_id": self.pool_size.pk,
+                "libraries": json.dumps(
+                    [{"pk": library.pk, "index_i7": single_i7, "index_i5": ""}]
+                ),
+                "samples": json.dumps(
+                    [{"pk": sample.pk, "index_i7": dual_i7, "index_i5": dual_i5}]
+                ),
+            },
+        )
+        return library, sample, response
+
+    def test_save_pool_mixed_single_dual_warns_on_close_indices(self):
+        """Mixed single/dual pool is saved; close i7 indices are flagged."""
+        library, sample, response = self._save_mixed_pool(
+            "GTAAAT", "GTAAAA", "TCGGCC"
+        )
+        self.assertEqual(response.status_code, 200)
+        data = response.json()
+        self.assertTrue(data["success"])
+        expected = {"distance": 1, "index_read": "i7"}
+        self.assertEqual(
+            data["warnings"],
+            {
+                str(library.pk): {str(sample.pk): expected},
+                str(sample.pk): {str(library.pk): expected},
+            },
+        )
+        pool = Pool.objects.get()
+        self.assertEqual(pool.index_warnings, data["warnings"])
+
+    def test_save_pool_mixed_single_dual_no_warnings_when_distant(self):
+        """Mixed single/dual pool with distant indices yields empty warnings."""
+        _, _, response = self._save_mixed_pool("GTAAAT", "TACGTT", "TCGGCC")
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json()["warnings"], {})
 
     def test_mixed_single_dual_indices(self):
         """

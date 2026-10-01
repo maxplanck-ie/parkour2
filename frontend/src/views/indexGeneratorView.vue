@@ -1036,12 +1036,6 @@ export default {
         return false;
       }
 
-      const firstMeta = this.indexTypeMeta(first[fields.indexType]);
-      const rowMeta = this.indexTypeMeta(row[fields.indexType]);
-      if (firstMeta && rowMeta && firstMeta.is_dual !== rowMeta.is_dual) {
-        return false;
-      }
-
       return true;
     },
     syncPoolRowFromRecord(row) {
@@ -1744,16 +1738,6 @@ export default {
           String(incompatibleRow[fields.readLength] || "")
         ) {
           showNotification("Read lengths must be the same.", "warning");
-          return false;
-        }
-
-        const firstMeta = this.indexTypeMeta(first[fields.indexType]);
-        const rowMeta = this.indexTypeMeta(incompatibleRow[fields.indexType]);
-        if (firstMeta && rowMeta && firstMeta.is_dual !== rowMeta.is_dual) {
-          showNotification(
-            "Pooling of dual and single indices is not allowed.",
-            "warning"
-          );
         }
         return false;
       }
