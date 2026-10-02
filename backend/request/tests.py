@@ -146,6 +146,28 @@ class RequestMilestoneSignalsTest(TestCase):
         self.request.libraries.add(self.library)
         self.request.samples.add(self.sample)
 
+    def test_submitted_timestamp_set_once(self):
+        first_event_time = timezone.now()
+
+        with patch("request.signals.timezone.now", return_value=first_event_time):
+            self.library.status = 1
+            self.library.save()
+
+        self.request.refresh_from_db()
+        self.assertEqual(self.request.submitted_at, first_event_time)
+
+        later_event_time = first_event_time + timedelta(hours=1)
+        with patch("request.signals.timezone.now", return_value=later_event_time):
+            self.sample.status = 1
+            self.sample.save()
+
+        self.request.refresh_from_db()
+        self.assertEqual(
+            self.request.submitted_at,
+            first_event_time,
+            "Submitted milestone should only be set by the first record reaching status 1",
+        )
+
     def test_qc_timestamp_set_once(self):
         first_event_time = timezone.now()
 
