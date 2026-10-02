@@ -13,7 +13,7 @@ services:
 
   parkour2-postgres:
     container_name: parkour2-postgres
-    image: postgres:18
+    image: docker.io/library/postgres:18
     env_file:
       - ./misc/parkour.env
     restart: always

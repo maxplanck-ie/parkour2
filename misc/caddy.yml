@@ -1,7 +1,7 @@
 services:
 
   parkour2-caddy:
-    image: caddy:2
+    image: docker.io/library/caddy:2
     container_name: parkour2-caddy
     restart: unless-stopped
     ports:
