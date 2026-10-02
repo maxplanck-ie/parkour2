@@ -3,7 +3,7 @@
 Unreleased
 ==========
 
-- Changed turnaround-time calculation in Usage page box plots from "request approval time to sequencing start" to "request submission time to sequencing start", with backing timestamp (`Request.submitted_at`) now populated automatically when the first library/sample in a request reaches Submitted (status 1). This captures the true start-to-sequencing timeline and avoids depending on PI approval time, which can be much later. Turnaround calculations now use `submitted_at` instead of the `approval` JSON field, and requests without a `submitted_at` are excluded (legacy data before this change). (PR #XXX.)
+- Changed turnaround-time calculation in Usage page box plots from "request approval time to sequencing start" to "request submission time to sequencing start", with backing timestamp (`Request.submitted_at`) now populated automatically when the first library/sample in a request reaches Submitted (status 1). This captures the true start-to-sequencing timeline and avoids depending on PI approval time, which can be much later. Turnaround calculations now use `submitted_at` instead of the `approval` JSON field; existing requests are backfilled from their legacy approval timestamp via migration, and any request with neither are simply excluded. (PR #XXX.)
 
 
 - Added optional self-hosted GoatCounter web analytics, configured per
