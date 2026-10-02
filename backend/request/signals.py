@@ -107,6 +107,7 @@ def sync_related_requests_bidirectionally(
 
 DEFAULT_REFRESH_DELAY = 0.5
 
+SUBMITTED_STATUS = 1
 QC_APPROVED_STATUS = 2
 FLOWCELL_LOADED_STATUS = 5
 
@@ -179,23 +180,25 @@ def cache_status_before_save(sender, instance, **kwargs):
 
 
 def _maybe_update_request_milestones(instance) -> None:
-    previous_status = getattr(instance, "_previous_status", None)
-    current_status = getattr(instance, "status", None)
+    if current_status not in (SUBMITTED_STATUS, QC_APPROVED_STATUS, FLOWCELL_LOADED_STATUS):
+        return
 
-    if current_status not in (QC_APPROVED_STATUS, FLOWCELL_LOADED_STATUS):
+    timestamp_fields = {
+        SUBMITTED_STATUS: "submitted_at",
+        QC_APPROVED_STATUS: "qc_completed_at",
+        FLOWCELL_LOADED_STATUS: "flowcell_loaded_at",
+    }
+    timestamp_field = timestamp_fields.get(current_status)
+    if timestamp_field is None:
         return
 
     if previous_status == current_status:
         return
 
-    timestamp_field = (
-        "qc_completed_at"
-        if current_status == QC_APPROVED_STATUS
-        else "flowcell_loaded_at"
-    )
-
     requests = list(
-        instance.request.all().only("id", "qc_completed_at", "flowcell_loaded_at")
+        instance.request.all().only(
+            "id", "submitted_at", "qc_completed_at", "flowcell_loaded_at"
+        )
     )
     if not requests:
         return

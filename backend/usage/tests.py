@@ -164,11 +164,10 @@ class TestTurnaroundTimeUsageAPI(APITestCase):
         )
 
     def _make_request(self, pi, approved_days_ago, loaded_days_ago):
+        """Create a test request with submitted_at set to the 'approval' days ago."""
         req = Request.objects.create(
             user=self._requester(pi),
-            approval={
-                "TIMESTAMP": (self.now - timedelta(days=approved_days_ago)).isoformat(),
-            },
+            submitted_at=self.now - timedelta(days=approved_days_ago),
         )
         req.flowcell_loaded_at = self.now - timedelta(days=loaded_days_ago)
         req.save()
@@ -200,7 +199,7 @@ class TestTurnaroundTimeUsageAPI(APITestCase):
         self.assertEqual(median, 15)
         self.assertEqual(high, 20)
 
-    def test_skips_requests_without_approval_timestamp(self):
+    def test_skips_requests_without_submitted_at(self):
         req = Request.objects.create(user=self._requester(self.pi_a))
         req.flowcell_loaded_at = self.now
         req.save()

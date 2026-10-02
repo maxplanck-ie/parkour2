@@ -1,6 +1,5 @@
 import statistics
 from collections import Counter
-from datetime import datetime
 
 from common.utils import transliterate_name
 from django.apps import apps
@@ -249,6 +248,7 @@ class TurnaroundTimeUsage(APIView):
         requests = (
             Request.objects.filter(
                 archived=False,
+                submitted_at__isnull=False,
                 flowcell_loaded_at__isnull=False,
                 flowcell_loaded_at__gte=start,
                 flowcell_loaded_at__lte=end,
@@ -260,21 +260,13 @@ class TurnaroundTimeUsage(APIView):
                 ),
                 Prefetch("samples", queryset=samples_qs, to_attr="fetched_samples"),
             )
-            .only("id", "approval", "flowcell_loaded_at", "user__pi__name")
+            .only("id", "submitted_at", "flowcell_loaded_at", "user__pi__name")
         )
 
         groups = {}
         for req in requests:
-            timestamp = (req.approval or {}).get("TIMESTAMP")
-            if not timestamp:
-                continue
-            try:
-                approved_at = datetime.fromisoformat(timestamp)
-            except (TypeError, ValueError):
-                continue
-
             turnaround_days = (
-                req.flowcell_loaded_at - approved_at
+                req.flowcell_loaded_at - req.submitted_at
             ).total_seconds() / 86400
             if turnaround_days < 0:
                 continue

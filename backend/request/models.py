@@ -147,8 +147,14 @@ class Request(DateTimeMixin):
     filepaths = models.JSONField(null=False, default=filepaths_default)
 
     metapaths = models.JSONField(null=False, default=metapaths_default)
-
     approval = models.JSONField(null=False, default=approval_default)
+
+    submitted_at = models.DateTimeField(
+        "Submitted At",
+        null=True,
+        blank=True,
+        help_text="Timestamp of the first record reaching Submitted (status 1)",
+    )
 
     qc_completed_at = models.DateTimeField(
         "QC Completed At",
