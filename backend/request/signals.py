@@ -183,7 +183,11 @@ def _maybe_update_request_milestones(instance) -> None:
     previous_status = getattr(instance, "_previous_status", None)
     current_status = getattr(instance, "status", None)
 
-    if current_status not in (SUBMITTED_STATUS, QC_APPROVED_STATUS, FLOWCELL_LOADED_STATUS):
+    if current_status not in (
+        SUBMITTED_STATUS,
+        QC_APPROVED_STATUS,
+        FLOWCELL_LOADED_STATUS,
+    ):
         return
 
     timestamp_fields = {

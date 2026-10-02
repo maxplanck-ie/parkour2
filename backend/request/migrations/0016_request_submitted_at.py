@@ -24,7 +24,6 @@ def noop_reverse(apps, schema_editor):
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("request", "0015_filerequest_file_type"),
     ]
