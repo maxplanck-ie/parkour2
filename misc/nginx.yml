@@ -1,7 +1,7 @@
 services:
   parkour2-nginx:
     container_name: parkour2-nginx
-    image: nginx:1
+    image: docker.io/library/nginx:1
     ports:
       - "80:80"
       - "443:443"

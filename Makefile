@@ -61,7 +61,7 @@ ensure-media-dir:  ## Create ./media if missing (plain dir locally; a pre-made s
 	fi
 
 deploy-webapp: ensure-media-dir
-	@docker compose --progress=plain build
+	@docker compose build
 	@docker compose --project-name=parkour2 up -d
 	@git checkout docker-compose.yml
 
@@ -305,7 +305,7 @@ deploy-rsnapshot: ensure-media-dir
 
 # --buffer --reverse --timing
 djtest:  ## Run Backend tests (reuse running container when available)
-	@if docker compose ps --status running --services | grep -q '^parkour2-django$$'; then \
+	@if docker ps --filter status=running --format '{{.Names}}' | grep -q '^parkour2-django$$'; then \
 		echo "Info: Reusing running parkour2-django container for tests."; \
 		docker compose exec -e DJANGO_SETTINGS_MODULE=config.settings.testing -e PYTHONWARNINGS="ignore::RuntimeWarning:django.db.models.fields::1671,ignore::DeprecationWarning::fpdf2" parkour2-django python manage.py test --parallel --failfast; \
 	else \
@@ -331,7 +331,7 @@ set-playwright: hardreset-caddyfile-prod
 # 	@docker compose exec parkour2-django pytest -n auto
 
 playwright:  ## Run Frontend tests (reuse running container when available)
-	@if docker compose ps --status running --services | grep -q '^parkour2-django$$'; then \
+	@if docker ps --filter status=running --format '{{.Names}}' | grep -q '^parkour2-django$$'; then \
 		if docker compose exec parkour2-django sh -lc 'command -v pytest > /dev/null && pytest --help | grep -q -- --browser && find /root/.cache/ms-playwright -path "*/firefox/firefox" -type f 2>/dev/null | grep -q .'; then \
 			echo "Info: Reusing running parkour2-django container for Playwright tests."; \
 			$(MAKE) reset-fixtures e2e; \
@@ -371,7 +371,7 @@ create-admin:
 			python manage.py createsuperuser --no-input"
 
 coverage-xml:  ## Run coverage (xml report), reuse running container when available
-	@if docker compose ps --status running --services | grep -q '^parkour2-django$$'; then \
+	@if docker ps --filter status=running --format '{{.Names}}' | grep -q '^parkour2-django$$'; then \
 		echo "Info: Reusing running parkour2-django container for coverage."; \
 	else \
 		echo "Info: parkour2-django is not running, redeploying test stack first."; \
@@ -380,7 +380,7 @@ coverage-xml:  ## Run coverage (xml report), reuse running container when availa
 	@docker compose exec parkour2-django pytest -n auto --cov=./ --cov-config=.coveragerc --cov-report=xml
 
 coverage-html:  ## Run coverage (html report), reuse running container when available
-	@if docker compose ps --status running --services | grep -q '^parkour2-django$$'; then \
+	@if docker ps --filter status=running --format '{{.Names}}' | grep -q '^parkour2-django$$'; then \
 		echo "Info: Reusing running parkour2-django container for coverage."; \
 	else \
 		echo "Info: parkour2-django is not running, redeploying test stack first."; \
@@ -398,7 +398,7 @@ reload-code:  ## Gracefully ship small code updates into production Backend
 	@docker compose exec -it parkour2-django kill -1 1
 
 reload-ux:  ## Gracefully ship small code updates into production Frontend
-	@if docker compose ps --status running --services | grep -q '^parkour2-vite$$'; then \
+	@if docker ps --filter status=running --format '{{.Names}}' | grep -q '^parkour2-vite$$'; then \
 		docker compose exec parkour2-vite sh -lc "npm run build"; \
 	else \
 		echo "Info: parkour2-vite was not running, restarting container instead."; \
