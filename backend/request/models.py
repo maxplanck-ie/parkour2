@@ -156,20 +156,6 @@ class Request(DateTimeMixin):
         help_text="Timestamp of the first record reaching Submitted (status 1)",
     )
 
-    qc_completed_at = models.DateTimeField(
-        "QC Completed At",
-        null=True,
-        blank=True,
-        help_text="Timestamp of the first record reaching Quality Check Approved (status 2)",
-    )
-
-    flowcell_loaded_at = models.DateTimeField(
-        "Loaded Onto Flowcell At",
-        null=True,
-        blank=True,
-        help_text="Timestamp of the first record reaching Sequencing (status 5)",
-    )
-
     def __str__(self):
         return self.name
 

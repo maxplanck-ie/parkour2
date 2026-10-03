@@ -3,7 +3,7 @@ from collections import Counter
 
 from common.utils import transliterate_name
 from django.apps import apps
-from django.db.models import Prefetch
+from django.db.models import Min, Prefetch, Q
 from django.utils import timezone
 from rest_framework.permissions import IsAdminUser
 from rest_framework.response import Response
@@ -246,12 +246,17 @@ class TurnaroundTimeUsage(APIView):
         )
 
         requests = (
-            Request.objects.filter(
+            Request.objects.annotate(
+                first_flowcell_at=Min(
+                    "flowcell__create_time", filter=Q(flowcell__archived=False)
+                )
+            )
+            .filter(
                 archived=False,
                 submitted_at__isnull=False,
-                flowcell_loaded_at__isnull=False,
-                flowcell_loaded_at__gte=start,
-                flowcell_loaded_at__lte=end,
+                first_flowcell_at__isnull=False,
+                first_flowcell_at__gte=start,
+                first_flowcell_at__lte=end,
             )
             .select_related("user", "user__pi")
             .prefetch_related(
@@ -260,13 +265,13 @@ class TurnaroundTimeUsage(APIView):
                 ),
                 Prefetch("samples", queryset=samples_qs, to_attr="fetched_samples"),
             )
-            .only("id", "submitted_at", "flowcell_loaded_at", "user__pi__name")
+            .only("id", "submitted_at", "user__pi__name")
         )
 
         groups = {}
         for req in requests:
             turnaround_days = (
-                req.flowcell_loaded_at - req.submitted_at
+                req.first_flowcell_at - req.submitted_at
             ).total_seconds() / 86400
             if turnaround_days < 0:
                 continue

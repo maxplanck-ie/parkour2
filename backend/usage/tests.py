@@ -7,6 +7,7 @@ from rest_framework.test import APITestCase
 
 from common.models import Organization, PrincipalInvestigator
 from library.models import Library
+from flowcell.models import Flowcell, Sequencer
 from library_sample_shared.models import AnalysisType
 from request.models import Request
 
@@ -153,6 +154,10 @@ class TestTurnaroundTimeUsageAPI(APITestCase):
 
         self.now = timezone.now()
         self._requester_count = 0
+        self.sequencer = Sequencer.objects.create(
+            name="Sequencer", lanes=1, lane_capacity=100
+        )
+        self._flowcell_count = 0
 
     def _requester(self, pi):
         self._requester_count += 1
@@ -163,14 +168,29 @@ class TestTurnaroundTimeUsageAPI(APITestCase):
             pi=pi,
         )
 
+    def _add_flowcell(self, req, days_ago, archived=False):
+        """Attach a flowcell to req, with create_time set to days_ago."""
+        self._flowcell_count += 1
+        flowcell = Flowcell.objects.create(
+            flowcell_id=f"FC{self._flowcell_count}",
+            sequencer=self.sequencer,
+            archived=archived,
+        )
+        # create_time is auto_now_add, so backdate it with a queryset update.
+        Flowcell.objects.filter(pk=flowcell.pk).update(
+            create_time=self.now - timedelta(days=days_ago)
+        )
+        flowcell.requests.add(req)
+        return flowcell
+
     def _make_request(self, pi, approved_days_ago, loaded_days_ago):
-        """Create a test request with submitted_at set to the 'approval' days ago."""
+        """Create a request submitted approved_days_ago, on a flowcell loaded
+        loaded_days_ago."""
         req = Request.objects.create(
             user=self._requester(pi),
             submitted_at=self.now - timedelta(days=approved_days_ago),
         )
-        req.flowcell_loaded_at = self.now - timedelta(days=loaded_days_ago)
-        req.save()
+        self._add_flowcell(req, loaded_days_ago)
         return req
 
     def _date_range_params(self, group_by=None):
@@ -201,8 +221,7 @@ class TestTurnaroundTimeUsageAPI(APITestCase):
 
     def test_skips_requests_without_submitted_at(self):
         req = Request.objects.create(user=self._requester(self.pi_a))
-        req.flowcell_loaded_at = self.now
-        req.save()
+        self._add_flowcell(req, days_ago=0)
 
         response = self.client.get(
             reverse("turnaround-time-usage"), self._date_range_params()
@@ -244,6 +263,39 @@ class TestTurnaroundTimeUsageAPI(APITestCase):
         self.assertEqual(len(response.data), 1)
         self.assertEqual(response.data[0]["name"], "RNA-seq")
         self.assertEqual(response.data[0]["data"][2], 10)
+
+    def test_uses_earliest_flowcell(self):
+        req = self._make_request(self.pi_a, approved_days_ago=30, loaded_days_ago=20)
+        self._add_flowcell(req, days_ago=5)
+
+        response = self.client.get(
+            reverse("turnaround-time-usage"), self._date_range_params()
+        )
+        self.assertEqual(response.data[0]["data"][2], 10)
+
+    def test_ignores_archived_flowcells(self):
+        req = Request.objects.create(
+            user=self._requester(self.pi_a),
+            submitted_at=self.now - timedelta(days=30),
+        )
+        self._add_flowcell(req, days_ago=20, archived=True)
+        self._add_flowcell(req, days_ago=10)
+
+        response = self.client.get(
+            reverse("turnaround-time-usage"), self._date_range_params()
+        )
+        self.assertEqual(response.data[0]["data"][2], 20)
+
+    def test_skips_requests_without_flowcell(self):
+        Request.objects.create(
+            user=self._requester(self.pi_a),
+            submitted_at=self.now - timedelta(days=30),
+        )
+
+        response = self.client.get(
+            reverse("turnaround-time-usage"), self._date_range_params()
+        )
+        self.assertEqual(response.data, [])
 
     def test_non_staff_user_is_forbidden(self):
         self.client.logout()

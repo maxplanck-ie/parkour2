@@ -3,7 +3,6 @@ import json
 from common.tests import BaseTestCase
 from common.utils import get_random_name
 from django.urls import reverse
-from django.utils import timezone
 from index_generator.tests import create_pool
 from library_sample_shared.models import ReadLength
 from library.tests import create_library
@@ -659,7 +658,6 @@ class TestFlowcell(BaseTestCase):
 
         request = create_request(self.user)
         request.sequenced = True
-        request.flowcell_loaded_at = timezone.now()
         request.save()
 
         library = create_library(get_random_name(), 5)
@@ -699,7 +697,6 @@ class TestFlowcell(BaseTestCase):
         self.assertEqual(library.status, 4)
         self.assertEqual(sample.status, 4)
         self.assertFalse(request.sequenced)
-        self.assertIsNone(request.flowcell_loaded_at)
 
     def test_destroy_flowcell_allows_sequencing_libraries(self):
         """Ensure status 5 libraries can be returned from a destroyed flowcell."""
@@ -797,7 +794,6 @@ class TestFlowcell(BaseTestCase):
     def create_flowcell_with_pool_records(self, libraries=None, samples=None):
         request = create_request(self.user)
         request.sequenced = True
-        request.flowcell_loaded_at = timezone.now()
         request.save()
 
         libraries = libraries or []

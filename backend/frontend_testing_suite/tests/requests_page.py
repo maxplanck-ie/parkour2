@@ -148,7 +148,7 @@ def _ro_crate_preview_payload():
                     "description": "Preview request description",
                     "additionalProperty": [
                         {"@id": "#request-101-name"},
-                        {"@id": "#request-101-qc-completed-at"},
+                        {"@id": "#request-101-submitted-at"},
                     ],
                 },
                 {
@@ -167,9 +167,9 @@ def _ro_crate_preview_payload():
                     "requestContext": {"@id": "#request-context-101"},
                 },
                 {
-                    "@id": "#request-101-qc-completed-at",
+                    "@id": "#request-101-submitted-at",
                     "@type": "PropertyValue",
-                    "name": "request_qc_completed_at",
+                    "name": "request_submitted_at",
                     "value": "2026-04-02T12:00:00Z",
                 },
                 {
@@ -465,7 +465,7 @@ def test_ro_crate_preview_opens_with_expected_api_params(page: Page):
         preview_overlay.get_by_text("Request 1: 101_ROCrate Request")
     ).to_be_visible()
     expect(preview_overlay.get_by_text("Preview request description")).to_be_visible()
-    expect(preview_overlay.get_by_text("QC Completed At", exact=True)).to_have_count(0)
+    expect(preview_overlay.get_by_text("Submitted At", exact=True)).to_have_count(0)
     expect(preview_overlay.get_by_text("Request 2: 102_Second Request")).to_be_visible()
     expect(preview_overlay.get_by_text("Library: Delivered library")).to_be_visible()
     expect(preview_overlay.get_by_text("Sample: Second sample")).to_be_visible()
