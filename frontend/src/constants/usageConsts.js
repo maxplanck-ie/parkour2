@@ -1,6 +1,20 @@
-// Whole Usage page shares this 3-color palette: purple/orange for the
-// "Libraries"/"Samples" split on stacked charts, green for boxplot charts.
-export const USAGE_CHART_COLORS = ["#8064A2", "#FAA43A", "#60A060"];
+// Whole Usage page shares this palette: purple/orange for the
+// "Libraries"/"Samples" split on stacked charts, lifecycle teal for the
+// all-records boxplot charts. Boxplot lines/outliers are always black.
+export const USAGE_CHART_COLORS = ["#8064A2", "#FAA43A", "#006c66"];
+const BOXPLOT_LINE_COLOR = "#000000";
+
+export const USAGE_RECORD_TYPES = [
+  { value: "all", label: "All records" },
+  { value: "libraries", label: "Libraries" },
+  { value: "samples", label: "Samples" }
+];
+
+const BOXPLOT_FILL_BY_RECORD_TYPE = {
+  all: USAGE_CHART_COLORS[2],
+  libraries: USAGE_CHART_COLORS[0],
+  samples: USAGE_CHART_COLORS[1]
+};
 
 const AXIS_LABEL_MAX_CHARS = 18;
 
@@ -27,11 +41,11 @@ export const USAGE_CHARTS = [
     stacked: true
   },
   {
-    key: "turnaroundPrincipalInvestigator",
-    title: "Turnaround Time by PI (days)",
+    key: "turnaroundSequencer",
+    title: "Turnaround Time by Sequencer (days)",
     endpoint: "api/usage/turnaround_time/",
     type: "boxplot",
-    extraParams: { group_by: "pi" }
+    extraParams: { group_by: "sequencer" }
   },
   {
     key: "turnaroundAnalysisType",
@@ -56,17 +70,19 @@ export function usageChartTotal(chartDef, data) {
   }, 0);
 }
 
-export function buildUsageChartOption(chartDef, data) {
+export function buildUsageChartOption(chartDef, data, recordType = "all") {
   const names = data.map((row) => row.name);
 
   let series;
   if (chartDef.type === "boxplot") {
+    const boxplotFill =
+      BOXPLOT_FILL_BY_RECORD_TYPE[recordType] || USAGE_CHART_COLORS[2];
     series = [
       {
         name: chartDef.title,
         type: "boxplot",
         data: data.map((row) => row.data),
-        itemStyle: { color: USAGE_CHART_COLORS[2] }
+        itemStyle: { color: boxplotFill, borderColor: BOXPLOT_LINE_COLOR }
       }
     ];
     const outlierPoints = data.flatMap((row, index) =>
@@ -78,7 +94,7 @@ export function buildUsageChartOption(chartDef, data) {
         type: "scatter",
         data: outlierPoints,
         symbolSize: 6,
-        itemStyle: { color: USAGE_CHART_COLORS[2] }
+        itemStyle: { color: BOXPLOT_LINE_COLOR }
       });
     }
   } else {
@@ -97,7 +113,9 @@ export function buildUsageChartOption(chartDef, data) {
         data: data.map((row) => row.samples || 0),
         color: USAGE_CHART_COLORS[1]
       }
-    ];
+    ].filter(
+      (item) => recordType === "all" || item.name.toLowerCase() === recordType
+    );
   }
 
   return {
