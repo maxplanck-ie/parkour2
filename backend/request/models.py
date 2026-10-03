@@ -147,21 +147,13 @@ class Request(DateTimeMixin):
     filepaths = models.JSONField(null=False, default=filepaths_default)
 
     metapaths = models.JSONField(null=False, default=metapaths_default)
-
     approval = models.JSONField(null=False, default=approval_default)
 
-    qc_completed_at = models.DateTimeField(
-        "QC Completed At",
+    submitted_at = models.DateTimeField(
+        "Submitted At",
         null=True,
         blank=True,
-        help_text="Timestamp of the first record reaching Quality Check Approved (status 2)",
-    )
-
-    flowcell_loaded_at = models.DateTimeField(
-        "Loaded Onto Flowcell At",
-        null=True,
-        blank=True,
-        help_text="Timestamp of the first record reaching Sequencing (status 5)",
+        help_text="Timestamp of the first record reaching Submitted (status 1)",
     )
 
     def __str__(self):

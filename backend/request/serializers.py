@@ -36,8 +36,6 @@ class RequestSerializer(ModelSerializer):
             "number_of_samples",
             "filepaths",
             "metapaths",
-            "qc_completed_at",
-            "flowcell_loaded_at",
         )
 
     def get_user_full_name(self, obj):
