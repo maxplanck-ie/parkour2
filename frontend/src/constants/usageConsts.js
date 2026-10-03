@@ -74,7 +74,8 @@ export function usageChartTotal(chartDef, data) {
 
 export function buildUsageChartOption(chartDef, data, recordType = "all") {
   const names = data.map((row) => row.name);
-  const isHorizontalBoxplot = chartDef.type === "boxplot" && chartDef.horizontal;
+  const isHorizontalBoxplot =
+    chartDef.type === "boxplot" && chartDef.horizontal;
 
   let series;
   if (chartDef.type === "boxplot") {
