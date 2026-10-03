@@ -73,7 +73,7 @@ export function usageChartTotal(chartDef, data) {
 }
 
 export function buildUsageChartOption(chartDef, data, recordType = "all") {
-  const names = data.map((row) => 
+  const names = data.map((row) =>
     chartDef.type === "boxplot" && row.count !== undefined
       ? `${row.name} (n=${row.count})`
       : row.name
@@ -162,7 +162,7 @@ export function buildUsageChartOption(chartDef, data, recordType = "all") {
             const [min, q1, median, q3, max] = params.data;
             const countMatch = params.name.match(/\(n=(\d+)\)$/);
             const count = countMatch ? countMatch[1] : "?";
-            const nameWithoutCount = countMatch 
+            const nameWithoutCount = countMatch
               ? params.name.slice(0, -countMatch[0].length).trim()
               : params.name;
             return `${nameWithoutCount}<br/>Count: ${count}<br/>Min: ${min}<br/>Q1: ${q1}<br/>Median: ${median}<br/>Q3: ${q3}<br/>Max: ${max}`;
