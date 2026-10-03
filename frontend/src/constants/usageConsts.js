@@ -151,7 +151,8 @@ export function buildUsageChartOption(chartDef, data, recordType = "all") {
       formatter: (params) => {
         if (chartDef.type === "boxplot") {
           if (params.seriesName === "Outliers") {
-            const { name, turnaround_days, request_id, flowcell_id } = params.data;
+            const { name, turnaround_days, request_id, flowcell_id } =
+              params.data;
             return `${name}<br/>Days: ${turnaround_days}<br/>Request: ${request_id}<br/>Flowcell: ${flowcell_id}`;
           } else {
             const [min, q1, median, q3, max] = params.data;
