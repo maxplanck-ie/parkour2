@@ -95,9 +95,15 @@ export function buildUsageChartOption(chartDef, data, recordType = "all") {
       }
     ];
     const outlierPoints = data.flatMap((row, index) =>
-      (row.outliers || []).map((value) =>
-        isHorizontalBoxplot ? [value, index] : [index, value]
-      )
+      (row.outliers || []).map((outlierObj) => ({
+        value: isHorizontalBoxplot
+          ? [outlierObj.value, index]
+          : [index, outlierObj.value],
+        name: row.name,
+        request_id: outlierObj.request_id,
+        flowcell_id: outlierObj.flowcell_id,
+        turnaround_days: outlierObj.value
+      }))
     );
     if (outlierPoints.length) {
       series.push({
@@ -141,7 +147,14 @@ export function buildUsageChartOption(chartDef, data, recordType = "all") {
     legend: chartDef.stacked ? { top: 0 } : undefined,
     tooltip: {
       trigger: chartDef.type === "boxplot" ? "item" : "axis",
-      axisPointer: { type: "shadow" }
+      axisPointer: { type: "shadow" },
+      formatter: (params) => {
+        if (chartDef.type === "boxplot" && params.seriesName === "Outliers") {
+          const { name, turnaround_days, request_id, flowcell_id } = params.data;
+          return `${name}<br/>Days: ${turnaround_days}<br/>Request: ${request_id}<br/>Flowcell: ${flowcell_id}`;
+        }
+        return null;
+      }
     },
     xAxis: {
       type: isHorizontalBoxplot ? "value" : "category",

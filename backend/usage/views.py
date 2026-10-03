@@ -281,6 +281,7 @@ class TurnaroundTimeUsage(APIView):
         requests = filter_requests_by_record_type(
             Request.objects.annotate(
                 first_flowcell_at=Subquery(first_flowcell.values("create_time")[:1]),
+                first_flowcell_id=Subquery(first_flowcell.values("flowcell_id")[:1]),
                 first_sequencer_name=Subquery(
                     first_flowcell.values("sequencer__name")[:1]
                 ),
@@ -336,11 +337,18 @@ class TurnaroundTimeUsage(APIView):
                 names = {req.first_sequencer_name or "None"}
 
             for name in names:
-                groups.setdefault(name, []).append(turnaround_days)
+                groups.setdefault(name, []).append(
+                    {
+                        "value": round(turnaround_days),
+                        "request_id": req.pk,
+                        "flowcell_id": req.first_flowcell_id,
+                    }
+                )
 
         data = []
-        for name, values in groups.items():
-            values.sort()
+        for name, items in groups.items():
+            items.sort(key=lambda x: x["value"])
+            values = [x["value"] for x in items]
             if len(values) >= 2:
                 q1, _, q3 = statistics.quantiles(values, n=4, method="inclusive")
             else:
@@ -350,17 +358,21 @@ class TurnaroundTimeUsage(APIView):
             lower_fence = q1 - 1.5 * iqr
             upper_fence = q3 + 1.5 * iqr
             inliers = [v for v in values if lower_fence <= v <= upper_fence]
-            outliers = [v for v in values if v < lower_fence or v > upper_fence]
+            outliers = [
+                item
+                for item in items
+                if item["value"] < lower_fence or item["value"] > upper_fence
+            ]
 
             data.append(
                 {
                     "name": name,
                     "data": [
-                        min(inliers) if inliers else values[0],
-                        q1,
-                        statistics.median(values),
-                        q3,
-                        max(inliers) if inliers else values[-1],
+                        round(min(inliers) if inliers else values[0]),
+                        round(q1),
+                        round(statistics.median(values)),
+                        round(q3),
+                        round(max(inliers) if inliers else values[-1]),
                     ],
                     "outliers": outliers,
                 }
