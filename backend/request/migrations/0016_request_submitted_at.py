@@ -12,7 +12,8 @@ def backfill_submitted_at(apps, schema_editor):
     for req in Request.objects.filter(
         submitted_at__isnull=True, approval__TIMESTAMP__isnull=False
     ).iterator():
-        timestamp = parse_datetime(req.approval["TIMESTAMP"])
+        raw = req.approval["TIMESTAMP"]
+        timestamp = parse_datetime(raw) if isinstance(raw, str) else None
         if timestamp is None:
             continue
         req.submitted_at = timestamp
