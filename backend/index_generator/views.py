@@ -95,12 +95,12 @@ def compute_index_warnings(records):
                 seq_a, seq_b = a[f"index_{read}"], b[f"index_{read}"]
                 if not seq_a or not seq_b:
                     continue
-                d = hamming_distance(seq_a, seq_b)
+                d, length = hamming_distance(seq_a, seq_b)
                 if d < MIN_HAMMING_DISTANCE and (worst is None or d < worst[0]):
-                    worst = (d, read)
+                    worst = (d, length, read)
             if worst is None:
                 continue
-            entry = {"distance": worst[0], "index_read": worst[1]}
+            entry = {"distance": worst[0], "compared_length": worst[1], "index_read": worst[2]}
             warnings.setdefault(str(a["pk"]), {})[str(b["pk"])] = entry
             warnings.setdefault(str(b["pk"]), {})[str(a["pk"])] = dict(entry)
     return warnings
@@ -343,11 +343,20 @@ class IndexGeneratorViewSet(viewsets.ViewSet, LibrarySampleMultiEditMixin):
             if not any(libraries) and not any(samples):
                 raise ValueError("No libraries nor samples have been provided")
 
+            library_ids = [x["pk"] for x in libraries]
+            sample_ids = [x["pk"] for x in samples]
+            read_lengths = set(
+                Library.objects.filter(pk__in=library_ids).values_list("read_length_id", flat=True)
+            ) | set(
+                Sample.objects.filter(pk__in=sample_ids).values_list("read_length_id", flat=True)
+            )
+            if len(read_lengths) > 1:
+                raise ValueError("Read Length must be the same for all libraries and samples.")
+
             try:
                 pool_size = PoolSize.objects.filter(archived=False).get(pk=pool_size_id)
             except (ValueError, PoolSize.DoesNotExist):
                 raise ValueError("Invalid Pool Size id.")
-
             pool = Pool(user=request.user, size=pool_size)
             pool.save()
 

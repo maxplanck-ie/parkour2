@@ -3,6 +3,13 @@
 Unreleased
 ==========
 
+- In Index Generator, manually saving a pool now allows mixed single- and
+  dual-indexed libraries and samples, while continuing to require matching
+  read lengths across all records. When saving, pairwise index sequences are
+  checked per read (i7 vs i7, i5 vs i5) for barcode collisions; any pairs
+  with Hamming distance below 3 are flagged in a warning notification with
+  their compared cycle length and persisted on the pool.
+
 - Added optional self-hosted GoatCounter web analytics, configured per
   deployment (dev/test/prod/demo each point at their own site) via
   VITE_GOATCOUNTER_URL; unset by default, so this is a no-op unless a

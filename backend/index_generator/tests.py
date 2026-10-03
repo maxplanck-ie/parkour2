@@ -1557,7 +1557,7 @@ class TestIndexGenerator(BaseTestCase):
         self.assertEqual(response.status_code, 200)
         data = response.json()
         self.assertTrue(data["success"])
-        expected = {"distance": 1, "index_read": "i7"}
+        expected = {"distance": 1, "compared_length": 6, "index_read": "i7"}
         self.assertEqual(
             data["warnings"],
             {
@@ -1573,6 +1573,26 @@ class TestIndexGenerator(BaseTestCase):
         _, _, response = self._save_mixed_pool("GTAAAT", "TACGTT", "TCGGCC")
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.json()["warnings"], {})
+
+    def test_save_pool_rejects_differing_read_lengths(self):
+        """save_pool must fail with 400 when libraries/samples have different read lengths."""
+        rl2 = ReadLength.objects.create(name=get_random_name())
+        library = create_library(get_random_name(), read_length=self.read_length)
+        sample = create_sample(get_random_name(), read_length=rl2)
+        pool_size = PoolSize.objects.create(multiplier=1, size=10)
+        response = self.client.post(
+            "/api/index_generator/save_pool/",
+            {
+                "pool_size_id": pool_size.pk,
+                "libraries": json.dumps([{"pk": library.pk}]),
+                "samples": json.dumps([{"pk": sample.pk}]),
+            },
+        )
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(
+            response.json()["message"],
+            "Read Length must be the same for all libraries and samples.",
+        )
 
     def test_mixed_single_dual_indices(self):
         """
@@ -1947,11 +1967,13 @@ class TestIndexGenerator(BaseTestCase):
         lib1 = create_library(
             get_random_name(),
             status=2,
+            read_length=self.read_length,
             index_type=self.index_type2,  # dual index type from setUp
         )
         lib2 = create_library(
             get_random_name(),
             status=2,
+            read_length=self.read_length,
             index_type=self.index_type2,
         )
 

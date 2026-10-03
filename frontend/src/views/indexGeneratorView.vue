@@ -1699,6 +1699,29 @@ export default {
 
       return true;
     },
+    notifyIndexWarnings(warnings) {
+      const reportedPairs = new Set();
+      const messages = [];
+      for (const [pk, others] of Object.entries(warnings || {})) {
+        for (const [otherPk, warning] of Object.entries(others)) {
+          const pairKey = [pk, otherPk].sort().join(":");
+          if (reportedPairs.has(pairKey)) continue;
+          reportedPairs.add(pairKey);
+          const labels = [pk, otherPk].map((id) => {
+            const row = this.poolRows.find((item) => String(item[fields.pk]) === id);
+            return row?.[fields.name] || id;
+          });
+          messages.push(
+            `${labels.join(" / ")}: ${warning.index_read} distance ${warning.distance} on ${warning.compared_length} cycles`
+          );
+        }
+      }
+      if (messages.length) {
+        showNotification(`Close indices: ${messages.join("; ")}`, "warning", {
+          timeout: 10000
+        });
+      }
+    },
     validateSelectedRowsBeforeGeneration() {
       const missingIndexTypeRows = this.poolRows.filter(
         (row) =>
@@ -1900,8 +1923,8 @@ export default {
           return;
         }
 
+        this.notifyIndexWarnings(response.data.warnings);
         showNotification("Pool saved successfully.", "success");
-        trackModalSave("index-generator-save-pool", "Pool saved");
         this.poolRows = [];
         this.generatedIndexRowKeys = [];
         this.selectedPoolSizeId = null;
