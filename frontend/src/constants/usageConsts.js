@@ -182,8 +182,11 @@ export function buildUsageChartOption(chartDef, data, recordType = "all") {
     xAxis: {
       type: isHorizontalBoxplot ? "value" : "category",
       data: isHorizontalBoxplot ? undefined : names,
+      name: isHorizontalBoxplot ? "Days" : undefined,
+      nameLocation: isHorizontalBoxplot ? "middle" : undefined,
+      nameGap: isHorizontalBoxplot ? 30 : undefined,
       axisLabel: isHorizontalBoxplot
-        ? undefined
+        ? { interval: 0 }
         : {
             rotate: 45,
             interval: 0,
