@@ -45,6 +45,7 @@ export const USAGE_CHARTS = [
     title: "Turnaround Time by Sequencer (days)",
     endpoint: "api/usage/turnaround_time/",
     type: "boxplot",
+    horizontal: true,
     extraParams: { group_by: "sequencer" }
   },
   {
@@ -52,6 +53,7 @@ export const USAGE_CHARTS = [
     title: "Turnaround Time by Analysis Type (days)",
     endpoint: "api/usage/turnaround_time/",
     type: "boxplot",
+    horizontal: true,
     extraParams: { group_by: "analysis_type" }
   }
 ];
@@ -72,6 +74,7 @@ export function usageChartTotal(chartDef, data) {
 
 export function buildUsageChartOption(chartDef, data, recordType = "all") {
   const names = data.map((row) => row.name);
+  const isHorizontalBoxplot = chartDef.type === "boxplot" && chartDef.horizontal;
 
   let series;
   if (chartDef.type === "boxplot") {
@@ -82,11 +85,18 @@ export function buildUsageChartOption(chartDef, data, recordType = "all") {
         name: chartDef.title,
         type: "boxplot",
         data: data.map((row) => row.data),
-        itemStyle: { color: boxplotFill, borderColor: BOXPLOT_LINE_COLOR }
+        itemStyle: {
+          color: boxplotFill,
+          borderColor: BOXPLOT_LINE_COLOR,
+          borderWidth: 1
+        },
+        lineStyle: { color: BOXPLOT_LINE_COLOR }
       }
     ];
     const outlierPoints = data.flatMap((row, index) =>
-      (row.outliers || []).map((value) => [index, value])
+      (row.outliers || []).map((value) =>
+        isHorizontalBoxplot ? [value, index] : [index, value]
+      )
     );
     if (outlierPoints.length) {
       series.push({
@@ -114,16 +124,17 @@ export function buildUsageChartOption(chartDef, data, recordType = "all") {
         color: USAGE_CHART_COLORS[1]
       }
     ].filter(
-      (item) => recordType === "all" || item.name.toLowerCase() === recordType
+      (seriesDef) =>
+        recordType === "all" || seriesDef.name.toLowerCase() === recordType
     );
   }
 
   return {
     grid: {
-      left: 8,
+      left: isHorizontalBoxplot ? 110 : 8,
       right: 16,
       top: chartDef.stacked ? 36 : 16,
-      bottom: 70,
+      bottom: isHorizontalBoxplot ? 16 : 70,
       containLabel: true
     },
     legend: chartDef.stacked ? { top: 0 } : undefined,
@@ -132,16 +143,22 @@ export function buildUsageChartOption(chartDef, data, recordType = "all") {
       axisPointer: { type: "shadow" }
     },
     xAxis: {
-      type: "category",
-      data: names,
-      axisLabel: {
-        rotate: 45,
-        interval: 0,
-        formatter: truncateAxisLabel
-      }
+      type: isHorizontalBoxplot ? "value" : "category",
+      data: isHorizontalBoxplot ? undefined : names,
+      axisLabel: isHorizontalBoxplot
+        ? undefined
+        : {
+            rotate: 45,
+            interval: 0,
+            formatter: truncateAxisLabel
+          }
     },
     yAxis: {
-      type: "value",
+      type: isHorizontalBoxplot ? "category" : "value",
+      data: isHorizontalBoxplot ? names : undefined,
+      axisLabel: isHorizontalBoxplot
+        ? { interval: 0, formatter: truncateAxisLabel }
+        : undefined,
       minInterval: chartDef.type === "boxplot" ? undefined : 1
     },
     series
