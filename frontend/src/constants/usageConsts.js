@@ -149,12 +149,24 @@ export function buildUsageChartOption(chartDef, data, recordType = "all") {
       trigger: chartDef.type === "boxplot" ? "item" : "axis",
       axisPointer: { type: "shadow" },
       formatter: (params) => {
-        if (chartDef.type === "boxplot" && params.seriesName === "Outliers") {
-          const { name, turnaround_days, request_id, flowcell_id } =
-            params.data;
-          return `${name}<br/>Days: ${turnaround_days}<br/>Request: ${request_id}<br/>Flowcell: ${flowcell_id}`;
+        if (chartDef.type === "boxplot") {
+          if (params.seriesName === "Outliers") {
+            const { name, turnaround_days, request_id, flowcell_id } = params.data;
+            return `${name}<br/>Days: ${turnaround_days}<br/>Request: ${request_id}<br/>Flowcell: ${flowcell_id}`;
+          } else {
+            const [min, q1, median, q3, max] = params.data;
+            return `${params.name}<br/>Min: ${min}<br/>Q1: ${q1}<br/>Median: ${median}<br/>Q3: ${q3}<br/>Max: ${max}`;
+          }
+        } else {
+          let total = 0;
+          let lines = [`${params[0].axisValueLabel}<br/>`];
+          params.forEach((item) => {
+            total += item.value;
+            lines.push(`${item.marker} ${item.seriesName}: ${item.value}`);
+          });
+          lines.push(`<strong>Total: ${total}</strong>`);
+          return lines.join("<br/>");
         }
-        return undefined;
       }
     },
     xAxis: {
