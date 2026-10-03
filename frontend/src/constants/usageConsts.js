@@ -154,7 +154,7 @@ export function buildUsageChartOption(chartDef, data, recordType = "all") {
             params.data;
           return `${name}<br/>Days: ${turnaround_days}<br/>Request: ${request_id}<br/>Flowcell: ${flowcell_id}`;
         }
-        return null;
+        return undefined;
       }
     },
     xAxis: {
