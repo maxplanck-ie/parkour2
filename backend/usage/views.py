@@ -367,6 +367,7 @@ class TurnaroundTimeUsage(APIView):
             data.append(
                 {
                     "name": name,
+                    "count": len(values),
                     "data": [
                         round(min(inliers) if inliers else values[0]),
                         round(q1),
