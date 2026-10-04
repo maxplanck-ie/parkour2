@@ -144,8 +144,8 @@ export function buildUsageChartOption(chartDef, data, recordType = "all") {
     grid: {
       left: isHorizontalBoxplot ? 110 : 8,
       right: 16,
-      top: chartDef.stacked ? 36 : 16,
-      bottom: isHorizontalBoxplot ? 100 : 70,
+      top: isHorizontalBoxplot ? 10 : (chartDef.stacked ? 36 : 16),
+      bottom: 20,
       containLabel: true
     },
     legend: chartDef.stacked ? { top: 0 } : undefined,
@@ -184,7 +184,7 @@ export function buildUsageChartOption(chartDef, data, recordType = "all") {
       data: isHorizontalBoxplot ? undefined : names,
       name: isHorizontalBoxplot ? "Days" : undefined,
       nameLocation: isHorizontalBoxplot ? "middle" : undefined,
-      nameGap: isHorizontalBoxplot ? 30 : undefined,
+      nameGap: isHorizontalBoxplot ? 40 : undefined,
       axisLabel: isHorizontalBoxplot
         ? { interval: 0 }
         : {
@@ -203,4 +203,4 @@ export function buildUsageChartOption(chartDef, data, recordType = "all") {
     },
     series
   };
-}
+};
