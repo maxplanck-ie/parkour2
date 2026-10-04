@@ -144,7 +144,7 @@ export function buildUsageChartOption(chartDef, data, recordType = "all") {
     grid: {
       left: isHorizontalBoxplot ? 110 : 8,
       right: 16,
-      top: isHorizontalBoxplot ? 0 : (chartDef.stacked ? 36 : 16),
+      top: isHorizontalBoxplot ? 0 : chartDef.stacked ? 36 : 16,
       bottom: 20,
       containLabel: true
     },
