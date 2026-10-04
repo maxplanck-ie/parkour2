@@ -28,6 +28,22 @@
             @update:model-value="scheduleReload"
           />
         </div>
+        <div class="filter-item date-filter-item">
+          <label for="usageRecordType">Show</label>
+          <select
+            id="usageRecordType"
+            v-model="recordType"
+            @change="scheduleReload"
+          >
+            <option
+              v-for="option in recordTypeOptions"
+              :key="option.value"
+              :value="option.value"
+            >
+              {{ option.label }}
+            </option>
+          </select>
+        </div>
       </div>
     </div>
 
@@ -94,6 +110,7 @@ import {
 } from "../utilities/utilityFunctions";
 import {
   USAGE_CHARTS,
+  USAGE_RECORD_TYPES,
   buildUsageChartOption,
   usageChartTotal
 } from "../constants/usageConsts";
@@ -114,8 +131,8 @@ const urlStringStart = urlStringStartsWith();
 const DATE_FILTER_DEBOUNCE_MS = 500;
 
 const today = new Date();
-const oneYearAgo = new Date(today);
-oneYearAgo.setFullYear(today.getFullYear() - 1);
+const sixMonthsAgo = new Date(today);
+sixMonthsAgo.setMonth(today.getMonth() - 6);
 
 export default {
   name: "UsageView",
@@ -125,8 +142,9 @@ export default {
   },
   setup() {
     const loading = ref(true);
-    const startDateString = ref(formatDateForInput(oneYearAgo));
+    const startDateString = ref(formatDateForInput(sixMonthsAgo));
     const endDateString = ref(formatDateForInput(today));
+    const recordType = ref("all");
     const chartData = reactive({});
     let requestId = 0;
 
@@ -141,7 +159,11 @@ export default {
       const options = {};
       usageCharts.forEach((chartDef) => {
         const data = chartData[chartDef.key] || [];
-        options[chartDef.key] = buildUsageChartOption(chartDef, data);
+        options[chartDef.key] = buildUsageChartOption(
+          chartDef,
+          data,
+          recordType.value
+        );
       });
       return options;
     });
@@ -159,7 +181,8 @@ export default {
       loading.value = true;
       const params = {
         start: `${startDateString.value}T00:00:00`,
-        end: `${endDateString.value}T23:59:59`
+        end: `${endDateString.value}T23:59:59`,
+        record_type: recordType.value
       };
 
       try {
@@ -201,6 +224,8 @@ export default {
       loading,
       startDateString,
       endDateString,
+      recordType,
+      recordTypeOptions: USAGE_RECORD_TYPES,
       startDateValid,
       endDateValid,
       usageCharts,
@@ -243,12 +268,14 @@ export default {
   color: white;
 }
 
-.filter-item.date-filter-item input {
+.filter-item.date-filter-item input,
+.filter-item.date-filter-item select {
   height: var(--header-control-height);
   font-size: var(--header-control-font-size);
   border-radius: 6px;
   border: 1px solid #d8d8d8;
   padding: 0 8px;
+  width: auto;
 }
 
 .filter-item.date-filter-item .invalid-date {

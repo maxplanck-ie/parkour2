@@ -303,8 +303,7 @@ class FlowcellViewSet(MultiEditMixin, viewsets.ReadOnlyModelViewSet):
                 )
                 if not has_other_flowcells:
                     req.sequenced = False
-                    req.flowcell_loaded_at = None
-                    req.save(update_fields=["sequenced", "flowcell_loaded_at"])
+                    req.save(update_fields=["sequenced"])
 
             flowcell.delete()
 

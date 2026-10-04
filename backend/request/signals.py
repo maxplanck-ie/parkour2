@@ -107,8 +107,7 @@ def sync_related_requests_bidirectionally(
 
 DEFAULT_REFRESH_DELAY = 0.5
 
-QC_APPROVED_STATUS = 2
-FLOWCELL_LOADED_STATUS = 5
+SUBMITTED_STATUS = 1
 
 
 def _normalize_ids(values: Iterable[int] | None) -> tuple[int, ...]:
@@ -182,30 +181,19 @@ def _maybe_update_request_milestones(instance) -> None:
     previous_status = getattr(instance, "_previous_status", None)
     current_status = getattr(instance, "status", None)
 
-    if current_status not in (QC_APPROVED_STATUS, FLOWCELL_LOADED_STATUS):
+    if current_status != SUBMITTED_STATUS or previous_status == current_status:
         return
 
-    if previous_status == current_status:
-        return
-
-    timestamp_field = (
-        "qc_completed_at"
-        if current_status == QC_APPROVED_STATUS
-        else "flowcell_loaded_at"
-    )
-
-    requests = list(
-        instance.request.all().only("id", "qc_completed_at", "flowcell_loaded_at")
-    )
+    requests = list(instance.request.all().only("id", "submitted_at"))
     if not requests:
         return
 
     event_time = timezone.now()
     for request_obj in requests:
-        if getattr(request_obj, timestamp_field) is not None:
+        if request_obj.submitted_at is not None:
             continue
-        setattr(request_obj, timestamp_field, event_time)
-        request_obj.save(update_fields=[timestamp_field])
+        request_obj.submitted_at = event_time
+        request_obj.save(update_fields=["submitted_at"])
 
 
 def _collect_request_dependencies(

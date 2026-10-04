@@ -34,8 +34,6 @@
                 "HTTP_ACCEPT_LANGUAGE": null,
                 "HTTP_X_FORWARDED_FOR": null
             },
-            "qc_completed_at": null,
-            "flowcell_loaded_at": null,
             "related_requests": [],
             "libraries": [],
             "samples": [
@@ -104,8 +102,6 @@
                 "HTTP_ACCEPT_LANGUAGE": null,
                 "HTTP_X_FORWARDED_FOR": null
             },
-            "qc_completed_at": null,
-            "flowcell_loaded_at": null,
             "related_requests": [],
             "libraries": [],
             "samples": [
@@ -171,8 +167,6 @@
                 "HTTP_ACCEPT_LANGUAGE": null,
                 "HTTP_X_FORWARDED_FOR": null
             },
-            "qc_completed_at": null,
-            "flowcell_loaded_at": "2026-03-20T08:32:02.000Z",
             "related_requests": [],
             "libraries": [
                 1,
@@ -256,8 +250,6 @@
                 "HTTP_ACCEPT_LANGUAGE": null,
                 "HTTP_X_FORWARDED_FOR": null
             },
-            "qc_completed_at": null,
-            "flowcell_loaded_at": "2026-05-09T08:32:02.000Z",
             "related_requests": [],
             "libraries": [
                 40,
@@ -312,8 +304,6 @@
                 "HTTP_ACCEPT_LANGUAGE": null,
                 "HTTP_X_FORWARDED_FOR": null
             },
-            "qc_completed_at": null,
-            "flowcell_loaded_at": null,
             "related_requests": [],
             "libraries": [],
             "samples": [
@@ -372,8 +362,6 @@
                 "HTTP_ACCEPT_LANGUAGE": null,
                 "HTTP_X_FORWARDED_FOR": null
             },
-            "qc_completed_at": null,
-            "flowcell_loaded_at": "2025-12-20T08:32:02.000Z",
             "related_requests": [],
             "libraries": [
                 64,
@@ -444,8 +432,6 @@
                 "HTTP_ACCEPT_LANGUAGE": null,
                 "HTTP_X_FORWARDED_FOR": null
             },
-            "qc_completed_at": null,
-            "flowcell_loaded_at": null,
             "related_requests": [],
             "libraries": [],
             "samples": [
@@ -498,8 +484,6 @@
                 "HTTP_ACCEPT_LANGUAGE": null,
                 "HTTP_X_FORWARDED_FOR": null
             },
-            "qc_completed_at": null,
-            "flowcell_loaded_at": null,
             "related_requests": [],
             "libraries": [],
             "samples": [
@@ -551,8 +535,6 @@
                 "HTTP_ACCEPT_LANGUAGE": null,
                 "HTTP_X_FORWARDED_FOR": null
             },
-            "qc_completed_at": null,
-            "flowcell_loaded_at": null,
             "related_requests": [],
             "libraries": [
                 75,
@@ -605,8 +587,6 @@
                 "HTTP_ACCEPT_LANGUAGE": null,
                 "HTTP_X_FORWARDED_FOR": null
             },
-            "qc_completed_at": null,
-            "flowcell_loaded_at": null,
             "related_requests": [],
             "libraries": [],
             "samples": [
@@ -673,8 +653,6 @@
                 "HTTP_ACCEPT_LANGUAGE": null,
                 "HTTP_X_FORWARDED_FOR": null
             },
-            "qc_completed_at": null,
-            "flowcell_loaded_at": null,
             "related_requests": [],
             "libraries": [],
             "samples": [
@@ -739,8 +717,6 @@
                 "HTTP_ACCEPT_LANGUAGE": null,
                 "HTTP_X_FORWARDED_FOR": null
             },
-            "qc_completed_at": null,
-            "flowcell_loaded_at": null,
             "related_requests": [],
             "libraries": [],
             "samples": [
@@ -789,8 +765,6 @@
                 "HTTP_ACCEPT_LANGUAGE": null,
                 "HTTP_X_FORWARDED_FOR": null
             },
-            "qc_completed_at": null,
-            "flowcell_loaded_at": "2026-06-23T08:32:02.000Z",
             "related_requests": [],
             "libraries": [
                 85,
@@ -861,8 +835,6 @@
                 "HTTP_ACCEPT_LANGUAGE": null,
                 "HTTP_X_FORWARDED_FOR": null
             },
-            "qc_completed_at": null,
-            "flowcell_loaded_at": "2026-02-28T08:32:02.000Z",
             "related_requests": [],
             "libraries": [
                 111,
@@ -919,8 +891,6 @@
                 "HTTP_ACCEPT_LANGUAGE": null,
                 "HTTP_X_FORWARDED_FOR": null
             },
-            "qc_completed_at": null,
-            "flowcell_loaded_at": "2026-08-02T08:32:02.000Z",
             "related_requests": [],
             "libraries": [
                 128,
@@ -985,8 +955,6 @@
                 "HTTP_ACCEPT_LANGUAGE": null,
                 "HTTP_X_FORWARDED_FOR": null
             },
-            "qc_completed_at": null,
-            "flowcell_loaded_at": "2026-04-09T08:32:02.000Z",
             "related_requests": [],
             "libraries": [],
             "samples": [
@@ -1031,8 +999,6 @@
                 "HTTP_ACCEPT_LANGUAGE": null,
                 "HTTP_X_FORWARDED_FOR": null
             },
-            "qc_completed_at": null,
-            "flowcell_loaded_at": null,
             "related_requests": [],
             "libraries": [
                 143,
@@ -1077,8 +1043,6 @@
                 "HTTP_ACCEPT_LANGUAGE": null,
                 "HTTP_X_FORWARDED_FOR": null
             },
-            "qc_completed_at": null,
-            "flowcell_loaded_at": "2026-06-13T08:32:02.000Z",
             "related_requests": [],
             "libraries": [
                 145,
@@ -1124,8 +1088,6 @@
                 "HTTP_ACCEPT_LANGUAGE": null,
                 "HTTP_X_FORWARDED_FOR": null
             },
-            "qc_completed_at": null,
-            "flowcell_loaded_at": "2026-07-23T08:32:02.000Z",
             "related_requests": [],
             "libraries": [],
             "samples": [
@@ -1170,8 +1132,6 @@
                 "HTTP_ACCEPT_LANGUAGE": null,
                 "HTTP_X_FORWARDED_FOR": null
             },
-            "qc_completed_at": null,
-            "flowcell_loaded_at": "2026-07-08T08:32:02.000Z",
             "related_requests": [],
             "libraries": [
                 148,
@@ -1216,8 +1176,6 @@
                 "HTTP_ACCEPT_LANGUAGE": null,
                 "HTTP_X_FORWARDED_FOR": null
             },
-            "qc_completed_at": null,
-            "flowcell_loaded_at": "2026-08-22T08:32:02.000Z",
             "related_requests": [],
             "libraries": [
                 150,
@@ -1265,8 +1223,6 @@
                 "HTTP_ACCEPT_LANGUAGE": null,
                 "HTTP_X_FORWARDED_FOR": null
             },
-            "qc_completed_at": null,
-            "flowcell_loaded_at": null,
             "related_requests": [],
             "libraries": [
                 155
@@ -1310,8 +1266,6 @@
                 "HTTP_ACCEPT_LANGUAGE": null,
                 "HTTP_X_FORWARDED_FOR": null
             },
-            "qc_completed_at": null,
-            "flowcell_loaded_at": null,
             "related_requests": [],
             "libraries": [
                 156
@@ -1355,8 +1309,6 @@
                 "HTTP_ACCEPT_LANGUAGE": null,
                 "HTTP_X_FORWARDED_FOR": null
             },
-            "qc_completed_at": null,
-            "flowcell_loaded_at": null,
             "related_requests": [],
             "libraries": [],
             "samples": [
@@ -1401,8 +1353,6 @@
                 "HTTP_ACCEPT_LANGUAGE": null,
                 "HTTP_X_FORWARDED_FOR": null
             },
-            "qc_completed_at": null,
-            "flowcell_loaded_at": null,
             "related_requests": [],
             "libraries": [],
             "samples": [
@@ -1446,8 +1396,6 @@
                 "HTTP_ACCEPT_LANGUAGE": null,
                 "HTTP_X_FORWARDED_FOR": null
             },
-            "qc_completed_at": null,
-            "flowcell_loaded_at": null,
             "related_requests": [],
             "libraries": [],
             "samples": [
@@ -1491,8 +1439,6 @@
                 "HTTP_ACCEPT_LANGUAGE": null,
                 "HTTP_X_FORWARDED_FOR": null
             },
-            "qc_completed_at": null,
-            "flowcell_loaded_at": "2026-07-23T09:05:55.000Z",
             "related_requests": [],
             "libraries": [],
             "samples": [
@@ -1537,8 +1483,6 @@
                 "HTTP_ACCEPT_LANGUAGE": null,
                 "HTTP_X_FORWARDED_FOR": null
             },
-            "qc_completed_at": null,
-            "flowcell_loaded_at": "2026-06-18T09:05:55.000Z",
             "related_requests": [],
             "libraries": [
                 157
@@ -1582,8 +1526,6 @@
                 "HTTP_ACCEPT_LANGUAGE": null,
                 "HTTP_X_FORWARDED_FOR": null
             },
-            "qc_completed_at": null,
-            "flowcell_loaded_at": "2026-08-17T09:05:55.000Z",
             "related_requests": [],
             "libraries": [
                 158
@@ -1627,8 +1569,6 @@
                 "HTTP_ACCEPT_LANGUAGE": null,
                 "HTTP_X_FORWARDED_FOR": null
             },
-            "qc_completed_at": null,
-            "flowcell_loaded_at": null,
             "related_requests": [],
             "libraries": [],
             "samples": [

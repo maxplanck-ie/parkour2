@@ -1,10 +1,9 @@
 import statistics
 from collections import Counter
-from datetime import datetime
 
 from common.utils import transliterate_name
 from django.apps import apps
-from django.db.models import Prefetch
+from django.db.models import Exists, OuterRef, Prefetch, Subquery
 from django.utils import timezone
 from rest_framework.permissions import IsAdminUser
 from rest_framework.response import Response
@@ -13,6 +12,7 @@ from rest_framework.views import APIView
 Request = apps.get_model("request", "Request")
 AnalysisType = apps.get_model("library_sample_shared", "AnalysisType")
 Library = apps.get_model("library", "Library")
+Flowcell = apps.get_model("flowcell", "Flowcell")
 Sample = apps.get_model("sample", "Sample")
 PrincipalInvestigator = apps.get_model("common", "PrincipalInvestigator")
 
@@ -42,6 +42,20 @@ def get_date_range(request, format):
         start = end.replace(hour=0, minute=0)
 
     return (start, end)
+
+
+def get_record_type(request):
+    record_type = request.query_params.get("record_type", "all")
+    return record_type if record_type in ("libraries", "samples") else "all"
+
+
+def filter_requests_by_record_type(requests, record_type):
+    """Keep only requests linked to at least one record of the selected kind."""
+    if record_type == "libraries":
+        return requests.filter(Exists(Library.objects.filter(request=OuterRef("pk"))))
+    if record_type == "samples":
+        return requests.filter(Exists(Sample.objects.filter(request=OuterRef("pk"))))
+    return requests
 
 
 class RecordsUsage(APIView):
@@ -123,12 +137,15 @@ class PrincipalInvestigatorsUsage(APIView):
 
     def get(self, request):
         start, end = get_date_range(request, "%Y-%m-%dT%H:%M:%S")
+        record_type = get_record_type(request)
 
         libraries_qs = Library.objects.only("id")
         samples_qs = Sample.objects.only("id")
 
         requests = (
-            Request.objects.filter(archived=False)
+            filter_requests_by_record_type(
+                Request.objects.filter(archived=False), record_type
+            )
             .select_related(
                 "user",
                 "user__pi",
@@ -149,8 +166,10 @@ class PrincipalInvestigatorsUsage(APIView):
             pi_name = pi.name if pi else "None"
             if pi_name not in counts.keys():
                 counts[pi_name] = {"libraries": 0, "samples": 0}
-            counts[pi_name]["libraries"] += len(req.fetched_libraries)
-            counts[pi_name]["samples"] += len(req.fetched_samples)
+            if record_type != "samples":
+                counts[pi_name]["libraries"] += len(req.fetched_libraries)
+            if record_type != "libraries":
+                counts[pi_name]["samples"] += len(req.fetched_samples)
 
         data = [
             {
@@ -171,6 +190,7 @@ class AnalysisTypesUsage(APIView):
 
     def get(self, request):
         start, end = get_date_range(request, "%Y-%m-%dT%H:%M:%S")
+        record_type = get_record_type(request)
 
         libraries_qs = Library.objects.select_related("analysis_type").only(
             "id", "analysis_type__name"
@@ -180,7 +200,9 @@ class AnalysisTypesUsage(APIView):
         )
 
         requests = (
-            Request.objects.filter(archived=False)
+            filter_requests_by_record_type(
+                Request.objects.filter(archived=False), record_type
+            )
             .prefetch_related(
                 Prefetch(
                     "libraries", queryset=libraries_qs, to_attr="fetched_libraries"
@@ -194,8 +216,16 @@ class AnalysisTypesUsage(APIView):
         counts = {}
         for req in requests:
             # Extract Library Types
-            analysis_types = [x.analysis_type.name for x in req.fetched_libraries]
-            sample_types = [x.analysis_type.name for x in req.fetched_samples]
+            analysis_types = (
+                [x.analysis_type.name for x in req.fetched_libraries]
+                if record_type != "samples"
+                else []
+            )
+            sample_types = (
+                [x.analysis_type.name for x in req.fetched_samples]
+                if record_type != "libraries"
+                else []
+            )
 
             # Merge the counts
             library_cnt = {
@@ -237,62 +267,88 @@ class TurnaroundTimeUsage(APIView):
 
     def get(self, request):
         start, end = get_date_range(request, "%Y-%m-%dT%H:%M:%S")
-        group_by = request.query_params.get("group_by", "pi")
+        group_by = request.query_params.get("group_by", "sequencer")
+        record_type = get_record_type(request)
+        include_libraries = record_type in ("all", "libraries")
+        include_samples = record_type in ("all", "samples")
 
-        libraries_qs = Library.objects.select_related("analysis_type").only(
-            "id", "analysis_type__name"
-        )
-        samples_qs = Sample.objects.select_related("analysis_type").only(
-            "id", "analysis_type__name"
-        )
+        # The first flowcell is the earliest non-archived one; both the
+        # turnaround end time and the sequencer come from that same flowcell.
+        first_flowcell = Flowcell.objects.filter(
+            requests=OuterRef("pk"), archived=False
+        ).order_by("create_time", "pk")
 
-        requests = (
-            Request.objects.filter(
-                archived=False,
-                flowcell_loaded_at__isnull=False,
-                flowcell_loaded_at__gte=start,
-                flowcell_loaded_at__lte=end,
-            )
-            .select_related("user", "user__pi")
-            .prefetch_related(
-                Prefetch(
-                    "libraries", queryset=libraries_qs, to_attr="fetched_libraries"
+        requests = filter_requests_by_record_type(
+            Request.objects.annotate(
+                first_flowcell_at=Subquery(first_flowcell.values("create_time")[:1]),
+                first_flowcell_id=Subquery(first_flowcell.values("flowcell_id")[:1]),
+                first_sequencer_name=Subquery(
+                    first_flowcell.values("sequencer__name")[:1]
                 ),
-                Prefetch("samples", queryset=samples_qs, to_attr="fetched_samples"),
-            )
-            .only("id", "approval", "flowcell_loaded_at", "user__pi__name")
+            ),
+            record_type,
+        ).filter(
+            archived=False,
+            submitted_at__isnull=False,
+            first_flowcell_at__isnull=False,
+            first_flowcell_at__gte=start,
+            first_flowcell_at__lte=end,
         )
+
+        if group_by == "analysis_type":
+            prefetches = []
+            if include_libraries:
+                prefetches.append(
+                    Prefetch(
+                        "libraries",
+                        queryset=Library.objects.select_related("analysis_type").only(
+                            "id", "analysis_type__name"
+                        ),
+                        to_attr="fetched_libraries",
+                    )
+                )
+            if include_samples:
+                prefetches.append(
+                    Prefetch(
+                        "samples",
+                        queryset=Sample.objects.select_related("analysis_type").only(
+                            "id", "analysis_type__name"
+                        ),
+                        to_attr="fetched_samples",
+                    )
+                )
+            requests = requests.prefetch_related(*prefetches)
 
         groups = {}
         for req in requests:
-            timestamp = (req.approval or {}).get("TIMESTAMP")
-            if not timestamp:
-                continue
-            try:
-                approved_at = datetime.fromisoformat(timestamp)
-            except (TypeError, ValueError):
-                continue
-
             turnaround_days = (
-                req.flowcell_loaded_at - approved_at
+                req.first_flowcell_at - req.submitted_at
             ).total_seconds() / 86400
             if turnaround_days < 0:
                 continue
 
             if group_by == "analysis_type":
-                names = {x.analysis_type.name for x in req.fetched_libraries} | {
-                    x.analysis_type.name for x in req.fetched_samples
-                }
+                names = set()
+                if include_libraries:
+                    names |= {x.analysis_type.name for x in req.fetched_libraries}
+                if include_samples:
+                    names |= {x.analysis_type.name for x in req.fetched_samples}
             else:
-                pi = req.user.pi
-                names = {pi.name if pi else "None"}
+                names = {req.first_sequencer_name or "None"}
 
             for name in names:
-                groups.setdefault(name, []).append(turnaround_days)
+                groups.setdefault(name, []).append(
+                    {
+                        "value": round(turnaround_days),
+                        "request_id": req.pk,
+                        "flowcell_id": req.first_flowcell_id,
+                    }
+                )
 
         data = []
-        for name, values in groups.items():
-            values.sort()
+        for name, items in groups.items():
+            items.sort(key=lambda x: x["value"])
+            values = [x["value"] for x in items]
             if len(values) >= 2:
                 q1, _, q3 = statistics.quantiles(values, n=4, method="inclusive")
             else:
@@ -302,17 +358,22 @@ class TurnaroundTimeUsage(APIView):
             lower_fence = q1 - 1.5 * iqr
             upper_fence = q3 + 1.5 * iqr
             inliers = [v for v in values if lower_fence <= v <= upper_fence]
-            outliers = [v for v in values if v < lower_fence or v > upper_fence]
+            outliers = [
+                item
+                for item in items
+                if item["value"] < lower_fence or item["value"] > upper_fence
+            ]
 
             data.append(
                 {
                     "name": name,
+                    "count": len(values),
                     "data": [
-                        min(inliers) if inliers else values[0],
-                        q1,
-                        statistics.median(values),
-                        q3,
-                        max(inliers) if inliers else values[-1],
+                        round(min(inliers) if inliers else values[0]),
+                        round(q1),
+                        round(statistics.median(values)),
+                        round(q3),
+                        round(max(inliers) if inliers else values[-1]),
                     ],
                     "outliers": outliers,
                 }

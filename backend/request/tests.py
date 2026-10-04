@@ -146,37 +146,27 @@ class RequestMilestoneSignalsTest(TestCase):
         self.request.libraries.add(self.library)
         self.request.samples.add(self.sample)
 
-    def test_qc_timestamp_set_once(self):
+    def test_submitted_timestamp_set_once(self):
         first_event_time = timezone.now()
 
         with patch("request.signals.timezone.now", return_value=first_event_time):
-            self.library.status = 2
+            self.library.status = 1
             self.library.save()
 
         self.request.refresh_from_db()
-        self.assertEqual(self.request.qc_completed_at, first_event_time)
+        self.assertEqual(self.request.submitted_at, first_event_time)
 
         later_event_time = first_event_time + timedelta(hours=1)
         with patch("request.signals.timezone.now", return_value=later_event_time):
-            self.sample.status = 2
+            self.sample.status = 1
             self.sample.save()
 
         self.request.refresh_from_db()
         self.assertEqual(
-            self.request.qc_completed_at,
+            self.request.submitted_at,
             first_event_time,
-            "QC milestone should only be set by the first record reaching status 2",
+            "Submitted milestone should only be set by the first record reaching status 1",
         )
-
-    def test_flowcell_timestamp_from_status_five(self):
-        sequencing_time = timezone.now()
-
-        with patch("request.signals.timezone.now", return_value=sequencing_time):
-            self.sample.status = 5
-            self.sample.save()
-
-        self.request.refresh_from_db()
-        self.assertEqual(self.request.flowcell_loaded_at, sequencing_time)
 
 
 class RequestRelatedRequestsHistoryTest(TestCase):

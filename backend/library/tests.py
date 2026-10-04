@@ -1740,7 +1740,7 @@ class TestGenerateROCrateAPI(BaseAPITestCase):
                 "additionalProperty": [
                     {"@id": "#request-filepaths"},
                     {"@id": "#request-metapaths"},
-                    {"@id": "#request-qc-completed-at"},
+                    {"@id": "#request-submitted-at"},
                 ],
             },
             {
@@ -1756,9 +1756,9 @@ class TestGenerateROCrateAPI(BaseAPITestCase):
                 "value": {"metadata": "/data/request/metadata"},
             },
             {
-                "@id": "#request-qc-completed-at",
+                "@id": "#request-submitted-at",
                 "@type": "PropertyValue",
-                "name": "request_qc_completed_at",
+                "name": "request_submitted_at",
                 "value": "2026-04-02T12:00:00Z",
             },
         ]
