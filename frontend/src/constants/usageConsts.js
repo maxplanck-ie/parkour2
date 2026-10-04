@@ -96,7 +96,7 @@ export function buildUsageChartOption(chartDef, data, recordType = "all") {
           borderWidth: 1
         },
         lineStyle: { color: BOXPLOT_LINE_COLOR },
-        barCategoryGap: "100%" // Increase space between horizontal bars
+        barCategoryGap: '166%'  // Increase space between horizontal bars (1.66x)
       }
     ];
     const outlierPoints = data.flatMap((row, index) =>
