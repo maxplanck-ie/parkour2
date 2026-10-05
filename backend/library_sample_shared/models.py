@@ -201,7 +201,7 @@ class IndexPair(models.Model):
         index1_id = self.index1.index_id if self.index1 else ""
         index2_id = self.index2.index_id if self.index2 else ""
         output = index1_id
-        if self.index_type.is_dual:
+        if self.index_type and self.index_type.is_dual:
             output += f"-{index2_id}"
         return output
 

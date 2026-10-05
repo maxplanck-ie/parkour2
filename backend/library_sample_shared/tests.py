@@ -11,6 +11,7 @@ from .models import (
     GenericLibrarySample,
     IndexI5,
     IndexI7,
+    IndexPair,
     IndexType,
     LibraryProtocol,
     AnalysisType,
@@ -436,3 +437,40 @@ class TestAnalysisTypes(BaseTestCase):
         data = response.json()
         self.assertEqual(response.status_code, 200)
         self.assertEqual(data, [])
+
+
+class OrphanedIndexPairTest(BaseTestCase):
+    """
+    IndexPair.index_type is on_delete=SET_NULL, so deleting an IndexType
+    leaves its pairs behind with index_type=None. __str__ must cope with
+    that, otherwise the IndexPair admin changelist returns HTTP 500.
+    """
+
+    def setUp(self):
+        index_type = create_index_type("ONT Native Barcoding 96", format="plate")
+        index1 = IndexI7.objects.create(prefix="NB", number="01", index="ACGT")
+        index_type.indices_i7.add(index1)
+        IndexPair.objects.create(
+            index_type=index_type, index1=index1, char_coord="A", num_coord=1
+        )
+
+        # Same sequence as in the admin: delete the index, then the type.
+        index1.delete()
+        index_type.delete()
+
+        self.pair = IndexPair.objects.get()
+
+    def test_str_without_index_type(self):
+        self.assertIsNone(self.pair.index_type)
+        self.assertEqual(str(self.pair), "")
+
+    def test_admin_changelist_with_orphaned_pair(self):
+        user = self.create_user(email="admin@test.io")
+        user.is_superuser = True
+        user.save()
+        self.client.force_login(user)
+
+        response = self.client.get(
+            reverse("admin:library_sample_shared_indexpair_changelist")
+        )
+        self.assertEqual(response.status_code, 200)

@@ -3,6 +3,9 @@
 Unreleased
 ==========
 
+- Fixed the Index Pairs admin page crashing (HTTP 500) for everyone after an
+  Index Type that still had Index Pairs was deleted: those pairs are kept with
+  no Index Type, and displaying them failed.
 - Added optional self-hosted GoatCounter web analytics, configured per
   deployment (dev/test/prod/demo each point at their own site) via
   VITE_GOATCOUNTER_URL; unset by default, so this is a no-op unless a
