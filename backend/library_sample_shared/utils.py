@@ -2,8 +2,118 @@ from collections import defaultdict
 from itertools import chain
 
 from django.apps import apps
+from django.db import transaction
 
-from .models import IndexType
+from .models import IndexI5, IndexI7, IndexPair, IndexType
+
+# Library/Sample statuses at or above this value mean the record reached
+# "Sequencing" (5) or "Delivered" (6); negative statuses (failed/repeat) never count.
+SEQUENCING_STATUS = 5
+
+
+def _sequenced_records():
+    """Library and Sample querysets restricted to records that reached Sequencing."""
+    Library = apps.get_model("library", "Library")
+    Sample = apps.get_model("sample", "Sample")
+    return (
+        Library.objects.filter(status__gte=SEQUENCING_STATUS),
+        Sample.objects.filter(status__gte=SEQUENCING_STATUS),
+    )
+
+
+def index_type_is_used(index_type):
+    """True if any record at Sequencing or higher references this IndexType, or
+    one of its indices by sequence (also covers records whose IndexType FK is gone)."""
+    i7 = list(index_type.indices_i7.values_list("index", flat=True))
+    i5 = list(index_type.indices_i5.values_list("index", flat=True))
+    for qs in _sequenced_records():
+        if qs.filter(index_type=index_type).exists():
+            return True
+        if i7 and qs.filter(index_i7__in=i7).exists():
+            return True
+        if i5 and qs.filter(index_i5__in=i5).exists():
+            return True
+    return False
+
+
+def index_is_used(index):
+    """True if any record at Sequencing or higher carries this index's sequence.
+    Works without an IndexType: the sequence string is the only link."""
+    field = "index_i7" if isinstance(index, IndexI7) else "index_i5"
+    return any(
+        qs.filter(**{field: index.index}).exists() for qs in _sequenced_records()
+    )
+
+
+def index_pair_is_used(pair):
+    """True if either constituent index of the pair is used by a sequenced record."""
+    return any(
+        idx is not None and index_is_used(idx) for idx in (pair.index1, pair.index2)
+    )
+
+
+def archive_index_pairs(queryset):
+    """Archive IndexPairs, their constituent indices, and any IndexType left
+    without an active pair. Shared by the admin actions and the delete fallback."""
+    pair_ids = list(queryset.values_list("id", flat=True))
+    type_ids = set(queryset.values_list("index_type", flat=True)) - {None}
+    IndexPair.objects.filter(id__in=pair_ids).update(archived=True)
+    IndexI7.objects.filter(indexpair__id__in=pair_ids).update(archived=True)
+    IndexI5.objects.filter(indexpair__id__in=pair_ids).update(archived=True)
+    for type_id in type_ids:
+        if not IndexPair.objects.filter(index_type_id=type_id, archived=False).exists():
+            IndexType.objects.filter(id=type_id).update(archived=True)
+
+
+def archive_index_types(queryset):
+    """Archive IndexTypes and cascade down: their pairs and indices. An index
+    shared with a still-active IndexType stays active."""
+    type_ids = list(queryset.values_list("id", flat=True))
+    IndexType.objects.filter(id__in=type_ids).update(archived=True)
+    archive_index_pairs(IndexPair.objects.filter(index_type_id__in=type_ids))
+    for model in (IndexI7, IndexI5):
+        model.objects.filter(index_type__id__in=type_ids).exclude(
+            index_type__archived=False
+        ).update(archived=True)
+
+
+def index_has_used_pair(index):
+    """True if a pair referencing this index is used (via its other index)."""
+    field = "index1" if isinstance(index, IndexI7) else "index2"
+    return any(
+        index_pair_is_used(pair)
+        for pair in IndexPair.objects.filter(**{field: index}).select_related(
+            "index1", "index2"
+        )
+    )
+
+
+@transaction.atomic
+def delete_index_type(index_type):
+    """Permanently delete an unused IndexType with its pairs, plus the indices
+    that end up in no other IndexType and no other pair. Caller checks usage."""
+    pairs = IndexPair.objects.filter(index_type=index_type)
+    i7_ids = set(index_type.indices_i7.values_list("id", flat=True))
+    i7_ids |= set(pairs.values_list("index1_id", flat=True))
+    i5_ids = set(index_type.indices_i5.values_list("id", flat=True))
+    i5_ids |= set(pairs.values_list("index2_id", flat=True))
+    pairs.delete()
+    index_type.delete()
+    IndexI7.objects.filter(
+        id__in=i7_ids, index_type__isnull=True, indexpair__isnull=True
+    ).delete()
+    IndexI5.objects.filter(
+        id__in=i5_ids, index_type__isnull=True, indexpair__isnull=True
+    ).delete()
+
+
+@transaction.atomic
+def delete_index(index):
+    """Permanently delete an unused IndexI7/IndexI5 and the pairs built on it,
+    so no half-empty pair is left behind. Caller checks usage."""
+    field = "index1" if isinstance(index, IndexI7) else "index2"
+    IndexPair.objects.filter(**{field: index}).delete()
+    index.delete()
 
 
 def get_indices_ids(obj):

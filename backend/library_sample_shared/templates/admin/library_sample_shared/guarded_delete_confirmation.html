@@ -1,0 +1,70 @@
+{% extends "admin/base_site.html" %}
+{% load i18n admin_urls static %}
+
+{% block extrahead %}
+    {{ block.super }}
+    {{ media }}
+    <script src="{% static 'admin/js/cancel.js' %}" async></script>
+{% endblock %}
+
+{% block bodyclass %}{{ block.super }} app-{{ opts.app_label }} model-{{ opts.model_name }} delete-confirmation{% endblock %}
+
+{% block breadcrumbs %}
+<div class="breadcrumbs">
+<a href="{% url 'admin:index' %}">{% translate 'Home' %}</a>
+&rsaquo; <a href="{% url 'admin:app_list' app_label=opts.app_label %}">{{ opts.app_config.verbose_name }}</a>
+&rsaquo; <a href="{% url opts|admin_urlname:'changelist' %}">{{ opts.verbose_name_plural|capfirst }}</a>
+&rsaquo; {% translate 'Delete' %}
+</div>
+{% endblock %}
+
+{% block content %}
+{% if used_objects %}
+  <p>
+    These {{ opts.verbose_name_plural }} are used by libraries or samples that reached
+    Sequencing or a later status. They are <strong>archived, never deleted</strong>:
+  </p>
+  <ul>{% for obj in used_objects %}<li>{{ obj }}</li>{% endfor %}</ul>
+{% endif %}
+
+{% if unused_objects %}
+  <p>
+    These {{ opts.verbose_name_plural }} are not used by any sequenced library or sample:
+  </p>
+  <ul>{% for obj in unused_objects %}<li>{{ obj }}</li>{% endfor %}</ul>
+  <p>
+    By default they are <strong>archived</strong>. Permanent deletion is meant for failed
+    imports and is opt-in; it also removes the following:
+  </p>
+  <ul>
+    {% for label, count in impact %}{% if count %}<li>{{ label }}: {{ count }}</li>{% endif %}{% endfor %}
+  </ul>
+{% endif %}
+
+<form method="post">{% csrf_token %}
+<div>
+  <input type="hidden" name="post" value="yes">
+  {% if bulk %}
+    {% for obj in queryset %}
+    <input type="hidden" name="{{ action_checkbox_name }}" value="{{ obj.pk }}">
+    {% endfor %}
+    <input type="hidden" name="action" value="{{ action_name }}">
+  {% endif %}
+  {% if is_popup %}<input type="hidden" name="{{ is_popup_var }}" value="1">{% endif %}
+  {% if to_field %}<input type="hidden" name="{{ to_field_var }}" value="{{ to_field }}">{% endif %}
+
+  {% if unused_objects %}
+  <p>
+    <label>
+      <input type="checkbox" name="confirm_permanent_delete" value="yes">
+      Permanently delete the unused {{ opts.verbose_name_plural }} listed above instead of
+      archiving them. This cannot be undone.
+    </label>
+  </p>
+  {% endif %}
+
+  <input type="submit" value="{% translate 'Confirm' %}">
+  <a href="#" class="button cancel-link">{% translate "No, take me back" %}</a>
+</div>
+</form>
+{% endblock content %}
