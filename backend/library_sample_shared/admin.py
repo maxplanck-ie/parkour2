@@ -128,10 +128,9 @@ class GuardedDeleteMixin:
         "admin/library_sample_shared/guarded_delete_confirmation.html"
     )
 
-    # Subclasses set True when a confirmed permanent delete may remove even
-    # records whose sequence is used at status >= Sequencing; their indices
-    # stay protected (archived) via hard_delete() instead.
-    deletable_when_used = False
+    # Extra sentence for the permanent-delete checkbox label, if deleting
+    # also cleans up related records.
+    permanent_delete_note = ""
 
     def is_used(self, obj):
         raise NotImplementedError
@@ -167,7 +166,7 @@ class GuardedDeleteMixin:
             "used_objects": used,
             "unused_objects": unused,
             "impact": self.impact_summary(unused),
-            "deletable_when_used": self.deletable_when_used,
+            "permanent_delete_note": self.permanent_delete_note,
             "bulk": bulk,
         }
 
@@ -177,9 +176,7 @@ class GuardedDeleteMixin:
             return super().delete_view(request, object_id, extra_context)
 
         if request.method == "POST" and "post" in request.POST:
-            if (
-                self.is_used(obj) and not self.deletable_when_used
-            ) or not request.POST.get("confirm_permanent_delete"):
+            if self.is_used(obj) or not request.POST.get("confirm_permanent_delete"):
                 self.archive_queryset(self.model.objects.filter(pk=obj.pk))
                 self.message_user(
                     request,
@@ -216,12 +213,8 @@ class GuardedDeleteMixin:
 
         used, unused = self._split(objs)
         confirmed = bool(request.POST.get("confirm_permanent_delete"))
-        if self.deletable_when_used:
-            to_delete = objs if confirmed else []
-            to_archive = [] if confirmed else objs
-        else:
-            to_archive = used if confirmed else objs
-            to_delete = unused if confirmed else []
+        to_archive = used if confirmed else objs
+        to_delete = unused if confirmed else []
         with transaction.atomic():
             if to_archive:
                 self.archive_queryset(
@@ -319,10 +312,10 @@ class IndexPairAdmin(GuardedDeleteMixin, admin.ModelAdmin):
     search_fields = ("index_type__name",)
     list_filter = ("index_type", ArchivedFilter)
 
-    # A pair is a plate coordinate entry: sequenced records hold sequences, not
-    # pair FKs, so a confirmed delete may remove the pair itself.
-    # delete_index_pair() archives its in-use indices instead of deleting them.
-    deletable_when_used = True
+    permanent_delete_note = (
+        "Indices of a deleted pair are removed too, unless another pair or "
+        "index type still references them."
+    )
 
     actions = (
         "mark_as_archived",

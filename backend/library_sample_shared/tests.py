@@ -609,7 +609,7 @@ class GuardedIndexDeleteTest(BaseTestCase):
         self.assertFalse(IndexI5.objects.filter(pk=self.i5.pk).exists())
         self.assertTrue(IndexPair.objects.filter(pk=other.pk).exists())
 
-    def test_deleting_pair_archives_used_index_instead_of_deleting(self):
+    def test_used_pair_is_archived_even_when_permanent_delete_confirmed(self):
         self._library(5, i7="ACGT")
         self.client.post(
             reverse(
@@ -617,10 +617,8 @@ class GuardedIndexDeleteTest(BaseTestCase):
             ),
             {"post": "yes", "confirm_permanent_delete": "yes"},
         )
-        self.assertFalse(IndexPair.objects.exists())
-        self.i7.refresh_from_db()
-        self.assertTrue(self.i7.archived)
-        self.assertFalse(IndexI5.objects.filter(pk=self.i5.pk).exists())
+        self.assertTrue(IndexPair.objects.filter(pk=self.pair.pk).exists())
+        self.assertTrue(self._all_archived())
 
     def test_bulk_action_archives_used_and_deletes_unused_when_confirmed(self):
         used_type = create_index_type("Used")

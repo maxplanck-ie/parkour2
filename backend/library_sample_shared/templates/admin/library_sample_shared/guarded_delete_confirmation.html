@@ -20,19 +20,10 @@
 
 {% block content %}
 {% if used_objects %}
-  {% if deletable_when_used %}
-  <p>
-    These {{ opts.verbose_name_plural }} contain indices used by libraries or samples
-    that reached Sequencing or a later status. Confirming permanent deletion below
-    removes the {{ opts.verbose_name_plural }} but <strong>archives those indices</strong>
-    instead of deleting them:
-  </p>
-  {% else %}
   <p>
     These {{ opts.verbose_name_plural }} are used by libraries or samples that reached
     Sequencing or a later status. They are <strong>archived, never deleted</strong>:
   </p>
-  {% endif %}
   <ul>{% for obj in used_objects %}<li>{{ obj }}</li>{% endfor %}</ul>
 {% endif %}
 
@@ -62,19 +53,12 @@
   {% if is_popup %}<input type="hidden" name="{{ is_popup_var }}" value="1">{% endif %}
   {% if to_field %}<input type="hidden" name="{{ to_field_var }}" value="{{ to_field }}">{% endif %}
 
-  {% if unused_objects or deletable_when_used %}
+  {% if unused_objects %}
   <p>
     <label>
       <input type="checkbox" name="confirm_permanent_delete" value="yes">
-      {% if deletable_when_used %}
-      Permanently delete the {{ opts.verbose_name_plural }} listed above instead of
-      archiving them. Indices still in use are archived rather than deleted; unused
-      indices are removed unless another pair or index type still references them.
-      This cannot be undone.
-      {% else %}
       Permanently delete the unused {{ opts.verbose_name_plural }} listed above instead of
-      archiving them. This cannot be undone.
-      {% endif %}
+      archiving them. {{ permanent_delete_note }} This cannot be undone.
     </label>
   </p>
   {% endif %}

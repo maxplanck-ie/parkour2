@@ -118,12 +118,12 @@ def delete_index(index):
 
 @transaction.atomic
 def delete_index_pair(pair):
-    """Permanently delete a pair and clean up its constituent indices.
+    """Permanently delete an unused pair and clean up its constituent indices.
 
-    An index whose sequence is carried by a record at status >= Sequencing is
-    archived instead of deleted. Otherwise it is deleted once no other pair and
-    no other IndexType references it. The parent IndexType is archived when the
-    pair was its last one.
+    Callers guarantee the pair is unused (see index_pair_is_used), so neither
+    index is in use. Each index is deleted once no other pair and no other
+    IndexType references it. The parent IndexType is archived when the pair was
+    its last one.
     """
     type_id = pair.index_type_id
     i7 = pair.index1
@@ -131,11 +131,6 @@ def delete_index_pair(pair):
     pair.delete()
     for index, field in ((i7, "index1"), (i5, "index2")):
         if index is None:
-            continue
-        if index_is_used(index):
-            if not index.archived:
-                index.archived = True
-                index.save(update_fields=["archived"])
             continue
         if IndexPair.objects.filter(**{field: index}).exists():
             continue
