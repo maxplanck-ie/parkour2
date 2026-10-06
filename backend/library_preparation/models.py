@@ -78,4 +78,6 @@ class LibraryPreparation(DateTimeMixin):
     def __str__(self):
         # return '%s (Request: %s)' % (self.sample.name,
         #                              self.sample.request.get())
+        if not self.sample:
+            return ""
         return f"{self.sample.name} ({self.sample.barcode})"

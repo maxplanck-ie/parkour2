@@ -105,6 +105,44 @@ class TestPoolingModel(BaseTestCase):
         self.assertEqual(Pooling.objects.filter(sample=sample).count(), 1)
 
 
+class TestOrphanedPooling(BaseTestCase):
+    """
+    Pooling.library and Pooling.sample are on_delete=SET_NULL, so deleting
+    the library or sample leaves the Pooling row behind with neither set.
+    __str__ and the admin columns must cope with that, otherwise the Pooling
+    admin changelist returns HTTP 500.
+    """
+
+    def setUp(self):
+        self.user = self.create_user()
+
+    def _orphan(self, **kwargs):
+        pooling_object = create_pooling_object(self.user, **kwargs)
+        (pooling_object.library or pooling_object.sample).delete()
+        return Pooling.objects.get(pk=pooling_object.pk)
+
+    def test_str_without_library(self):
+        pooling_object = self._orphan(add_library=True)
+        self.assertIsNone(pooling_object.library)
+        self.assertEqual(str(pooling_object), "")
+
+    def test_str_without_sample(self):
+        pooling_object = self._orphan(add_sample=True)
+        self.assertIsNone(pooling_object.sample)
+        self.assertEqual(str(pooling_object), "")
+
+    def test_admin_changelist_with_orphaned_pooling(self):
+        self._orphan(add_library=True)
+        self._orphan(add_sample=True)
+        admin_user = self.create_user(email="admin@test.io")
+        admin_user.is_superuser = True
+        admin_user.save()
+        self.client.force_login(admin_user)
+
+        response = self.client.get(reverse("admin:pooling_pooling_changelist"))
+        self.assertEqual(response.status_code, 200)
+
+
 # Signals (characterization tests for pooling/signals.py)
 
 

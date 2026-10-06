@@ -27,14 +27,16 @@ class LibraryPreparationAdmin(admin.ModelAdmin):
     def mark_as_non_archived(self, request, queryset):
         queryset.update(archived=False)
 
+    # sample is on_delete=SET_NULL, so rows can outlive their sample.
+
     def name(self, obj):
-        return obj.sample.name
+        return obj.sample.name if obj.sample else ""
 
     def barcode(self, obj):
-        return obj.sample.barcode
+        return obj.sample.barcode if obj.sample else ""
 
     def request(self, obj):
-        return obj.sample.request.get().name
+        return obj.sample.request.get().name if obj.sample else ""
 
     def pool(self, obj):
-        return obj.sample.pool.get().name
+        return obj.sample.pool.get().name if obj.sample else ""
