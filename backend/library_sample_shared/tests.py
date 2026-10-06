@@ -578,6 +578,50 @@ class GuardedIndexDeleteTest(BaseTestCase):
         self.assertFalse(IndexI5.objects.filter(pk=self.i5.pk).exists())
         self.assertFalse(IndexPair.objects.exists())
 
+    def test_deleting_unused_pair_cleans_up_its_indices(self):
+        self.client.post(
+            reverse(
+                "admin:library_sample_shared_indexpair_delete", args=[self.pair.pk]
+            ),
+            {"post": "yes", "confirm_permanent_delete": "yes"},
+        )
+        self.assertFalse(IndexPair.objects.exists())
+        self.assertFalse(IndexI7.objects.exists())
+        self.assertFalse(IndexI5.objects.exists())
+        self.assertTrue(IndexType.objects.filter(pk=self.index_type.pk).exists())
+
+    def test_deleting_pair_leaves_index_shared_with_other_pair(self):
+        other = IndexPair.objects.create(
+            index_type=self.index_type,
+            index1=self.i7,
+            index2=IndexI5.objects.create(prefix="i5_", number="02", index="AAAA"),
+            char_coord="A",
+            num_coord=2,
+        )
+        self.client.post(
+            reverse(
+                "admin:library_sample_shared_indexpair_delete", args=[self.pair.pk]
+            ),
+            {"post": "yes", "confirm_permanent_delete": "yes"},
+        )
+        self.assertFalse(IndexPair.objects.filter(pk=self.pair.pk).exists())
+        self.assertTrue(IndexI7.objects.filter(pk=self.i7.pk).exists())
+        self.assertFalse(IndexI5.objects.filter(pk=self.i5.pk).exists())
+        self.assertTrue(IndexPair.objects.filter(pk=other.pk).exists())
+
+    def test_deleting_pair_archives_used_index_instead_of_deleting(self):
+        self._library(5, i7="ACGT")
+        self.client.post(
+            reverse(
+                "admin:library_sample_shared_indexpair_delete", args=[self.pair.pk]
+            ),
+            {"post": "yes", "confirm_permanent_delete": "yes"},
+        )
+        self.assertFalse(IndexPair.objects.exists())
+        self.i7.refresh_from_db()
+        self.assertTrue(self.i7.archived)
+        self.assertFalse(IndexI5.objects.filter(pk=self.i5.pk).exists())
+
     def test_bulk_action_archives_used_and_deletes_unused_when_confirmed(self):
         used_type = create_index_type("Used")
         self._library(5, index_type=used_type)

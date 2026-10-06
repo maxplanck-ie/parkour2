@@ -116,6 +116,38 @@ def delete_index(index):
     index.delete()
 
 
+@transaction.atomic
+def delete_index_pair(pair):
+    """Permanently delete a pair and clean up its constituent indices.
+
+    An index whose sequence is carried by a record at status >= Sequencing is
+    archived instead of deleted. Otherwise it is deleted once no other pair and
+    no other IndexType references it. The parent IndexType is archived when the
+    pair was its last one.
+    """
+    type_id = pair.index_type_id
+    i7 = pair.index1
+    i5 = pair.index2
+    pair.delete()
+    for index, field in ((i7, "index1"), (i5, "index2")):
+        if index is None:
+            continue
+        if index_is_used(index):
+            if not index.archived:
+                index.archived = True
+                index.save(update_fields=["archived"])
+            continue
+        if IndexPair.objects.filter(**{field: index}).exists():
+            continue
+        other_types = index.index_type.all()
+        if type_id:
+            other_types = other_types.exclude(pk=type_id)
+        if not other_types.exists():
+            index.delete()
+    if type_id and not IndexPair.objects.filter(index_type_id=type_id).exists():
+        IndexType.objects.filter(id=type_id).update(archived=True)
+
+
 def get_indices_ids(obj):
     """Get Index I7/I5 ids for a given library/sample."""
 
