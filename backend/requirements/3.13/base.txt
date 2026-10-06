@@ -48,9 +48,9 @@ drf-spectacular==0.30.0
     # via -r backend/requirements/base.in
 et-xmlfile==2.0.0
     # via openpyxl
-fonttools==4.66.0
+fonttools==4.66.1
     # via fpdf2
-fpdf2==2.8.8
+fpdf2==2.8.9
     # via -r backend/requirements/base.in
 gunicorn==26.2.0
     # via -r backend/requirements/base.in
@@ -86,7 +86,7 @@ referencing==0.37.0
     # via
     #   jsonschema
     #   jsonschema-specifications
-rpds-py==2026.6.3
+rpds-py==2026.9.1
     # via
     #   jsonschema
     #   referencing
@@ -100,7 +100,7 @@ tblib==3.2.2
     # via -r backend/requirements/base.in
 typing-extensions==4.16.0
     # via python-docx
-tzdata==2026.4 ; sys_platform == 'emscripten' or sys_platform == 'win32'
+tzdata==2026.5 ; sys_platform == 'emscripten' or sys_platform == 'win32'
     # via
     #   django
     #   pandas
