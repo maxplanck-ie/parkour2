@@ -25,6 +25,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       COMPOSE_FILE: docker-compose.yml:docker-compose.ci.yml
+      BUILDX_BAKE_ENTITLEMENTS_FS: 0
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -50,6 +51,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       COMPOSE_FILE: docker-compose.yml:docker-compose.ci.yml
+      BUILDX_BAKE_ENTITLEMENTS_FS: 0
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -83,7 +85,7 @@ jobs:
     services:
       postgres:
         env:
-          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD || 'ci-postgres' }}
         image: postgres:18
         ports:
           - 5432/tcp
@@ -126,7 +128,7 @@ jobs:
       - name: Verify migrations
         env:
           DJANGO_SETTINGS_MODULE: config.settings.prod
-          DATABASE_URL: postgres://postgres:${{ secrets.POSTGRES_PASSWORD }}@127.0.0.1:${{ job.services.postgres.ports['5432'] }}/postgres
+          DATABASE_URL: postgres://postgres:${{ secrets.POSTGRES_PASSWORD || 'ci-postgres' }}@127.0.0.1:${{ job.services.postgres.ports['5432'] }}/postgres
           SECRET_KEY: ${{ secrets.SECRET_KEY }}
         run: |
           python backend/manage.py makemigrations --no-input --check --dry-run
@@ -135,7 +137,7 @@ jobs:
       - name: Validate templates
         env:
           DJANGO_SETTINGS_MODULE: config.settings.prod
-          DATABASE_URL: postgres://postgres:${{ secrets.POSTGRES_PASSWORD }}@127.0.0.1:${{ job.services.postgres.ports['5432'] }}/postgres
+          DATABASE_URL: postgres://postgres:${{ secrets.POSTGRES_PASSWORD || 'ci-postgres' }}@127.0.0.1:${{ job.services.postgres.ports['5432'] }}/postgres
           SECRET_KEY: ${{ secrets.SECRET_KEY }}
         run: |
           python backend/manage.py validate_templates
@@ -144,7 +146,7 @@ jobs:
       - name: Validate demo settings
         env:
           DJANGO_SETTINGS_MODULE: config.settings.demo
-          DATABASE_URL: postgres://postgres:${{ secrets.POSTGRES_PASSWORD }}@127.0.0.1:${{ job.services.postgres.ports['5432'] }}/postgres
+          DATABASE_URL: postgres://postgres:${{ secrets.POSTGRES_PASSWORD || 'ci-postgres' }}@127.0.0.1:${{ job.services.postgres.ports['5432'] }}/postgres
           SECRET_KEY: ${{ secrets.SECRET_KEY }}
         run: |
           uv pip install -r backend/requirements/${{ matrix.python-version }}/demo.txt
@@ -154,7 +156,7 @@ jobs:
       - name: Run unittests
         env:
           DJANGO_SETTINGS_MODULE: config.settings.testing
-          DATABASE_URL: postgres://postgres:${{ secrets.POSTGRES_PASSWORD }}@127.0.0.1:${{ job.services.postgres.ports['5432'] }}/postgres
+          DATABASE_URL: postgres://postgres:${{ secrets.POSTGRES_PASSWORD || 'ci-postgres' }}@127.0.0.1:${{ job.services.postgres.ports['5432'] }}/postgres
           SECRET_KEY: ${{ secrets.SECRET_KEY }}
         run: |
           uv pip install -r backend/requirements/${{ matrix.python-version }}/testing.txt
