@@ -3,21 +3,26 @@
 Unreleased
 ==========
 
-- Fixed the Index Pairs admin page crashing (HTTP 500) for everyone after an
-  Index Type that still had Index Pairs was deleted: those pairs are kept with
-  no Index Type, and displaying them failed.
-- Added optional self-hosted GoatCounter web analytics, configured per
-  deployment (dev/test/prod/demo each point at their own site) via
-  VITE_GOATCOUNTER_URL; unset by default, so this is a no-op unless a
-  deployment's env file opts in. Tracking now also covers "Return Pool to
-  Index Generator". (Direct commit `4fbbbe7`.)
+- ...
+
+
+26.10.05
+========
+
+Breaking Changes:
+
+- Backend settings package renamed from `wui` to `config` (`DJANGO_SETTINGS_MODULE` is now `config.settings.*`); deployments/scripts setting that env var directly need updating. Also added an import-linter check enforcing that the shared `common` app never imports domain apps, catching one existing violation. (Direct commit `5cbc20a`.)
+- "Library Type" renamed to "Analysis Type" end-to-end (model, API fields and endpoints, admin, exports), not just the frontend column label — avoids confusion with Library Protocol. `/api/library_types/` and `/api/usage/library_types/` are now `/api/analysis_types/` and `/api/usage/analysis_types/`; the `library_type`/`library_type_name` JSON keys on libraries/samples/run-statistics/sequences-statistics responses are now `analysis_type`/`analysis_type_name`. (Direct commit `2c8c9b8`.)
+
+Non-breaking changes:
+
+- Added optional self-hosted GoatCounter web analytics, configured per deployment (dev/test/prod/demo each point at their own site) via VITE_GOATCOUNTER_URL; unset by default, so this is a no-op unless a deployment's env file opts in. Tracking now also covers "Return Pool to Index Generator". (Direct commit `4fbbbe7`.)
 - Removed unused legacy static assets (DataTables, jQuery, noty, daterangepicker, underscore, Bootstrap 3, glyphicon fonts) that had no remaining references anywhere in the app; server-rendered pages (login, password reset, error pages) now use Bootstrap 5 instead of Bootstrap 3. No user-visible change other than faster page loads. (PR #358.)
 - Libraries & Samples table now shows a "Flowcell Created" column with the creation date of each flowcell a library/sample was sequenced on, aligned to the existing Flowcell IDs column. (PR #354.)
 - Added two box plots to the Usage page, "Turnaround Time by Sequencer" and "Turnaround Time by Analysis Type", showing the spread (min/median/max, plus individual points for any outliers beyond the whiskers) of days from request submission to flowcell loading (first flowcell creation; the sequencer is that of the first flowcell), backed by a new `Request.submitted_at` timestamp — set automatically when a request's first library/sample is submitted (status 1), and backfilled for pre-existing requests from their legacy approval timestamp via migration. The Usage page now shows 4 charts in a 2x2 layout — Principal Investigators and Analysis Types on top, their matching Turnaround Time box plots below — and long x-axis labels (over 18 characters) are truncated with an ellipsis. The page defaults to the last 6 months, and a new "Show" selector next to the date range (All records / Libraries / Samples) filters all four charts by record type. Charts share one palette: purple/orange for Libraries/Samples (box plots take the colour of the selected record type), dark teal for box plots over all records, black box plot lines and outliers. (PRs #354, #369.)
 - Added a `make dev-fix` target: deploys like `make dev`, but also loads demo fixture data. `make dev-ez` now loads demo fixture data instead of an empty DB. (PR #354.)
 - Adopted VueUse composables and Motion across the frontend (browser listeners, storage, debounce, clipboard, resize, and dialog animations), including animated save-confirmation dialogs in the Request Editor. (PRs #350, #352.)
 - Added Playwright e2e coverage for Request Editor (edit/delete a request), Invoicing (billing-month view, Excel export), Load Flowcells (sample sheet download, destroy flowcell), and Runs/Sequences Statistics. (Direct commit `9380fb48`.)
-- Backend settings package renamed from `wui` to `config` (`DJANGO_SETTINGS_MODULE` is now `config.settings.*`); deployments/scripts setting that env var directly need updating. Also added an import-linter check enforcing that the shared `common` app never imports domain apps, catching one existing violation. (Direct commit `5cbc20a4`.)
 - Fixed a fresh database migrate failing outright: the Analysis Type rename shipped without a migration for the model rename itself, and some apps had accumulated conflicting/duplicate migrations from unrelated work. (Direct commit `2d4b3de`.)
 - Fixed the above migration repair having dropped three data-safety steps in the process: sanitizing invalid library/sample names before enforcing the new naming rule, seeding the default Attachment File Types, and transliterating umlauts in existing user names. (Direct commit `d2ea3b02`.)
 - Removed hardcoded institute domain from nginx config, the request-approval page's contact email, and fixture/test data. (Direct commit `6d3cda25`.)
