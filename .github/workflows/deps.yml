@@ -103,17 +103,17 @@ jobs:
           }
           bump_major() {  # image, file
             local cur next
-            cur=$(grep -oE "image: $1:[0-9]+" "$2" | grep -oE '[0-9]+$')
+            cur=$(grep -oE "image: docker\.io/library/$1:[0-9]+" "$2" | grep -oE '[0-9]+$')
             next=$((cur + 1))
             if tag_exists "$1" "$next"; then
-              sed -i "s|image: $1:$cur|image: $1:$next|" "$2"
+              sed -i "s|image: docker.io/library/$1:$cur|image: docker.io/library/$1:$next|" "$2"
               echo "- Docker: bumped \`$1\` major $cur -> $next in \`$2\`" >> pr-note.md
             fi
           }
           bump_major caddy misc/caddy.yml
           bump_major nginx misc/nginx.yml
           # postgres: never auto-bump; a new major can't start on the old pgdb volume
-          pgcur=$(grep -oE 'image: postgres:[0-9]+' docker-compose.yml | grep -oE '[0-9]+$')
+          pgcur=$(grep -oE 'image: docker\.io/library/postgres:[0-9]+' docker-compose.yml | grep -oE '[0-9]+$')
           if tag_exists postgres "$((pgcur + 1))"; then
             echo "- :warning: **postgres $((pgcur + 1)) is available** (pinned: $pgcur). Upgrading requires a dump/restore or pg_upgrade of the \`pgdb\` volume; update \`docker-compose.yml\` and \`misc/convert-backup.yml\` manually." >> pr-note.md
           fi
