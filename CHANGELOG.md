@@ -6,6 +6,7 @@ Unreleased
 - Index Types, Index Pairs and indices (I5/I7) in the admin are no longer deleted outright. If a library or sample that reached Sequencing (or a later status) uses them — also matched by index sequence when the Index Type is gone — they are archived instead. Unused ones are archived by default; permanent deletion (meant for failed imports) is opt-in through a confirmation checkbox and also removes the pairs/indices built on them. The plain "Delete selected" action is replaced by a guarded one. (PR #370.)
 - Archiving an Index Type in the admin now also archives its Index Pairs and indices (previously only archiving a pair cascaded, upwards). (PR #370.)
 - Fixed the Index Pair admin list returning an error after an Index Type was deleted and left pairs without a type. (PR #370.)
+- Fixed the library list and detail views failing for a library whose Index Type was deleted; the Index Type is now simply shown as empty. (PR #370.)
 
 
 26.10.05
