@@ -10,6 +10,7 @@ POPULATE_SQL = sample_insert_sql_from_select(sample_select_sql())
 class Migration(migrations.Migration):
     dependencies = [
         ("sample", "0019_alter_sample_index_fields_and_more"),
+        ("request", "0016_request_submitted_at"),
     ]
 
     operations = [

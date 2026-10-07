@@ -8,6 +8,7 @@ from django.core.files.base import ContentFile
 from request.models import FileRequest
 
 from common.models import Organization
+from common.mviews import refresh_now_blocking
 from common.tests import BaseAPITestCase, BaseTestCase
 from common.utils import get_random_name, timezone
 from django.contrib.auth import get_user_model
@@ -420,6 +421,43 @@ class TestLibrarySampleTree(BaseTestCase):
         self.assertIsNone(parse_gmo_filter("maybe"))
         self.assertIsNone(parse_gmo_filter(""))
 
+
+class TestCompleteDataDate(BaseTestCase):
+    """Date column = submission > approval > creation."""
+
+    def _date_for(self, **request_fields):
+        user = self.create_user("date@bar.io", "foo-foo")
+        request = Request(user=user)
+        request.save()
+        Request.objects.filter(pk=request.pk).update(**request_fields)
+        request.libraries.add(create_library(self._get_random_name()))
+        request.samples.add(create_sample(self._get_random_name()))
+        refresh_now_blocking()
+        request.refresh_from_db()
+        lib = CompleteLibraryData.objects.get(request_id=request.pk)
+        sample = CompleteSampleData.objects.get(request_id=request.pk)
+        self.assertEqual(lib.create_time, sample.create_time)
+        return request, lib.create_time
+
+    def test_falls_back_to_creation(self):
+        request, date = self._date_for()
+        self.assertEqual(date, request.create_time)
+
+    def test_approval_beats_creation(self):
+        _, date = self._date_for(approval={"TIMESTAMP": "2024-03-04T05:06:07+00:00"})
+        self.assertEqual(date.isoformat(), "2024-03-04T05:06:07+00:00")
+
+    def test_submission_beats_approval(self):
+        submitted = timezone.now()
+        request, date = self._date_for(
+            approval={"TIMESTAMP": "2024-03-04T05:06:07+00:00"},
+            submitted_at=submitted,
+        )
+        self.assertEqual(date, submitted)
+
+    def test_unparseable_approval_timestamp_falls_back(self):
+        request, date = self._date_for(approval={"TIMESTAMP": "not a date"})
+        self.assertEqual(date, request.create_time)
 
 class TestLibraries(BaseTestCase):
     """Tests for libraries."""
