@@ -210,6 +210,11 @@ const INDEX_TYPE_FILTER_HELP = "Filter by Index Type (partial match)";
 const TYPE_FILTER_HELP = "Filter by record type: S = Sample, L = Library";
 const GMO_FILTER_HELP = "Filter by GMO: yes/y/true or no/n/false";
 const DATE_FILTER_HELP = "Filter by date, full or partial, e.g. 03.09 or 2026";
+const DATE_COLUMN_HELP =
+  "Latest available request date: Submission > Approval > Creation. " +
+  "Submission = first record reaching Submitted; Approval = PI approval; " +
+  "Creation = request creation (fallback).\n" +
+  DATE_FILTER_HELP;
 
 export function librariesAndSamplesColumnDefs(
   getTabulatorInstance,
@@ -405,7 +410,7 @@ export function librariesAndSamplesColumnDefs(
         "create_time",
         onHeaderFilterChange
       ),
-      headerTooltip: DATE_FILTER_HELP,
+      headerTooltip: DATE_COLUMN_HELP,
       visible: true,
       cssClass: "regular-column",
       contextMenu: () =>
