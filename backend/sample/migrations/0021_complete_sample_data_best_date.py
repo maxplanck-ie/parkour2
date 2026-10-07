@@ -7,6 +7,7 @@ from common.sql import sample_insert_sql_from_select, sample_select_sql
 
 POPULATE_SQL = sample_insert_sql_from_select(sample_select_sql())
 
+
 class Migration(migrations.Migration):
     dependencies = [
         ("sample", "0020_complete_sample_data_flowcell_create_times"),

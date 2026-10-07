@@ -459,6 +459,7 @@ class TestCompleteDataDate(BaseTestCase):
         request, date = self._date_for(approval={"TIMESTAMP": "not a date"})
         self.assertEqual(date, request.create_time)
 
+
 class TestLibraries(BaseTestCase):
     """Tests for libraries."""
 

@@ -7,6 +7,7 @@ from common.sql import library_insert_sql_from_select, library_select_sql
 
 POPULATE_SQL = library_insert_sql_from_select(library_select_sql())
 
+
 class Migration(migrations.Migration):
     dependencies = [
         ("library", "0015_complete_library_data_flowcell_create_times"),
