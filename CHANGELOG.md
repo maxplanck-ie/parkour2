@@ -3,7 +3,7 @@
 Unreleased
 ==========
 
-- ...
+- Libraries & Samples "Date" column now shows the latest available request date instead of always the creation date: submission, else PI approval, else creation. A header tooltip explains the order. (Direct commit `1d8078be`.)
 
 
 26.10.05
