@@ -129,7 +129,7 @@ jobs:
         env:
           DJANGO_SETTINGS_MODULE: config.settings.prod
           DATABASE_URL: postgres://postgres:${{ secrets.POSTGRES_PASSWORD || 'ci-postgres' }}@127.0.0.1:${{ job.services.postgres.ports['5432'] }}/postgres
-          SECRET_KEY: ${{ secrets.SECRET_KEY }}
+          SECRET_KEY: ${{ secrets.SECRET_KEY || 'ci-only-not-secret' }}
         run: |
           python backend/manage.py makemigrations --no-input --check --dry-run
 
@@ -138,7 +138,7 @@ jobs:
         env:
           DJANGO_SETTINGS_MODULE: config.settings.prod
           DATABASE_URL: postgres://postgres:${{ secrets.POSTGRES_PASSWORD || 'ci-postgres' }}@127.0.0.1:${{ job.services.postgres.ports['5432'] }}/postgres
-          SECRET_KEY: ${{ secrets.SECRET_KEY }}
+          SECRET_KEY: ${{ secrets.SECRET_KEY || 'ci-only-not-secret' }}
         run: |
           python backend/manage.py validate_templates
 
@@ -147,7 +147,7 @@ jobs:
         env:
           DJANGO_SETTINGS_MODULE: config.settings.demo
           DATABASE_URL: postgres://postgres:${{ secrets.POSTGRES_PASSWORD || 'ci-postgres' }}@127.0.0.1:${{ job.services.postgres.ports['5432'] }}/postgres
-          SECRET_KEY: ${{ secrets.SECRET_KEY }}
+          SECRET_KEY: ${{ secrets.SECRET_KEY || 'ci-only-not-secret' }}
         run: |
           uv pip install -r backend/requirements/${{ matrix.python-version }}/demo.txt
           python backend/manage.py check
@@ -157,7 +157,7 @@ jobs:
         env:
           DJANGO_SETTINGS_MODULE: config.settings.testing
           DATABASE_URL: postgres://postgres:${{ secrets.POSTGRES_PASSWORD || 'ci-postgres' }}@127.0.0.1:${{ job.services.postgres.ports['5432'] }}/postgres
-          SECRET_KEY: ${{ secrets.SECRET_KEY }}
+          SECRET_KEY: ${{ secrets.SECRET_KEY || 'ci-only-not-secret' }}
         run: |
           uv pip install -r backend/requirements/${{ matrix.python-version }}/testing.txt
           python backend/manage.py test backend --parallel
