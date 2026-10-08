@@ -59,6 +59,8 @@ class ConcentrationMethod(models.Model):
 
 
 class ReadLength(models.Model):
+    history = HistoricalRecords()
+
     name = models.CharField("Name", max_length=50)
     archived = models.BooleanField("Archived", default=False)
 
@@ -71,6 +73,8 @@ class ReadLength(models.Model):
 
 
 class GenericIndex(models.Model):
+    history = HistoricalRecords(inherit=True)
+
     prefix = models.CharField("Prefix", max_length=20, default="")
     number = models.CharField("Number", max_length=15, default="")
     index = models.CharField("Index", max_length=24)
@@ -115,6 +119,8 @@ class IndexI5(GenericIndex):
 
 
 class IndexType(models.Model):
+    history = HistoricalRecords()
+
     name = models.CharField("Name", max_length=100)
     is_dual = models.BooleanField("Is Dual", default=False)
 

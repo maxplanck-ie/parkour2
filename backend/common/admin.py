@@ -133,7 +133,7 @@ class OrganizationAdmin(ReferencedGuardedDeleteMixin, SimpleHistoryAdmin):
 
 
 @admin.register(CostUnit)
-class CostUnitAdmin(SimpleHistoryAdmin):
+class CostUnitAdmin(ReferencedGuardedDeleteMixin, SimpleHistoryAdmin):
     list_display = (
         "name",
         "pi",
@@ -186,7 +186,7 @@ class UserCreationForm(UserCreationForm):
 
 
 @admin.register(User)
-class UserAdmin(NamedUserAdmin):
+class UserAdmin(SimpleHistoryAdmin, NamedUserAdmin):
     add_form = UserCreationForm
     add_fieldsets = (
         (

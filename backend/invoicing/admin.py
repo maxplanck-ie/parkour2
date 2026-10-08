@@ -1,6 +1,7 @@
 from common.admin import ArchivedFilter
 from common.utils import set_archived
 from django.contrib import admin
+from simple_history.admin import SimpleHistoryAdmin
 
 from .models import (
     FixedCosts,
@@ -10,7 +11,7 @@ from .models import (
 
 
 @admin.register(FixedCosts)
-class FixedCostsAdmin(admin.ModelAdmin):
+class FixedCostsAdmin(SimpleHistoryAdmin):
     list_display = ("sequencer", "price_amount", "archived")
 
     list_filter = (ArchivedFilter,)
@@ -30,7 +31,7 @@ class FixedCostsAdmin(admin.ModelAdmin):
 
 
 @admin.register(LibraryPreparationCosts)
-class LibraryPreparationCostsAdmin(admin.ModelAdmin):
+class LibraryPreparationCostsAdmin(SimpleHistoryAdmin):
     search_fields = (
         "library_protocol__name",
         "price",
@@ -54,7 +55,7 @@ class LibraryPreparationCostsAdmin(admin.ModelAdmin):
 
 
 @admin.register(SequencingCosts)
-class SequencingCostsAdmin(admin.ModelAdmin):
+class SequencingCostsAdmin(SimpleHistoryAdmin):
     search_fields = (
         "sequencer__name",
         "read_length__name",

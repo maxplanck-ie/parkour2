@@ -69,7 +69,7 @@ class ConcentrationMethodAdmin(admin.ModelAdmin):
 
 
 @admin.register(ReadLength)
-class ReadLengthAdmin(ReferencedGuardedDeleteMixin, admin.ModelAdmin):
+class ReadLengthAdmin(ReferencedGuardedDeleteMixin, SimpleHistoryAdmin):
     list_display = ("name", "archived")
 
     list_filter = (ArchivedFilter,)
@@ -116,7 +116,7 @@ class IndexPairInline(admin.TabularInline):
 
 
 @admin.register(IndexType)
-class IndexTypeAdmin(GuardedDeleteMixin, ImportExportModelAdmin):
+class IndexTypeAdmin(GuardedDeleteMixin, ImportExportModelAdmin, SimpleHistoryAdmin):
     form = IndexTypeForm
 
     list_display = ("name", "is_dual", "format", "archived")
@@ -191,7 +191,7 @@ class IndexTypeAdmin(GuardedDeleteMixin, ImportExportModelAdmin):
 
 
 @admin.register(IndexPair)
-class IndexPairAdmin(GuardedDeleteMixin, admin.ModelAdmin):
+class IndexPairAdmin(GuardedDeleteMixin, SimpleHistoryAdmin):
     list_display = ("index_pair", "coordinate", "archived")
     search_fields = ("index_type__name",)
     list_filter = ("index_type", ArchivedFilter)
@@ -447,7 +447,7 @@ class IndexI5Resource(resources.ModelResource):
 
 
 @admin.register(IndexI5)
-class IndexI5Admin(GuardedDeleteMixin, ImportExportModelAdmin):
+class IndexI5Admin(GuardedDeleteMixin, ImportExportModelAdmin, SimpleHistoryAdmin):
     list_display = ("idx_id", "index", "type", "archived")
     search_fields = (
         "index",
@@ -502,7 +502,7 @@ class IndexI7Resource(resources.ModelResource):
 
 
 @admin.register(IndexI7)
-class IndexI7Admin(GuardedDeleteMixin, ImportExportModelAdmin):
+class IndexI7Admin(GuardedDeleteMixin, ImportExportModelAdmin, SimpleHistoryAdmin):
     list_display = ("idx_id", "index", "type", "archived")
     search_fields = (
         "index",

@@ -3,14 +3,14 @@ from common.guarded_delete import ReferencedGuardedDeleteMixin
 from common.utils import set_archived
 from django.conf import settings
 from django.contrib import admin
-from django_admin_listfilter_dropdown.filters import RelatedDropdownFilter
 from simple_history.admin import SimpleHistoryAdmin
+from django_admin_listfilter_dropdown.filters import RelatedDropdownFilter
 
 from .models import NucleicAcidType, Sample
 
 
 @admin.register(NucleicAcidType)
-class NucleicAcidTypeAdmin(ReferencedGuardedDeleteMixin, admin.ModelAdmin):
+class NucleicAcidTypeAdmin(ReferencedGuardedDeleteMixin, SimpleHistoryAdmin):
     list_display = ("name", "archived")
 
     list_filter = ("type", ArchivedFilter)
@@ -31,7 +31,7 @@ class NucleicAcidTypeAdmin(ReferencedGuardedDeleteMixin, admin.ModelAdmin):
 
 
 @admin.register(Sample)
-class SampleAdmin(SimpleHistoryAdmin):
+class SampleAdmin(admin.ModelAdmin):
     list_display = (
         "name",
         "barcode",

@@ -3,6 +3,7 @@ from common.guarded_delete import ReferencedGuardedDeleteMixin
 from common.utils import set_archived
 from django.conf import settings
 from django.contrib import admin
+from simple_history.admin import SimpleHistoryAdmin
 from flowcell.models import Flowcell, Sequencer
 
 
@@ -57,7 +58,7 @@ class LaneInline(admin.TabularInline):
 
 
 @admin.register(Sequencer)
-class SequencerAdmin(ReferencedGuardedDeleteMixin, admin.ModelAdmin):
+class SequencerAdmin(ReferencedGuardedDeleteMixin, SimpleHistoryAdmin):
     list_display = ("name", "lanes", "lane_capacity", "archived")
 
     list_filter = (ArchivedFilter,)

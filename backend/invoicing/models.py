@@ -1,9 +1,12 @@
 from django.db import models
+from simple_history.models import HistoricalRecords
 from flowcell.models import Sequencer
 from library_sample_shared.models import LibraryProtocol, ReadLength
 
 
 class FixedCosts(models.Model):
+    history = HistoricalRecords()
+
     sequencer = models.OneToOneField(Sequencer, on_delete=models.SET_NULL, null=True)
     price = models.DecimalField(max_digits=8, decimal_places=2)
     archived = models.BooleanField("Archived", default=False)
@@ -21,6 +24,8 @@ class FixedCosts(models.Model):
 
 
 class LibraryPreparationCosts(models.Model):
+    history = HistoricalRecords()
+
     library_protocol = models.OneToOneField(
         LibraryProtocol,
         limit_choices_to={"archived": False},
@@ -44,6 +49,8 @@ class LibraryPreparationCosts(models.Model):
 
 
 class SequencingCosts(models.Model):
+    history = HistoricalRecords()
+
     sequencer = models.ForeignKey(
         Sequencer,
         limit_choices_to={"archived": False},

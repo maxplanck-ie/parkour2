@@ -6,6 +6,8 @@ from simple_history.models import HistoricalRecords
 
 
 class Sequencer(models.Model):
+    history = HistoricalRecords()
+
     name = models.CharField("Name", max_length=50)
     lanes = models.PositiveSmallIntegerField("Number of Lanes")
     lane_capacity = models.PositiveSmallIntegerField("Lane Capacity")
