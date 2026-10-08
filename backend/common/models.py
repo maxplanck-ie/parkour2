@@ -105,8 +105,8 @@ class AttachmentFileType(models.Model):
 
 class User(AbstractEmailUser):
     history = HistoricalRecords(
-        m2m_fields=['cost_unit'],
-        excluded_fields=['password', 'last_login'],
+        m2m_fields=["cost_unit"],
+        excluded_fields=["password", "last_login"],
     )
 
     first_name = models.CharField("First name", max_length=50)
