@@ -847,3 +847,63 @@ class GuardedCatalogDeleteTest(BaseTestCase):
                     url, {"post": "yes", "confirm_permanent_delete": "yes"}
                 )
                 self.assertFalse(type(obj).objects.filter(pk=obj.pk).exists())
+
+
+class ArchiveHistoryTest(BaseTestCase):
+    """Archiving and un-archiving of history-tracked models is logged."""
+
+    def setUp(self):
+        user = self.create_user(email="admin@test.io")
+        user.is_superuser = True
+        user.save()
+        self.client.force_login(user)
+
+    def _history(self, obj):
+        return list(
+            obj.history.order_by("history_date", "history_id").values_list(
+                "archived", "history_type"
+            )
+        )
+
+    def test_guarded_delete_logs_archiving(self):
+        organism = Organism.objects.create(name="Tracked")
+        self.client.post(
+            reverse("admin:library_sample_shared_organism_delete", args=[organism.pk]),
+            {"post": "yes"},
+        )
+        organism.refresh_from_db()
+        self.assertTrue(organism.archived)
+        self.assertEqual(self._history(organism), [(False, "+"), (True, "~")])
+
+    def test_admin_actions_log_archiving_and_unarchiving(self):
+        organism = Organism.objects.create(name="Tracked")
+        url = reverse("admin:library_sample_shared_organism_changelist")
+        for action in ("mark_as_archived", "mark_as_non_archived"):
+            self.client.post(
+                url,
+                {"action": action, "_selected_action": [organism.pk]},
+            )
+        organism.refresh_from_db()
+        self.assertFalse(organism.archived)
+        self.assertEqual(
+            self._history(organism), [(False, "+"), (True, "~"), (False, "~")]
+        )
+
+    def test_already_archived_rows_get_no_extra_history(self):
+        organism = Organism.objects.create(name="Tracked", archived=True)
+        url = reverse("admin:library_sample_shared_organism_changelist")
+        self.client.post(
+            url, {"action": "mark_as_archived", "_selected_action": [organism.pk]}
+        )
+        self.assertEqual(self._history(organism), [(True, "+")])
+
+    def test_untracked_model_is_still_archived(self):
+        from flowcell.models import Sequencer
+
+        sequencer = Sequencer.objects.create(name="Plain", lanes=1, lane_capacity=1)
+        self.client.post(
+            reverse("admin:flowcell_sequencer_changelist"),
+            {"action": "mark_as_archived", "_selected_action": [sequencer.pk]},
+        )
+        sequencer.refresh_from_db()
+        self.assertTrue(sequencer.archived)

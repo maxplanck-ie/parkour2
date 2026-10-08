@@ -7,6 +7,24 @@ from django.db import connection
 from django.utils import timezone
 
 
+def set_archived(queryset, archived):
+    """Set ``archived`` on rows of queryset that are not there yet.
+
+    QuerySet.update() sends no signals, so simple_history would log nothing.
+    History-tracked models go through bulk_update_with_history instead; others
+    fall back to a plain update().
+    """
+    from simple_history.utils import bulk_update_with_history
+
+    if not hasattr(queryset.model, "history"):
+        return queryset.update(archived=archived)
+    objs = list(queryset.exclude(archived=archived))
+    for obj in objs:
+        obj.archived = archived
+    bulk_update_with_history(objs, queryset.model, ["archived"])
+    return len(objs)
+
+
 def timeit(func):
     def wrapper(*args):
         start = time()

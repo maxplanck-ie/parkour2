@@ -8,6 +8,7 @@ from common.models import (
     PrincipalInvestigator,
 )
 from common.guarded_delete import ReferencedGuardedDeleteMixin
+from common.utils import set_archived
 from simple_history.admin import SimpleHistoryAdmin
 from django import forms
 from django.conf import settings
@@ -89,11 +90,11 @@ class AttachmentFileTypeAdmin(SimpleHistoryAdmin):
 
     @admin.action(description="Mark as archived")
     def mark_as_archived(self, request, queryset):
-        queryset.update(archived=True)
+        set_archived(queryset, True)
 
     @admin.action(description="Mark as non-archived")
     def mark_as_non_archived(self, request, queryset):
-        queryset.update(archived=False)
+        set_archived(queryset, False)
 
 
 class CostUnitInline(admin.TabularInline):
@@ -119,11 +120,11 @@ class PrincipalInvestigatorAdmin(ReferencedGuardedDeleteMixin, SimpleHistoryAdmi
 
     @admin.action(description="Mark as archived")
     def mark_as_archived(self, request, queryset):
-        queryset.update(archived=True)
+        set_archived(queryset, True)
 
     @admin.action(description="Mark as non-archived")
     def mark_as_non_archived(self, request, queryset):
-        queryset.update(archived=False)
+        set_archived(queryset, False)
 
 
 @admin.register(Organization)
@@ -155,11 +156,11 @@ class CostUnitAdmin(SimpleHistoryAdmin):
 
     @admin.action(description="Mark as archived")
     def mark_as_archived(self, request, queryset):
-        queryset.update(archived=True)
+        set_archived(queryset, True)
 
     @admin.action(description="Mark as non-archived")
     def mark_as_non_archived(self, request, queryset):
-        queryset.update(archived=False)
+        set_archived(queryset, False)
 
 
 class UserCreationForm(UserCreationForm):
@@ -346,11 +347,11 @@ class DutyAdmin(SimpleHistoryAdmin):
 
     @admin.action(description="Mark as archived")
     def mark_as_archived(self, request, queryset):
-        queryset.update(archived=True)
+        set_archived(queryset, True)
 
     @admin.action(description="Mark as non-archived")
     def mark_as_non_archived(self, request, queryset):
-        queryset.update(archived=False)
+        set_archived(queryset, False)
 
 
 # admin.site.unregister(User)

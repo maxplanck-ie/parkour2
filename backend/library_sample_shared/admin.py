@@ -4,6 +4,7 @@ from zipfile import BadZipFile
 
 from common.admin import ArchivedFilter
 from common.guarded_delete import GuardedDeleteMixin, ReferencedGuardedDeleteMixin
+from common.utils import set_archived
 from django.conf import settings
 from django.contrib import admin, messages
 from django.db import transaction
@@ -55,11 +56,11 @@ class OrganismAdmin(ReferencedGuardedDeleteMixin, SimpleHistoryAdmin):
 
     @admin.action(description="Mark as archived")
     def mark_as_archived(self, request, queryset):
-        queryset.update(archived=True)
+        set_archived(queryset, True)
 
     @admin.action(description="Mark as non-archived")
     def mark_as_non_archived(self, request, queryset):
-        queryset.update(archived=False)
+        set_archived(queryset, False)
 
 
 @admin.register(ConcentrationMethod)
@@ -81,11 +82,11 @@ class ReadLengthAdmin(ReferencedGuardedDeleteMixin, admin.ModelAdmin):
 
     @admin.action(description="Mark as archived")
     def mark_as_archived(self, request, queryset):
-        queryset.update(archived=True)
+        set_archived(queryset, True)
 
     @admin.action(description="Mark as non-archived")
     def mark_as_non_archived(self, request, queryset):
-        queryset.update(archived=False)
+        set_archived(queryset, False)
 
 
 class IndexI7Inline(admin.TabularInline):
@@ -159,7 +160,7 @@ class IndexTypeAdmin(GuardedDeleteMixin, ImportExportModelAdmin):
 
     @admin.action(description="Mark as non-archived")
     def mark_as_non_archived(self, request, queryset):
-        queryset.update(archived=False)
+        set_archived(queryset, False)
 
     def is_used(self, obj):
         return index_type_is_used(obj)
@@ -224,7 +225,7 @@ class IndexPairAdmin(GuardedDeleteMixin, admin.ModelAdmin):
         # Get the IDs and index types before updating
         index_pair_ids = list(queryset.values_list("id", flat=True))
         affected_index_types = set(queryset.values_list("index_type", flat=True))
-        queryset.update(archived=False)
+        set_archived(queryset, False)
 
         # Fetch fresh objects with related fields
         for obj in IndexPair.objects.select_related("index1", "index2").filter(
@@ -240,8 +241,8 @@ class IndexPairAdmin(GuardedDeleteMixin, admin.ModelAdmin):
         # Unarchive associated IndexTypes if they were archived
         for index_type_id in affected_index_types:
             if index_type_id:  # Make sure it's not None
-                IndexType.objects.filter(id=index_type_id, archived=True).update(
-                    archived=False
+                set_archived(
+                    IndexType.objects.filter(id=index_type_id, archived=True), False
                 )
 
     def index_pair(self, obj):
@@ -466,7 +467,7 @@ class IndexI5Admin(GuardedDeleteMixin, ImportExportModelAdmin):
         return index_is_used(obj) or index_has_used_pair(obj)
 
     def archive_queryset(self, queryset):
-        queryset.update(archived=True)
+        set_archived(queryset, True)
 
     def hard_delete(self, obj):
         delete_index(obj)
@@ -476,11 +477,11 @@ class IndexI5Admin(GuardedDeleteMixin, ImportExportModelAdmin):
 
     @admin.action(description="Mark as archived")
     def mark_as_archived(self, request, queryset):
-        queryset.update(archived=True)
+        set_archived(queryset, True)
 
     @admin.action(description="Mark as non-archived")
     def mark_as_non_archived(self, request, queryset):
-        queryset.update(archived=False)
+        set_archived(queryset, False)
 
     @admin.display(description="Index ID")
     def idx_id(sef, obj):
@@ -521,7 +522,7 @@ class IndexI7Admin(GuardedDeleteMixin, ImportExportModelAdmin):
         return index_is_used(obj) or index_has_used_pair(obj)
 
     def archive_queryset(self, queryset):
-        queryset.update(archived=True)
+        set_archived(queryset, True)
 
     def hard_delete(self, obj):
         delete_index(obj)
@@ -531,11 +532,11 @@ class IndexI7Admin(GuardedDeleteMixin, ImportExportModelAdmin):
 
     @admin.action(description="Mark as archived")
     def mark_as_archived(self, request, queryset):
-        queryset.update(archived=True)
+        set_archived(queryset, True)
 
     @admin.action(description="Mark as non-archived")
     def mark_as_non_archived(self, request, queryset):
-        queryset.update(archived=False)
+        set_archived(queryset, False)
 
     @admin.display(description="Index ID")
     def idx_id(sef, obj):
@@ -568,11 +569,11 @@ class LibraryProtocolAdmin(ReferencedGuardedDeleteMixin, SimpleHistoryAdmin):
 
     @admin.action(description="Mark as archived")
     def mark_as_archived(self, request, queryset):
-        queryset.update(archived=True)
+        set_archived(queryset, True)
 
     @admin.action(description="Mark as non-archived")
     def mark_as_non_archived(self, request, queryset):
-        queryset.update(archived=False)
+        set_archived(queryset, False)
 
 
 @admin.register(AnalysisType)
@@ -589,8 +590,8 @@ class AnalysisTypeAdmin(ReferencedGuardedDeleteMixin, SimpleHistoryAdmin):
 
     @admin.action(description="Mark as archived")
     def mark_as_archived(self, request, queryset):
-        queryset.update(archived=True)
+        set_archived(queryset, True)
 
     @admin.action(description="Mark as non-archived")
     def mark_as_non_archived(self, request, queryset):
-        queryset.update(archived=False)
+        set_archived(queryset, False)

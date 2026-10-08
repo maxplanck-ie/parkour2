@@ -1,4 +1,5 @@
 from common.admin import ArchivedFilter
+from common.utils import set_archived
 from django.contrib import admin
 
 from .models import (
@@ -21,11 +22,11 @@ class FixedCostsAdmin(admin.ModelAdmin):
 
     @admin.action(description="Mark as archived")
     def mark_as_archived(self, request, queryset):
-        queryset.update(archived=True)
+        set_archived(queryset, True)
 
     @admin.action(description="Mark as non-archived")
     def mark_as_non_archived(self, request, queryset):
-        queryset.update(archived=False)
+        set_archived(queryset, False)
 
 
 @admin.register(LibraryPreparationCosts)
@@ -45,11 +46,11 @@ class LibraryPreparationCostsAdmin(admin.ModelAdmin):
 
     @admin.action(description="Mark as archived")
     def mark_as_archived(self, request, queryset):
-        queryset.update(archived=True)
+        set_archived(queryset, True)
 
     @admin.action(description="Mark as non-archived")
     def mark_as_non_archived(self, request, queryset):
-        queryset.update(archived=False)
+        set_archived(queryset, False)
 
 
 @admin.register(SequencingCosts)
@@ -69,8 +70,8 @@ class SequencingCostsAdmin(admin.ModelAdmin):
 
     @admin.action(description="Mark as archived")
     def mark_as_archived(self, request, queryset):
-        queryset.update(archived=True)
+        set_archived(queryset, True)
 
     @admin.action(description="Mark as non-archived")
     def mark_as_non_archived(self, request, queryset):
-        queryset.update(archived=False)
+        set_archived(queryset, False)

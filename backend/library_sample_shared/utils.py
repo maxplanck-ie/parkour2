@@ -1,6 +1,7 @@
 from collections import defaultdict
 from itertools import chain
 
+from common.utils import set_archived
 from django.apps import apps
 from django.db import transaction
 
@@ -57,24 +58,27 @@ def archive_index_pairs(queryset):
     without an active pair. Shared by the admin actions and the delete fallback."""
     pair_ids = list(queryset.values_list("id", flat=True))
     type_ids = set(queryset.values_list("index_type", flat=True)) - {None}
-    IndexPair.objects.filter(id__in=pair_ids).update(archived=True)
-    IndexI7.objects.filter(indexpair__id__in=pair_ids).update(archived=True)
-    IndexI5.objects.filter(indexpair__id__in=pair_ids).update(archived=True)
+    set_archived(IndexPair.objects.filter(id__in=pair_ids), True)
+    set_archived(IndexI7.objects.filter(indexpair__id__in=pair_ids), True)
+    set_archived(IndexI5.objects.filter(indexpair__id__in=pair_ids), True)
     for type_id in type_ids:
         if not IndexPair.objects.filter(index_type_id=type_id, archived=False).exists():
-            IndexType.objects.filter(id=type_id).update(archived=True)
+            set_archived(IndexType.objects.filter(id=type_id), True)
 
 
 def archive_index_types(queryset):
     """Archive IndexTypes and cascade down: their pairs and indices. An index
     shared with a still-active IndexType stays active."""
     type_ids = list(queryset.values_list("id", flat=True))
-    IndexType.objects.filter(id__in=type_ids).update(archived=True)
+    set_archived(IndexType.objects.filter(id__in=type_ids), True)
     archive_index_pairs(IndexPair.objects.filter(index_type_id__in=type_ids))
     for model in (IndexI7, IndexI5):
-        model.objects.filter(index_type__id__in=type_ids).exclude(
-            index_type__archived=False
-        ).update(archived=True)
+        set_archived(
+            model.objects.filter(index_type__id__in=type_ids).exclude(
+                index_type__archived=False
+            ),
+            True,
+        )
 
 
 def index_has_used_pair(index):
@@ -140,7 +144,7 @@ def delete_index_pair(pair):
         if not other_types.exists():
             index.delete()
     if type_id and not IndexPair.objects.filter(index_type_id=type_id).exists():
-        IndexType.objects.filter(id=type_id).update(archived=True)
+        set_archived(IndexType.objects.filter(id=type_id), True)
 
 
 def get_indices_ids(obj):

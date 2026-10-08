@@ -1,3 +1,4 @@
+from common.utils import set_archived
 from django.contrib import admin, messages
 from django.contrib.admin import helpers
 from django.db import transaction
@@ -140,4 +141,4 @@ class ReferencedGuardedDeleteMixin(GuardedDeleteMixin):
         return False
 
     def archive_queryset(self, queryset):
-        queryset.update(archived=True)
+        set_archived(queryset, True)
