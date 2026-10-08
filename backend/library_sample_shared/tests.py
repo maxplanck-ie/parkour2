@@ -651,3 +651,69 @@ class GuardedIndexDeleteTest(BaseTestCase):
             {"action": "mark_as_archived", "_selected_action": [self.index_type.pk]},
         )
         self.assertTrue(self._all_archived())
+
+
+class ImportIndexPairsAtomicTest(BaseTestCase):
+    """A failure part-way through an Index Pair spreadsheet import must not
+    leave the rows imported before it behind."""
+
+    def setUp(self):
+        user = self.create_user(email="admin@test.io")
+        user.is_superuser = True
+        user.save()
+        self.client.force_login(user)
+        create_index_type("Plate", is_dual=True, format="plate")
+
+    def _xlsx(self, rows):
+        from io import BytesIO
+
+        from django.core.files.uploadedfile import SimpleUploadedFile
+        from openpyxl import Workbook
+
+        wb = Workbook()
+        ws = wb.active
+        ws.append(
+            [
+                "index1_prefix",
+                "index1_name",
+                "index1_sequence",
+                "index2_prefix",
+                "index2_name",
+                "index2_sequence",
+                "coordinate",
+                "index_type",
+            ]
+        )
+        for row in rows:
+            ws.append(row)
+        buf = BytesIO()
+        wb.save(buf)
+        return SimpleUploadedFile("pairs.xlsx", buf.getvalue())
+
+    def test_failure_on_second_row_rolls_back_first_row(self):
+        from unittest import mock
+
+        rows = [
+            ["i7_", "01", "ACGT", "i5_", "01", "TTTT", "A2", "Plate"],
+            ["i7_", "02", "CGTA", "i5_", "02", "AAAA", "B2", "Plate"],
+        ]
+        real_create = IndexPair.objects.create
+        calls = []
+
+        def fail_on_second(*args, **kwargs):
+            calls.append(1)
+            if len(calls) == 2:
+                raise RuntimeError("boom")
+            return real_create(*args, **kwargs)
+
+        with mock.patch.object(IndexPair.objects, "create", fail_on_second):
+            response = self.client.post(
+                "/admin/library_sample_shared/indexpair/import_plate_pairs/",
+                {"file": self._xlsx(rows)},
+            )
+
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(len(calls), 2)
+        self.assertEqual(IndexPair.objects.count(), 0)
+        self.assertEqual(IndexI7.objects.count(), 0)
+        self.assertEqual(IndexI5.objects.count(), 0)

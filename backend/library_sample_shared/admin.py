@@ -490,30 +490,32 @@ class IndexPairAdmin(GuardedDeleteMixin, admin.ModelAdmin):
                         'one invalid value in the "coordinate" column'
                     )
 
-                # Import index pairs
-                for index_pair in index_pairs:
-                    index_type = IndexType.objects.get(name=index_pair.index_type)
-                    index1 = IndexI7.objects.create(
-                        prefix=index_pair.index1_prefix,
-                        number=index_pair.index1_name,
-                        index=index_pair.index1_sequence,
-                    )
-                    index2 = IndexI5.objects.create(
-                        prefix=index_pair.index2_prefix,
-                        number=index_pair.index2_name,
-                        index=index_pair.index2_sequence,
-                    )
-                    IndexPair.objects.create(
-                        index_type=index_type,
-                        index1=index1,
-                        index2=index2,
-                        char_coord=index_pair.coordinate[:1],
-                        num_coord=index_pair.coordinate[1:],
-                    )
+                # Import index pairs (all-or-nothing: a failure on any row
+                # must not leave a partially imported file behind)
+                with transaction.atomic():
+                    for index_pair in index_pairs:
+                        index_type = IndexType.objects.get(name=index_pair.index_type)
+                        index1 = IndexI7.objects.create(
+                            prefix=index_pair.index1_prefix,
+                            number=index_pair.index1_name,
+                            index=index_pair.index1_sequence,
+                        )
+                        index2 = IndexI5.objects.create(
+                            prefix=index_pair.index2_prefix,
+                            number=index_pair.index2_name,
+                            index=index_pair.index2_sequence,
+                        )
+                        IndexPair.objects.create(
+                            index_type=index_type,
+                            index1=index1,
+                            index2=index2,
+                            char_coord=index_pair.coordinate[:1],
+                            num_coord=index_pair.coordinate[1:],
+                        )
 
-                    # Assign indices to index_type
-                    index_type.indices_i7.add(index1)
-                    index_type.indices_i5.add(index2)
+                        # Assign indices to index_type
+                        index_type.indices_i7.add(index1)
+                        index_type.indices_i5.add(index2)
 
             except (KeyError, BadZipFile):
                 error = (
