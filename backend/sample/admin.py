@@ -1,4 +1,5 @@
 from common.admin import ArchivedFilter
+from common.guarded_delete import ReferencedGuardedDeleteMixin
 from django.conf import settings
 from django.contrib import admin
 from django_admin_listfilter_dropdown.filters import RelatedDropdownFilter
@@ -8,7 +9,7 @@ from .models import NucleicAcidType, Sample
 
 
 @admin.register(NucleicAcidType)
-class NucleicAcidTypeAdmin(admin.ModelAdmin):
+class NucleicAcidTypeAdmin(ReferencedGuardedDeleteMixin, admin.ModelAdmin):
     list_display = ("name", "archived")
 
     list_filter = ("type", ArchivedFilter)
@@ -16,6 +17,7 @@ class NucleicAcidTypeAdmin(admin.ModelAdmin):
     actions = (
         "mark_as_archived",
         "mark_as_non_archived",
+        "delete_guarded",
     )
 
     @admin.action(description="Mark as archived")

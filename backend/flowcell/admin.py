@@ -1,4 +1,5 @@
 from common.admin import ArchivedFilter
+from common.guarded_delete import ReferencedGuardedDeleteMixin
 from django.conf import settings
 from django.contrib import admin
 from flowcell.models import Flowcell, Sequencer
@@ -55,7 +56,7 @@ class LaneInline(admin.TabularInline):
 
 
 @admin.register(Sequencer)
-class SequencerAdmin(admin.ModelAdmin):
+class SequencerAdmin(ReferencedGuardedDeleteMixin, admin.ModelAdmin):
     list_display = ("name", "lanes", "lane_capacity", "archived")
 
     list_filter = (ArchivedFilter,)
@@ -63,6 +64,7 @@ class SequencerAdmin(admin.ModelAdmin):
     actions = (
         "mark_as_archived",
         "mark_as_non_archived",
+        "delete_guarded",
     )
 
     @admin.action(description="Mark as archived")

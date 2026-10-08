@@ -802,7 +802,7 @@ class RequestViewSet(viewsets.ModelViewSet):
         include_records = json.loads(request.POST.get("include_records", "true"))
         records = []
         try:
-            if instance.user.pi.archived:
+            if not instance.user.pi_id or instance.user.pi.archived:
                 raise ValueError(
                     "PI: "
                     + instance.user.pi.name
@@ -1031,25 +1031,30 @@ class ApproveViewSet(viewsets.ModelViewSet):
             logger.exception(e)
             return render(request, "approval_expired.html", status=400)
         subject = f"[ {settings.INSTANCE_NAME} | request approved ] {instance.name}"
+        pi_name = instance.user.pi.name if instance.user.pi_id else ""
         base_context = {
             "full_name": instance.user.full_name,
-            "pi_name": instance.user.pi.name,
+            "pi_name": pi_name,
             "instance_title": settings.INSTANCE_TITLE,
             "logo_url": request.build_absolute_uri(
                 f"{settings.STATIC_URL}images/logo.png"
             ),
         }
-        if instance.user.email == instance.user.pi.email:
+        if instance.user.pi_id and instance.user.email == instance.user.pi.email:
             greetings = [
                 (
                     instance.user.email,
                     f"{instance.user.full_name} and {instance.user.pi.name}",
                 )
             ]
-        else:
+        elif instance.user.pi_id:
             greetings = [
                 (instance.user.email, instance.user.full_name),
                 (instance.user.pi.email, instance.user.pi.name),
+            ]
+        else:
+            greetings = [
+                (instance.user.email, instance.user.full_name),
             ]
         for recipient_email, greeting_name in greetings:
             send_mail(

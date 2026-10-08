@@ -7,6 +7,7 @@ from common.models import (
     Organization,
     PrincipalInvestigator,
 )
+from common.guarded_delete import ReferencedGuardedDeleteMixin
 from simple_history.admin import SimpleHistoryAdmin
 from django import forms
 from django.conf import settings
@@ -101,7 +102,7 @@ class CostUnitInline(admin.TabularInline):
 
 
 @admin.register(PrincipalInvestigator)
-class PrincipalInvestigatorAdmin(SimpleHistoryAdmin):
+class PrincipalInvestigatorAdmin(ReferencedGuardedDeleteMixin, SimpleHistoryAdmin):
     list_display = ("name", "organization", "deliver_to", "archived")
     search_fields = (
         "name",
@@ -113,6 +114,7 @@ class PrincipalInvestigatorAdmin(SimpleHistoryAdmin):
     actions = (
         "mark_as_archived",
         "mark_as_non_archived",
+        "delete_guarded",
     )
 
     @admin.action(description="Mark as archived")
@@ -125,7 +127,7 @@ class PrincipalInvestigatorAdmin(SimpleHistoryAdmin):
 
 
 @admin.register(Organization)
-class OrganizationAdmin(SimpleHistoryAdmin):
+class OrganizationAdmin(ReferencedGuardedDeleteMixin, SimpleHistoryAdmin):
     pass
 
 

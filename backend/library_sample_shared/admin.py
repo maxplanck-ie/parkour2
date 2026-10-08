@@ -3,14 +3,13 @@ from dataclasses import dataclass
 from zipfile import BadZipFile
 
 from common.admin import ArchivedFilter
+from common.guarded_delete import GuardedDeleteMixin, ReferencedGuardedDeleteMixin
 from django.conf import settings
 from django.contrib import admin, messages
-from django.contrib.admin import helpers
 from django.db import transaction
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
-from django.template.response import TemplateResponse
-from django.urls import path, resolve, reverse
+from django.urls import path, resolve
 from django_admin_listfilter_dropdown.filters import RelatedDropdownFilter
 from simple_history.admin import SimpleHistoryAdmin
 from import_export import fields, resources
@@ -43,7 +42,7 @@ from .utils import (
 
 
 @admin.register(Organism)
-class OrganismAdmin(SimpleHistoryAdmin):
+class OrganismAdmin(ReferencedGuardedDeleteMixin, SimpleHistoryAdmin):
     list_display = ("name", "label", "yaml")
 
     list_filter = (ArchivedFilter,)
@@ -51,6 +50,7 @@ class OrganismAdmin(SimpleHistoryAdmin):
     actions = (
         "mark_as_archived",
         "mark_as_non_archived",
+        "delete_guarded",
     )
 
     @admin.action(description="Mark as archived")
@@ -68,7 +68,7 @@ class ConcentrationMethodAdmin(admin.ModelAdmin):
 
 
 @admin.register(ReadLength)
-class ReadLengthAdmin(admin.ModelAdmin):
+class ReadLengthAdmin(ReferencedGuardedDeleteMixin, admin.ModelAdmin):
     list_display = ("name", "archived")
 
     list_filter = (ArchivedFilter,)
@@ -76,6 +76,7 @@ class ReadLengthAdmin(admin.ModelAdmin):
     actions = (
         "mark_as_archived",
         "mark_as_non_archived",
+        "delete_guarded",
     )
 
     @admin.action(description="Mark as archived")
@@ -111,124 +112,6 @@ class IndexPairInline(admin.TabularInline):
             )
 
         return super().formfield_for_foreignkey(db_field, request, **kwargs)
-
-
-class GuardedDeleteMixin:
-    """Replace plain deletion of index records with archive-or-delete.
-
-    Records used by a Library/Sample at status >= Sequencing are never deleted:
-    they are archived. Unused records are archived too, unless the user ticks the
-    "permanent delete" box on the confirmation page (meant for failed imports).
-
-    Subclasses implement is_used(), archive_queryset() and, if a plain
-    obj.delete() is not enough, hard_delete().
-    """
-
-    delete_confirmation_template = (
-        "admin/library_sample_shared/guarded_delete_confirmation.html"
-    )
-
-    # Extra sentence for the permanent-delete checkbox label, if deleting
-    # also cleans up related records.
-    permanent_delete_note = ""
-
-    def is_used(self, obj):
-        raise NotImplementedError
-
-    def archive_queryset(self, queryset):
-        raise NotImplementedError
-
-    def hard_delete(self, obj):
-        obj.delete()
-
-    def impact_summary(self, objs):
-        """(label, count) rows describing what else permanent deletion removes."""
-        return []
-
-    def delete_model(self, request, obj):
-        self.hard_delete(obj)
-
-    def get_actions(self, request):
-        # Django's delete_selected would bypass the guard.
-        actions = super().get_actions(request)
-        actions.pop("delete_selected", None)
-        return actions
-
-    def _split(self, objs):
-        used, unused = [], []
-        for obj in objs:
-            (used if self.is_used(obj) else unused).append(obj)
-        return used, unused
-
-    def _confirm_context(self, objs, bulk):
-        used, unused = self._split(objs)
-        return {
-            "used_objects": used,
-            "unused_objects": unused,
-            "impact": self.impact_summary(unused),
-            "permanent_delete_note": self.permanent_delete_note,
-            "bulk": bulk,
-        }
-
-    def delete_view(self, request, object_id, extra_context=None):
-        obj = self.get_object(request, object_id)
-        if obj is None or not self.has_delete_permission(request, obj):
-            return super().delete_view(request, object_id, extra_context)
-
-        if request.method == "POST" and "post" in request.POST:
-            if self.is_used(obj) or not request.POST.get("confirm_permanent_delete"):
-                self.archive_queryset(self.model.objects.filter(pk=obj.pk))
-                self.message_user(
-                    request,
-                    f"{self.opts.verbose_name.capitalize()} “{obj}” was archived, "
-                    "not deleted.",
-                    messages.SUCCESS,
-                )
-                return HttpResponseRedirect(
-                    reverse(
-                        f"admin:{self.opts.app_label}_{self.opts.model_name}_changelist"
-                    )
-                )
-            return super().delete_view(request, object_id, extra_context)
-
-        context = {**self._confirm_context([obj], bulk=False), **(extra_context or {})}
-        return super().delete_view(request, object_id, context)
-
-    @admin.action(
-        description="Delete selected (archives if in use)", permissions=["delete"]
-    )
-    def delete_guarded(self, request, queryset):
-        objs = list(queryset)
-        if not request.POST.get("post"):
-            context = {
-                **self.admin_site.each_context(request),
-                **self._confirm_context(objs, bulk=True),
-                "title": "Are you sure?",
-                "opts": self.opts,
-                "queryset": queryset,
-                "action_checkbox_name": helpers.ACTION_CHECKBOX_NAME,
-                "action_name": "delete_guarded",
-            }
-            return TemplateResponse(request, self.delete_confirmation_template, context)
-
-        used, unused = self._split(objs)
-        confirmed = bool(request.POST.get("confirm_permanent_delete"))
-        to_archive = used if confirmed else objs
-        to_delete = unused if confirmed else []
-        with transaction.atomic():
-            if to_archive:
-                self.archive_queryset(
-                    self.model.objects.filter(pk__in=[o.pk for o in to_archive])
-                )
-            if to_delete:
-                self.log_deletions(request, to_delete)
-                for obj in to_delete:
-                    self.hard_delete(obj)
-        self.message_user(
-            request,
-            f"Archived {len(to_archive)}, permanently deleted {len(to_delete)}.",
-            messages.SUCCESS,
-        )
 
 
 @admin.register(IndexType)
@@ -660,7 +543,7 @@ class IndexI7Admin(GuardedDeleteMixin, ImportExportModelAdmin):
 
 
 @admin.register(LibraryProtocol)
-class LibraryProtocolAdmin(SimpleHistoryAdmin):
+class LibraryProtocolAdmin(ReferencedGuardedDeleteMixin, SimpleHistoryAdmin):
     list_display = (
         "name",
         "type",
@@ -680,6 +563,7 @@ class LibraryProtocolAdmin(SimpleHistoryAdmin):
     actions = (
         "mark_as_archived",
         "mark_as_non_archived",
+        "delete_guarded",
     )
 
     @admin.action(description="Mark as archived")
@@ -692,7 +576,7 @@ class LibraryProtocolAdmin(SimpleHistoryAdmin):
 
 
 @admin.register(AnalysisType)
-class AnalysisTypeAdmin(SimpleHistoryAdmin):
+class AnalysisTypeAdmin(ReferencedGuardedDeleteMixin, SimpleHistoryAdmin):
     filter_horizontal = ("library_protocol",)
     list_display = ("name", "archived")
     list_filter = (ArchivedFilter,)
@@ -700,6 +584,7 @@ class AnalysisTypeAdmin(SimpleHistoryAdmin):
     actions = (
         "mark_as_archived",
         "mark_as_non_archived",
+        "delete_guarded",
     )
 
     @admin.action(description="Mark as archived")

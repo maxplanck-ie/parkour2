@@ -88,6 +88,8 @@ class LaneSerializer(ModelSerializer):
         }
 
     def get_request(self, obj):
+        if not obj.pool_id:
+            return None
         requests = []
         records = obj.pool.libraries.all() or obj.pool.samples.all()
 
@@ -103,6 +105,8 @@ class LaneSerializer(ModelSerializer):
         return ", ".join(unique_requests)
 
     def get_protocol(self, obj):
+        if not obj.pool_id:
+            return None
         protocols = []
 
         records = obj.pool.libraries.all() or obj.pool.samples.all()
@@ -127,9 +131,11 @@ class LaneSerializer(ModelSerializer):
         )
 
     def get_pool_name(self, obj):
-        return obj.pool.name
+        return obj.pool.name if obj.pool_id else None
 
     def get_read_length_name(self, obj):
+        if not obj.pool_id:
+            return None
         read_lengths = []
         i = 0
         records = obj.pool.libraries.all() or obj.pool.samples.all()
@@ -451,10 +457,10 @@ class PoolListSerializer(ModelSerializer):
         return None
 
     def get_pool_size_id(self, obj):
-        return obj.size.pk
+        return obj.size.pk if obj.size_id else None
 
     def get_pool_size(self, obj):
-        return obj.size.multiplier
+        return obj.size.multiplier if obj.size_id else None
 
     def get_ready(self, obj):
         libraries_statuses = [x.status for x in obj.libraries.all()]

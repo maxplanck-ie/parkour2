@@ -81,10 +81,10 @@ class BaseSerializer(ModelSerializer):
         return obj.__class__.__name__
 
     def get_library_protocol_name(self, obj):
-        return obj.library_protocol.name
+        return obj.library_protocol.name if obj.library_protocol_id else None
 
     def get_read_length_name(self, obj):
-        return getattr(obj.read_length, "name", None)
+        return obj.read_length.name if obj.read_length_id else None
 
 
 class LibrarySerializer(BaseSerializer):
@@ -128,7 +128,7 @@ class SampleSerializer(BaseSerializer):
         }
 
     def get_nucleic_acid_type_name(self, obj):
-        return obj.nucleic_acid_type.name
+        return obj.nucleic_acid_type.name if obj.nucleic_acid_type_id else None
 
 
 class RequestSerializer(ModelSerializer):

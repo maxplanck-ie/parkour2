@@ -217,12 +217,12 @@ class AnalysisTypesUsage(APIView):
         for req in requests:
             # Extract Library Types
             analysis_types = (
-                [x.analysis_type.name for x in req.fetched_libraries]
+                [x.analysis_type.name for x in req.fetched_libraries if x.analysis_type]
                 if record_type != "samples"
                 else []
             )
             sample_types = (
-                [x.analysis_type.name for x in req.fetched_samples]
+                [x.analysis_type.name for x in req.fetched_samples if x.analysis_type]
                 if record_type != "libraries"
                 else []
             )
@@ -330,9 +330,9 @@ class TurnaroundTimeUsage(APIView):
             if group_by == "analysis_type":
                 names = set()
                 if include_libraries:
-                    names |= {x.analysis_type.name for x in req.fetched_libraries}
+                    names |= {x.analysis_type.name for x in req.fetched_libraries if x.analysis_type}
                 if include_samples:
-                    names |= {x.analysis_type.name for x in req.fetched_samples}
+                    names |= {x.analysis_type.name for x in req.fetched_samples if x.analysis_type}
             else:
                 names = {req.first_sequencer_name or "None"}
 

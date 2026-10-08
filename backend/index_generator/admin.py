@@ -1,6 +1,8 @@
 from common.admin import ArchivedFilter
-from django.conf import settings
+from common.guarded_delete import ReferencedGuardedDeleteMixin
 from django.contrib import admin
+from simple_history.admin import SimpleHistoryAdmin
+from django.conf import settings
 from django_admin_listfilter_dropdown.filters import RelatedDropdownFilter
 
 from .models import Pool, PoolSize
@@ -84,13 +86,14 @@ class PoolAdmin(admin.ModelAdmin):
 
 
 @admin.register(PoolSize)
-class PoolSizeAdmin(admin.ModelAdmin):
+class PoolSizeAdmin(ReferencedGuardedDeleteMixin, admin.ModelAdmin):
     list_display = ("name", "archived")
     list_filter = (ArchivedFilter,)
 
     actions = (
         "mark_as_archived",
         "mark_as_non_archived",
+        "delete_guarded",
     )
 
     @admin.action(description="Mark as archived")

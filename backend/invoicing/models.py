@@ -17,7 +17,7 @@ class FixedCosts(models.Model):
         return f"{self.price} €"
 
     def __str__(self):
-        return self.sequencer.name
+        return self.sequencer.name if self.sequencer_id else "(deleted)"
 
 
 class LibraryPreparationCosts(models.Model):
@@ -40,7 +40,7 @@ class LibraryPreparationCosts(models.Model):
         return f"{self.price} €"
 
     def __str__(self):
-        return self.library_protocol.name
+        return self.library_protocol.name if self.library_protocol_id else "(deleted)"
 
 
 class SequencingCosts(models.Model):
@@ -69,4 +69,6 @@ class SequencingCosts(models.Model):
         return f"{self.price} €"
 
     def __str__(self):
-        return f"{self.sequencer.name} {self.read_length.name}"
+        s = self.sequencer.name if self.sequencer_id else "(deleted)"
+        r = self.read_length.name if self.read_length_id else "(deleted)"
+        return f"{s} {r}"

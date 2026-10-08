@@ -27,7 +27,7 @@ class Lane(models.Model):
     completed = models.BooleanField("Completed", default=False)
 
     def __str__(self):
-        return f"{self.name}: {self.pool.name}"
+        return f"{self.name}: {self.pool.name if self.pool else '(deleted)'}"
 
     def save(self, *args, **kwargs):
         created = self.pk is None
@@ -35,7 +35,7 @@ class Lane(models.Model):
 
         # When a Lane objects is created, increment the loaded value of the
         # related pool
-        if created:
+        if created and self.pool:
             self.pool.loaded += 1
             self.pool.save(update_fields=["loaded"])
 
