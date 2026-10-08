@@ -165,10 +165,12 @@ class LibraryPreparationSerializer(ModelSerializer):
         return obj.sample.is_converted
 
     def get_library_protocol(self, obj):
-        return obj.sample.library_protocol.pk
+        lp = obj.sample.library_protocol
+        return lp.pk if lp else None
 
     def get_library_protocol_name(self, obj):
-        return obj.sample.library_protocol.name
+        lp = obj.sample.library_protocol
+        return lp.name if lp else ""
 
     def get_concentration_sample(self, obj):
         return obj.sample.measured_value_facility

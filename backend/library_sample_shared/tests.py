@@ -717,3 +717,50 @@ class ImportIndexPairsAtomicTest(BaseTestCase):
         self.assertEqual(IndexPair.objects.count(), 0)
         self.assertEqual(IndexI7.objects.count(), 0)
         self.assertEqual(IndexI5.objects.count(), 0)
+
+
+class GuardedCatalogDeleteTest(BaseTestCase):
+    """Catalog entries still referenced by a library are archived, never deleted."""
+
+    def setUp(self):
+        user = self.create_user(email="admin@test.io")
+        user.is_superuser = True
+        user.save()
+        self.client.force_login(user)
+
+        from library.tests import create_library
+
+        self.library = create_library("lib")
+
+    def _delete(self, obj, name, confirm=True):
+        data = {"post": "yes"}
+        if confirm:
+            data["confirm_permanent_delete"] = "yes"
+        return self.client.post(
+            reverse(f"admin:library_sample_shared_{name}_delete", args=[obj.pk]),
+            data,
+        )
+
+    def test_used_entries_are_archived_even_when_permanent_delete_confirmed(self):
+        for obj, name in (
+            (self.library.organism, "organism"),
+            (self.library.read_length, "readlength"),
+            (self.library.library_protocol, "libraryprotocol"),
+            (self.library.analysis_type, "analysistype"),
+        ):
+            with self.subTest(model=name):
+                self._delete(obj, name)
+                obj.refresh_from_db()
+                self.assertTrue(obj.archived)
+        self.library.refresh_from_db()
+        self.assertIsNotNone(self.library.organism)
+        self.assertIsNotNone(self.library.analysis_type)
+
+    def test_unused_entry_is_archived_unless_permanent_delete_confirmed(self):
+        organism = Organism.objects.create(name="Unused")
+        self._delete(organism, "organism", confirm=False)
+        organism.refresh_from_db()
+        self.assertTrue(organism.archived)
+
+        self._delete(organism, "organism")
+        self.assertFalse(Organism.objects.filter(pk=organism.pk).exists())
