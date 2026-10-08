@@ -11,6 +11,7 @@ from .models import (
     GenericLibrarySample,
     IndexI5,
     IndexI7,
+    IndexPair,
     IndexType,
     LibraryProtocol,
     AnalysisType,
@@ -436,3 +437,283 @@ class TestAnalysisTypes(BaseTestCase):
         data = response.json()
         self.assertEqual(response.status_code, 200)
         self.assertEqual(data, [])
+
+
+class OrphanedIndexPairTest(BaseTestCase):
+    """
+    IndexPair.index_type is on_delete=SET_NULL, so deleting an IndexType
+    leaves its pairs behind with index_type=None. __str__ must cope with
+    that, otherwise the IndexPair admin changelist returns HTTP 500.
+    """
+
+    def setUp(self):
+        index_type = create_index_type("ONT Native Barcoding 96", format="plate")
+        index1 = IndexI7.objects.create(prefix="NB", number="01", index="ACGT")
+        index_type.indices_i7.add(index1)
+        IndexPair.objects.create(
+            index_type=index_type, index1=index1, char_coord="A", num_coord=1
+        )
+
+        # Same sequence as in the admin: delete the index, then the type.
+        index1.delete()
+        index_type.delete()
+
+        self.pair = IndexPair.objects.get()
+
+    def test_str_without_index_type(self):
+        self.assertIsNone(self.pair.index_type)
+        self.assertEqual(str(self.pair), "")
+
+    def test_admin_changelist_with_orphaned_pair(self):
+        user = self.create_user(email="admin@test.io")
+        user.is_superuser = True
+        user.save()
+        self.client.force_login(user)
+
+        response = self.client.get(
+            reverse("admin:library_sample_shared_indexpair_changelist")
+        )
+        self.assertEqual(response.status_code, 200)
+
+
+class GuardedIndexDeleteTest(BaseTestCase):
+    """
+    Index records are never deleted while a Library/Sample at status >= 5
+    (Sequencing) uses them; they are archived instead. Unused ones are archived
+    unless the user explicitly confirms permanent deletion.
+    """
+
+    def setUp(self):
+        user = self.create_user(email="admin@test.io")
+        user.is_superuser = True
+        user.save()
+        self.client.force_login(user)
+
+        self.index_type = create_index_type("Plate", is_dual=True, format="plate")
+        self.i7 = IndexI7.objects.create(prefix="i7_", number="01", index="ACGT")
+        self.i5 = IndexI5.objects.create(prefix="i5_", number="01", index="TTTT")
+        self.index_type.indices_i7.add(self.i7)
+        self.index_type.indices_i5.add(self.i5)
+        self.pair = IndexPair.objects.create(
+            index_type=self.index_type,
+            index1=self.i7,
+            index2=self.i5,
+            char_coord="A",
+            num_coord=1,
+        )
+
+    def _library(self, status, index_type=None, i7="", i5=""):
+        from library.tests import create_library
+
+        library = create_library(
+            f"lib{status}", status=status, index_type=index_type or self.index_type
+        )
+        library.index_i7 = i7
+        library.index_i5 = i5
+        library.save()
+        return library
+
+    def _delete_type(self, confirm=True):
+        data = {"post": "yes"}
+        if confirm:
+            data["confirm_permanent_delete"] = "yes"
+        return self.client.post(
+            reverse(
+                "admin:library_sample_shared_indextype_delete",
+                args=[self.index_type.pk],
+            ),
+            data,
+        )
+
+    def _all_archived(self):
+        for obj in (self.index_type, self.pair, self.i7, self.i5):
+            obj.refresh_from_db()
+        return all(o.archived for o in (self.index_type, self.pair, self.i7, self.i5))
+
+    def test_unused_type_confirmed_is_deleted_with_pairs_and_indices(self):
+        self._delete_type(confirm=True)
+        self.assertFalse(IndexType.objects.exists())
+        self.assertFalse(IndexPair.objects.exists())
+        self.assertFalse(IndexI7.objects.exists())
+        self.assertFalse(IndexI5.objects.exists())
+
+    def test_unused_type_without_confirm_is_archived_not_deleted(self):
+        self._delete_type(confirm=False)
+        self.assertTrue(IndexType.objects.filter(pk=self.index_type.pk).exists())
+        self.assertTrue(self._all_archived())
+
+    def test_type_used_at_sequencing_is_archived_even_if_confirmed(self):
+        self._library(5)
+        self._delete_type(confirm=True)
+        self.assertTrue(IndexType.objects.filter(pk=self.index_type.pk).exists())
+        self.assertTrue(self._all_archived())
+
+    def test_status_below_sequencing_and_negative_do_not_count_as_used(self):
+        self._library(4)
+        self._library(-1)
+        self._delete_type(confirm=True)
+        self.assertFalse(IndexType.objects.exists())
+
+    def test_usage_found_by_sequence_when_record_has_no_index_type(self):
+        # Library whose IndexType FK is gone but whose i7 sequence is in use.
+        other = create_index_type("Other")
+        library = self._library(6, index_type=other, i7="ACGT")
+        IndexType.objects.filter(pk=other.pk).delete()
+        library.refresh_from_db()
+        self.assertIsNone(library.index_type)
+
+        self.client.post(
+            reverse("admin:library_sample_shared_indexi7_delete", args=[self.i7.pk]),
+            {"post": "yes", "confirm_permanent_delete": "yes"},
+        )
+        self.assertTrue(IndexI7.objects.filter(pk=self.i7.pk).exists())
+        self.i7.refresh_from_db()
+        self.assertTrue(self.i7.archived)
+
+    def test_deleting_unused_index_removes_pairs_built_on_it(self):
+        self.client.post(
+            reverse("admin:library_sample_shared_indexi5_delete", args=[self.i5.pk]),
+            {"post": "yes", "confirm_permanent_delete": "yes"},
+        )
+        self.assertFalse(IndexI5.objects.filter(pk=self.i5.pk).exists())
+        self.assertFalse(IndexPair.objects.exists())
+
+    def test_deleting_unused_pair_cleans_up_its_indices(self):
+        self.client.post(
+            reverse(
+                "admin:library_sample_shared_indexpair_delete", args=[self.pair.pk]
+            ),
+            {"post": "yes", "confirm_permanent_delete": "yes"},
+        )
+        self.assertFalse(IndexPair.objects.exists())
+        self.assertFalse(IndexI7.objects.exists())
+        self.assertFalse(IndexI5.objects.exists())
+        self.assertTrue(IndexType.objects.filter(pk=self.index_type.pk).exists())
+
+    def test_deleting_pair_leaves_index_shared_with_other_pair(self):
+        other = IndexPair.objects.create(
+            index_type=self.index_type,
+            index1=self.i7,
+            index2=IndexI5.objects.create(prefix="i5_", number="02", index="AAAA"),
+            char_coord="A",
+            num_coord=2,
+        )
+        self.client.post(
+            reverse(
+                "admin:library_sample_shared_indexpair_delete", args=[self.pair.pk]
+            ),
+            {"post": "yes", "confirm_permanent_delete": "yes"},
+        )
+        self.assertFalse(IndexPair.objects.filter(pk=self.pair.pk).exists())
+        self.assertTrue(IndexI7.objects.filter(pk=self.i7.pk).exists())
+        self.assertFalse(IndexI5.objects.filter(pk=self.i5.pk).exists())
+        self.assertTrue(IndexPair.objects.filter(pk=other.pk).exists())
+
+    def test_used_pair_is_archived_even_when_permanent_delete_confirmed(self):
+        self._library(5, i7="ACGT")
+        self.client.post(
+            reverse(
+                "admin:library_sample_shared_indexpair_delete", args=[self.pair.pk]
+            ),
+            {"post": "yes", "confirm_permanent_delete": "yes"},
+        )
+        self.assertTrue(IndexPair.objects.filter(pk=self.pair.pk).exists())
+        self.assertTrue(self._all_archived())
+
+    def test_bulk_action_archives_used_and_deletes_unused_when_confirmed(self):
+        used_type = create_index_type("Used")
+        self._library(5, index_type=used_type)
+
+        response = self.client.post(
+            reverse("admin:library_sample_shared_indextype_changelist"),
+            {
+                "action": "delete_guarded",
+                "_selected_action": [self.index_type.pk, used_type.pk],
+                "post": "yes",
+                "confirm_permanent_delete": "yes",
+            },
+        )
+        self.assertEqual(response.status_code, 302)
+        self.assertFalse(IndexType.objects.filter(pk=self.index_type.pk).exists())
+        used_type.refresh_from_db()
+        self.assertTrue(used_type.archived)
+
+    def test_plain_delete_selected_action_is_not_offered(self):
+        response = self.client.get(
+            reverse("admin:library_sample_shared_indextype_changelist")
+        )
+        self.assertNotContains(response, 'value="delete_selected"')
+        self.assertContains(response, 'value="delete_guarded"')
+
+    def test_archiving_an_index_type_cascades_to_pairs_and_indices(self):
+        self.client.post(
+            reverse("admin:library_sample_shared_indextype_changelist"),
+            {"action": "mark_as_archived", "_selected_action": [self.index_type.pk]},
+        )
+        self.assertTrue(self._all_archived())
+
+
+class ImportIndexPairsAtomicTest(BaseTestCase):
+    """A failure part-way through an Index Pair spreadsheet import must not
+    leave the rows imported before it behind."""
+
+    def setUp(self):
+        user = self.create_user(email="admin@test.io")
+        user.is_superuser = True
+        user.save()
+        self.client.force_login(user)
+        create_index_type("Plate", is_dual=True, format="plate")
+
+    def _xlsx(self, rows):
+        from io import BytesIO
+
+        from django.core.files.uploadedfile import SimpleUploadedFile
+        from openpyxl import Workbook
+
+        wb = Workbook()
+        ws = wb.active
+        ws.append(
+            [
+                "index1_prefix",
+                "index1_name",
+                "index1_sequence",
+                "index2_prefix",
+                "index2_name",
+                "index2_sequence",
+                "coordinate",
+                "index_type",
+            ]
+        )
+        for row in rows:
+            ws.append(row)
+        buf = BytesIO()
+        wb.save(buf)
+        return SimpleUploadedFile("pairs.xlsx", buf.getvalue())
+
+    def test_failure_on_second_row_rolls_back_first_row(self):
+        from unittest import mock
+
+        rows = [
+            ["i7_", "01", "ACGT", "i5_", "01", "TTTT", "A2", "Plate"],
+            ["i7_", "02", "CGTA", "i5_", "02", "AAAA", "B2", "Plate"],
+        ]
+        real_create = IndexPair.objects.create
+        calls = []
+
+        def fail_on_second(*args, **kwargs):
+            calls.append(1)
+            if len(calls) == 2:
+                raise RuntimeError("boom")
+            return real_create(*args, **kwargs)
+
+        with mock.patch.object(IndexPair.objects, "create", fail_on_second):
+            response = self.client.post(
+                "/admin/library_sample_shared/indexpair/import_plate_pairs/",
+                {"file": self._xlsx(rows)},
+            )
+
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(len(calls), 2)
+        self.assertEqual(IndexPair.objects.count(), 0)
+        self.assertEqual(IndexI7.objects.count(), 0)
+        self.assertEqual(IndexI5.objects.count(), 0)

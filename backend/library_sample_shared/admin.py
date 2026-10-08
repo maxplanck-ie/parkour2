@@ -5,9 +5,12 @@ from zipfile import BadZipFile
 from common.admin import ArchivedFilter
 from django.conf import settings
 from django.contrib import admin, messages
+from django.contrib.admin import helpers
+from django.db import transaction
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
-from django.urls import path, resolve
+from django.template.response import TemplateResponse
+from django.urls import path, resolve, reverse
 from django_admin_listfilter_dropdown.filters import RelatedDropdownFilter
 from simple_history.admin import SimpleHistoryAdmin
 from import_export import fields, resources
@@ -25,6 +28,17 @@ from .models import (
     AnalysisType,
     Organism,
     ReadLength,
+)
+from .utils import (
+    archive_index_pairs,
+    archive_index_types,
+    delete_index,
+    delete_index_pair,
+    delete_index_type,
+    index_has_used_pair,
+    index_is_used,
+    index_pair_is_used,
+    index_type_is_used,
 )
 
 
@@ -99,8 +113,126 @@ class IndexPairInline(admin.TabularInline):
         return super().formfield_for_foreignkey(db_field, request, **kwargs)
 
 
+class GuardedDeleteMixin:
+    """Replace plain deletion of index records with archive-or-delete.
+
+    Records used by a Library/Sample at status >= Sequencing are never deleted:
+    they are archived. Unused records are archived too, unless the user ticks the
+    "permanent delete" box on the confirmation page (meant for failed imports).
+
+    Subclasses implement is_used(), archive_queryset() and, if a plain
+    obj.delete() is not enough, hard_delete().
+    """
+
+    delete_confirmation_template = (
+        "admin/library_sample_shared/guarded_delete_confirmation.html"
+    )
+
+    # Extra sentence for the permanent-delete checkbox label, if deleting
+    # also cleans up related records.
+    permanent_delete_note = ""
+
+    def is_used(self, obj):
+        raise NotImplementedError
+
+    def archive_queryset(self, queryset):
+        raise NotImplementedError
+
+    def hard_delete(self, obj):
+        obj.delete()
+
+    def impact_summary(self, objs):
+        """(label, count) rows describing what else permanent deletion removes."""
+        return []
+
+    def delete_model(self, request, obj):
+        self.hard_delete(obj)
+
+    def get_actions(self, request):
+        # Django's delete_selected would bypass the guard.
+        actions = super().get_actions(request)
+        actions.pop("delete_selected", None)
+        return actions
+
+    def _split(self, objs):
+        used, unused = [], []
+        for obj in objs:
+            (used if self.is_used(obj) else unused).append(obj)
+        return used, unused
+
+    def _confirm_context(self, objs, bulk):
+        used, unused = self._split(objs)
+        return {
+            "used_objects": used,
+            "unused_objects": unused,
+            "impact": self.impact_summary(unused),
+            "permanent_delete_note": self.permanent_delete_note,
+            "bulk": bulk,
+        }
+
+    def delete_view(self, request, object_id, extra_context=None):
+        obj = self.get_object(request, object_id)
+        if obj is None or not self.has_delete_permission(request, obj):
+            return super().delete_view(request, object_id, extra_context)
+
+        if request.method == "POST" and "post" in request.POST:
+            if self.is_used(obj) or not request.POST.get("confirm_permanent_delete"):
+                self.archive_queryset(self.model.objects.filter(pk=obj.pk))
+                self.message_user(
+                    request,
+                    f"{self.opts.verbose_name.capitalize()} “{obj}” was archived, "
+                    "not deleted.",
+                    messages.SUCCESS,
+                )
+                return HttpResponseRedirect(
+                    reverse(
+                        f"admin:{self.opts.app_label}_{self.opts.model_name}_changelist"
+                    )
+                )
+            return super().delete_view(request, object_id, extra_context)
+
+        context = {**self._confirm_context([obj], bulk=False), **(extra_context or {})}
+        return super().delete_view(request, object_id, context)
+
+    @admin.action(
+        description="Delete selected (archives if in use)", permissions=["delete"]
+    )
+    def delete_guarded(self, request, queryset):
+        objs = list(queryset)
+        if not request.POST.get("post"):
+            context = {
+                **self.admin_site.each_context(request),
+                **self._confirm_context(objs, bulk=True),
+                "title": "Are you sure?",
+                "opts": self.opts,
+                "queryset": queryset,
+                "action_checkbox_name": helpers.ACTION_CHECKBOX_NAME,
+                "action_name": "delete_guarded",
+            }
+            return TemplateResponse(request, self.delete_confirmation_template, context)
+
+        used, unused = self._split(objs)
+        confirmed = bool(request.POST.get("confirm_permanent_delete"))
+        to_archive = used if confirmed else objs
+        to_delete = unused if confirmed else []
+        with transaction.atomic():
+            if to_archive:
+                self.archive_queryset(
+                    self.model.objects.filter(pk__in=[o.pk for o in to_archive])
+                )
+            if to_delete:
+                self.log_deletions(request, to_delete)
+                for obj in to_delete:
+                    self.hard_delete(obj)
+        self.message_user(
+            request,
+            f"Archived {len(to_archive)}, permanently deleted {len(to_delete)}.",
+            messages.SUCCESS,
+        )
+
+
 @admin.register(IndexType)
-class IndexTypeAdmin(ImportExportModelAdmin):
+class IndexTypeAdmin(GuardedDeleteMixin, ImportExportModelAdmin):
     form = IndexTypeForm
 
     list_display = ("name", "is_dual", "format", "archived")
@@ -135,15 +267,30 @@ class IndexTypeAdmin(ImportExportModelAdmin):
     actions = (
         "mark_as_archived",
         "mark_as_non_archived",
+        "delete_guarded",
     )
 
     @admin.action(description="Mark as archived")
     def mark_as_archived(self, request, queryset):
-        queryset.update(archived=True)
+        archive_index_types(queryset)
 
     @admin.action(description="Mark as non-archived")
     def mark_as_non_archived(self, request, queryset):
         queryset.update(archived=False)
+
+    def is_used(self, obj):
+        return index_type_is_used(obj)
+
+    def archive_queryset(self, queryset):
+        archive_index_types(queryset)
+
+    def hard_delete(self, obj):
+        delete_index_type(obj)
+
+    def impact_summary(self, objs):
+        return [
+            ("Index pairs", IndexPair.objects.filter(index_type__in=objs).count()),
+        ]
 
     def change_view(self, request, object_id, form_url="", extra_context=None):
         # Display inline when the object has been saved and
@@ -160,45 +307,34 @@ class IndexTypeAdmin(ImportExportModelAdmin):
 
 
 @admin.register(IndexPair)
-class IndexPairAdmin(admin.ModelAdmin):
+class IndexPairAdmin(GuardedDeleteMixin, admin.ModelAdmin):
     list_display = ("index_pair", "coordinate", "archived")
     search_fields = ("index_type__name",)
     list_filter = ("index_type", ArchivedFilter)
 
+    permanent_delete_note = (
+        "Indices of a deleted pair are removed too, unless another pair or "
+        "index type still references them."
+    )
+
     actions = (
         "mark_as_archived",
         "mark_as_non_archived",
+        "delete_guarded",
     )
+
+    def hard_delete(self, obj):
+        delete_index_pair(obj)
+
+    def is_used(self, obj):
+        return index_pair_is_used(obj)
+
+    def archive_queryset(self, queryset):
+        archive_index_pairs(queryset)
 
     @admin.action(description="Mark as archived")
     def mark_as_archived(self, request, queryset):
-        # Get the IDs and index types before updating
-        index_pair_ids = list(queryset.values_list("id", flat=True))
-        affected_index_types = set(queryset.values_list("index_type", flat=True))
-        queryset.update(archived=True)
-
-        # Fetch fresh objects with related fields
-        for obj in IndexPair.objects.select_related("index1", "index2").filter(
-            id__in=index_pair_ids
-        ):
-            if obj.index1 and not obj.index1.archived:
-                obj.index1.archived = True
-                obj.index1.save(update_fields=["archived"])
-            if obj.index2 and not obj.index2.archived:
-                obj.index2.archived = True
-                obj.index2.save(update_fields=["archived"])
-
-        # Check if any IndexTypes should be archived
-        for index_type_id in affected_index_types:
-            if index_type_id:  # Make sure it's not None
-                # Check if there are any non-archived pairs left for this IndexType
-                remaining_pairs = IndexPair.objects.filter(
-                    index_type_id=index_type_id, archived=False
-                ).exists()
-
-                if not remaining_pairs:
-                    # Archive the IndexType as well
-                    IndexType.objects.filter(id=index_type_id).update(archived=True)
+        archive_index_pairs(queryset)
 
     @admin.action(description="Mark as non-archived")
     def mark_as_non_archived(self, request, queryset):
@@ -354,30 +490,32 @@ class IndexPairAdmin(admin.ModelAdmin):
                         'one invalid value in the "coordinate" column'
                     )
 
-                # Import index pairs
-                for index_pair in index_pairs:
-                    index_type = IndexType.objects.get(name=index_pair.index_type)
-                    index1 = IndexI7.objects.create(
-                        prefix=index_pair.index1_prefix,
-                        number=index_pair.index1_name,
-                        index=index_pair.index1_sequence,
-                    )
-                    index2 = IndexI5.objects.create(
-                        prefix=index_pair.index2_prefix,
-                        number=index_pair.index2_name,
-                        index=index_pair.index2_sequence,
-                    )
-                    IndexPair.objects.create(
-                        index_type=index_type,
-                        index1=index1,
-                        index2=index2,
-                        char_coord=index_pair.coordinate[:1],
-                        num_coord=index_pair.coordinate[1:],
-                    )
+                # Import index pairs (all-or-nothing: a failure on any row
+                # must not leave a partially imported file behind)
+                with transaction.atomic():
+                    for index_pair in index_pairs:
+                        index_type = IndexType.objects.get(name=index_pair.index_type)
+                        index1 = IndexI7.objects.create(
+                            prefix=index_pair.index1_prefix,
+                            number=index_pair.index1_name,
+                            index=index_pair.index1_sequence,
+                        )
+                        index2 = IndexI5.objects.create(
+                            prefix=index_pair.index2_prefix,
+                            number=index_pair.index2_name,
+                            index=index_pair.index2_sequence,
+                        )
+                        IndexPair.objects.create(
+                            index_type=index_type,
+                            index1=index1,
+                            index2=index2,
+                            char_coord=index_pair.coordinate[:1],
+                            num_coord=index_pair.coordinate[1:],
+                        )
 
-                    # Assign indices to index_type
-                    index_type.indices_i7.add(index1)
-                    index_type.indices_i5.add(index2)
+                        # Assign indices to index_type
+                        index_type.indices_i7.add(index1)
+                        index_type.indices_i5.add(index2)
 
             except (KeyError, BadZipFile):
                 error = (
@@ -425,7 +563,7 @@ class IndexI5Resource(resources.ModelResource):
 
 
 @admin.register(IndexI5)
-class IndexI5Admin(ImportExportModelAdmin):
+class IndexI5Admin(GuardedDeleteMixin, ImportExportModelAdmin):
     list_display = ("idx_id", "index", "type", "archived")
     search_fields = (
         "index",
@@ -438,7 +576,20 @@ class IndexI5Admin(ImportExportModelAdmin):
     actions = (
         "mark_as_archived",
         "mark_as_non_archived",
+        "delete_guarded",
     )
+
+    def is_used(self, obj):
+        return index_is_used(obj) or index_has_used_pair(obj)
+
+    def archive_queryset(self, queryset):
+        queryset.update(archived=True)
+
+    def hard_delete(self, obj):
+        delete_index(obj)
+
+    def impact_summary(self, objs):
+        return [("Index pairs", IndexPair.objects.filter(index2__in=objs).count())]
 
     @admin.action(description="Mark as archived")
     def mark_as_archived(self, request, queryset):
@@ -467,7 +618,7 @@ class IndexI7Resource(resources.ModelResource):
 
 
 @admin.register(IndexI7)
-class IndexI7Admin(ImportExportModelAdmin):
+class IndexI7Admin(GuardedDeleteMixin, ImportExportModelAdmin):
     list_display = ("idx_id", "index", "type", "archived")
     search_fields = (
         "index",
@@ -480,7 +631,20 @@ class IndexI7Admin(ImportExportModelAdmin):
     actions = (
         "mark_as_archived",
         "mark_as_non_archived",
+        "delete_guarded",
     )
+
+    def is_used(self, obj):
+        return index_is_used(obj) or index_has_used_pair(obj)
+
+    def archive_queryset(self, queryset):
+        queryset.update(archived=True)
+
+    def hard_delete(self, obj):
+        delete_index(obj)
+
+    def impact_summary(self, objs):
+        return [("Index pairs", IndexPair.objects.filter(index1__in=objs).count())]
 
     @admin.action(description="Mark as archived")
     def mark_as_archived(self, request, queryset):

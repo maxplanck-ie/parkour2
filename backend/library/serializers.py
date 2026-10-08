@@ -37,7 +37,7 @@ class LibrarySerializer(LibrarySampleBaseSerializer):
         return "Library"
 
     def get_index_type_name(self, obj):
-        return obj.index_type.name
+        return obj.index_type.name if obj.index_type else None
 
 
 class RequestParentNodeSerializer(ModelSerializer):

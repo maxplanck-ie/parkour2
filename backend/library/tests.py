@@ -2335,3 +2335,25 @@ class TestPlateCoordProperty(BaseTestCase):
         for row in samples:
             with self.subTest(sample_id=row.sample_id):
                 self.assertEqual(row.plate_coord, expected[row.sample_id])
+
+
+class LibraryNullIndexTypeTest(BaseTestCase):
+    """A library whose IndexType was deleted (FK is SET_NULL) must still serialize."""
+
+    def test_library_detail_without_index_type(self):
+        user = self.create_user("foo@bar.io", "foo-foo")
+        self.client.login(email="foo@bar.io", password="foo-foo")
+
+        index_type = IndexType.objects.create(name="T", format="single")
+        library = create_library(self._get_random_name(), status=2)
+        library.index_type = index_type
+        library.save()
+        request = Request(user=user)
+        request.save()
+        request.libraries.add(library)
+
+        index_type.delete()
+
+        response = self.client.get(reverse("libraries-detail", args=[library.pk]))
+        self.assertEqual(response.status_code, 200)
+        self.assertIsNone(response.json()["index_type_name"])
