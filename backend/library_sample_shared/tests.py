@@ -877,7 +877,10 @@ class ArchiveHistoryTest(BaseTestCase):
 
     def test_admin_actions_log_archiving_and_unarchiving(self):
         organism = Organism.objects.create(name="Tracked")
-        url = reverse("admin:library_sample_shared_organism_changelist")
+        url = (
+            reverse("admin:library_sample_shared_organism_changelist")
+            + "?archived__exact=_all"
+        )
         for action in ("mark_as_archived", "mark_as_non_archived"):
             self.client.post(
                 url,
@@ -891,7 +894,10 @@ class ArchiveHistoryTest(BaseTestCase):
 
     def test_already_archived_rows_get_no_extra_history(self):
         organism = Organism.objects.create(name="Tracked", archived=True)
-        url = reverse("admin:library_sample_shared_organism_changelist")
+        url = (
+            reverse("admin:library_sample_shared_organism_changelist")
+            + "?archived__exact=_all"
+        )
         self.client.post(
             url, {"action": "mark_as_archived", "_selected_action": [organism.pk]}
         )
