@@ -926,7 +926,9 @@ class TrackedModelsHistoryTest(BaseTestCase):
 
     def _assert_history_page(self, obj):
         meta = obj._meta
-        url = reverse(f"admin:{meta.app_label}_{meta.model_name}_history", args=[obj.pk])
+        url = reverse(
+            f"admin:{meta.app_label}_{meta.model_name}_history", args=[obj.pk]
+        )
         self.assertEqual(self.client.get(url).status_code, 200)
 
     def test_history_pages_render_for_newly_tracked_models(self):
