@@ -8,6 +8,7 @@ from django.core.validators import RegexValidator
 from django.db import models
 from library.models import Library
 from sample.models import Sample
+from django.utils.dateparse import parse_datetime
 from simple_history.models import HistoricalRecords
 
 DEFAULT_FILE_TYPE = "Other"
@@ -158,6 +159,21 @@ class Request(DateTimeMixin):
 
     def __str__(self):
         return self.name
+
+    @property
+    def display_date(self):
+        """Latest available request date: submission > approval > creation.
+
+        Mirrors the Date column of complete_*_data_mv (common/sql.py).
+        """
+        if self.submitted_at:
+            return self.submitted_at
+        raw = (self.approval or {}).get("TIMESTAMP")
+        try:
+            approved = parse_datetime(raw) if isinstance(raw, str) else None
+        except ValueError:
+            approved = None
+        return approved or self.create_time
 
     @property
     def records(self):

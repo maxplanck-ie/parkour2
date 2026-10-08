@@ -3,10 +3,8 @@
 Unreleased
 ==========
 
-- Index Types, Index Pairs and indices (I5/I7) in the admin are no longer deleted outright. They are archived by default; permanent deletion (meant for failed imports) is opt-in through a confirmation checkbox and also removes the pairs/indices built on them. Records used by a library or sample that reached Sequencing (or a later status) — also matched by index sequence when the Index Type is gone — are always archived, never deleted, even when permanent deletion is confirmed. Deleting an unused pair permanently also cleans up its I7/I5 indices when no other pair or Index Type references them. The plain "Delete selected" action is replaced by a guarded one. (PR #370.)
-- Archiving an Index Type in the admin now also archives its Index Pairs and indices (previously only archiving a pair cascaded, upwards). (PR #370.)
-- Fixed the Index Pair admin list returning an error after an Index Type was deleted and left pairs without a type. (PR #370.)
-- Fixed the library list and detail views failing for a library whose Index Type was deleted; the Index Type is now simply shown as empty. (PR #370.)
+- Admin panel: deleting records no longer breaks pages that still point at them. Index Types, Index Pairs and indices (I5/I7) are now archived by default, and an Index Type archived in the admin also archives its pairs and indices; permanent deletion (meant for failed imports) is opt-in through a confirmation checkbox, and records used by a library or sample that reached Sequencing (or later) are always archived, never deleted. The plain "Delete selected" action is replaced by this guarded one. Lists and detail views (Index Pairs, Libraries, Library Preparation, Pooling) show an empty value instead of an error when the Index Type or sample they referred to is gone. (PRs #370, #373.)
+- Libraries & Samples "Date" column now shows the latest available request date instead of always the creation date: submission, else PI approval, else creation. A header tooltip explains the order. The Request PDF "Date" follows the same order. (PR #374.)
 
 
 26.10.05

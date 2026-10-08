@@ -129,7 +129,12 @@ SELECT DISTINCT ON (l.id, r.id)
     COALESCE(i5.prefix, '') || COALESCE(i5.number, '') AS i5_id,
     r.id AS request_id,
     r.name AS request_name,
-    r.create_time AS create_time,
+    COALESCE(
+        r.submitted_at,
+        CASE WHEN r.approval->>'TIMESTAMP' ~ '^[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]T'
+             THEN (r.approval->>'TIMESTAMP')::timestamptz END,
+        r.create_time
+    ) AS create_time,
     pools.pool_names,
     fcids.flowcell_ids,
     fcids.flowcell_create_times,
@@ -239,7 +244,12 @@ SELECT DISTINCT ON (s.id, r.id)
     COALESCE(i5.prefix, '') || COALESCE(i5.number, '') AS i5_id,
     r.id AS request_id,
     r.name AS request_name,
-    r.create_time AS create_time,
+    COALESCE(
+        r.submitted_at,
+        CASE WHEN r.approval->>'TIMESTAMP' ~ '^[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]T'
+             THEN (r.approval->>'TIMESTAMP')::timestamptz END,
+        r.create_time
+    ) AS create_time,
     pools.pool_names,
     fcids.flowcell_ids,
     fcids.flowcell_create_times,
@@ -458,15 +468,27 @@ _LEGACY_SAMPLE_JOIN: Final[str] = (
 _CURRENT_SAMPLE_JOIN: Final[str] = (
     "LEFT JOIN library_sample_shared_analysistype AS lt ON s.analysis_type_id = lt.id"
 )
+# Same reasoning for the Date column: the legacy replay runs before
+# request.0016 added submitted_at, so the wrappers keep the original
+# plain request creation time.
+_CURRENT_DATE_EXPR: Final[str] = """COALESCE(
+        r.submitted_at,
+        CASE WHEN r.approval->>'TIMESTAMP' ~ '^[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]T'
+             THEN (r.approval->>'TIMESTAMP')::timestamptz END,
+        r.create_time
+    )"""
+_LEGACY_DATE_EXPR: Final[str] = "r.create_time"
+assert _CURRENT_DATE_EXPR in LIBRARY_SELECT_SQL_TEMPLATE
+assert _CURRENT_DATE_EXPR in SAMPLE_SELECT_SQL_TEMPLATE
 assert _CURRENT_LIBRARY_JOIN in LIBRARY_SELECT_SQL_TEMPLATE
 assert _CURRENT_SAMPLE_JOIN in SAMPLE_SELECT_SQL_TEMPLATE
 
 _LEGACY_LIBRARY_SELECT_SQL_TEMPLATE: Final[str] = LIBRARY_SELECT_SQL_TEMPLATE.replace(
     _CURRENT_LIBRARY_JOIN, _LEGACY_LIBRARY_JOIN
-)
+).replace(_CURRENT_DATE_EXPR, _LEGACY_DATE_EXPR)
 _LEGACY_SAMPLE_SELECT_SQL_TEMPLATE: Final[str] = SAMPLE_SELECT_SQL_TEMPLATE.replace(
     _CURRENT_SAMPLE_JOIN, _LEGACY_SAMPLE_JOIN
-)
+).replace(_CURRENT_DATE_EXPR, _LEGACY_DATE_EXPR)
 
 
 def library_select_sql(where_clause: str = "") -> str:

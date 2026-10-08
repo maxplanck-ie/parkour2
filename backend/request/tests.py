@@ -1408,6 +1408,18 @@ class TestRequestDownloadEndpoints(BaseTestCase):
         # Check that response has content
         self.assertGreater(len(response.content), 0)
 
+    def test_display_date_precedence(self):
+        """submission > approval > creation (same as the Date column)."""
+        req = self.request
+        self.assertEqual(req.display_date, req.create_time)
+        req.approval = {"TIMESTAMP": "2024-03-04T05:06:07+00:00"}
+        self.assertEqual(req.display_date.isoformat(), "2024-03-04T05:06:07+00:00")
+        req.approval = {"TIMESTAMP": "garbage"}
+        self.assertEqual(req.display_date, req.create_time)
+        req.approval = {"TIMESTAMP": "2024-03-04T05:06:07+00:00"}
+        req.submitted_at = timezone.now()
+        self.assertEqual(req.display_date, req.submitted_at)
+
     def test_download_deep_sequencing_request_pdf(self):
         """
         Test that deep sequencing request PDF download endpoint returns 200,
