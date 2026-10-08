@@ -717,3 +717,281 @@ class ImportIndexPairsAtomicTest(BaseTestCase):
         self.assertEqual(IndexPair.objects.count(), 0)
         self.assertEqual(IndexI7.objects.count(), 0)
         self.assertEqual(IndexI5.objects.count(), 0)
+
+
+class GuardedCatalogDeleteTest(BaseTestCase):
+    """Catalog entries still referenced by a library are archived, never deleted."""
+
+    def setUp(self):
+        user = self.create_user(email="admin@test.io")
+        user.is_superuser = True
+        user.save()
+        self.client.force_login(user)
+
+        from library.tests import create_library
+
+        self.library = create_library("lib")
+
+    def _delete(self, obj, name, confirm=True):
+        data = {"post": "yes"}
+        if confirm:
+            data["confirm_permanent_delete"] = "yes"
+        return self.client.post(
+            reverse(f"admin:library_sample_shared_{name}_delete", args=[obj.pk]),
+            data,
+        )
+
+    def test_used_entries_are_archived_even_when_permanent_delete_confirmed(self):
+        for obj, name in (
+            (self.library.organism, "organism"),
+            (self.library.read_length, "readlength"),
+            (self.library.library_protocol, "libraryprotocol"),
+            (self.library.analysis_type, "analysistype"),
+        ):
+            with self.subTest(model=name):
+                self._delete(obj, name)
+                obj.refresh_from_db()
+                self.assertTrue(obj.archived)
+        self.library.refresh_from_db()
+        self.assertIsNotNone(self.library.organism)
+        self.assertIsNotNone(self.library.analysis_type)
+
+    def test_unused_entry_is_archived_unless_permanent_delete_confirmed(self):
+        organism = Organism.objects.create(name="Unused")
+        self._delete(organism, "organism", confirm=False)
+        organism.refresh_from_db()
+        self.assertTrue(organism.archived)
+
+        self._delete(organism, "organism")
+        self.assertFalse(Organism.objects.filter(pk=organism.pk).exists())
+
+    def _other_catalog_entries(self):
+        from common.models import Organization, PrincipalInvestigator
+        from flowcell.tests import create_flowcell, create_sequencer
+        from index_generator.tests import create_pool
+        from sample.tests import create_sample
+
+        sample = create_sample("sample")
+        sequencer = create_sequencer("Sequencer")
+        create_flowcell("FC1", sequencer)
+        pool = create_pool(self.create_user(email="pool@test.io"))
+        organization = Organization.objects.create(name="Org")
+        pi = PrincipalInvestigator.objects.create(name="pi", organization=organization)
+        user = self.create_user(email="pi-user@test.io")
+        user.pi = pi
+        user.save()
+
+        return (
+            (sample.nucleic_acid_type, "sample", "nucleicacidtype"),
+            (sequencer, "flowcell", "sequencer"),
+            (pool.size, "index_generator", "poolsize"),
+            (pi, "common", "principalinvestigator"),
+            (organization, "common", "organization"),
+        )
+
+    def test_other_used_entries_are_archived_even_when_permanent_delete_confirmed(
+        self,
+    ):
+        for obj, app, name in self._other_catalog_entries():
+            with self.subTest(model=name):
+                response = self.client.post(
+                    reverse(f"admin:{app}_{name}_delete", args=[obj.pk]),
+                    {"post": "yes", "confirm_permanent_delete": "yes"},
+                )
+                self.assertEqual(response.status_code, 302)
+                obj.refresh_from_db()
+                self.assertTrue(obj.archived)
+
+    def test_other_unused_entries_are_archived_unless_permanent_delete_confirmed(
+        self,
+    ):
+        from common.models import Organization, PrincipalInvestigator
+        from flowcell.models import Sequencer
+        from index_generator.models import PoolSize
+        from sample.models import NucleicAcidType
+
+        organization = Organization.objects.create(name="Unused org")
+        unused = (
+            (
+                NucleicAcidType.objects.create(name="Unused"),
+                "sample",
+                "nucleicacidtype",
+            ),
+            (
+                Sequencer.objects.create(name="Unused", lanes=1, lane_capacity=1),
+                "flowcell",
+                "sequencer",
+            ),
+            (
+                PoolSize.objects.create(multiplier=1, size=1),
+                "index_generator",
+                "poolsize",
+            ),
+            (
+                PrincipalInvestigator.objects.create(
+                    name="unused", organization=organization
+                ),
+                "common",
+                "principalinvestigator",
+            ),
+            (organization, "common", "organization"),
+        )
+        for obj, app, name in unused:
+            url = reverse(f"admin:{app}_{name}_delete", args=[obj.pk])
+            with self.subTest(model=name, confirm=False):
+                self.client.post(url, {"post": "yes"})
+                obj.refresh_from_db()
+                self.assertTrue(obj.archived)
+            with self.subTest(model=name, confirm=True):
+                self.client.post(
+                    url, {"post": "yes", "confirm_permanent_delete": "yes"}
+                )
+                self.assertFalse(type(obj).objects.filter(pk=obj.pk).exists())
+
+
+class ArchiveHistoryTest(BaseTestCase):
+    """Archiving and un-archiving of history-tracked models is logged."""
+
+    def setUp(self):
+        user = self.create_user(email="admin@test.io")
+        user.is_superuser = True
+        user.save()
+        self.client.force_login(user)
+
+    def _history(self, obj):
+        return list(
+            obj.history.order_by("history_date", "history_id").values_list(
+                "archived", "history_type"
+            )
+        )
+
+    def test_guarded_delete_logs_archiving(self):
+        organism = Organism.objects.create(name="Tracked")
+        self.client.post(
+            reverse("admin:library_sample_shared_organism_delete", args=[organism.pk]),
+            {"post": "yes"},
+        )
+        organism.refresh_from_db()
+        self.assertTrue(organism.archived)
+        self.assertEqual(self._history(organism), [(False, "+"), (True, "~")])
+
+    def test_admin_actions_log_archiving_and_unarchiving(self):
+        organism = Organism.objects.create(name="Tracked")
+        url = (
+            reverse("admin:library_sample_shared_organism_changelist")
+            + "?archived__exact=_all"
+        )
+        for action in ("mark_as_archived", "mark_as_non_archived"):
+            self.client.post(
+                url,
+                {"action": action, "_selected_action": [organism.pk]},
+            )
+        organism.refresh_from_db()
+        self.assertFalse(organism.archived)
+        self.assertEqual(
+            self._history(organism), [(False, "+"), (True, "~"), (False, "~")]
+        )
+
+    def test_already_archived_rows_get_no_extra_history(self):
+        organism = Organism.objects.create(name="Tracked", archived=True)
+        url = (
+            reverse("admin:library_sample_shared_organism_changelist")
+            + "?archived__exact=_all"
+        )
+        self.client.post(
+            url, {"action": "mark_as_archived", "_selected_action": [organism.pk]}
+        )
+        self.assertEqual(self._history(organism), [(True, "+")])
+
+    def test_untracked_model_is_still_archived(self):
+        from flowcell.models import Sequencer
+
+        sequencer = Sequencer.objects.create(name="Plain", lanes=1, lane_capacity=1)
+        self.client.post(
+            reverse("admin:flowcell_sequencer_changelist"),
+            {"action": "mark_as_archived", "_selected_action": [sequencer.pk]},
+        )
+        sequencer.refresh_from_db()
+        self.assertTrue(sequencer.archived)
+
+
+class TrackedModelsHistoryTest(BaseTestCase):
+    """Edits to newly tracked models are logged and the history page renders."""
+
+    def setUp(self):
+        user = self.create_user(email="admin@test.io")
+        user.is_superuser = True
+        user.save()
+        self.client.force_login(user)
+
+    def _assert_history_page(self, obj):
+        meta = obj._meta
+        url = reverse(
+            f"admin:{meta.app_label}_{meta.model_name}_history", args=[obj.pk]
+        )
+        self.assertEqual(self.client.get(url).status_code, 200)
+
+    def test_history_pages_render_for_newly_tracked_models(self):
+        from flowcell.models import Sequencer
+        from index_generator.models import PoolSize
+        from library.tests import create_library
+        from sample.models import NucleicAcidType
+        from sample.tests import create_sample
+
+        objs = [
+            create_library("lib"),
+            create_sample("sample"),
+            Sequencer.objects.create(name="Seq", lanes=1, lane_capacity=1),
+            PoolSize.objects.create(multiplier=1, size=1),
+            NucleicAcidType.objects.create(name="NAT"),
+            ReadLength.objects.create(name="RL"),
+            IndexType.objects.create(name="IT"),
+            self.create_user(email="u@test.io"),
+        ]
+        for obj in objs:
+            with self.subTest(model=obj._meta.label):
+                self._assert_history_page(obj)
+
+    def test_library_and_sample_saves_are_logged(self):
+        from library.tests import create_library
+        from sample.tests import create_sample
+
+        for obj in (create_library("lib"), create_sample("sample")):
+            with self.subTest(model=obj._meta.label):
+                before = obj.history.count()
+                obj.status = 1
+                obj.save()
+                self.assertEqual(obj.history.count(), before + 1)
+                self.assertEqual(obj.history.first().status, 1)
+
+    def test_user_cost_unit_reassignment_is_logged(self):
+        from common.models import CostUnit, Organization, PrincipalInvestigator
+
+        organization = Organization.objects.create(name="org")
+        pi = PrincipalInvestigator.objects.create(name="pi", organization=organization)
+        user = self.create_user(email="cu@test.io")
+        cost_unit = CostUnit.objects.create(name="CU", pi=pi)
+        user.cost_unit.add(cost_unit)
+        user.save()
+        latest = user.history.latest()
+        self.assertEqual(
+            [c.costunit_id for c in latest.cost_unit.all()], [cost_unit.pk]
+        )
+
+    def test_user_history_excludes_password_and_last_login(self):
+        fields = {f.name for f in get_user_model().history.model._meta.get_fields()}
+        self.assertNotIn("password", fields)
+        self.assertNotIn("last_login", fields)
+
+    def test_update_with_history_logs_bulk_status_change(self):
+        from common.utils import update_with_history
+        from library.models import Library
+        from library.tests import create_library
+
+        library = create_library("lib")
+        before = library.history.count()
+        update_with_history(Library.objects.filter(pk=library.pk), status=4)
+        library.refresh_from_db()
+        self.assertEqual(library.status, 4)
+        self.assertEqual(library.history.count(), before + 1)
+        self.assertEqual(library.history.first().status, 4)

@@ -18,7 +18,7 @@ class RunsSerializer(ModelSerializer):
         )
 
     def get_sequencer(self, obj):
-        return obj.sequencer.name
+        return obj.sequencer.name if obj.sequencer else ""
 
     def to_representation(self, instance):
         data = super().to_representation(instance)
@@ -31,9 +31,17 @@ class RunsSerializer(ModelSerializer):
                 "pool": lane.pool.name,
                 "loading_concentration": lane.loading_concentration,
                 "phix": lane.phix,
-                "read_length": records[0].read_length.name,
-                "library_preparation": records[0].library_protocol.name,
-                "analysis_type": records[0].analysis_type.name,
+                "read_length": (
+                    records[0].read_length.name if records[0].read_length else ""
+                ),
+                "library_preparation": (
+                    records[0].library_protocol.name
+                    if records[0].library_protocol
+                    else ""
+                ),
+                "analysis_type": (
+                    records[0].analysis_type.name if records[0].analysis_type else ""
+                ),
                 "request": records[0].fetched_request[0].name,
             }
 
@@ -82,7 +90,7 @@ class SequencesSerializer(ModelSerializer):
         )
 
     def get_sequencer(self, obj):
-        return obj.sequencer.name
+        return obj.sequencer.name if obj.sequencer else ""
 
     def to_representation(self, instance):
         data = super().to_representation(instance)
@@ -109,8 +117,14 @@ class SequencesSerializer(ModelSerializer):
                         "name": record.name,
                         "barcode": record.barcode,
                         "request": request.name,
-                        "library_protocol": record.library_protocol.name,
-                        "analysis_type": record.analysis_type.name,
+                        "library_protocol": (
+                            record.library_protocol.name
+                            if record.library_protocol
+                            else ""
+                        ),
+                        "analysis_type": (
+                            record.analysis_type.name if record.analysis_type else ""
+                        ),
                         "reads_pf_requested": record.sequencing_depth,
                         "pool": pools.get(barcode, ""),
                         "lane": lanes.get(barcode, ""),

@@ -7,6 +7,8 @@ from common.models import (
     Organization,
     PrincipalInvestigator,
 )
+from common.guarded_delete import ReferencedGuardedDeleteMixin
+from common.utils import set_archived
 from simple_history.admin import SimpleHistoryAdmin
 from django import forms
 from django.conf import settings
@@ -88,11 +90,11 @@ class AttachmentFileTypeAdmin(SimpleHistoryAdmin):
 
     @admin.action(description="Mark as archived")
     def mark_as_archived(self, request, queryset):
-        queryset.update(archived=True)
+        set_archived(queryset, True)
 
     @admin.action(description="Mark as non-archived")
     def mark_as_non_archived(self, request, queryset):
-        queryset.update(archived=False)
+        set_archived(queryset, False)
 
 
 class CostUnitInline(admin.TabularInline):
@@ -101,7 +103,7 @@ class CostUnitInline(admin.TabularInline):
 
 
 @admin.register(PrincipalInvestigator)
-class PrincipalInvestigatorAdmin(SimpleHistoryAdmin):
+class PrincipalInvestigatorAdmin(ReferencedGuardedDeleteMixin, SimpleHistoryAdmin):
     list_display = ("name", "organization", "deliver_to", "archived")
     search_fields = (
         "name",
@@ -113,24 +115,25 @@ class PrincipalInvestigatorAdmin(SimpleHistoryAdmin):
     actions = (
         "mark_as_archived",
         "mark_as_non_archived",
+        "delete_guarded",
     )
 
     @admin.action(description="Mark as archived")
     def mark_as_archived(self, request, queryset):
-        queryset.update(archived=True)
+        set_archived(queryset, True)
 
     @admin.action(description="Mark as non-archived")
     def mark_as_non_archived(self, request, queryset):
-        queryset.update(archived=False)
+        set_archived(queryset, False)
 
 
 @admin.register(Organization)
-class OrganizationAdmin(SimpleHistoryAdmin):
+class OrganizationAdmin(ReferencedGuardedDeleteMixin, SimpleHistoryAdmin):
     pass
 
 
 @admin.register(CostUnit)
-class CostUnitAdmin(SimpleHistoryAdmin):
+class CostUnitAdmin(ReferencedGuardedDeleteMixin, SimpleHistoryAdmin):
     list_display = (
         "name",
         "pi",
@@ -153,11 +156,11 @@ class CostUnitAdmin(SimpleHistoryAdmin):
 
     @admin.action(description="Mark as archived")
     def mark_as_archived(self, request, queryset):
-        queryset.update(archived=True)
+        set_archived(queryset, True)
 
     @admin.action(description="Mark as non-archived")
     def mark_as_non_archived(self, request, queryset):
-        queryset.update(archived=False)
+        set_archived(queryset, False)
 
 
 class UserCreationForm(UserCreationForm):
@@ -183,7 +186,7 @@ class UserCreationForm(UserCreationForm):
 
 
 @admin.register(User)
-class UserAdmin(NamedUserAdmin):
+class UserAdmin(SimpleHistoryAdmin, NamedUserAdmin):
     add_form = UserCreationForm
     add_fieldsets = (
         (
@@ -344,11 +347,11 @@ class DutyAdmin(SimpleHistoryAdmin):
 
     @admin.action(description="Mark as archived")
     def mark_as_archived(self, request, queryset):
-        queryset.update(archived=True)
+        set_archived(queryset, True)
 
     @admin.action(description="Mark as non-archived")
     def mark_as_non_archived(self, request, queryset):
-        queryset.update(archived=False)
+        set_archived(queryset, False)
 
 
 # admin.site.unregister(User)

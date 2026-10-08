@@ -79,7 +79,7 @@ class IndexGeneratorBaseSerializer(ModelSerializer):
         return obj.__class__.__name__
 
     def get_library_protocol_name(self, obj):
-        return obj.library_protocol.name
+        return obj.library_protocol.name if obj.library_protocol_id else None
 
     def get_coordinate(self, obj):
         coordinates = self.context.get("coordinates", {})

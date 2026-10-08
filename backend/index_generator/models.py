@@ -3,11 +3,14 @@ import itertools
 from common.models import DateTimeMixin
 from django.conf import settings
 from django.db import models
+from simple_history.models import HistoricalRecords
 from library.models import Library
 from sample.models import Sample
 
 
 class PoolSize(models.Model):
+    history = HistoricalRecords()
+
     multiplier = models.PositiveSmallIntegerField("Multiplier", default=1)
     size = models.PositiveSmallIntegerField("Size")
     archived = models.BooleanField("Archived", default=False)

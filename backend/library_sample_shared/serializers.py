@@ -155,13 +155,13 @@ class LibrarySampleBaseSerializer(ModelSerializer):
         return obj.request.get().name
 
     def get_library_protocol_name(self, obj):
-        return obj.library_protocol.name
+        return obj.library_protocol.name if obj.library_protocol_id else None
 
     def get_analysis_type_name(self, obj):
-        return obj.analysis_type.name
+        return obj.analysis_type.name if obj.analysis_type_id else None
 
     def get_read_length_name(self, obj):
-        return obj.read_length.name
+        return obj.read_length.name if obj.read_length_id else None
 
     def get_organism_name(self, obj):
-        return obj.organism.name
+        return obj.organism.name if obj.organism_id else None

@@ -1,10 +1,13 @@
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
+from simple_history.models import HistoricalRecords
 from library_sample_shared.models import GenericLibrarySample
 from django.contrib.postgres.fields import ArrayField
 
 
 class NucleicAcidType(models.Model):
+    history = HistoricalRecords()
+
     name = models.CharField("Name", max_length=100)
 
     type = models.CharField(

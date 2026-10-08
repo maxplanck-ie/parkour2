@@ -1,6 +1,9 @@
 from common.admin import ArchivedFilter
+from common.guarded_delete import ReferencedGuardedDeleteMixin
+from common.utils import set_archived
 from django.conf import settings
 from django.contrib import admin
+from simple_history.admin import SimpleHistoryAdmin
 from flowcell.models import Flowcell, Sequencer
 
 
@@ -55,7 +58,7 @@ class LaneInline(admin.TabularInline):
 
 
 @admin.register(Sequencer)
-class SequencerAdmin(admin.ModelAdmin):
+class SequencerAdmin(ReferencedGuardedDeleteMixin, SimpleHistoryAdmin):
     list_display = ("name", "lanes", "lane_capacity", "archived")
 
     list_filter = (ArchivedFilter,)
@@ -63,15 +66,16 @@ class SequencerAdmin(admin.ModelAdmin):
     actions = (
         "mark_as_archived",
         "mark_as_non_archived",
+        "delete_guarded",
     )
 
     @admin.action(description="Mark as archived")
     def mark_as_archived(self, request, queryset):
-        queryset.update(archived=True)
+        set_archived(queryset, True)
 
     @admin.action(description="Mark as non-archived")
     def mark_as_non_archived(self, request, queryset):
-        queryset.update(archived=False)
+        set_archived(queryset, False)
 
 
 @admin.register(Flowcell)
@@ -92,8 +96,8 @@ class FlowcellAdmin(admin.ModelAdmin):
 
     @admin.action(description="Mark as archived")
     def mark_as_archived(self, request, queryset):
-        queryset.update(archived=True)
+        set_archived(queryset, True)
 
     @admin.action(description="Mark as non-archived")
     def mark_as_non_archived(self, request, queryset):
-        queryset.update(archived=False)
+        set_archived(queryset, False)

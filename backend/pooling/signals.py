@@ -1,3 +1,4 @@
+from common.utils import update_with_history
 from django.db.models.signals import m2m_changed, post_save
 from django.dispatch import receiver
 from index_generator.models import Pool
@@ -14,7 +15,7 @@ def update_libraries_create_pooling_obj(sender, instance, action, **kwargs):
     for each library create a Pooling object.
     """
     if action == "post_add":
-        instance.libraries.all().update(is_pooled=True)
+        update_with_history(instance.libraries.all(), is_pooled=True)
 
         # TODO: maybe there is a better way to create multiple objects at once
         for library in instance.libraries.all():

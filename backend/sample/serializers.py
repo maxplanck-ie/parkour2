@@ -40,4 +40,4 @@ class SampleSerializer(LibrarySampleBaseSerializer):
         return "Sample"
 
     def get_nucleic_acid_type_name(self, obj):
-        return obj.nucleic_acid_type.name
+        return obj.nucleic_acid_type.name if obj.nucleic_acid_type_id else None

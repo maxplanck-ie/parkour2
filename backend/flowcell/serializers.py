@@ -2,6 +2,7 @@ import itertools
 from collections import Counter
 from pprint import pprint
 
+from common.utils import update_with_history
 from django.apps import apps
 from django.db import transaction
 from django.db.models import Q
@@ -88,6 +89,8 @@ class LaneSerializer(ModelSerializer):
         }
 
     def get_request(self, obj):
+        if not obj.pool_id:
+            return None
         requests = []
         records = obj.pool.libraries.all() or obj.pool.samples.all()
 
@@ -103,6 +106,8 @@ class LaneSerializer(ModelSerializer):
         return ", ".join(unique_requests)
 
     def get_protocol(self, obj):
+        if not obj.pool_id:
+            return None
         protocols = []
 
         records = obj.pool.libraries.all() or obj.pool.samples.all()
@@ -127,9 +132,11 @@ class LaneSerializer(ModelSerializer):
         )
 
     def get_pool_name(self, obj):
-        return obj.pool.name
+        return obj.pool.name if obj.pool_id else None
 
     def get_read_length_name(self, obj):
+        if not obj.pool_id:
+            return None
         read_lengths = []
         i = 0
         records = obj.pool.libraries.all() or obj.pool.samples.all()
@@ -397,8 +404,8 @@ class FlowcellSerializer(ModelSerializer):
             # samples' statuses if the pool is fully loaded
             for pool in pools:
                 if pool.loaded == pool.size.multiplier:
-                    pool.libraries.all().filter(status=4).update(status=5)
-                    pool.samples.all().filter(status=4).update(status=5)
+                    update_with_history(pool.libraries.all().filter(status=4), status=5)
+                    update_with_history(pool.samples.all().filter(status=4), status=5)
 
             # When a Flowcell is loaded, save the all corresponding requests
             libraries = Library.objects.filter(pool__in=pools)
@@ -451,10 +458,10 @@ class PoolListSerializer(ModelSerializer):
         return None
 
     def get_pool_size_id(self, obj):
-        return obj.size.pk
+        return obj.size.pk if obj.size_id else None
 
     def get_pool_size(self, obj):
-        return obj.size.multiplier
+        return obj.size.multiplier if obj.size_id else None
 
     def get_ready(self, obj):
         libraries_statuses = [x.status for x in obj.libraries.all()]

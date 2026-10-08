@@ -1,4 +1,5 @@
 from common.admin import ArchivedFilter
+from common.utils import set_archived
 from django.contrib import admin
 from django_admin_listfilter_dropdown.filters import RelatedDropdownFilter
 from request.models import FileRequest, Request
@@ -43,11 +44,11 @@ class RequestAdmin(SimpleHistoryAdmin):
 
     @admin.action(description="Mark as archived")
     def mark_as_archived(self, request, queryset):
-        queryset.update(archived=True)
+        set_archived(queryset, True)
 
     @admin.action(description="Mark as non-archived")
     def mark_as_non_archived(self, request, queryset):
-        queryset.update(archived=False)
+        set_archived(queryset, False)
 
     @admin.display(boolean=True)
     def request_uploaded(self, obj):

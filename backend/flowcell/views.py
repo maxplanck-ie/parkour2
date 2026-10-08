@@ -5,6 +5,7 @@ import logging
 import unicodedata
 
 from common.mixins import MultiEditMixin
+from common.utils import update_with_history
 from common.views import CsrfExemptSessionAuthentication
 from dateutil.relativedelta import relativedelta
 from datetime import datetime
@@ -294,8 +295,8 @@ class FlowcellViewSet(MultiEditMixin, viewsets.ReadOnlyModelViewSet):
             for pool in affected_pools.values():
                 pool_size = pool.size.multiplier if pool.size else None
                 if pool_size is None or pool.loaded < pool_size:
-                    pool.libraries.all().filter(status=5).update(status=4)
-                    pool.samples.all().filter(status=5).update(status=4)
+                    update_with_history(pool.libraries.all().filter(status=5), status=4)
+                    update_with_history(pool.samples.all().filter(status=5), status=4)
 
             for req in requests_to_update:
                 has_other_flowcells = (
