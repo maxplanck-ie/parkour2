@@ -3,6 +3,7 @@
 Unreleased
 ==========
 
+- Restoring a database snapshot (`make load-postgres`, also used by `make db`) now stops with an error when a table fails to load, instead of silently leaving it empty. Duplicate-key messages from tables the migrations already filled are still ignored, and a missing `misc/latest.sqldump` is reported. (PR #376.)
 - Admin panel: deleting records no longer breaks pages that still point at them. Index Types, Index Pairs and indices (I5/I7) are now archived by default, and an Index Type archived in the admin also archives its pairs and indices; permanent deletion (meant for failed imports) is opt-in through a confirmation checkbox, and records used by a library or sample that reached Sequencing (or later) are always archived, never deleted. The plain "Delete selected" action is replaced by this guarded one. Lists and detail views (Index Pairs, Libraries, Library Preparation, Pooling) show an empty value instead of an error when the Index Type or sample they referred to is gone. Importing Index Pairs from a spreadsheet is now all-or-nothing: a failure part-way no longer leaves a partial import behind. (PRs #370, #373.)
 - Libraries & Samples "Date" column now shows the latest available request date instead of always the creation date: submission, else PI approval, else creation. A header tooltip explains the order. The Request PDF "Date" follows the same order. (PR #374.)
 

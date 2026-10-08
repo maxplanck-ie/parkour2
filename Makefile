@@ -232,13 +232,17 @@ convert-backup:  ## Convert xxxly.0's pgdb to ./misc/*.sqldump (updating symlink
 # 		echo "Info: Loaded media file(s)." || \
 # 		echo 'ERROR: Folder media_dump not found!'
 
-load-postgres:  ## Restore instant snapshot (sqldump) on running instance
-	@[[ -f misc/latest.sqldump ]] && \
-		docker cp -L ./misc/latest.sqldump parkour2-postgres:/tmp_parkour-postgres.dump
-	@docker exec parkour2-postgres sh -c "pg_restore --data-only --disable-triggers \
-		--dbname=postgres --username=postgres tmp_parkour-postgres.dump \
-		1> /tmp/pg_log_out.txt 2> /tmp/pg_log_err.txt" || \
-			docker exec parkour2-postgres cat /tmp/pg_log_err.txt
+load-postgres:  ## Restore instant snapshot (sqldump) on a migrated instance
+	@[[ -f misc/latest.sqldump ]] || { echo 'ERROR: misc/latest.sqldump not found'; exit 1; }
+	@docker cp "$$(readlink -f misc/latest.sqldump)" parkour2-postgres:/tmp_parkour-postgres.dump
+	@docker exec parkour2-postgres sh -c "\
+		pg_restore --data-only --disable-triggers \
+			--dbname=postgres --username=postgres /tmp_parkour-postgres.dump \
+			1>/tmp/pg_log_out.txt 2>/tmp/pg_log_err.txt; \
+		noise=\$$(grep '^pg_restore: error:' /tmp/pg_log_err.txt | grep -c 'duplicate key value violates'); \
+		grep '^pg_restore: error:' /tmp/pg_log_err.txt | grep -v 'duplicate key value violates' > /tmp/pg_log_real.txt; \
+		echo \"Info: pg_restore finished; \$$noise expected duplicate-key error(s) on pre-seeded tables ignored.\"; \
+		if [ -s /tmp/pg_log_real.txt ]; then echo 'ERROR: pg_restore failed, tables are INCOMPLETE:'; cat /tmp/pg_log_real.txt; exit 1; fi"
 	@$(MAKE) clean
 
 load-postgres-plain:
