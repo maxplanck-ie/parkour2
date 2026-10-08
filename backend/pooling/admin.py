@@ -29,18 +29,20 @@ class PoolingAdmin(admin.ModelAdmin):
     def mark_as_non_archived(self, request, queryset):
         queryset.update(archived=False)
 
+    # library and sample are on_delete=SET_NULL, so rows can outlive both.
+
     def name(self, obj):
         instance = obj.library if obj.library else obj.sample
-        return instance.name
+        return instance.name if instance else ""
 
     def barcode(self, obj):
         instance = obj.library if obj.library else obj.sample
-        return instance.barcode
+        return instance.barcode if instance else ""
 
     def request(self, obj):
         instance = obj.library if obj.library else obj.sample
-        return instance.request.get().name
+        return instance.request.get().name if instance else ""
 
     def pool(self, obj):
         instance = obj.library if obj.library else obj.sample
-        return instance.pool.get().name
+        return instance.pool.get().name if instance else ""

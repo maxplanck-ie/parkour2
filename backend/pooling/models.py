@@ -30,4 +30,6 @@ class Pooling(DateTimeMixin):
     def __str__(self):
         obj = self.library if self.library else self.sample
         # return '%s (%s)' % (obj.name, obj.pool.get())
+        if not obj:
+            return ""
         return f"{obj.name} ({obj.barcode})"

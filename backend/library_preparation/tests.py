@@ -55,6 +55,38 @@ class TestLibraryPreparationModel(BaseTestCase):
         self.assertEqual(LibraryPreparation.objects.filter(sample=sample).count(), 1)
 
 
+class TestOrphanedLibraryPreparation(BaseTestCase):
+    """
+    LibraryPreparation.sample is on_delete=SET_NULL, so deleting a sample
+    leaves its LibraryPreparation row behind with sample=None. __str__ and
+    the admin columns must cope with that, otherwise the Library Preparation
+    admin changelist returns HTTP 500.
+    """
+
+    def setUp(self):
+        self.user = self.create_user()
+        library_prep_obj = create_library_preparation_obj(
+            self._get_random_name(), self.user, 2
+        )
+        library_prep_obj.sample.delete()
+        self.library_prep_obj = LibraryPreparation.objects.get(pk=library_prep_obj.pk)
+
+    def test_str_without_sample(self):
+        self.assertIsNone(self.library_prep_obj.sample)
+        self.assertEqual(str(self.library_prep_obj), "")
+
+    def test_admin_changelist_with_orphaned_library_preparation(self):
+        admin_user = self.create_user(email="admin@test.io")
+        admin_user.is_superuser = True
+        admin_user.save()
+        self.client.force_login(admin_user)
+
+        response = self.client.get(
+            reverse("admin:library_preparation_librarypreparation_changelist")
+        )
+        self.assertEqual(response.status_code, 200)
+
+
 # Signals (characterization tests for library_preparation/signals.py)
 
 
