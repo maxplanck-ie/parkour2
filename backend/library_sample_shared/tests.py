@@ -975,7 +975,7 @@ class TrackedModelsHistoryTest(BaseTestCase):
         user.save()
         latest = user.history.latest()
         self.assertEqual(
-            [c.cost_unit_id for c in latest.cost_unit.all()], [cost_unit.pk]
+            [c.costunit_id for c in latest.cost_unit.all()], [cost_unit.pk]
         )
 
     def test_user_history_excludes_password_and_last_login(self):
