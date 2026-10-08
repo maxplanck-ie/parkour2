@@ -812,13 +812,21 @@ class GuardedCatalogDeleteTest(BaseTestCase):
 
         organization = Organization.objects.create(name="Unused org")
         unused = (
-            (NucleicAcidType.objects.create(name="Unused"), "sample", "nucleicacidtype"),
+            (
+                NucleicAcidType.objects.create(name="Unused"),
+                "sample",
+                "nucleicacidtype",
+            ),
             (
                 Sequencer.objects.create(name="Unused", lanes=1, lane_capacity=1),
                 "flowcell",
                 "sequencer",
             ),
-            (PoolSize.objects.create(multiplier=1, size=1), "index_generator", "poolsize"),
+            (
+                PoolSize.objects.create(multiplier=1, size=1),
+                "index_generator",
+                "poolsize",
+            ),
             (
                 PrincipalInvestigator.objects.create(
                     name="unused", organization=organization
