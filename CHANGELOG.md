@@ -3,7 +3,7 @@
 Unreleased
 ==========
 
-- Libraries & Samples "Date" column now shows the latest available request date instead of always the creation date: submission, else PI approval, else creation. A header tooltip explains the order. The Request PDF "Date" follows the same order. (PR #370.)
+- Libraries & Samples "Date" column now shows the latest available request date instead of always the creation date: submission, else PI approval, else creation. A header tooltip explains the order. The Request PDF "Date" follows the same order. (PR #374.)
 
 
 26.10.05
