@@ -330,9 +330,17 @@ class TurnaroundTimeUsage(APIView):
             if group_by == "analysis_type":
                 names = set()
                 if include_libraries:
-                    names |= {x.analysis_type.name for x in req.fetched_libraries if x.analysis_type}
+                    names |= {
+                        x.analysis_type.name
+                        for x in req.fetched_libraries
+                        if x.analysis_type
+                    }
                 if include_samples:
-                    names |= {x.analysis_type.name for x in req.fetched_samples if x.analysis_type}
+                    names |= {
+                        x.analysis_type.name
+                        for x in req.fetched_samples
+                        if x.analysis_type
+                    }
             else:
                 names = {req.first_sequencer_name or "None"}
 

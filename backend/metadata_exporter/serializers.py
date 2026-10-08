@@ -42,7 +42,11 @@ class BaseSerializer(ModelSerializer):
         return obj.analysis_type.name if obj.analysis_type_id else None
 
     def get_library_layout(self, obj):
-        return "single" if obj.read_length_id and obj.read_length.name[0] == "1" else "paired"
+        return (
+            "single"
+            if obj.read_length_id and obj.read_length.name[0] == "1"
+            else "paired"
+        )
 
     def get_library_construction_protocol(self, obj):
         return obj.library_protocol.name if obj.library_protocol_id else None
@@ -57,7 +61,9 @@ class BaseSerializer(ModelSerializer):
         return obj.comments
 
     def get_file_name(self, obj):
-        postfix = "R1" if obj.read_length_id and obj.read_length.name[0] == "1" else "R2"
+        postfix = (
+            "R1" if obj.read_length_id and obj.read_length.name[0] == "1" else "R2"
+        )
         return f"{obj.name}_{postfix}.fastaq.qz"
 
     def get_file_format(self, obj):
