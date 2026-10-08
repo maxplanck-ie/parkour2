@@ -764,3 +764,78 @@ class GuardedCatalogDeleteTest(BaseTestCase):
 
         self._delete(organism, "organism")
         self.assertFalse(Organism.objects.filter(pk=organism.pk).exists())
+
+    def _other_catalog_entries(self):
+        from common.models import Organization, PrincipalInvestigator
+        from flowcell.tests import create_flowcell, create_sequencer
+        from index_generator.tests import create_pool
+        from sample.tests import create_sample
+
+        sample = create_sample("sample")
+        sequencer = create_sequencer("Sequencer")
+        create_flowcell("FC1", sequencer)
+        pool = create_pool(self.create_user(email="pool@test.io"))
+        organization = Organization.objects.create(name="Org")
+        pi = PrincipalInvestigator.objects.create(name="pi", organization=organization)
+        user = self.create_user(email="pi-user@test.io")
+        user.pi = pi
+        user.save()
+
+        return (
+            (sample.nucleic_acid_type, "sample", "nucleicacidtype"),
+            (sequencer, "flowcell", "sequencer"),
+            (pool.size, "index_generator", "poolsize"),
+            (pi, "common", "principalinvestigator"),
+            (organization, "common", "organization"),
+        )
+
+    def test_other_used_entries_are_archived_even_when_permanent_delete_confirmed(
+        self,
+    ):
+        for obj, app, name in self._other_catalog_entries():
+            with self.subTest(model=name):
+                response = self.client.post(
+                    reverse(f"admin:{app}_{name}_delete", args=[obj.pk]),
+                    {"post": "yes", "confirm_permanent_delete": "yes"},
+                )
+                self.assertEqual(response.status_code, 302)
+                obj.refresh_from_db()
+                self.assertTrue(obj.archived)
+
+    def test_other_unused_entries_are_archived_unless_permanent_delete_confirmed(
+        self,
+    ):
+        from common.models import Organization, PrincipalInvestigator
+        from flowcell.models import Sequencer
+        from index_generator.models import PoolSize
+        from sample.models import NucleicAcidType
+
+        organization = Organization.objects.create(name="Unused org")
+        unused = (
+            (NucleicAcidType.objects.create(name="Unused"), "sample", "nucleicacidtype"),
+            (
+                Sequencer.objects.create(name="Unused", lanes=1, lane_capacity=1),
+                "flowcell",
+                "sequencer",
+            ),
+            (PoolSize.objects.create(multiplier=1, size=1), "index_generator", "poolsize"),
+            (
+                PrincipalInvestigator.objects.create(
+                    name="unused", organization=organization
+                ),
+                "common",
+                "principalinvestigator",
+            ),
+            (organization, "common", "organization"),
+        )
+        for obj, app, name in unused:
+            url = reverse(f"admin:{app}_{name}_delete", args=[obj.pk])
+            with self.subTest(model=name, confirm=False):
+                self.client.post(url, {"post": "yes"})
+                obj.refresh_from_db()
+                self.assertTrue(obj.archived)
+            with self.subTest(model=name, confirm=True):
+                self.client.post(
+                    url, {"post": "yes", "confirm_permanent_delete": "yes"}
+                )
+                self.assertFalse(type(obj).objects.filter(pk=obj.pk).exists())

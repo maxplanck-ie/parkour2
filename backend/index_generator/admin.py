@@ -1,8 +1,7 @@
 from common.admin import ArchivedFilter
 from common.guarded_delete import ReferencedGuardedDeleteMixin
-from django.contrib import admin
-from simple_history.admin import SimpleHistoryAdmin
 from django.conf import settings
+from django.contrib import admin
 from django_admin_listfilter_dropdown.filters import RelatedDropdownFilter
 
 from .models import Pool, PoolSize

@@ -135,8 +135,6 @@ class ReferencedGuardedDeleteMixin(GuardedDeleteMixin):
     def is_used(self, obj):
         for rel in obj._meta.related_objects:
             related = rel.related_model
-            if related._meta.object_name.startswith("Historical"):
-                continue
             if related._default_manager.filter(**{rel.field.name: obj}).exists():
                 return True
         return False
