@@ -7,76 +7,184 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('flowcell', '0006_historicalsequencer'),
-        ('invoicing', '0006_delete_invoicingreport'),
-        ('library_sample_shared', '0019_historicalindexi5_historicalindexi7'),
+        ("flowcell", "0006_historicalsequencer"),
+        ("invoicing", "0006_delete_invoicingreport"),
+        ("library_sample_shared", "0019_historicalindexi5_historicalindexi7"),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='HistoricalFixedCosts',
+            name="HistoricalFixedCosts",
             fields=[
-                ('id', models.BigIntegerField(auto_created=True, blank=True, db_index=True, verbose_name='ID')),
-                ('price', models.DecimalField(decimal_places=2, max_digits=8)),
-                ('archived', models.BooleanField(default=False, verbose_name='Archived')),
-                ('history_id', models.AutoField(primary_key=True, serialize=False)),
-                ('history_date', models.DateTimeField(db_index=True)),
-                ('history_change_reason', models.CharField(max_length=100, null=True)),
-                ('history_type', models.CharField(choices=[('+', 'Created'), ('~', 'Changed'), ('-', 'Deleted')], max_length=1)),
-                ('history_user', models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='+', to=settings.AUTH_USER_MODEL)),
-                ('sequencer', models.ForeignKey(blank=True, db_constraint=False, null=True, on_delete=django.db.models.deletion.DO_NOTHING, related_name='+', to='flowcell.sequencer')),
+                (
+                    "id",
+                    models.BigIntegerField(
+                        auto_created=True, blank=True, db_index=True, verbose_name="ID"
+                    ),
+                ),
+                ("price", models.DecimalField(decimal_places=2, max_digits=8)),
+                (
+                    "archived",
+                    models.BooleanField(default=False, verbose_name="Archived"),
+                ),
+                ("history_id", models.AutoField(primary_key=True, serialize=False)),
+                ("history_date", models.DateTimeField(db_index=True)),
+                ("history_change_reason", models.CharField(max_length=100, null=True)),
+                (
+                    "history_type",
+                    models.CharField(
+                        choices=[("+", "Created"), ("~", "Changed"), ("-", "Deleted")],
+                        max_length=1,
+                    ),
+                ),
+                (
+                    "history_user",
+                    models.ForeignKey(
+                        null=True,
+                        on_delete=django.db.models.deletion.SET_NULL,
+                        related_name="+",
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
+                (
+                    "sequencer",
+                    models.ForeignKey(
+                        blank=True,
+                        db_constraint=False,
+                        null=True,
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        related_name="+",
+                        to="flowcell.sequencer",
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'historical Fixed Cost',
-                'verbose_name_plural': 'historical Fixed Costs',
-                'ordering': ('-history_date', '-history_id'),
-                'get_latest_by': ('history_date', 'history_id'),
+                "verbose_name": "historical Fixed Cost",
+                "verbose_name_plural": "historical Fixed Costs",
+                "ordering": ("-history_date", "-history_id"),
+                "get_latest_by": ("history_date", "history_id"),
             },
             bases=(simple_history.models.HistoricalChanges, models.Model),
         ),
         migrations.CreateModel(
-            name='HistoricalLibraryPreparationCosts',
+            name="HistoricalLibraryPreparationCosts",
             fields=[
-                ('id', models.BigIntegerField(auto_created=True, blank=True, db_index=True, verbose_name='ID')),
-                ('price', models.DecimalField(decimal_places=2, max_digits=8)),
-                ('archived', models.BooleanField(default=False, verbose_name='Archived')),
-                ('history_id', models.AutoField(primary_key=True, serialize=False)),
-                ('history_date', models.DateTimeField(db_index=True)),
-                ('history_change_reason', models.CharField(max_length=100, null=True)),
-                ('history_type', models.CharField(choices=[('+', 'Created'), ('~', 'Changed'), ('-', 'Deleted')], max_length=1)),
-                ('history_user', models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='+', to=settings.AUTH_USER_MODEL)),
-                ('library_protocol', models.ForeignKey(blank=True, db_constraint=False, limit_choices_to={'archived': False}, null=True, on_delete=django.db.models.deletion.DO_NOTHING, related_name='+', to='library_sample_shared.libraryprotocol')),
+                (
+                    "id",
+                    models.BigIntegerField(
+                        auto_created=True, blank=True, db_index=True, verbose_name="ID"
+                    ),
+                ),
+                ("price", models.DecimalField(decimal_places=2, max_digits=8)),
+                (
+                    "archived",
+                    models.BooleanField(default=False, verbose_name="Archived"),
+                ),
+                ("history_id", models.AutoField(primary_key=True, serialize=False)),
+                ("history_date", models.DateTimeField(db_index=True)),
+                ("history_change_reason", models.CharField(max_length=100, null=True)),
+                (
+                    "history_type",
+                    models.CharField(
+                        choices=[("+", "Created"), ("~", "Changed"), ("-", "Deleted")],
+                        max_length=1,
+                    ),
+                ),
+                (
+                    "history_user",
+                    models.ForeignKey(
+                        null=True,
+                        on_delete=django.db.models.deletion.SET_NULL,
+                        related_name="+",
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
+                (
+                    "library_protocol",
+                    models.ForeignKey(
+                        blank=True,
+                        db_constraint=False,
+                        limit_choices_to={"archived": False},
+                        null=True,
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        related_name="+",
+                        to="library_sample_shared.libraryprotocol",
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'historical Library Preparation Cost',
-                'verbose_name_plural': 'historical Library Preparation Costs',
-                'ordering': ('-history_date', '-history_id'),
-                'get_latest_by': ('history_date', 'history_id'),
+                "verbose_name": "historical Library Preparation Cost",
+                "verbose_name_plural": "historical Library Preparation Costs",
+                "ordering": ("-history_date", "-history_id"),
+                "get_latest_by": ("history_date", "history_id"),
             },
             bases=(simple_history.models.HistoricalChanges, models.Model),
         ),
         migrations.CreateModel(
-            name='HistoricalSequencingCosts',
+            name="HistoricalSequencingCosts",
             fields=[
-                ('id', models.BigIntegerField(auto_created=True, blank=True, db_index=True, verbose_name='ID')),
-                ('price', models.DecimalField(decimal_places=2, max_digits=8)),
-                ('archived', models.BooleanField(default=False, verbose_name='Archived')),
-                ('history_id', models.AutoField(primary_key=True, serialize=False)),
-                ('history_date', models.DateTimeField(db_index=True)),
-                ('history_change_reason', models.CharField(max_length=100, null=True)),
-                ('history_type', models.CharField(choices=[('+', 'Created'), ('~', 'Changed'), ('-', 'Deleted')], max_length=1)),
-                ('history_user', models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='+', to=settings.AUTH_USER_MODEL)),
-                ('read_length', models.ForeignKey(blank=True, db_constraint=False, null=True, on_delete=django.db.models.deletion.DO_NOTHING, related_name='+', to='library_sample_shared.readlength', verbose_name='Read Length')),
-                ('sequencer', models.ForeignKey(blank=True, db_constraint=False, limit_choices_to={'archived': False}, null=True, on_delete=django.db.models.deletion.DO_NOTHING, related_name='+', to='flowcell.sequencer')),
+                (
+                    "id",
+                    models.BigIntegerField(
+                        auto_created=True, blank=True, db_index=True, verbose_name="ID"
+                    ),
+                ),
+                ("price", models.DecimalField(decimal_places=2, max_digits=8)),
+                (
+                    "archived",
+                    models.BooleanField(default=False, verbose_name="Archived"),
+                ),
+                ("history_id", models.AutoField(primary_key=True, serialize=False)),
+                ("history_date", models.DateTimeField(db_index=True)),
+                ("history_change_reason", models.CharField(max_length=100, null=True)),
+                (
+                    "history_type",
+                    models.CharField(
+                        choices=[("+", "Created"), ("~", "Changed"), ("-", "Deleted")],
+                        max_length=1,
+                    ),
+                ),
+                (
+                    "history_user",
+                    models.ForeignKey(
+                        null=True,
+                        on_delete=django.db.models.deletion.SET_NULL,
+                        related_name="+",
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
+                (
+                    "read_length",
+                    models.ForeignKey(
+                        blank=True,
+                        db_constraint=False,
+                        null=True,
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        related_name="+",
+                        to="library_sample_shared.readlength",
+                        verbose_name="Read Length",
+                    ),
+                ),
+                (
+                    "sequencer",
+                    models.ForeignKey(
+                        blank=True,
+                        db_constraint=False,
+                        limit_choices_to={"archived": False},
+                        null=True,
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        related_name="+",
+                        to="flowcell.sequencer",
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'historical Sequencing Cost',
-                'verbose_name_plural': 'historical Sequencing Costs',
-                'ordering': ('-history_date', '-history_id'),
-                'get_latest_by': ('history_date', 'history_id'),
+                "verbose_name": "historical Sequencing Cost",
+                "verbose_name_plural": "historical Sequencing Costs",
+                "ordering": ("-history_date", "-history_id"),
+                "get_latest_by": ("history_date", "history_id"),
             },
             bases=(simple_history.models.HistoricalChanges, models.Model),
         ),
