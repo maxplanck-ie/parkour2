@@ -31,7 +31,7 @@ class NucleicAcidTypeAdmin(ReferencedGuardedDeleteMixin, SimpleHistoryAdmin):
 
 
 @admin.register(Sample)
-class SampleAdmin(admin.ModelAdmin):
+class SampleAdmin(SimpleHistoryAdmin):
     list_display = (
         "name",
         "barcode",

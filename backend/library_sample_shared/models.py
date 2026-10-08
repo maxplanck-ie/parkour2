@@ -316,6 +316,8 @@ def get_removed_concentrationmethod():
 
 
 class GenericLibrarySample(DateTimeMixin):
+    history = HistoricalRecords(inherit=True)
+
     name = models.CharField(
         "Name",
         max_length=99,

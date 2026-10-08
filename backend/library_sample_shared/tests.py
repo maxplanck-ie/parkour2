@@ -913,3 +913,91 @@ class ArchiveHistoryTest(BaseTestCase):
         )
         sequencer.refresh_from_db()
         self.assertTrue(sequencer.archived)
+
+
+class TrackedModelsHistoryTest(BaseTestCase):
+    """Edits to newly tracked models are logged and the history page renders."""
+
+    def setUp(self):
+        user = self.create_user(email="admin@test.io")
+        user.is_superuser = True
+        user.save()
+        self.client.force_login(user)
+
+    def _assert_history_page(self, obj):
+        meta = obj._meta
+        url = reverse(f"admin:{meta.app_label}_{meta.model_name}_history", args=[obj.pk])
+        self.assertEqual(self.client.get(url).status_code, 200)
+
+    def test_history_pages_render_for_newly_tracked_models(self):
+        from flowcell.models import Sequencer
+        from index_generator.models import PoolSize
+        from library.tests import create_library
+        from sample.models import NucleicAcidType
+        from sample.tests import create_sample
+
+        objs = [
+            create_library("lib"),
+            create_sample("sample"),
+            Sequencer.objects.create(name="Seq", lanes=1, lane_capacity=1),
+            PoolSize.objects.create(multiplier=1, size=1),
+            NucleicAcidType.objects.create(name="NAT"),
+            ReadLength.objects.create(name="RL"),
+            IndexType.objects.create(name="IT"),
+            self.create_user(email="u@test.io"),
+        ]
+        for obj in objs:
+            with self.subTest(model=obj._meta.label):
+                self._assert_history_page(obj)
+
+    def test_library_and_sample_saves_are_logged(self):
+        from library.tests import create_library
+        from sample.tests import create_sample
+
+        for obj in (create_library("lib"), create_sample("sample")):
+            with self.subTest(model=obj._meta.label):
+                obj.status = 1
+                obj.save()
+                self.assertEqual(
+                    list(
+                        obj.history.order_by("history_date", "history_id").values_list(
+                            "status", "history_type"
+                        )
+                    ),
+                    [(0, "+"), (1, "~")],
+                )
+
+    def test_user_cost_unit_reassignment_is_logged(self):
+        from common.models import CostUnit
+
+        user = self.create_user(email="cu@test.io")
+        cost_unit = CostUnit.objects.create(name="CU")
+        user.cost_unit.add(cost_unit)
+        user.save()
+        latest = user.history.latest()
+        self.assertEqual(
+            [c.cost_unit_id for c in latest.cost_unit.all()], [cost_unit.pk]
+        )
+
+    def test_user_history_excludes_password_and_last_login(self):
+        fields = {f.name for f in get_user_model().history.model._meta.get_fields()}
+        self.assertNotIn("password", fields)
+        self.assertNotIn("last_login", fields)
+
+    def test_update_with_history_logs_bulk_status_change(self):
+        from common.utils import update_with_history
+        from library.models import Library
+        from library.tests import create_library
+
+        library = create_library("lib")
+        update_with_history(Library.objects.filter(pk=library.pk), status=4)
+        library.refresh_from_db()
+        self.assertEqual(library.status, 4)
+        self.assertEqual(
+            list(
+                library.history.order_by("history_date", "history_id").values_list(
+                    "status", "history_type"
+                )
+            ),
+            [(0, "+"), (4, "~")],
+        )

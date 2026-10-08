@@ -25,6 +25,24 @@ def set_archived(queryset, archived):
     return len(objs)
 
 
+def update_with_history(queryset, **fields):
+    """QuerySet.update() that also logs history rows for tracked models.
+
+    Python values only (no F()/Func expressions). Untracked models fall back
+    to a plain update().
+    """
+    from simple_history.utils import bulk_update_with_history
+
+    if not hasattr(queryset.model, "history"):
+        return queryset.update(**fields)
+    objs = list(queryset)
+    for obj in objs:
+        for name, value in fields.items():
+            setattr(obj, name, value)
+    bulk_update_with_history(objs, queryset.model, list(fields))
+    return len(objs)
+
+
 def timeit(func):
     def wrapper(*args):
         start = time()

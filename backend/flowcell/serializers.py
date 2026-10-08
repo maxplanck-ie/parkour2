@@ -2,6 +2,7 @@ import itertools
 from collections import Counter
 from pprint import pprint
 
+from common.utils import update_with_history
 from django.apps import apps
 from django.db import transaction
 from django.db.models import Q
@@ -403,8 +404,8 @@ class FlowcellSerializer(ModelSerializer):
             # samples' statuses if the pool is fully loaded
             for pool in pools:
                 if pool.loaded == pool.size.multiplier:
-                    pool.libraries.all().filter(status=4).update(status=5)
-                    pool.samples.all().filter(status=4).update(status=5)
+                    update_with_history(pool.libraries.all().filter(status=4), status=5)
+                    update_with_history(pool.samples.all().filter(status=4), status=5)
 
             # When a Flowcell is loaded, save the all corresponding requests
             libraries = Library.objects.filter(pool__in=pools)
