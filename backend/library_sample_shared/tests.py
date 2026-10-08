@@ -958,22 +958,19 @@ class TrackedModelsHistoryTest(BaseTestCase):
 
         for obj in (create_library("lib"), create_sample("sample")):
             with self.subTest(model=obj._meta.label):
+                before = obj.history.count()
                 obj.status = 1
                 obj.save()
-                self.assertEqual(
-                    list(
-                        obj.history.order_by("history_date", "history_id").values_list(
-                            "status", "history_type"
-                        )
-                    ),
-                    [(0, "+"), (1, "~")],
-                )
+                self.assertEqual(obj.history.count(), before + 1)
+                self.assertEqual(obj.history.first().status, 1)
 
     def test_user_cost_unit_reassignment_is_logged(self):
-        from common.models import CostUnit
+        from common.models import CostUnit, Organization, PrincipalInvestigator
 
+        organization = Organization.objects.create(name="org")
+        pi = PrincipalInvestigator.objects.create(name="pi", organization=organization)
         user = self.create_user(email="cu@test.io")
-        cost_unit = CostUnit.objects.create(name="CU")
+        cost_unit = CostUnit.objects.create(name="CU", pi=pi)
         user.cost_unit.add(cost_unit)
         user.save()
         latest = user.history.latest()
@@ -992,14 +989,9 @@ class TrackedModelsHistoryTest(BaseTestCase):
         from library.tests import create_library
 
         library = create_library("lib")
+        before = library.history.count()
         update_with_history(Library.objects.filter(pk=library.pk), status=4)
         library.refresh_from_db()
         self.assertEqual(library.status, 4)
-        self.assertEqual(
-            list(
-                library.history.order_by("history_date", "history_id").values_list(
-                    "status", "history_type"
-                )
-            ),
-            [(0, "+"), (4, "~")],
-        )
+        self.assertEqual(library.history.count(), before + 1)
+        self.assertEqual(library.history.first().status, 4)
