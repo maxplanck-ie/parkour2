@@ -445,6 +445,16 @@ class IndexI5Resource(resources.ModelResource):
             "index_type__name",
         )
 
+    def save_m2m(self, instance, row, **kwargs):
+        """Link imported I5 to its IndexType via M2M."""
+        if "index_type__name" in row and row["index_type__name"]:
+            index_type_name = row["index_type__name"]
+            try:
+                index_type = IndexType.objects.get(name=index_type_name)
+                instance.index_type.add(index_type)
+            except IndexType.DoesNotExist:
+                pass
+
 
 @admin.register(IndexI5)
 class IndexI5Admin(GuardedDeleteMixin, ImportExportModelAdmin, SimpleHistoryAdmin):
@@ -499,6 +509,16 @@ class IndexI7Resource(resources.ModelResource):
             "index",
             "index_type__name",
         )
+
+    def save_m2m(self, instance, row, **kwargs):
+        """Link imported I7 to its IndexType via M2M."""
+        if "index_type__name" in row and row["index_type__name"]:
+            index_type_name = row["index_type__name"]
+            try:
+                index_type = IndexType.objects.get(name=index_type_name)
+                instance.index_type.add(index_type)
+            except IndexType.DoesNotExist:
+                pass
 
 
 @admin.register(IndexI7)

@@ -94,12 +94,8 @@ class GenericIndex(models.Model):
         return self.index_id
 
     def type(self):
-        try:
-            index_type = self.index_type.get()
-        except AttributeError:
-            return ""
-        else:
-            return index_type.name
+        index_type = self.index_type.first()
+        return index_type.name if index_type else ""
 
 
 class IndexI7(GenericIndex):
