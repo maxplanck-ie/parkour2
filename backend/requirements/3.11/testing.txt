@@ -26,16 +26,16 @@ attrs==26.1.0
     #   -c backend/requirements/3.11/dev.txt
     #   jsonschema
     #   referencing
-boto3==1.43.111
+boto3==1.43.114
     # via
     #   -c backend/requirements/3.11/dev.txt
     #   -r backend/requirements/dev.in
-botocore==1.43.111
+botocore==1.43.114
     # via
     #   -c backend/requirements/3.11/dev.txt
     #   boto3
     #   s3transfer
-certifi==2026.7.22
+certifi==2026.10.18
     # via
     #   -c backend/requirements/3.11/dev.txt
     #   requests
@@ -138,7 +138,7 @@ django-extensions==4.1
     # via
     #   -c backend/requirements/3.11/dev.txt
     #   -r backend/requirements/base.in
-django-import-export==4.4.1
+django-import-export==4.4.2
     # via
     #   -c backend/requirements/3.11/dev.txt
     #   -r backend/requirements/base.in
@@ -185,7 +185,7 @@ executing==2.3.0
     # via
     #   -c backend/requirements/3.11/dev.txt
     #   stack-data
-fonttools==4.66.1
+fonttools==4.67.0
     # via
     #   -c backend/requirements/3.11/dev.txt
     #   fpdf2
@@ -208,11 +208,11 @@ h11==0.16.0 ; sys_platform != 'emscripten'
     # via
     #   -c backend/requirements/3.11/dev.txt
     #   httpcore2
-httpcore2==2.13.1 ; sys_platform != 'emscripten'
+httpcore2==2.14.0 ; sys_platform != 'emscripten'
     # via
     #   -c backend/requirements/3.11/dev.txt
     #   httpx2
-httpx2==2.13.1
+httpx2==2.14.0
     # via
     #   -c backend/requirements/3.11/dev.txt
     #   openai
@@ -248,7 +248,7 @@ ipython-pygments-lexers==1.1.1
     # via
     #   -c backend/requirements/3.11/dev.txt
     #   ipython
-jedi==0.20.0
+jedi==0.20.1
     # via
     #   -c backend/requirements/3.11/dev.txt
     #   ipython
@@ -311,7 +311,7 @@ numpy==2.5.4 ; python_full_version >= '3.12'
     #   contourpy
     #   matplotlib
     #   pandas
-openai==3.29.0
+openai==3.35.1
     # via
     #   -c backend/requirements/3.11/dev.txt
     #   -r backend/requirements/dev.in
@@ -343,14 +343,14 @@ pexpect==4.9.0 ; sys_platform != 'emscripten' and sys_platform != 'win32'
     # via
     #   -c backend/requirements/3.11/dev.txt
     #   ipython
-pillow==12.3.0
+pillow==13.0.0
     # via
     #   -c backend/requirements/3.11/dev.txt
     #   fpdf2
     #   matplotlib
-playwright==1.63.0
+playwright==1.64.0
     # via pytest-playwright
-pluggy==1.6.0
+pluggy==1.7.0
     # via
     #   pytest
     #   pytest-cov
@@ -386,7 +386,9 @@ pydantic-core==2.50.1
     # via
     #   -c backend/requirements/3.11/dev.txt
     #   pydantic
-pyee==13.0.1
+pyee==13.0.1 ; python_full_version < '3.12'
+    # via playwright
+pyee==14.0.0 ; python_full_version >= '3.12'
     # via playwright
 pygments==2.21.0
     # via
@@ -482,7 +484,7 @@ sql-metadata==3.0.1
     # via
     #   -c backend/requirements/3.11/dev.txt
     #   -r backend/requirements/dev.in
-sqlglot==30.22.0
+sqlglot==30.23.0
     # via
     #   -c backend/requirements/3.11/dev.txt
     #   sql-metadata
@@ -521,7 +523,7 @@ traitlets==5.16.1
     #   -c backend/requirements/3.11/dev.txt
     #   ipython
     #   matplotlib-inline
-truststore==0.10.4 ; sys_platform != 'emscripten'
+truststore==0.10.5 ; sys_platform != 'emscripten'
     # via
     #   -c backend/requirements/3.11/dev.txt
     #   httpcore2
