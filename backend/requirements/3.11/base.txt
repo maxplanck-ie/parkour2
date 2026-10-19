@@ -32,7 +32,7 @@ django-error-mail-dedup @ git+https://github.com/adRn-s/django-error-mail-dedup@
     # via -r backend/requirements/base.in
 django-extensions==4.1
     # via -r backend/requirements/base.in
-django-import-export==4.4.1
+django-import-export==4.4.2
     # via -r backend/requirements/base.in
 django-linear-migrations==2.19.0
     # via -r backend/requirements/base.in
@@ -48,7 +48,7 @@ drf-spectacular==0.30.0
     # via -r backend/requirements/base.in
 et-xmlfile==2.0.0
     # via openpyxl
-fonttools==4.66.1
+fonttools==4.67.0
     # via fpdf2
 fpdf2==2.8.9
     # via -r backend/requirements/base.in
@@ -76,7 +76,7 @@ pandas==2.3.3 ; python_full_version < '3.12'
     # via -r backend/requirements/base.in
 pandas==3.0.6 ; python_full_version >= '3.12'
     # via -r backend/requirements/base.in
-pillow==12.3.0
+pillow==13.0.0
     # via fpdf2
 psycopg2==2.9.13
     # via -r backend/requirements/base.in
