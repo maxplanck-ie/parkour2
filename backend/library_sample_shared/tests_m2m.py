@@ -15,9 +15,6 @@ class M2MImportTest(TestCase):
         result = resource.import_data(data, dry_run=False)
         
         i7 = IndexI7.objects.get(prefix='Ad2.', number='1')
-        print('I7 created:', i7)
-        print('I7 index_type:', list(i7.index_type.all()))
-        print('IndexType indices_i7:', list(it.indices_i7.all()))
         
         # Assert M2M was set
         self.assertEqual(list(i7.index_type.all()), [it])

@@ -1,3 +1,4 @@
+from io import StringIO
 from unittest.mock import patch
 
 from django.conf import settings
@@ -33,7 +34,7 @@ class ResetDemoRestoreTests(TestCase):
             ("refresh_now_blocking", a, k)
         )
 
-        call_command("reset_demo")
+        call_command("reset_demo", stdout=StringIO())
 
         # flush() must run first (wipes data, keeps schema)
         self.assertEqual(call_order[0][0], "call_command")

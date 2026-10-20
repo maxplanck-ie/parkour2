@@ -292,7 +292,8 @@ class TestApprovalFlow(BaseTestCase):
         self.pi.archived = True
         self.pi.save()
 
-        response = self._solicit()
+        with self.assertLogs("db", "ERROR"):
+            response = self._solicit()
         body = response.json()
         self.assertFalse(body["success"])
         self.assertIn("no longer enrolled", body["error"])
@@ -302,7 +303,8 @@ class TestApprovalFlow(BaseTestCase):
         self.pi.email = "Unset"
         self.pi.save()
 
-        response = self._solicit()
+        with self.assertLogs("db", "ERROR"):
+            response = self._solicit()
         body = response.json()
         self.assertFalse(body["success"])
         self.assertIn("no e-mail address", body["error"])
@@ -312,7 +314,8 @@ class TestApprovalFlow(BaseTestCase):
         self.library.status = 1
         self.library.save()
 
-        response = self._solicit()
+        with self.assertLogs("db", "ERROR"):
+            response = self._solicit()
         body = response.json()
         self.assertFalse(body["success"])
         self.assertIn("Not all records have status of zero", body["error"])
@@ -348,9 +351,11 @@ class TestApprovalFlow(BaseTestCase):
     def test_approve_this_wrong_token_shows_expired_page(self):
         self._solicit()
 
-        response = self.client.get(
-            "/api/approve/this/", {"pk": self.request.pk, "token": "not-the-token"}
-        )
+        with self.assertLogs("db", "ERROR"):
+            response = self.client.get(
+                "/api/approve/this/",
+                {"pk": self.request.pk, "token": "not-the-token"},
+            )
         self.assertEqual(response.status_code, 400)
 
         self.library.refresh_from_db()
@@ -364,9 +369,10 @@ class TestApprovalFlow(BaseTestCase):
         self.library.status = 1
         self.library.save()
 
-        response = self.client.get(
-            "/api/approve/this/", {"pk": self.request.pk, "token": token}
-        )
+        with self.assertLogs("db", "ERROR"):
+            response = self.client.get(
+                "/api/approve/this/", {"pk": self.request.pk, "token": token}
+            )
         self.assertEqual(response.status_code, 400)
 
 

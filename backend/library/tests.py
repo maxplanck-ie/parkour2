@@ -826,7 +826,8 @@ class TestGenerateHtmlPreview(TestCase):
     def test_returns_none_when_rochtml_binary_is_missing(self, mock_run):
         mock_run.side_effect = FileNotFoundError("rochtml not found")
 
-        result = generate_html_preview(self.ro_crate_json)
+        with self.assertLogs("library.ro_crate_html", "WARNING"):
+            result = generate_html_preview(self.ro_crate_json)
         self.assertIsNone(result)
 
     @patch("library.ro_crate_html.subprocess.run")
@@ -835,7 +836,8 @@ class TestGenerateHtmlPreview(TestCase):
             returncode=1, cmd=["rochtml"]
         )
 
-        result = generate_html_preview(self.ro_crate_json)
+        with self.assertLogs("library.ro_crate_html", "WARNING"):
+            result = generate_html_preview(self.ro_crate_json)
         self.assertIsNone(result)
 
 
@@ -851,6 +853,11 @@ class TestGenerateROCrateAPI(BaseAPITestCase):
         self.client.login(email="rocrate@test.io", password="foo-bar")
         self.request = Request.objects.create(user=self.user)
         self.request.refresh_from_db()
+        # The real rochtml (Node) binary is covered by TestGenerateHtmlPreview;
+        # the export tests only need the zip to build without it.
+        patcher = patch("library.ro_crate.generate_html_preview", return_value=None)
+        patcher.start()
+        self.addCleanup(patcher.stop)
 
     def _parse_payload(self, response):
         if hasattr(response, "data"):
@@ -1917,7 +1924,7 @@ class TestGenerateROCrateAPI(BaseAPITestCase):
             "_link_biology_terms",
             autospec=True,
             side_effect=_link_biology_terms_side_effect,
-        ):
+        ), self.assertLogs("library.ro_crate", "ERROR"):
             response = self.client.get(
                 reverse("generate-ro-crate-list"),
                 {
