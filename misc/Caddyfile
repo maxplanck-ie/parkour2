@@ -1,4 +1,4 @@
-http://*:9980 {
+:9980 {
 	handle /static/* {
 		root * /parkour2
 		file_server
