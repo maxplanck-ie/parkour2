@@ -3,6 +3,7 @@
 Unreleased
 ==========
 
+- Invoicing: the Excel export now also contains a "Prices" sheet listing the current Fixed, Sequencing and Preparation prices in one table, fetched at export time. (PR #379)
 - Admin panel: the Index Type edit page shows its I7/I5 indices in the two-pane "Available / Chosen" selector again, instead of the search-as-you-type box. (Direct commit `622e67f6`)
 - Admin panel: importing standalone I7/I5 indices from a spreadsheet now links them to their Index Type by name, so they show up under the correct Index Type instead of remaining unlinked. (Direct commit `5036cfe4`)
 - Admin panel: change history now also covers Libraries, Samples, Users (PI, Organization and Cost Unit reassignments), Sequencers, Pool Sizes, Read Lengths, Nucleic Acid Types, Index Types, I5/I7 Indices and the three cost tables. Archiving and un-archiving are recorded too, and bulk status changes on pooling and flowcell loading are logged. Cost Units that are still in use are now archived instead of deleted. (PR #375)

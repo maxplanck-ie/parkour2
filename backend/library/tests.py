@@ -1919,12 +1919,15 @@ class TestGenerateROCrateAPI(BaseAPITestCase):
                 raise ValueError("simulated metadata build failure")
             return original_link_biology_terms(self, entity, model)
 
-        with patch.object(
-            SimpleROCrateBuilder,
-            "_link_biology_terms",
-            autospec=True,
-            side_effect=_link_biology_terms_side_effect,
-        ), self.assertLogs("library.ro_crate", "ERROR"):
+        with (
+            patch.object(
+                SimpleROCrateBuilder,
+                "_link_biology_terms",
+                autospec=True,
+                side_effect=_link_biology_terms_side_effect,
+            ),
+            self.assertLogs("library.ro_crate", "ERROR"),
+        ):
             response = self.client.get(
                 reverse("generate-ro-crate-list"),
                 {

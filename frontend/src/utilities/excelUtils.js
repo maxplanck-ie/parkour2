@@ -647,7 +647,8 @@ export async function createExcelExportBlob({
   templateDownloadUrl,
   templateFileName = "",
   sheetName = "Parkour",
-  minMatchedHeaders = 6
+  minMatchedHeaders = 6,
+  extraSheets = []
 } = {}) {
   const workbook = new ExcelJS.Workbook();
   let validationsBySheet = null;
@@ -787,6 +788,20 @@ export async function createExcelExportBlob({
       rIndex++;
     });
   }
+
+  // Extra report sheets (e.g. price lists). Replace a same-named template sheet.
+  extraSheets.forEach(({ name, columns = [], rows: extraRows = [] }) => {
+    const existing = workbook.getWorksheet(name);
+    if (existing) workbook.removeWorksheet(existing.id);
+    const sheet = workbook.addWorksheet(name);
+    sheet.columns = columns;
+    columns.forEach((col, index) => {
+      const numFmt = getExcelNumberFormat(col);
+      if (numFmt) sheet.getColumn(index + 1).numFmt = numFmt;
+    });
+    sheet.getRow(1).font = { bold: true };
+    sheet.addRows(normalizeExportRows(extraRows, columns));
+  });
 
   const sortedSheets = [...workbook.worksheets].sort(
     (a, b) => a.orderNo - b.orderNo
