@@ -588,7 +588,9 @@ async function createTemplateBasedExportBuffer({
   templateBuffer,
   rows = [],
   exportColumns = [],
-  targetSheetName = "Parkour"
+  targetSheetName = "Parkour",
+  extraSheets = [],
+  onWarning = null
 }) {
   const zip = await JSZip.loadAsync(templateBuffer);
   const sheetPathMap = await getSheetPathMapFromZip(zip);
@@ -601,6 +603,23 @@ async function createTemplateBasedExportBuffer({
   }
 
   zip.file(targetSheetPath, buildTemplateWorksheetXml(rows, exportColumns));
+
+  // Extra sheets are only filled when the template already has a sheet with
+  // that name: adding sheets to a macro workbook by hand is not safe.
+  // NOTE: a missing sheet is skipped SILENTLY unless the caller passes
+  // `onWarning`. Any caller that adds `extraSheets` for .xlsm templates must
+  // pass `onWarning` (e.g. a notification), or users get an export without
+  // that sheet and no hint why. (.xlsx templates get the sheet added instead.)
+  extraSheets.forEach(({ name, columns = [], rows: extraRows = [] }) => {
+    const extraPath = sheetPathMap.get(name);
+    if (extraPath && zip.file(extraPath)) {
+      zip.file(extraPath, buildTemplateWorksheetXml(extraRows, columns));
+    } else if (onWarning) {
+      onWarning(
+        `The template has no empty "${name}" sheet, so it was left out of the export. Add one to the .xlsm template to include it.`
+      );
+    }
+  });
 
   if (zip.file("xl/calcChain.xml")) {
     zip.remove("xl/calcChain.xml");
@@ -648,7 +667,8 @@ export async function createExcelExportBlob({
   templateFileName = "",
   sheetName = "Parkour",
   minMatchedHeaders = 6,
-  extraSheets = []
+  extraSheets = [],
+  onWarning = null
 } = {}) {
   const workbook = new ExcelJS.Workbook();
   let validationsBySheet = null;
@@ -673,7 +693,9 @@ export async function createExcelExportBlob({
       templateBuffer,
       rows,
       exportColumns,
-      targetSheetName
+      targetSheetName,
+      extraSheets,
+      onWarning
     });
     return new Blob([buffer], {
       type: getExcelMimeTypeForExtension(workbookExtension)

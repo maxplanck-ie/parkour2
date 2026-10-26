@@ -1202,7 +1202,8 @@ export default {
               columns: invoicingPricesColumns(),
               rows: pricesRows
             }
-          ]
+          ],
+          onWarning: (message) => showNotification(message, "warning")
         });
         saveAs(
           blob,
