@@ -1863,6 +1863,10 @@ export default {
             pcr_cycles: getValue(e.pcr_cycles),
             input: getInput(e),
             input_facility: getInputFacility(e),
+            measured_value: e.measured_value ?? null,
+            measuring_unit: e.measuring_unit ?? null,
+            measured_value_facility: e.measured_value_facility ?? null,
+            measuring_unit_facility: e.measuring_unit_facility ?? null,
             input_display: "",
             average_fragment_size: getValue(e.average_fragment_size),
             sequencing_depth: getValue(e.sequencing_depth),
@@ -2313,10 +2317,18 @@ export default {
     },
     applyInputColumnMode(rows = this.librariesSamplesList) {
       if (!Array.isArray(rows)) return;
-      const sourceField =
-        this.inputColumnMode === "mode_facility" ? "input_facility" : "input";
+      const facility = this.inputColumnMode === "mode_facility";
+      const sourceField = facility ? "input_facility" : "input";
+      const valueField = facility ? "measured_value_facility" : "measured_value";
+      const unitField = facility ? "measuring_unit_facility" : "measuring_unit";
       rows.forEach((row) => {
         row.input_display = row?.[sourceField] ?? "";
+        const value = row?.[valueField];
+        const unit = row?.[unitField] ?? "";
+        const unknown = value === -1 && unit === "Unknown";
+        row.input_number =
+          unknown || value === null || value === undefined ? "" : value;
+        row.input_unit = unit;
       });
     },
     buildOptionMap(options = []) {
@@ -2410,6 +2422,12 @@ export default {
             record.measured_value,
             record.measuring_unit
           );
+          if (record.measured_value !== undefined) {
+            row.measured_value = record.measured_value;
+          }
+          if (record.measuring_unit !== undefined) {
+            row.measuring_unit = record.measuring_unit;
+          }
         }
         if (record.gmo !== undefined && record.record_type === "Sample") {
           row.gmo = record.gmo === null ? "" : record.gmo ? "Yes" : "No";

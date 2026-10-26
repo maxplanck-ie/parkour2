@@ -884,7 +884,8 @@ export function librariesAndSamplesExportColumns() {
     { header: "Organism", key: "organism_name", width: 20 },
     { header: "Protocol", key: "library_protocol_name", width: 20 },
     { header: "Analysis Type", key: "analysis_type_name", width: 20 },
-    { header: "Input", key: "input_display", width: 15 },
+    { header: "Input", key: "input_number", width: 12, excelType: "number" },
+    { header: "Input Unit", key: "input_unit", width: 12, excelType: "text" },
     {
       header: "Starting Amount",
       key: "starting_amount",
