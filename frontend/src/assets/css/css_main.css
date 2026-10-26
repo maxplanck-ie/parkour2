@@ -1253,8 +1253,6 @@ input[type="radio"]:checked::after {
   text-transform: uppercase;
   outline: none;
   box-sizing: border-box;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 
 .date-filter:hover {
