@@ -260,3 +260,20 @@ export function invoicingExportColumns() {
     }
   ];
 }
+
+// One combined "Prices" sheet replacing the three cost sheets of the old export.
+export const INVOICING_PRICES_SHEET_NAME = "Prices";
+
+export function invoicingPricesColumns() {
+  return [
+    { header: "Cost Type", key: "type", width: 22, excelType: "text" },
+    { header: "Item", key: "name", width: 40, excelType: "text" },
+    {
+      header: "Price",
+      key: "price",
+      width: 14,
+      excelType: "number",
+      decimalPlaces: 2
+    }
+  ];
+}

@@ -493,6 +493,8 @@ import {
 import {
   invoicingColumnDefs,
   invoicingExportColumns,
+  invoicingPricesColumns,
+  INVOICING_PRICES_SHEET_NAME,
   formatInvoicingCurrency
 } from "../constants/invoicingConsts";
 import { isValidMonth, formatDateForInput } from "../utilities/dateUtils";
@@ -1170,13 +1172,38 @@ export default {
             ? `${urlStringStart}/api/invoicing-templates/${this.selectedFile.id}/download/`
             : null;
 
+        // Fetch prices fresh (errors abort the export) so the report always
+        // shows current prices, never stale or empty ones.
+        const pricesRows = (
+          await Promise.all(
+            this.costsSections.map(async (section) => {
+              const response = await axiosRef.get(
+                `${urlStringStart}/api/${section.endpoint}/`
+              );
+              return (response.data || []).map((item) => ({
+                type: section.title,
+                name: item.name,
+                price: item.price
+              }));
+            })
+          )
+        ).flat();
+
         const blob = await createExcelExportBlob({
           rows: exportRows,
           exportColumns,
           axiosInstance: axiosRef,
           templateDownloadUrl,
           templateFileName:
-            this.selectedFile !== "without-file" ? this.selectedFile.name : ""
+            this.selectedFile !== "without-file" ? this.selectedFile.name : "",
+          extraSheets: [
+            {
+              name: INVOICING_PRICES_SHEET_NAME,
+              columns: invoicingPricesColumns(),
+              rows: pricesRows
+            }
+          ],
+          onWarning: (message) => showNotification(message, "warning")
         });
         saveAs(
           blob,
