@@ -1034,6 +1034,7 @@ class ApproveViewSet(viewsets.ModelViewSet):
         pi_name = instance.user.pi.name if instance.user.pi_id else ""
         base_context = {
             "full_name": instance.user.full_name,
+            "request_id": instance.id,
             "pi_name": pi_name,
             "instance_title": settings.INSTANCE_TITLE,
             "logo_url": request.build_absolute_uri(
@@ -1045,26 +1046,39 @@ class ApproveViewSet(viewsets.ModelViewSet):
                 (
                     instance.user.email,
                     f"{instance.user.full_name} and {instance.user.pi.name}",
+                    True,
+                    False,
                 )
             ]
         elif instance.user.pi_id:
+            # Facility is copied on the PI mail only, not on the end-user one.
             greetings = [
-                (instance.user.email, instance.user.full_name),
-                (instance.user.pi.email, instance.user.pi.name),
+                (instance.user.email, instance.user.full_name, False, False),
+                (instance.user.pi.email, instance.user.pi.name, True, True),
             ]
         else:
             greetings = [
-                (instance.user.email, instance.user.full_name),
+                (instance.user.email, instance.user.full_name, True, False),
             ]
-        for recipient_email, greeting_name in greetings:
+        for recipient_email, greeting_name, copy_sender, to_pi in greetings:
+            recipients = (
+                _recipient_list_with_sender_copy(recipient_email)
+                if copy_sender
+                else [recipient_email]
+            )
             send_mail(
                 subject=subject,
                 message="",
                 html_message=render_to_string(
-                    "approved.html", {**base_context, "greeting_name": greeting_name}
+                    "approved.html",
+                    {
+                        **base_context,
+                        "greeting_name": greeting_name,
+                        "to_pi": to_pi,
+                    },
                 ),
                 from_email=settings.SERVER_EMAIL,
-                recipient_list=_recipient_list_with_sender_copy(recipient_email),
+                recipient_list=recipients,
             )
         return HttpResponseRedirect("/danke")
 
