@@ -2319,7 +2319,9 @@ export default {
       if (!Array.isArray(rows)) return;
       const facility = this.inputColumnMode === "mode_facility";
       const sourceField = facility ? "input_facility" : "input";
-      const valueField = facility ? "measured_value_facility" : "measured_value";
+      const valueField = facility
+        ? "measured_value_facility"
+        : "measured_value";
       const unitField = facility ? "measuring_unit_facility" : "measuring_unit";
       rows.forEach((row) => {
         row.input_display = row?.[sourceField] ?? "";
