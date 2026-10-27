@@ -3,6 +3,7 @@
 Unreleased
 ==========
 
+- Site Administration (gear icon in the top bar) opens in a new tab again, instead of replacing the current page.
 - Libraries & Samples: the Excel export now has the "Input" value split into two columns, "Input" (number only) and "Input Unit", so the amount can be used in calculations. Follows the User/Facility mode selected in the table header. (Direct commit `6e3d96af`)
 - Load Flowcells: the calendar popup of the From/To date filters is no longer clipped inside the date box, so dates can be picked from it again. (Direct commit `dd00a547`)
 - Request approval: the Deep Sequencing Facility is no longer copied on the end-user approval email (it still gets the PI's copy), and the PI's email now reads "The request NNNN was approved" instead of "<PI> approved your sequencing experiment". (Direct commit `d24b1a70`)

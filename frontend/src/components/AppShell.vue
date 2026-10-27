@@ -117,6 +117,8 @@
             <a
               v-if="isStaff"
               :href="`${urlStringStart}/admin`"
+              target="_blank"
+              rel="noopener"
               class="app-shell-icon-button"
               title="Site Administration"
             >
