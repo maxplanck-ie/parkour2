@@ -70,6 +70,7 @@ class Roots:
     aviti_root: str = "/rapidus/data/sequencing_data/ElementBiosciences"
     group_data: str = "/data"
 
+
 ENDPOINT = {"sequences": "api/sequences_statistics/", "matrix": "api/run_statistics/"}
 KEY = {"sequences": "barcode", "matrix": "name"}
 # Added by the GET serializers at read time, never stored in the JSONField.
@@ -134,6 +135,7 @@ def discoverRuns(since, roots):
             continue
         out.append(r)
     return out
+
 
 # ------------------------------------------------------------------ parsers
 def add(cand, key, field, value):
@@ -492,9 +494,17 @@ def main():
                 "--since", help="also scan the rapidus roots, runs from YYYY-MM-DD"
             )
             p.add_argument("--tol", type=float, default=1e-3, help="abs. tolerance")
-            p.add_argument("--illumina-root", default="/rapidus/data/sequencing_data/Illumina/NovaSeq6000")
-            p.add_argument("--raw-root", default="/dont_touch_this/short_runs/Illumina/NovaSeq6000")
-            p.add_argument("--aviti-root", default="/rapidus/data/sequencing_data/ElementBiosciences")
+            p.add_argument(
+                "--illumina-root",
+                default="/rapidus/data/sequencing_data/Illumina/NovaSeq6000",
+            )
+            p.add_argument(
+                "--raw-root", default="/dont_touch_this/short_runs/Illumina/NovaSeq6000"
+            )
+            p.add_argument(
+                "--aviti-root",
+                default="/rapidus/data/sequencing_data/ElementBiosciences",
+            )
             p.add_argument("--group-root", default="/data")
         else:
             p.add_argument(
