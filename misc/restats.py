@@ -57,16 +57,18 @@ import re
 import sqlite3
 import sys
 from collections import Counter, defaultdict
+from dataclasses import dataclass
 from pathlib import Path
 
 import requests
 
-ILLUMINA_ROOT = "/rapidus/data/sequencing_data/Illumina/NovaSeq6000"
-ILLUMINA_RAW = "/dont_touch_this/short_runs/Illumina/NovaSeq6000"  # InterOp lives here
-AVITI_ROOT = "/rapidus/data/sequencing_data/ElementBiosciences"
-GROUP_DATA = (
-    "/data"  # BRB writes Analysis_* under /data/<group>/sequencing_data*/<run>/
-)
+
+@dataclass
+class Roots:
+    illumina_root: str = "/rapidus/data/sequencing_data/Illumina/NovaSeq6000"
+    illumina_raw: str = "/dont_touch_this/short_runs/Illumina/NovaSeq6000"
+    aviti_root: str = "/rapidus/data/sequencing_data/ElementBiosciences"
+    group_data: str = "/data"
 
 ENDPOINT = {"sequences": "api/sequences_statistics/", "matrix": "api/run_statistics/"}
 KEY = {"sequences": "barcode", "matrix": "name"}
@@ -104,25 +106,24 @@ CREATE TABLE IF NOT EXISTS mismatches (
 """
 
 
-# ---------------------------------------------------------------- flowcell dirs
-def runInfo(runDir):
-    aviti = Path(AVITI_ROOT) in runDir.parents  # Aviti dirs sit under AV<id>/
+def runInfo(runDir, roots):
+    aviti = Path(roots.aviti_root) in runDir.parents  # Aviti dirs sit under AV<id>/
     parts = runDir.name.split("_")
     fcid = (parts[2] if aviti else parts[3][1:]).split("-")[-1]
     date = datetime.datetime.strptime(parts[0], "%Y%m%d" if aviti else "%y%m%d")
     return aviti, fcid, date
 
 
-def discoverRuns(since):
-    runs = glob.glob(f"{ILLUMINA_ROOT}/*_lanes_*") + glob.glob(
-        f"{AVITI_ROOT}/*/*_lanes_*"
+def discoverRuns(since, roots):
+    runs = glob.glob(f"{roots.illumina_root}/*_lanes_*") + glob.glob(
+        f"{roots.aviti_root}/*/*_lanes_*"
     )
     out = []
     for r in map(Path, sorted(runs)):
         if not r.is_dir():
             continue
         try:
-            aviti, _, date = runInfo(r)
+            aviti, _, date = runInfo(r, roots)
         except (ValueError, IndexError):
             print(f"  skip {r}: cannot parse run name")
             continue
@@ -134,13 +135,12 @@ def discoverRuns(since):
         out.append(r)
     return out
 
-
 # ------------------------------------------------------------------ parsers
 def add(cand, key, field, value):
     cand[(key, field)].add(round(float(value), 6))
 
 
-def laneStats(runDir, aviti):
+def laneStats(runDir, aviti, roots):
     """{(lane, field): value}; mirrors dissectBCL fakeNews.pushParkour."""
     out = {}
     if aviti:
@@ -160,7 +160,7 @@ def laneStats(runDir, aviti):
     import interop
     import pandas as pd
 
-    raw = Path(ILLUMINA_RAW, re.sub(r"_lanes_.*$", "", runDir.name))
+    raw = Path(roots.illumina_raw, re.sub(r"_lanes_.*$", "", runDir.name))
     iop = pd.DataFrame(interop.summary(interop.read(str(raw)), "Lane"))
     qdf = pd.read_csv(runDir / "Reports" / "Quality_Metrics.csv")
     for lane in qdf["Lane"].unique():
@@ -185,7 +185,7 @@ def laneStats(runDir, aviti):
     return out
 
 
-def seqStats(runDir):
+def seqStats(runDir, roots):
     """{(barcode, field): {values}}; mirrors BRB ET.getNReads / DNA / RNA."""
     import pandas as pd
 
@@ -203,7 +203,7 @@ def seqStats(runDir):
             s2l[z.name[: -len("_R1_fastqc.zip")]] = bc
 
     adirs = glob.glob(f"{runDir}/Analysis_*/*") + glob.glob(
-        f"{GROUP_DATA}/*/sequencing_data*/{runDir.name}/Analysis_*/*"
+        f"{roots.group_data}/*/sequencing_data*/{runDir.name}/Analysis_*/*"
     )
     for adir in map(Path, adirs):
         if (adir / "RELACS_sampleSheet.txt").exists():
@@ -311,9 +311,15 @@ def differs(old, new, tol):
 
 # --------------------------------------------------------------- validate
 def validate(args):
+    roots = Roots(
+        illumina_root=args.illumina_root,
+        illumina_raw=args.raw_root,
+        aviti_root=args.aviti_root,
+        group_data=args.group_root,
+    )
     runs = [Path(r) for r in args.runDirs]
     if args.since:
-        runs += discoverRuns(datetime.datetime.strptime(args.since, "%Y-%m-%d"))
+        runs += discoverRuns(datetime.datetime.strptime(args.since, "%Y-%m-%d"), roots)
     if not runs:
         sys.exit("no flowcell dirs given / found")
 
@@ -327,21 +333,21 @@ def validate(args):
     # in Parkour). Compare Aviti lane stats against the highest lanes_N dir only.
     lastAviti = {}
     for runDir in runs:
-        aviti, fcid, _ = runInfo(runDir)
+        aviti, fcid, _ = runInfo(runDir, roots)
         if aviti:
             n = int(re.search(r"_lanes_(\d+)", runDir.name).group(1))
             lastAviti[fcid] = max(lastAviti.get(fcid, (0, runDir)), (n, runDir))
     for runDir in runs:
-        aviti, fcid, date = runInfo(runDir)
+        aviti, fcid, date = runInfo(runDir, roots)
         dates[fcid] = min(date, dates.get(fcid, date))
         if not aviti or lastAviti[fcid][1] == runDir:
             try:
-                for k, v in laneStats(runDir, aviti).items():
+                for k, v in laneStats(runDir, aviti, roots).items():
                     cand["matrix"][fcid][k].add(round(float(v), 6))
             except Exception as e:  # noqa: BLE001 - report, carry on with other runs
                 print(f"  {runDir.name}: lane stats failed: {e!r}")
         try:
-            for k, vs in seqStats(runDir).items():
+            for k, vs in seqStats(runDir, roots).items():
                 cand["sequences"][fcid][k] |= vs
         except Exception as e:  # noqa: BLE001
             print(f"  {runDir.name}: library stats failed: {e!r}")
@@ -486,6 +492,10 @@ def main():
                 "--since", help="also scan the rapidus roots, runs from YYYY-MM-DD"
             )
             p.add_argument("--tol", type=float, default=1e-3, help="abs. tolerance")
+            p.add_argument("--illumina-root", default="/rapidus/data/sequencing_data/Illumina/NovaSeq6000")
+            p.add_argument("--raw-root", default="/dont_touch_this/short_runs/Illumina/NovaSeq6000")
+            p.add_argument("--aviti-root", default="/rapidus/data/sequencing_data/ElementBiosciences")
+            p.add_argument("--group-root", default="/data")
         else:
             p.add_argument(
                 "--apply", action="store_true", help="POST (default: dry run)"
