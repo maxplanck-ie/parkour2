@@ -306,6 +306,8 @@ def fetch(s, args, kind, start, end):
 
 
 def differs(old, new, tol):
+    if old == "":  # Parkour stores '' for "never set"
+        old = None
     if old is None or new is None:
         return old is not new
     return abs(float(old) - new) > tol
@@ -322,6 +324,15 @@ def validate(args):
     runs = [Path(r) for r in args.runDirs]
     if args.since:
         runs += discoverRuns(datetime.datetime.strptime(args.since, "%Y-%m-%d"), roots)
+    ok = []
+    for r in runs:
+        try:
+            runInfo(r, roots)
+        except (ValueError, IndexError):
+            print(f"  skip {r}: not a short-read flowcell dir name")
+            continue
+        ok.append(r)
+    runs = ok
     if not runs:
         sys.exit("no flowcell dirs given / found")
 
