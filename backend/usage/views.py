@@ -3,7 +3,7 @@ from collections import Counter
 
 from common.utils import transliterate_name
 from django.apps import apps
-from django.db.models import Exists, OuterRef, Prefetch, Subquery
+from django.db.models import Avg, Count, Exists, Max, Min, OuterRef, Prefetch, Subquery
 from django.utils import timezone
 from rest_framework.permissions import IsAdminUser
 from rest_framework.response import Response
@@ -14,6 +14,134 @@ AnalysisType = apps.get_model("library_sample_shared", "AnalysisType")
 Library = apps.get_model("library", "Library")
 Flowcell = apps.get_model("flowcell", "Flowcell")
 Sample = apps.get_model("sample", "Sample")
+PrincipalInvestigator = apps.get_model("common", "PrincipalInvestigator")
+LibraryProtocol = apps.get_model("library_sample_shared", "LibraryProtocol")
+CompleteLibraryData = apps.get_model("library", "CompleteLibraryData")
+
+
+def get_date_range(request, format):
+    now = timezone.now()
+    start = request.query_params.get("start", now)
+    end = request.query_params.get("end", now)
+
+    try:
+        start = (
+            timezone.datetime.strptime(start, format) if type(start) is str else start
+        )
+    except ValueError:
+        start = now
+    finally:
+        start = start.replace(hour=0, minute=0)
+
+    try:
+        end = timezone.datetime.strptime(end, format) if type(end) is str else end
+    except ValueError:
+        end = now
+    finally:
+        end = end.replace(hour=23, minute=59)
+
+    if start > end:
+        start = end.replace(hour=0, minute=0)
+
+    return (start, end)
+
+
+class ProtocolComparisonUsage(APIView):
+    """
+    Compare library protocols by concentration and optical duplicate rate.
+
+    Query params:
+      - protocols: comma-separated list of protocol names (max 2 for MVP)
+      - start: ISO datetime (default 6 months ago)
+      - end: ISO datetime (default now)
+
+    Returns per protocol:
+      - concentration: list of {value, barcode} for density/rug plots
+      - optical_duplicates: list of {value, barcode} for density/rug plots
+      - n_libraries: count of libraries with concentration
+      - n_optical: count of libraries with optical_duplicates
+    """
+    permission_classes = (IsAdminUser,)
+
+    def get(self, request):
+        protocol_names = request.query_params.get("protocols", "")
+        protocol_names = [p.strip() for p in protocol_names.split(",") if p.strip()]
+        if not protocol_names:
+            return Response(
+                {"error": "Provide at least one protocol name via 'protocols' query parameter."},
+                status=400,
+            )
+        if len(protocol_names) > 2:
+            protocol_names = protocol_names[:2]
+
+        # Date range for flowcell lookup
+        now = timezone.now()
+        start = request.query_params.get("start", now)
+        end = request.query_params.get("end", now)
+        try:
+            start = timezone.datetime.strptime(start, "%Y-%m-%dT%H:%M:%S") if type(start) is str else start
+            end = timezone.datetime.strptime(end, "%Y-%m-%dT%H:%M:%S") if type(end) is str else end
+        except ValueError:
+            start = now.replace(month=now.month - 6) if now.month > 6 else now.replace(year=now.year - 1, month=now.month + 6)
+            end = now
+        if start > end:
+            start = end.replace(hour=0, minute=0)
+
+        # Get library data for the selected protocols
+        lib_qs = CompleteLibraryData.objects.filter(
+            library_protocol_name__in=protocol_names,
+            concentration_library__isnull=False
+        ).values("barcode", "library_protocol_name", "concentration_library")
+
+        # Group by protocol
+        libs_by_protocol = {}
+        for lib in lib_qs:
+            p = lib["library_protocol_name"]
+            libs_by_protocol.setdefault(p, []).append({
+                "barcode": lib["barcode"],
+                "concentration": lib["concentration_library"]
+            })
+
+        # Get optical duplicates from flowcell sequences in date range
+        flowcells = Flowcell.objects.filter(
+            create_time__gte=start,
+            create_time__lte=end,
+            archived=False
+        ).exclude(sequences=None).values("flowcell_id", "sequences")
+
+        # barcode -> list of optical_duplicates
+        dup_by_barcode = {}
+        for fc in flowcells:
+            for entry in fc["sequences"]:
+                bc = entry.get("barcode")
+                od = entry.get("optical_duplicates")
+                if bc is not None and od is not None:
+                    dup_by_barcode.setdefault(bc, []).append(od)
+
+        # Build response per protocol
+        result = []
+        for protocol_name in protocol_names:
+            libs = libs_by_protocol.get(protocol_name, [])
+            conc_vals = []
+            dup_vals = []
+            for lib in libs:
+                bc = lib["barcode"]
+                conc = lib["concentration"]
+                conc_vals.append({"value": round(conc, 2), "barcode": bc})
+                if bc in dup_by_barcode:
+                    # Average optical duplicate rate across flowcells
+                    avg_od = sum(dup_by_barcode[bc]) / len(dup_by_barcode[bc])
+                    dup_vals.append({"value": round(avg_od, 4), "barcode": bc})
+
+            result.append({
+                "protocol": protocol_name,
+                "concentration": conc_vals,
+                "optical_duplicates": dup_vals,
+                "n_libraries": len(conc_vals),
+                "n_optical": len(dup_vals),
+            })
+
+        return Response(result)
 PrincipalInvestigator = apps.get_model("common", "PrincipalInvestigator")
 
 

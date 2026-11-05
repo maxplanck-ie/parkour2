@@ -4,8 +4,8 @@ import vueApp from "../vueApp.vue";
 // Lazy-loaded per route so each view lands in its own chunk instead of one
 // large bundle (see Vite's "chunks larger than 500 kB" build warning).
 const dutiesView = () => import("../views/dutiesView.vue");
-const librariesAndSamples = () =>
-  import("../views/librariesAndSamplesView.vue");
+const librariesAndSamples = () => import("../views/librariesAndSamplesView.vue");
+const protocolComparisonView = () => import("../views/ProtocolComparisonView.vue");
 const IncomingLibrariesSamples = () =>
   import("../views/incomingLibrariesSamplesView.vue");
 const libraryPreparation = () => import("../views/libraryPreparationView.vue");
@@ -84,6 +84,11 @@ const router = createRouter({
           path: "usage",
           name: "Usage",
           component: usageView
+        },
+        {
+          path: "protocol_comparison",
+          name: "Protocol Comparison",
+          component: protocolComparisonView
         },
         {
           path: "not_found",

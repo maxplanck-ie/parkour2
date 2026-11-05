@@ -30,6 +30,10 @@ export const NAV_VIEW_TYPE_MAP = {
   "sequences-statistics-vue": {
     path: "/sequences_statistics",
     icon: "fa-solid fa-magnifying-glass"
+  },
+  "protocol-comparison-vue": {
+    path: "/protocol_comparison",
+    icon: "fa-solid fa-flask-vial"
   }
 };
 

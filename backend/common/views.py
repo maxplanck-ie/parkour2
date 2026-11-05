@@ -135,6 +135,11 @@ def get_navigation_tree(request):
                         "viewType": "sequences-statistics-vue",
                         "leaf": True,
                     },
+                    {
+                        "text": "Protocol Comparison",
+                        "viewType": "protocol-comparison-vue",
+                        "leaf": True,
+                    },
                 ],
             },
         ]
