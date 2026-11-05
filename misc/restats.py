@@ -52,6 +52,7 @@ import argparse
 import datetime
 import glob
 import json
+import logging
 import os
 import re
 import sqlite3
@@ -60,7 +61,10 @@ from collections import Counter, defaultdict
 from dataclasses import dataclass
 from pathlib import Path
 
+import pandas as pd
 import requests
+
+log = logging.getLogger(__name__)
 
 
 @dataclass
@@ -160,7 +164,6 @@ def laneStats(runDir, aviti, roots):
         return out
 
     import interop
-    import pandas as pd
 
     raw = Path(roots.illumina_raw, re.sub(r"_lanes_.*$", "", runDir.name))
     iop = pd.DataFrame(interop.summary(interop.read(str(raw)), "Lane"))
@@ -189,7 +192,6 @@ def laneStats(runDir, aviti, roots):
 
 def seqStats(runDir, roots):
     """{(barcode, field): {values}}; mirrors BRB ET.getNReads / DNA / RNA."""
-    import pandas as pd
 
     cand, s2l = defaultdict(set), {}
     # splitFastq: "<optical_dups> <total_reads>" in <sample>.metrics, older runs
@@ -275,6 +277,46 @@ def seqStats(runDir, roots):
                 add(cand, bc, "dupped_reads", dup[sample])
             if sample + ".filtered" in assigned:
                 add(cand, bc, "assigned_reads", assigned[sample + ".filtered"])
+        # ATAC
+        macs_qc = adir / "MACS2_QC"
+        if macs_qc.exists():
+            for f in macs_qc.glob("*.filtered.BAM_peaks.qc.txt"):
+                sample = f.name.split(".filtered.BAM_peaks.qc.txt")[0]
+                if sample not in s2l:
+                    continue
+                try:
+                    df = pd.read_csv(f, sep="\t")
+                    if not df.empty:
+                        add(
+                            cand,
+                            s2l[sample],
+                            "peak_count",
+                            int(df.iloc[0]["peak_count"]),
+                        )
+                        add(cand, s2l[sample], "frip", float(df.iloc[0]["FRiP"]))
+                        add(
+                            cand,
+                            s2l[sample],
+                            "peak_genome_coverage",
+                            float(df.iloc[0]["peak_genome_coverage"]),
+                        )
+                except Exception as e:  # noqa: BLE001
+                    log.warning(f"ATAC MACS2_QC parse failed for {sample}: {e!r}")
+        # deepTools fragment length (ATAC)
+        frag_tbl = (
+            adir / "multiQC" / "multiqc_data" / "deeptools_fragmentlengths_table.txt"
+        )
+        if frag_tbl.exists():
+            try:
+                df = pd.read_csv(frag_tbl, sep="\t")
+                for sample, bc in s2l.items():
+                    row = df.loc[
+                        df.iloc[:, 0].astype(str).str.startswith(f"{sample}.filtered")
+                    ]
+                    if not row.empty:
+                        add(cand, bc, "fragment_median", float(row.iloc[0, 1]))
+            except Exception as e:  # noqa: BLE001
+                log.warning(f"ATAC fragment length parse failed: {e!r}")
     return cand
 
 
@@ -359,11 +401,11 @@ def validate(args):
                     cand["matrix"][fcid][k].add(round(float(v), 6))
             except Exception as e:  # noqa: BLE001 - report, carry on with other runs
                 print(f"  {runDir.name}: lane stats failed: {e!r}")
-        try:
-            for k, vs in seqStats(runDir, roots).items():
-                cand["sequences"][fcid][k] |= vs
-        except Exception as e:  # noqa: BLE001
-            print(f"  {runDir.name}: library stats failed: {e!r}")
+            try:
+                for k, vs in seqStats(runDir, roots).items():
+                    cand["sequences"][fcid][k] |= vs
+            except Exception as e:  # noqa: BLE001
+                print(f"  {runDir.name}: library stats failed: {e!r}")
     print(f"parsed {len(runs)} run dirs, {len(dates)} flowcells")
 
     s = session(args)
@@ -373,6 +415,12 @@ def validate(args):
     now = datetime.datetime.now().isoformat(timespec="seconds")
     stats = Counter()
     fetched = {k: fetch(s, args, k, start, end) for k in ("matrix", "sequences")}
+    # Build barcode -> analysis_type map from sequences fetch
+    barcode_atac = {}
+    for fcid, entries in fetched["sequences"].items():
+        for bc, e in entries.items():
+            if e.get("analysis_type", "").upper() == "ATAC-SEQ":
+                barcode_atac[(fcid, bc)] = True
     for kind in ("sequences", "matrix"):
         stored = fetched[kind]
         for fcid, fields in cand[kind].items():
@@ -388,8 +436,20 @@ def validate(args):
                 stats[kind, "flowcell not in Parkour"] += 1
                 if kind != "sequences" or fcid not in fetched["matrix"]:
                     continue  # flowcell unknown to Parkour: nothing to push to
-                entries = {}  # record disk values against an empty stored side
             for (key, field), vals in fields.items():
+                # ATAC libraries: skip base keys, only compare ATAC keys
+                is_atac = barcode_atac.get((fcid, key), False)
+                atac_keys = {
+                    "peak_count",
+                    "frip",
+                    "peak_genome_coverage",
+                    "fragment_median",
+                }
+                if is_atac:
+                    if field not in atac_keys:
+                        continue  # skip base keys for ATAC
+                elif field in atac_keys:
+                    continue  # skip ATAC keys for non-ATAC
                 if key not in entries and not empty:
                     continue  # not an entry Parkour has
                 if len(vals) != 1:
