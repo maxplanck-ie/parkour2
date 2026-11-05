@@ -377,7 +377,12 @@ def validate(args):
         for fcid, fields in cand[kind].items():
             entries = stored.get(fcid)
             if not entries:
-                print(f"  {fcid} [{kind}]: not in Parkour (archived / outside window)")
+                reason = (
+                    "no sequence stats stored"
+                    if kind == "sequences"
+                    else "archived / outside window"
+                )
+                print(f"  {fcid} [{kind}]: not in Parkour ({reason})")
                 stats[kind, "flowcell not in Parkour"] += 1
                 continue
             for (key, field), vals in fields.items():
