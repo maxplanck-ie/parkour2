@@ -372,11 +372,13 @@ def validate(args):
     db.execute(SCHEMA)
     now = datetime.datetime.now().isoformat(timespec="seconds")
     stats = Counter()
+    fetched = {k: fetch(s, args, k, start, end) for k in ("matrix", "sequences")}
     for kind in ("sequences", "matrix"):
-        stored = fetch(s, args, kind, start, end)
+        stored = fetched[kind]
         for fcid, fields in cand[kind].items():
             entries = stored.get(fcid)
-            if not entries:
+            empty = not entries
+            if empty:
                 reason = (
                     "no sequence stats stored"
                     if kind == "sequences"
@@ -384,16 +386,18 @@ def validate(args):
                 )
                 print(f"  {fcid} [{kind}]: not in Parkour ({reason})")
                 stats[kind, "flowcell not in Parkour"] += 1
-                continue
+                if kind != "sequences" or fcid not in fetched["matrix"]:
+                    continue  # flowcell unknown to Parkour: nothing to push to
+                entries = {}  # record disk values against an empty stored side
             for (key, field), vals in fields.items():
-                if key not in entries:
+                if key not in entries and not empty:
                     continue  # not an entry Parkour has
                 if len(vals) != 1:
                     print(f"  CONFLICT {fcid} {key} {field}: {sorted(vals)} (skipped)")
                     stats[kind, "conflict"] += 1
                     continue
                 new = next(iter(vals))
-                old = entries[key].get(field)
+                old = entries.get(key, {}).get(field)
                 stats[kind, "compared"] += 1
                 if not differs(old, new, args.tol):
                     continue
@@ -458,7 +462,11 @@ def push(args):
         out, ids = {}, []
         for rid, _, _, key, field, old, new, _ in rs:
             e = entries.get(key)
-            if e is None:
+            if e is None and old is None and kind == "sequences":
+                e = {
+                    KEY[kind]: key
+                }  # flowcell has no stored entry for this barcode yet
+            elif e is None:
                 print(f"  SKIP {fcid} {key}: not in Parkour")
                 continue
             if differs(e.get(field), old, 1e-9):
