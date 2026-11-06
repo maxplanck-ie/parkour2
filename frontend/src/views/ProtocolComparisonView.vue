@@ -177,14 +177,40 @@ export default {
           .sort((a, b) =>
             a.localeCompare(b, undefined, { sensitivity: "base" }),
           );
-        if (!protocolA.value && protocolNames.value.length > 0) {
-          protocolA.value =
-            protocolNames.value[
-              Math.floor(Math.random() * protocolNames.value.length)
-            ];
-        }
       } catch (error) {
         handleError(error);
+      }
+    }
+
+    const MIN_DATA_POINTS = 3;
+
+    async function pickRandomProtocolWithData() {
+      const candidates = [...protocolNames.value];
+      for (let i = candidates.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [candidates[i], candidates[j]] = [candidates[j], candidates[i]];
+      }
+      for (const name of candidates) {
+        try {
+          const response = await axiosRef.get(
+            `${urlStringStart}/api/usage/protocol_comparison/`,
+            {
+              params: {
+                protocols: name,
+                start: `${startDateString.value}T00:00:00`,
+                end: `${endDateString.value}T23:59:59`,
+              },
+            },
+          );
+          const row = response.data[0];
+          if (row && row.concentration.length >= MIN_DATA_POINTS) {
+            protocolA.value = name;
+            return;
+          }
+        } catch (error) {
+          handleError(error);
+          return;
+        }
       }
     }
 
@@ -245,6 +271,7 @@ export default {
 
     onMounted(async () => {
       await fetchProtocolNames();
+      await pickRandomProtocolWithData();
       await loadComparisonData();
     });
 
