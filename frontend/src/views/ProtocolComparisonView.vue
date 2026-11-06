@@ -1,96 +1,76 @@
 <template>
   <div class="parent-container">
-    <div class="header-bar">
-      <h1>
-        <font-awesome-icon icon="fa-solid fa-flask-vial" class="header-icon" />
-        Protocol Comparison
-      </h1>
+    <div v-if="loading" class="loading-overlay">
+      <div class="spinner"></div>
+      <p>Loading <span style="font-weight: bold">Protocol Comparison</span>...</p>
     </div>
 
-    <div class="filter-row">
-      <div class="filter-item protocol-filter-item">
-        <label>Protocols</label>
-        <select
-          v-model="selectedProtocols"
-          multiple
-          size="4"
-          class="protocol-select"
-          @change="onProtocolChange"
-        >
-          <option v-for="p in availableProtocols" :key="p.name" :value="p.name">
-            {{ p.name }}
-          </option>
-        </select>
-        <span class="protocol-hint">Select 1–2 protocols (Ctrl/Cmd+click for multiple)</span>
-      </div>
+    <div class="header">
+      <img :src="iconUsageHeader" alt="Usage" class="statistics-header-icon" />
+      <div class="header-title">Protocol Comparison</div>
 
-      <div class="filter-item date-filter-item">
-        <label>Start</label>
-        <DateInput v-model="startDateString" :disabled="loading" />
-      </div>
-
-      <div class="filter-item date-filter-item">
-        <label>End</label>
-        <DateInput v-model="endDateString" :disabled="loading" />
+      <div class="sticky-actions">
+        <div class="filter-item protocol-filter-item">
+          <label for="pcProtocolA">Protocol A</label>
+          <select id="pcProtocolA" v-model="protocolA" @change="scheduleReload">
+            <option v-for="name in protocolNames" :key="name" :value="name">
+              {{ name }}
+            </option>
+          </select>
+        </div>
+        <div class="filter-item protocol-filter-item">
+          <label for="pcProtocolB">Protocol B</label>
+          <select id="pcProtocolB" v-model="protocolB" @change="scheduleReload">
+            <option value="">— none —</option>
+            <option v-for="name in protocolNames" :key="name" :value="name">
+              {{ name }}
+            </option>
+          </select>
+        </div>
+        <div class="filter-item date-filter-item">
+          <label for="pcStartDate">From</label>
+          <DateInput
+            id="pcStartDate"
+            v-model="startDateString"
+            :class="{ 'invalid-date': !startDateValid }"
+            @update:model-value="scheduleReload"
+          />
+        </div>
+        <div class="filter-item date-filter-item">
+          <label for="pcEndDate">To</label>
+          <DateInput
+            id="pcEndDate"
+            v-model="endDateString"
+            :class="{ 'invalid-date': !endDateValid }"
+            @update:model-value="scheduleReload"
+          />
+        </div>
       </div>
     </div>
 
     <div class="charts-grid">
-      <div v-if="loading" class="loading-overlay">Loading…</div>
-
-      <template v-else>
-        <div class="charts-row">
-          <div class="chart-card">
-            <div class="chart-title">Library Concentration (ng/µl)</div>
-            <div class="chart-canvas" ref="concChartRef"></div>
-            <div v-if="!hasConcData" class="chart-empty-text">No concentration data</div>
-          </div>
-
-          <div class="chart-card">
-            <div class="chart-title">Optical Duplicate Rate (%)</div>
-            <div class="chart-canvas" ref="dupChartRef"></div>
-            <div v-if="!hasDupData" class="chart-empty-text">No optical duplicate data</div>
-          </div>
-        </div>
-
-        <div class="charts-row">
-          <div class="chart-card" style="grid-column: 1 / -1; max-width: 800px; margin: 0 auto;">
-            <div class="chart-title">Protocol Summary</div>
-            <div class="protocol-summary">
-              <table class="table table-sm table-bordered">
-                <thead>
-                  <tr>
-                    <th>Protocol</th>
-                    <th>Libraries (conc.)</th>
-                    <th>Libraries (opt. dup.)</th>
-                    <th>Median Conc.</th>
-                    <th>Median Opt. Dup.</th>
-                    <th>Conc. Range</th>
-                    <th>Opt. Dup. Range</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr v-for="p in protocolStats" :key="p.protocol">
-                    <td>{{ p.protocol }}</td>
-                    <td>{{ p.n_libraries }}</td>
-                    <td>{{ p.n_optical }}</td>
-                    <td>{{ p.median_conc !== null ? p.median_conc.toFixed(2) : '—' }}</td>
-                    <td>{{ p.median_dup !== null ? (p.median_dup * 100).toFixed(2) : '—' }}</td>
-                    <td>{{ p.min_conc !== null ? `${p.min_conc.toFixed(1)} – ${p.max_conc.toFixed(1)}` : '—' }}</td>
-                    <td>{{ p.min_dup !== null ? `${(p.min_dup * 100).toFixed(2)} – ${(p.max_dup * 100).toFixed(2)}%` : '—' }}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-      </template>
+      <div
+        v-for="chartDef in charts"
+        :key="chartDef.key"
+        class="chart-card"
+      >
+        <div class="chart-title">{{ chartDef.title }}</div>
+        <p v-if="!chartHasData(chartDef.key)" class="chart-empty-text">
+            No Data
+        </p>
+        <VChart
+          v-else
+          class="chart-canvas"
+          :option="chartOptions[chartDef.key]"
+          autoresize
+        />
+      </div>
     </div>
   </div>
 </template>
 
-<script setup lang="ts">
-import { computed, onBeforeUnmount, onMounted, ref, watch } from "vue";
+<script>
+import { computed, onMounted, reactive, ref } from "vue";
 import { useDebounceFn } from "@vueuse/core";
 import { use } from "echarts/core";
 import { CanvasRenderer } from "echarts/renderers";
@@ -98,8 +78,7 @@ import { LineChart, ScatterChart } from "echarts/charts";
 import {
   GridComponent,
   LegendComponent,
-  TooltipComponent,
-  TitleComponent,
+  TooltipComponent
 } from "echarts/components";
 import VChart from "vue-echarts";
 import DateInput from "../components/DateInput.vue";
@@ -108,9 +87,10 @@ import {
   formatDateForInput,
   handleError,
   isValidDate,
-  urlStringStartsWith,
+  urlStringStartsWith
 } from "../utilities/utilityFunctions";
-import { getProtocolNames } from "../constants/protocolConsts";
+import { buildProtocolChartOption } from "../constants/protocolConsts";
+import iconUsageHeader from "../assets/icons/header_usage.svg";
 
 use([
   CanvasRenderer,
@@ -118,302 +98,134 @@ use([
   ScatterChart,
   GridComponent,
   LegendComponent,
-  TooltipComponent,
-  TitleComponent,
+  TooltipComponent
 ]);
 
 const axiosRef = createAxiosObject();
 const urlStringStart = urlStringStartsWith();
-
-const PROTOCOL_COLORS = ["#8064A2", "#FAA43A"];
+const DATE_FILTER_DEBOUNCE_MS = 500;
 
 const today = new Date();
-const sixMonthsAgo = new Date(today);
-sixMonthsAgo.setMonth(today.getMonth() - 6);
+const threeYearsAgo = new Date(today);
+threeYearsAgo.setFullYear(today.getFullYear() - 3);
 
-const loading = ref(true);
-const startDateString = ref(formatDateForInput(sixMonthsAgo));
-const endDateString = ref(formatDateForInput(today));
-const selectedProtocols = ref<string[]>([]);
-const availableProtocols = ref<Array<{ name: string }>>([]);
-const chartData = reactive<Record<string, any>>({});
-let requestId = 0;
+const charts = [
+  { key: "concentration", title: "Library Concentration (ng/µl)" },
+  { key: "optical_duplicates", title: "Optical Duplicate Rate (%)" }
+];
 
-const concChartRef = ref<VChart | null>(null);
-const dupChartRef = ref<VChart | null>(null);
-
-const startDateValid = computed(() => isValidDate(startDateString.value));
-const endDateValid = computed(() => isValidDate(endDateString.value));
-
-async function loadAvailableProtocols() {
-  try {
-    const names = await getProtocolNames();
-    availableProtocols.value = names.map((n) => ({ name: n }));
-    if (names.length >= 2) {
-      selectedProtocols.value = names.slice(0, 2);
-    } else if (names.length === 1) {
-      selectedProtocols.value = [names[0]];
-    }
-  } catch (e) {
-    handleError(e, "Failed to load protocols");
-  }
-}
-
-function computeStats(protocolName: string, concVals: number[], dupVals: number[]) {
-  const sortedConc = [...concVals].sort((a, b) => a - b);
-  const sortedDup = [...dupVals].sort((a, b) => a - b);
-  const median = (arr: number[]) =>
-    arr.length === 0 ? null : arr[Math.floor(arr.length / 2)];
-  return {
-    protocol: protocolName,
-    n_libraries: sortedConc.length,
-    n_optical: sortedDup.length,
-    median_conc: median(sortedConc),
-    median_dup: median(sortedDup),
-    min_conc: sortedConc[0] ?? null,
-    max_conc: sortedConc[sortedConc.length - 1] ?? null,
-    min_dup: sortedDup[0] ?? null,
-    max_dup: sortedDup[sortedDup.length - 1] ?? null,
-  };
-}
-
-const protocolStats = computed(() => {
-  const stats = [];
-  for (const protocol of selectedProtocols.value) {
-    const d = chartData[protocol];
-    if (!d) continue;
-    const concVals = d.concentration?.map((x: any) => x.value) ?? [];
-    const dupVals = d.optical_duplicates?.map((x: any) => x.value) ?? [];
-    stats.push(computeStats(protocol, concVals, dupVals));
-  }
-  return stats;
-});
-
-const hasConcData = computed(() => {
-  return selectedProtocols.value.some(
-    (p) => (chartData[p]?.concentration?.length ?? 0) > 0
-  );
-});
-
-const hasDupData = computed(() => {
-  return selectedProtocols.value.some(
-    (p) => (chartData[p]?.optical_duplicates?.length ?? 0) > 0
-  );
-});
-
-function buildDensityOption(protocolData: any[], color: string) {
-  const series = protocolData.map((p, idx) => {
-    const values = p.concentration?.map((x: any) => x.value) ?? [];
-    if (values.length === 0) return null;
-    // Simple kernel density estimation for display
-    const min = Math.min(...values);
-    const max = Math.max(...values);
-    const bandwidth = Math.max(1, (max - min) / 40);
-    const xs = [];
-    const ys = [];
-    const nSteps = 100;
-    for (let i = 0; i <= nSteps; i++) {
-      const x = min + (max - min) * (i / nSteps);
-      let y = 0;
-      for (const v of values) {
-        const u = (x - v) / bandwidth;
-        y += Math.exp(-0.5 * u * u) / (bandwidth * Math.sqrt(2 * Math.PI));
-      }
-      y /= values.length;
-      xs.push(x);
-      ys.push(y);
-    }
-    return {
-      name: p.protocol,
-      type: "line",
-      smooth: true,
-      data: xs.map((x, i) => [x, ys[i]]),
-      lineStyle: { width: 2, color: PROTOCOL_COLORS[idx % PROTOCOL_COLORS.length] },
-      areaStyle: {
-        color: {
-          type: "linear",
-          x: 0,
-          y: 0,
-          x2: 0,
-          y2: 1,
-          colorStops: [
-            { offset: 0, color: PROTOCOL_COLORS[idx % PROTOCOL_COLORS.length] + "40" },
-            { offset: 1, color: PROTOCOL_COLORS[idx % PROTOCOL_COLORS.length] + "00" },
-          ],
-        },
-      },
-      showSymbol: false,
-      z: 10,
-    };
-  }).filter(Boolean);
-
-  // Rug marks
-  const rugSeries = protocolData.map((p, idx) => {
-    const values = p.concentration?.map((x: any) => x.value) ?? [];
-    if (values.length === 0) return null;
-    return {
-      name: p.protocol + " (rug)",
-      type: "scatter",
-      data: values.map((v: number) => [v, 0]),
-      symbolSize: 4,
-      symbol: "rect",
-      itemStyle: { color: PROTOCOL_COLORS[idx % PROTOCOL_COLORS.length] },
-      emphasis: { disabled: true },
-      z: 5,
-      tooltip: {
-        formatter: (params: any) => `${p.protocol}: ${params.data[0].toFixed(2)} ng/µl`,
-      },
-    };
-  }).filter(Boolean);
-
-  return {
-    color: PROTOCOL_COLORS,
-    tooltip: { trigger: "axis" },
-    legend: { data: protocolData.map((p) => p.protocol), bottom: 0 },
-    grid: { left: 60, right: 40, top: 30, bottom: 50 },
-    xAxis: { type: "value", name: "Concentration (ng/µl)" },
-    yAxis: [
-      { type: "value", name: "Density", min: 0, max: "dataMax" },
-      { type: "value", show: false, min: 0, max: 1 },
-    ],
-    series: [...series, ...rugSeries.map((s) => ({ ...s, yAxisIndex: 1 }))],
-  };
-}
-
-function buildOpticalDupOption(protocolData: any[], color: string) {
-  const series = protocolData.map((p, idx) => {
-    const values = p.optical_duplicates?.map((x: any) => x.value * 100) ?? []; // percentage
-    if (values.length === 0) return null;
-    const min = Math.min(...values);
-    const max = Math.max(...values);
-    const bandwidth = Math.max(0.01, (max - min) / 40);
-    const xs = [];
-    const ys = [];
-    const nSteps = 100;
-    for (let i = 0; i <= nSteps; i++) {
-      const x = min + (max - min) * (i / nSteps);
-      let y = 0;
-      for (const v of values) {
-        const u = (x - v) / bandwidth;
-        y += Math.exp(-0.5 * u * u) / (bandwidth * Math.sqrt(2 * Math.PI));
-      }
-      y /= values.length;
-      xs.push(x);
-      ys.push(y);
-    }
-    return {
-      name: p.protocol,
-      type: "line",
-      smooth: true,
-      data: xs.map((x, i) => [x, ys[i]]),
-      lineStyle: { width: 2, color: PROTOCOL_COLORS[idx % PROTOCOL_COLORS.length] },
-      areaStyle: {
-        color: {
-          type: "linear",
-          x: 0,
-          y: 0,
-          x2: 0,
-          y2: 1,
-          colorStops: [
-            { offset: 0, color: PROTOCOL_COLORS[idx % PROTOCOL_COLORS.length] + "40" },
-            { offset: 1, color: PROTOCOL_COLORS[idx % PROTOCOL_COLORS.length] + "00" },
-          ],
-        },
-      },
-      showSymbol: false,
-      z: 10,
-    };
-  }).filter(Boolean);
-
-  const rugSeries = protocolData.map((p, idx) => {
-    const values = p.optical_duplicates?.map((x: any) => x.value * 100) ?? [];
-    if (values.length === 0) return null;
-    return {
-      name: p.protocol + " (rug)",
-      type: "scatter",
-      data: values.map((v: number) => [v, 0]),
-      symbolSize: 4,
-      symbol: "rect",
-      itemStyle: { color: PROTOCOL_COLORS[idx % PROTOCOL_COLORS.length] },
-      emphasis: { disabled: true },
-      z: 5,
-      tooltip: {
-        formatter: (params: any) => `${p.protocol}: ${params.data[0].toFixed(2)}% optical dup.`,
-      },
-    };
-  }).filter(Boolean);
-
-  return {
-    color: PROTOCOL_COLORS,
-    tooltip: { trigger: "axis" },
-    legend: { data: protocolData.map((p) => p.protocol), bottom: 0 },
-    grid: { left: 60, right: 40, top: 30, bottom: 50 },
-    xAxis: { type: "value", name: "Optical Duplicate Rate (%)" },
-    yAxis: [
-      { type: "value", name: "Density", min: 0, max: "dataMax" },
-      { type: "value", show: false, min: 0, max: 1 },
-    ],
-    series: [...series, ...rugSeries.map((s) => ({ ...s, yAxisIndex: 1 }))],
-  };
-}
-
-async function loadData() {
-  if (!startDateValid.value || !endDateValid.value || selectedProtocols.value.length === 0) {
-    return;
-  }
-  const thisRequestId = ++requestId;
-  loading.value = true;
-
-  const params = {
-    protocols: selectedProtocols.value.join(","),
-    start: `${startDateString.value}T00:00:00`,
-    end: `${endDateString.value}T23:59:59`,
-  };
-
-  try {
-    const resp = await axiosRef.get(`${urlStringStart}/api/usage/protocol_comparison/`, {
-      params,
-    });
-    if (thisRequestId !== requestId) return;
-    const data = resp.data;
-    chartData.value = {};
-    for (const d of data) {
-      chartData[d.protocol] = d;
-    }
-  } catch (e) {
-    if (thisRequestId === requestId) handleError(e, "Failed to load protocol comparison data");
-  } finally {
-    if (thisRequestId === requestId) loading.value = false;
-  }
-}
-
-const debouncedLoad = useDebounceFn(loadData, 300);
-
-function onProtocolChange() {
-  if (selectedProtocols.value.length > 2) {
-    selectedProtocols.value = selectedProtocols.value.slice(0, 2);
-  }
-  debouncedLoad();
-}
-
-watch(
-  [startDateString, endDateString],
-  () => {
-    if (startDateValid.value && endDateValid.value) {
-      debouncedLoad();
-    }
+export default {
+  name: "ProtocolComparisonView",
+  components: {
+    VChart,
+    DateInput
   },
-  { deep: true }
-);
+  setup() {
+    const loading = ref(true);
+    const startDateString = ref(formatDateForInput(threeYearsAgo));
+    const endDateString = ref(formatDateForInput(today));
+    const protocolA = ref("");
+    const protocolB = ref("");
+    const protocolNames = ref([]);
+    const chartData = reactive({});
+    let requestId = 0;
 
-onMounted(async () => {
-  await loadAvailableProtocols();
-  await loadData();
-});
+    const startDateValid = computed(() => isValidDate(startDateString.value));
+    const endDateValid = computed(() => isValidDate(endDateString.value));
 
-onBeforeUnmount(() => {
-  // cleanup if needed
-});
+    const chartOptions = computed(() => {
+      const options = {};
+      charts.forEach((chartDef) => {
+        options[chartDef.key] = buildProtocolChartOption(
+          chartDef,
+          chartData[chartDef.key] || []
+        );
+      });
+      return options;
+    });
+
+    function chartHasData(key) {
+      return (chartData[key] || []).some((series) => series.values.length > 0);
+    }
+
+    async function fetchProtocolNames() {
+      try {
+        const response = await axiosRef.get(
+          `${urlStringStart}/api/library_protocols/`
+        );
+        protocolNames.value = response.data
+          .map((p) => p.name)
+          .sort((a, b) => a.localeCompare(b, undefined, { sensitivity: "base" }));
+        if (!protocolA.value && protocolNames.value.length > 0) {
+          protocolA.value = protocolNames.value[0];
+        }
+      } catch (error) {
+        handleError(error);
+      }
+    }
+
+    async function loadComparisonData() {
+      if (!startDateValid.value || !endDateValid.value || !protocolA.value) {
+        return;
+      }
+      const thisRequestId = ++requestId;
+      loading.value = true;
+      const protocols = [protocolA.value];
+      if (protocolB.value && protocolB.value !== protocolA.value) {
+        protocols.push(protocolB.value);
+      }
+      const params = {
+        protocols: protocols.join(","),
+        start: `${startDateString.value}T00:00:00`,
+        end: `${endDateString.value}T23:59:59`
+      };
+      try {
+        const response = await axiosRef.get(
+          `${urlStringStart}/api/usage/protocol_comparison/`,
+          { params }
+        );
+        if (thisRequestId !== requestId) return;
+        charts.forEach((chartDef) => {
+          chartData[chartDef.key] = response.data.map((row) => ({
+            protocol: row.protocol,
+            values: row[chartDef.key] || []
+          }));
+        });
+      } catch (error) {
+        if (thisRequestId === requestId) {
+          handleError(error);
+        }
+      } finally {
+        if (thisRequestId === requestId) {
+          loading.value = false;
+        }
+      }
+    }
+
+    const scheduleReload = useDebounceFn(loadComparisonData, DATE_FILTER_DEBOUNCE_MS);
+
+    onMounted(async () => {
+      await fetchProtocolNames();
+      await loadComparisonData();
+    });
+
+    return {
+      loading,
+      startDateString,
+      endDateString,
+      startDateValid,
+      endDateValid,
+      protocolA,
+      protocolB,
+      protocolNames,
+      charts,
+      chartOptions,
+      chartHasData,
+      scheduleReload,
+      iconUsageHeader
+    };
+  }
+};
 </script>
 
 <style scoped>
@@ -425,104 +237,59 @@ onBeforeUnmount(() => {
   padding: 10px;
 }
 
-.header-bar {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 12px;
-}
-
-.header-bar h1 {
-  margin: 0;
-  font-size: 1.5rem;
-  font-weight: 600;
-  color: var(--bs-body-color);
-}
-
-.header-icon {
-  font-size: 1.5rem;
-  color: var(--bs-primary);
-}
-
-.filter-row {
-  display: flex;
-  gap: 16px;
-  align-items: flex-end;
-  margin-bottom: 16px;
-  flex-wrap: wrap;
-}
-
-.filter-item.protocol-filter-item {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  min-width: 280px;
-}
-
-.protocol-select {
-  height: 120px;
-  font-size: var(--header-control-font-size, 0.875rem);
-  border-radius: 6px;
-  border: 1px solid #d8d8d8;
-  padding: 4px;
-  background: white;
-}
-
-.protocol-hint {
-  font-size: 0.75rem;
-  color: #6c757d;
-}
-
 .filter-item.date-filter-item {
   display: flex;
   align-items: center;
   gap: 6px;
-  color: var(--bs-body-color);
+  color: white;
   white-space: nowrap;
+  margin-bottom: 0;
 }
 
-.filter-item.date-filter-item label {
+.filter-item.protocol-filter-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: white;
+  white-space: nowrap;
+  margin-bottom: 0;
+}
+
+.filter-item label {
   display: inline;
   padding: 0;
   margin: 0;
   border: none;
   background-color: transparent;
   font-weight: normal;
-  color: var(--bs-body-color);
+  color: white;
 }
 
-.filter-item.date-filter-item input,
-.filter-item.date-filter-item select {
-  height: var(--header-control-height, 36px);
-  font-size: var(--header-control-font-size, 0.875rem);
+.filter-item input,
+.filter-item select {
+  height: var(--header-control-height);
+  font-size: var(--header-control-font-size);
   border-radius: 6px;
   border: 1px solid #d8d8d8;
   padding: 0 8px;
   width: auto;
+  max-width: 220px;
 }
 
-.filter-item.date-filter-item .invalid-date {
+.filter-item .invalid-date {
   border-color: #dc3545;
 }
 
 .charts-grid {
   flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-  overflow-y: auto;
-  position: relative;
-}
-
-.charts-row {
-  flex: 1;
   display: grid;
   gap: 14px;
   grid-template-columns: repeat(2, minmax(0, 1fr));
+  overflow-y: auto;
 }
 
 @media (max-width: 767px) {
-  .charts-row {
+  .charts-grid {
     grid-template-columns: 1fr;
   }
 }
@@ -540,7 +307,6 @@ onBeforeUnmount(() => {
 .chart-title {
   font-weight: bold;
   margin-bottom: 8px;
-  font-size: 0.95rem;
 }
 
 .chart-canvas {
@@ -555,32 +321,5 @@ onBeforeUnmount(() => {
   justify-content: center;
   color: #999;
   font-size: 18px;
-}
-
-.loading-overlay {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: rgba(255, 255, 255, 0.8);
-  font-size: 1.2rem;
-  color: #666;
-  z-index: 10;
-}
-
-.protocol-summary {
-  flex: 1;
-  overflow: auto;
-}
-
-.protocol-summary table {
-  margin-bottom: 0;
-  font-size: 0.875rem;
-}
-
-.protocol-summary th {
-  background-color: #f8f9fa;
-  font-weight: 600;
 }
 </style>
