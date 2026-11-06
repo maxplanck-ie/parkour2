@@ -12,6 +12,14 @@
       <div class="header-title">Protocol Comparison</div>
 
       <div class="sticky-actions">
+        <div class="filter-item header-filter-item">
+          <label for="pcProtocol">Protocol</label>
+          <select id="pcProtocol" v-model="protocolA" @change="scheduleReload">
+            <option v-for="name in protocolNames" :key="name" :value="name">
+              {{ name }}
+            </option>
+          </select>
+        </div>
         <div class="button-popup-wrapper">
           <button
             id="toggleProtocolFiltersButton"
@@ -27,19 +35,7 @@
             class="button-popup-container statistics-filters-popup"
           >
             <div class="filter-item">
-              <label for="pcProtocolA">Protocol A</label>
-              <select
-                id="pcProtocolA"
-                v-model="protocolA"
-                @change="scheduleReload"
-              >
-                <option v-for="name in protocolNames" :key="name" :value="name">
-                  {{ name }}
-                </option>
-              </select>
-            </div>
-            <div class="filter-item">
-              <label for="pcProtocolB">Protocol B</label>
+              <label for="pcProtocolB">2nd Protocol</label>
               <select
                 id="pcProtocolB"
                 v-model="protocolB"
@@ -182,7 +178,10 @@ export default {
             a.localeCompare(b, undefined, { sensitivity: "base" }),
           );
         if (!protocolA.value && protocolNames.value.length > 0) {
-          protocolA.value = protocolNames.value[0];
+          protocolA.value =
+            protocolNames.value[
+              Math.floor(Math.random() * protocolNames.value.length)
+            ];
         }
       } catch (error) {
         handleError(error);
@@ -276,6 +275,46 @@ export default {
   display: flex;
   flex-direction: column;
   padding: 10px;
+}
+
+.filter-item.header-filter-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 0;
+  white-space: nowrap;
+}
+
+.filter-item.header-filter-item label {
+  display: inline;
+  padding: 0;
+  margin: 0;
+  border: none;
+  background-color: transparent;
+  font-weight: normal;
+  color: white;
+}
+
+.filter-item.header-filter-item select {
+  height: var(--header-control-height);
+  font-size: var(--header-control-font-size);
+  border-radius: 6px;
+  border: 1px solid #d8d8d8;
+  padding: 0 8px;
+  width: auto;
+  max-width: 220px;
+}
+
+.button-popup-container.statistics-filters-popup {
+  left: auto;
+  right: 0;
+  width: 230px;
+}
+
+:deep(.date-input-panel) {
+  left: auto;
+  right: 0;
+  width: 190px;
 }
 
 .charts-grid {
