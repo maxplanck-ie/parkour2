@@ -317,6 +317,15 @@ export default {
   width: 190px;
 }
 
+.sticky-actions {
+  flex-shrink: 0;
+}
+
+.button-popup-wrapper {
+  flex: 0 0 auto;
+  min-width: max-content;
+}
+
 .charts-grid {
   flex: 1;
   display: grid;
