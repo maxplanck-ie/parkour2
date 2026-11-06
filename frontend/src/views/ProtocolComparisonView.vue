@@ -2,7 +2,9 @@
   <div class="parent-container">
     <div v-if="loading" class="loading-overlay">
       <div class="spinner"></div>
-      <p>Loading <span style="font-weight: bold">Protocol Comparison</span>...</p>
+      <p>
+        Loading <span style="font-weight: bold">Protocol Comparison</span>...
+      </p>
     </div>
 
     <div class="header">
@@ -10,53 +12,73 @@
       <div class="header-title">Protocol Comparison</div>
 
       <div class="sticky-actions">
-        <div class="filter-item protocol-filter-item">
-          <label for="pcProtocolA">Protocol A</label>
-          <select id="pcProtocolA" v-model="protocolA" @change="scheduleReload">
-            <option v-for="name in protocolNames" :key="name" :value="name">
-              {{ name }}
-            </option>
-          </select>
-        </div>
-        <div class="filter-item protocol-filter-item">
-          <label for="pcProtocolB">Protocol B</label>
-          <select id="pcProtocolB" v-model="protocolB" @change="scheduleReload">
-            <option value="">— none —</option>
-            <option v-for="name in protocolNames" :key="name" :value="name">
-              {{ name }}
-            </option>
-          </select>
-        </div>
-        <div class="filter-item date-filter-item">
-          <label for="pcStartDate">From</label>
-          <DateInput
-            id="pcStartDate"
-            v-model="startDateString"
-            :class="{ 'invalid-date': !startDateValid }"
-            @update:model-value="scheduleReload"
-          />
-        </div>
-        <div class="filter-item date-filter-item">
-          <label for="pcEndDate">To</label>
-          <DateInput
-            id="pcEndDate"
-            v-model="endDateString"
-            :class="{ 'invalid-date': !endDateValid }"
-            @update:model-value="scheduleReload"
-          />
+        <div class="button-popup-wrapper">
+          <button
+            id="toggleProtocolFiltersButton"
+            class="header-button"
+            @click="showFilters = !showFilters"
+          >
+            <font-awesome-icon icon="fa-solid fa-filter" />
+            <span>Filters</span>
+          </button>
+          <div
+            v-if="showFilters"
+            id="protocolFiltersPopup"
+            class="button-popup-container statistics-filters-popup"
+          >
+            <div class="filter-item">
+              <label for="pcProtocolA">Protocol A</label>
+              <select
+                id="pcProtocolA"
+                v-model="protocolA"
+                @change="scheduleReload"
+              >
+                <option v-for="name in protocolNames" :key="name" :value="name">
+                  {{ name }}
+                </option>
+              </select>
+            </div>
+            <div class="filter-item">
+              <label for="pcProtocolB">Protocol B</label>
+              <select
+                id="pcProtocolB"
+                v-model="protocolB"
+                @change="scheduleReload"
+              >
+                <option value="">None</option>
+                <option v-for="name in protocolNames" :key="name" :value="name">
+                  {{ name }}
+                </option>
+              </select>
+            </div>
+            <div class="filter-item date-filter-item">
+              <label for="pcStartDate">From</label>
+              <DateInput
+                id="pcStartDate"
+                v-model="startDateString"
+                :class="{ 'invalid-date': !startDateValid }"
+                @update:model-value="scheduleReload"
+              />
+            </div>
+            <div class="filter-item date-filter-item">
+              <label for="pcEndDate">To</label>
+              <DateInput
+                id="pcEndDate"
+                v-model="endDateString"
+                :class="{ 'invalid-date': !endDateValid }"
+                @update:model-value="scheduleReload"
+              />
+            </div>
+          </div>
         </div>
       </div>
     </div>
 
     <div class="charts-grid">
-      <div
-        v-for="chartDef in charts"
-        :key="chartDef.key"
-        class="chart-card"
-      >
+      <div v-for="chartDef in charts" :key="chartDef.key" class="chart-card">
         <div class="chart-title">{{ chartDef.title }}</div>
         <p v-if="!chartHasData(chartDef.key)" class="chart-empty-text">
-            No Data
+          No Data
         </p>
         <VChart
           v-else
@@ -71,14 +93,14 @@
 
 <script>
 import { computed, onMounted, reactive, ref } from "vue";
-import { useDebounceFn } from "@vueuse/core";
+import { useDebounceFn, useEventListener } from "@vueuse/core";
 import { use } from "echarts/core";
 import { CanvasRenderer } from "echarts/renderers";
 import { LineChart, ScatterChart } from "echarts/charts";
 import {
   GridComponent,
   LegendComponent,
-  TooltipComponent
+  TooltipComponent,
 } from "echarts/components";
 import VChart from "vue-echarts";
 import DateInput from "../components/DateInput.vue";
@@ -87,7 +109,7 @@ import {
   formatDateForInput,
   handleError,
   isValidDate,
-  urlStringStartsWith
+  urlStringStartsWith,
 } from "../utilities/utilityFunctions";
 import { buildProtocolChartOption } from "../constants/protocolConsts";
 import iconUsageHeader from "../assets/icons/header_usage.svg";
@@ -98,7 +120,7 @@ use([
   ScatterChart,
   GridComponent,
   LegendComponent,
-  TooltipComponent
+  TooltipComponent,
 ]);
 
 const axiosRef = createAxiosObject();
@@ -106,26 +128,27 @@ const urlStringStart = urlStringStartsWith();
 const DATE_FILTER_DEBOUNCE_MS = 500;
 
 const today = new Date();
-const threeYearsAgo = new Date(today);
-threeYearsAgo.setFullYear(today.getFullYear() - 3);
+const twoYearsAgo = new Date(today);
+twoYearsAgo.setFullYear(today.getFullYear() - 2);
 
 const charts = [
   { key: "concentration", title: "Library Concentration (ng/µl)" },
-  { key: "optical_duplicates", title: "Optical Duplicate Rate (%)" }
+  { key: "optical_duplicates", title: "Optical Duplicate Rate (%)" },
 ];
 
 export default {
   name: "ProtocolComparisonView",
   components: {
     VChart,
-    DateInput
+    DateInput,
   },
   setup() {
     const loading = ref(true);
-    const startDateString = ref(formatDateForInput(threeYearsAgo));
+    const startDateString = ref(formatDateForInput(twoYearsAgo));
     const endDateString = ref(formatDateForInput(today));
     const protocolA = ref("");
     const protocolB = ref("");
+    const showFilters = ref(false);
     const protocolNames = ref([]);
     const chartData = reactive({});
     let requestId = 0;
@@ -138,7 +161,7 @@ export default {
       charts.forEach((chartDef) => {
         options[chartDef.key] = buildProtocolChartOption(
           chartDef,
-          chartData[chartDef.key] || []
+          chartData[chartDef.key] || [],
         );
       });
       return options;
@@ -151,11 +174,13 @@ export default {
     async function fetchProtocolNames() {
       try {
         const response = await axiosRef.get(
-          `${urlStringStart}/api/library_protocols/`
+          `${urlStringStart}/api/library_protocols/`,
         );
         protocolNames.value = response.data
           .map((p) => p.name)
-          .sort((a, b) => a.localeCompare(b, undefined, { sensitivity: "base" }));
+          .sort((a, b) =>
+            a.localeCompare(b, undefined, { sensitivity: "base" }),
+          );
         if (!protocolA.value && protocolNames.value.length > 0) {
           protocolA.value = protocolNames.value[0];
         }
@@ -177,18 +202,18 @@ export default {
       const params = {
         protocols: protocols.join(","),
         start: `${startDateString.value}T00:00:00`,
-        end: `${endDateString.value}T23:59:59`
+        end: `${endDateString.value}T23:59:59`,
       };
       try {
         const response = await axiosRef.get(
           `${urlStringStart}/api/usage/protocol_comparison/`,
-          { params }
+          { params },
         );
         if (thisRequestId !== requestId) return;
         charts.forEach((chartDef) => {
           chartData[chartDef.key] = response.data.map((row) => ({
             protocol: row.protocol,
-            values: row[chartDef.key] || []
+            values: row[chartDef.key] || [],
           }));
         });
       } catch (error) {
@@ -202,7 +227,22 @@ export default {
       }
     }
 
-    const scheduleReload = useDebounceFn(loadComparisonData, DATE_FILTER_DEBOUNCE_MS);
+    const scheduleReload = useDebounceFn(
+      loadComparisonData,
+      DATE_FILTER_DEBOUNCE_MS,
+    );
+
+    useEventListener(document, "click", (event) => {
+      const popup = document.getElementById("protocolFiltersPopup");
+      const button = document.getElementById("toggleProtocolFiltersButton");
+      if (
+        showFilters.value &&
+        !popup?.contains(event.target) &&
+        !button?.contains(event.target)
+      ) {
+        showFilters.value = false;
+      }
+    });
 
     onMounted(async () => {
       await fetchProtocolNames();
@@ -222,9 +262,10 @@ export default {
       chartOptions,
       chartHasData,
       scheduleReload,
-      iconUsageHeader
+      showFilters,
+      iconUsageHeader,
     };
-  }
+  },
 };
 </script>
 
@@ -235,49 +276,6 @@ export default {
   display: flex;
   flex-direction: column;
   padding: 10px;
-}
-
-.filter-item.date-filter-item {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  color: white;
-  white-space: nowrap;
-  margin-bottom: 0;
-}
-
-.filter-item.protocol-filter-item {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  color: white;
-  white-space: nowrap;
-  margin-bottom: 0;
-}
-
-.filter-item label {
-  display: inline;
-  padding: 0;
-  margin: 0;
-  border: none;
-  background-color: transparent;
-  font-weight: normal;
-  color: white;
-}
-
-.filter-item input,
-.filter-item select {
-  height: var(--header-control-height);
-  font-size: var(--header-control-font-size);
-  border-radius: 6px;
-  border: 1px solid #d8d8d8;
-  padding: 0 8px;
-  width: auto;
-  max-width: 220px;
-}
-
-.filter-item .invalid-date {
-  border-color: #dc3545;
 }
 
 .charts-grid {
