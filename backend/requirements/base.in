@@ -20,6 +20,6 @@ pandas
 #bioblend  # metadata_exporter unused app
 openpyxl
 python-docx
-python-dateutil
+python-dateutil<3  # boto3 (dev.in) -> botocore requires <3
 tblib
 django-simple-history
