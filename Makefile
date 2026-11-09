@@ -416,7 +416,11 @@ clearsessions:
 dbshell:  ## Open PostgreSQL shell
 	@docker exec -it parkour2-postgres psql -U postgres -p 5432
 
-reload-nginx:
+reload-nginx:  ## Reload nginx; warns if its cert.pem is stale (replaced file instead of overwritten in place)
+	@[ "$$(sha256sum < ./misc/cert.pem)" = "$$(docker exec parkour2-nginx cat /etc/ssl/cert.pem | sha256sum)" ] || \
+		{ echo "WARNING: nginx container sees a different cert.pem than ./misc/cert.pem (bind mount follows the old inode)." >&2; \
+		  echo "         A reload will NOT pick it up. Overwrite in place instead: cat new.pem > ./misc/cert.pem" >&2; \
+		  echo "         (never mv/cp/scp over it), or recreate the container with 'make prod'." >&2; }
 	@docker exec parkour2-nginx nginx -s reload
 
 models:
