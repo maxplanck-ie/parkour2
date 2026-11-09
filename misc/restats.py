@@ -275,6 +275,20 @@ def seqStats(runDir, roots):
                 add(cand, bc, "dupped_reads", dup[sample])
             if sample + ".filtered" in assigned:
                 add(cand, bc, "assigned_reads", assigned[sample + ".filtered"])
+        # peak QC (ATAC / ChIP / CUT&Tag runs with peak calling); mirrors ET.peakQC
+        for f in adir.glob("MACS2_QC/*.filtered.BAM_peaks.qc.txt"):
+            sample = f.name.removesuffix(".filtered.BAM_peaks.qc.txt")
+            if sample not in s2l:
+                continue
+            row = pd.read_csv(f, sep="\t").iloc[0]
+            add(cand, s2l[sample], "peak_count", int(row["peak_count"]))
+            add(cand, s2l[sample], "frip", float(row["FRiP"]))
+            add(
+                cand,
+                s2l[sample],
+                "peak_genome_coverage",
+                float(row["peak_genome_coverage"]),
+            )
     return cand
 
 
