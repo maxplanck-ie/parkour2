@@ -5,36 +5,36 @@
 export const NAV_VIEW_TYPE_MAP = {
   "libraries-vue": {
     path: "/libraries_and_samples",
-    icon: "fa-solid fa-flask",
+    icon: "fa-solid fa-flask"
   },
   "incoming-libraries-vue": {
     path: "/incoming_libraries_samples",
-    icon: "fa-solid fa-arrow-down",
+    icon: "fa-solid fa-arrow-down"
   },
   "index-generator-vue": { path: "/index_generator", icon: "fa-solid fa-cogs" },
   "library-preparation-vue": {
     path: "/library_preparation",
-    icon: "fa-solid fa-table",
+    icon: "fa-solid fa-table"
   },
   "pooling-vue": {
     path: "/pooling",
-    icon: "fa-solid fa-arrow-down-wide-short",
+    icon: "fa-solid fa-arrow-down-wide-short"
   },
   "flowcells-vue": { path: "/load_flowcells", icon: "fa-solid fa-turn-down" },
   "invoicing-vue": { path: "/invoicing", icon: "fa-solid fa-euro-sign" },
   "usage-vue": { path: "/usage", icon: "fa-solid fa-chart-bar" },
   "run-statistics-vue": {
     path: "/run_statistics",
-    icon: "fa-solid fa-microscope",
+    icon: "fa-solid fa-microscope"
   },
   "sequences-statistics-vue": {
     path: "/sequences_statistics",
-    icon: "fa-solid fa-magnifying-glass",
-  },
+    icon: "fa-solid fa-magnifying-glass"
+  }
 };
 
 // Icons for non-leaf nav nodes (dropdowns), keyed by the node's `text` since
 // they carry no `viewType` of their own. Extend if a new dropdown is added.
 export const NAV_DROPDOWN_ICON_MAP = {
-  Stats: "fa-solid fa-chart-line",
+  Stats: "fa-solid fa-chart-line"
 };

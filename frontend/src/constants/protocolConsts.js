@@ -19,7 +19,7 @@ export function buildProtocolChartOption(chartDef, protocolSeries) {
       const max = Math.max(...values);
       const bandwidth = Math.max(
         (max - min) / 40,
-        chartDef.key === "optical_duplicates" ? 0.01 : 1,
+        chartDef.key === "optical_duplicates" ? 0.01 : 1
       );
       const nSteps = 120;
       const xs = [];
@@ -55,12 +55,12 @@ export function buildProtocolChartOption(chartDef, protocolSeries) {
             y2: 1,
             colorStops: [
               { offset: 0, color: color + "40" },
-              { offset: 1, color: color + "00" },
-            ],
-          },
+              { offset: 1, color: color + "00" }
+            ]
+          }
         },
         showSymbol: false,
-        z: 10,
+        z: 10
       };
     })
     .filter(Boolean);
@@ -86,8 +86,8 @@ export function buildProtocolChartOption(chartDef, protocolSeries) {
                 ? params.data[0].toFixed(2) + "%"
                 : params.data[0].toFixed(2) + " ng/µl";
             return `${p.protocol}: ${label}`;
-          },
-        },
+          }
+        }
       };
     })
     .filter(Boolean);
@@ -105,8 +105,8 @@ export function buildProtocolChartOption(chartDef, protocolSeries) {
     xAxis: { type: "value", name: xName },
     yAxis: [
       { type: "value", name: "Density", min: 0 },
-      { type: "value", show: false, min: 0, max: 1 },
+      { type: "value", show: false, min: 0, max: 1 }
     ],
-    series: [...series, ...rugSeries.map((s) => ({ ...s, yAxisIndex: 1 }))],
+    series: [...series, ...rugSeries.map((s) => ({ ...s, yAxisIndex: 1 }))]
   };
 }
