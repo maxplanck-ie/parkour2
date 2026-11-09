@@ -15,6 +15,7 @@ Library = apps.get_model("library", "Library")
 Flowcell = apps.get_model("flowcell", "Flowcell")
 Sample = apps.get_model("sample", "Sample")
 PrincipalInvestigator = apps.get_model("common", "PrincipalInvestigator")
+CompleteLibraryData = apps.get_model("library", "CompleteLibraryData")
 
 
 def get_date_range(request, format):
@@ -90,6 +91,14 @@ class RecordsUsage(APIView):
         )
 
 
+def get_min_count(request):
+    """Minimum data points a group needs to be shown (default 3)."""
+    try:
+        return max(int(request.query_params.get("min_count", 3)), 0)
+    except ValueError:
+        return 3
+
+
 class OrganizationsUsage(APIView):
     permission_classes = (IsAdminUser,)
 
@@ -124,9 +133,11 @@ class OrganizationsUsage(APIView):
             counts[org_name]["libraries"] += len(req.fetched_libraries)
             counts[org_name]["samples"] += len(req.fetched_samples)
 
+        min_count = get_min_count(request)
         data = [
             {"name": organization, "data": sum(count.values())}
             for organization, count in counts.items()
+            if sum(count.values()) >= min_count
         ]
 
         return Response(data)
@@ -171,6 +182,7 @@ class PrincipalInvestigatorsUsage(APIView):
             if record_type != "libraries":
                 counts[pi_name]["samples"] += len(req.fetched_samples)
 
+        min_count = get_min_count(request)
         data = [
             {
                 "name": pi,
@@ -179,6 +191,7 @@ class PrincipalInvestigatorsUsage(APIView):
                 "samples": count["samples"],
             }
             for pi, count in counts.items()
+            if sum(count.values()) >= min_count
         ]
 
         data = sorted(data, key=lambda x: x["name"])
@@ -248,6 +261,7 @@ class AnalysisTypesUsage(APIView):
                 temp_dict["samples"] += v["samples"]
                 counts[k] = temp_dict
 
+        min_count = get_min_count(request)
         data = [
             {
                 "name": analysis_type,
@@ -256,6 +270,7 @@ class AnalysisTypesUsage(APIView):
                 "samples": count["samples"],
             }
             for analysis_type, count in counts.items()
+            if sum(count.values()) >= min_count
         ]
 
         data = sorted(data, key=lambda x: x["name"])
@@ -353,8 +368,11 @@ class TurnaroundTimeUsage(APIView):
                     }
                 )
 
+        min_count = get_min_count(request)
         data = []
         for name, items in groups.items():
+            if len(items) < min_count:
+                continue
             items.sort(key=lambda x: x["value"])
             values = [x["value"] for x in items]
             if len(values) >= 2:
@@ -432,3 +450,90 @@ class InternalPIsView(APIView):
                 }
             }
         )
+
+
+class ProtocolComparisonUsage(APIView):
+    """Per-protocol concentration and optical-duplicate-rate distributions.
+
+    Query params:
+      protocols: comma-separated protocol names (max 2 compared)
+      start/end: ISO datetime, as on the Usage page
+
+    Returns one entry per requested protocol with flat lists of observed
+    values: concentration_library (ng/µl) per library created in the window,
+    and optical duplicate rate (%) averaged over the flowcells each library
+    ran on within the window.
+    """
+
+    permission_classes = (IsAdminUser,)
+
+    def get(self, request):
+        protocol_names = [
+            p.strip()
+            for p in request.query_params.get("protocols", "").split(",")
+            if p.strip()
+        ][:2]
+        if not protocol_names:
+            return Response(
+                {"error": "Provide 1-2 protocol names via 'protocols'."},
+                status=400,
+            )
+        start, end = get_date_range(request, "%Y-%m-%dT%H:%M:%S")
+        record_type = get_record_type(request)
+        min_count = get_min_count(request)
+
+        dup_by_barcode = {}
+        for flowcell in (
+            Flowcell.objects.filter(
+                create_time__gte=start, create_time__lte=end, archived=False
+            )
+            .exclude(sequences=None)
+            .only("flowcell_id", "sequences")
+        ):
+            for entry in flowcell.sequences or []:
+                barcode = entry.get("barcode")
+                dup = entry.get("optical_duplicates")
+                if barcode and dup is not None:
+                    dup_by_barcode.setdefault(barcode, []).append(dup)
+
+        result = []
+        if record_type == "samples":
+            # CompleteLibraryData has no samples; return empty for requested protocols
+            for name in protocol_names:
+                result.append(
+                    {
+                        "protocol": name,
+                        "concentration": [],
+                        "optical_duplicates": [],
+                    }
+                )
+            return Response(result)
+        for name in protocol_names:
+            rows = (
+                CompleteLibraryData.objects.filter(
+                    library_protocol_name=name,
+                    create_time__gte=start,
+                    create_time__lte=end,
+                )
+                .exclude(concentration_library=None)
+                .values("barcode", "concentration_library")
+            )
+            concentration = []
+            optical = []
+            for row in rows:
+                concentration.append(row["concentration_library"])
+                dups = dup_by_barcode.get(row["barcode"])
+                if dups:
+                    optical.append(sum(dups) / len(dups))
+            if len(concentration) < min_count:
+                concentration = []
+            if len(optical) < min_count:
+                optical = []
+            result.append(
+                {
+                    "protocol": name,
+                    "concentration": concentration,
+                    "optical_duplicates": optical,
+                }
+            )
+        return Response(result)

@@ -4,8 +4,7 @@ import vueApp from "../vueApp.vue";
 // Lazy-loaded per route so each view lands in its own chunk instead of one
 // large bundle (see Vite's "chunks larger than 500 kB" build warning).
 const dutiesView = () => import("../views/dutiesView.vue");
-const librariesAndSamples = () =>
-  import("../views/librariesAndSamplesView.vue");
+const librariesAndSamples = () => import("../views/librariesAndSamplesView.vue");
 const IncomingLibrariesSamples = () =>
   import("../views/incomingLibrariesSamplesView.vue");
 const libraryPreparation = () => import("../views/libraryPreparationView.vue");
