@@ -27,3 +27,6 @@ db.sqlite3
 backend/coverage_html_report/
 backend/fixtures_snapshot.dump
 .agents/skills/
+
+# restats.py review DB
+misc/restats.sqlite
