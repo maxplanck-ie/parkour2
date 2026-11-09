@@ -1,16 +1,19 @@
+## Each service needs its own cache subdir: both are built in parallel, and two
+## exporters sharing one `dest` clobber each other's `ingest/` dir
+## ("rename ... ingest/... no such file or directory").
 services:
   parkour2-vite:
     build:
       cache_from:
-        - type=local,src=/tmp/.buildx-cache
+        - type=local,src=/tmp/.buildx-cache/vite
       cache_to:
-        - type=local,dest=/tmp/.buildx-cache-new,mode=max
+        - type=local,dest=/tmp/.buildx-cache-new/vite,mode=max
     volumes:
       - /usr/src/app/node_modules
 
   parkour2-django:
     build:
       cache_from:
-        - type=local,src=/tmp/.buildx-cache
+        - type=local,src=/tmp/.buildx-cache/django
       cache_to:
-        - type=local,dest=/tmp/.buildx-cache-new,mode=max
+        - type=local,dest=/tmp/.buildx-cache-new/django,mode=max
