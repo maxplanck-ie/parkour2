@@ -2,13 +2,13 @@
 #    uv pip compile --universal --python-version 3.11 backend/requirements/dev.in -c backend/requirements/3.11/base.txt -o backend/requirements/3.11/dev.txt
 annotated-types==0.8.0
     # via pydantic
-anyio==4.15.1
+anyio==4.16.0
     # via
     #   httpx2
     #   openai
 appdirs==1.4.4
     # via django-migration-linter
-asgiref==3.12.1
+asgiref==3.13.0
     # via
     #   -c backend/requirements/3.11/base.txt
     #   django
@@ -19,19 +19,19 @@ attrs==26.1.0
     #   -c backend/requirements/3.11/base.txt
     #   jsonschema
     #   referencing
-boto3==1.43.114
+boto3==1.43.126
     # via -r backend/requirements/dev.in
-botocore==1.43.114
+botocore==1.43.126
     # via
     #   boto3
     #   s3transfer
-certifi==2026.10.18
+certifi==2026.10.23
     # via requests
 cffi==2.1.1 ; platform_python_implementation != 'PyPy'
     # via cryptography
 charset-normalizer==3.5.2
     # via requests
-click==8.5.0
+click==8.5.1
     # via import-linter
 colorama==0.4.6 ; sys_platform == 'win32'
     # via ipython
@@ -47,10 +47,6 @@ cycler==0.12.1
     # via matplotlib
 decorator==5.3.1
     # via ipdb
-defusedxml==0.7.1
-    # via
-    #   -c backend/requirements/3.11/base.txt
-    #   fpdf2
 diff-match-patch==20241021
     # via
     #   -c backend/requirements/3.11/base.txt
@@ -59,7 +55,7 @@ dj-database-url==3.1.2
     # via
     #   -c backend/requirements/3.11/base.txt
     #   -r backend/requirements/base.in
-django==5.2.18
+django==5.2.19
     # via
     #   -c backend/requirements/3.11/base.txt
     #   -r backend/requirements/base.in
@@ -84,7 +80,7 @@ django-admin-list-filter-dropdown==1.0.3
     #   -r backend/requirements/base.in
 django-appconf==1.2.0
     # via django-cryptography-django5
-django-authtools @ git+https://github.com/adRn-s/django-authtools@a3284c976719bd26f085fdac9951009acda804dc
+django-authtools @ git+https://github.com/adRn-s/django-authtools@fe852d50c13eea9786ff20f4d913e06e541c1c20
     # via
     #   -c backend/requirements/3.11/base.txt
     #   -r backend/requirements/base.in
@@ -100,7 +96,7 @@ django-extensions==4.1
     # via
     #   -c backend/requirements/3.11/base.txt
     #   -r backend/requirements/base.in
-django-import-export==4.4.2
+django-import-export==4.4.4
     # via
     #   -c backend/requirements/3.11/base.txt
     #   -r backend/requirements/base.in
@@ -137,16 +133,16 @@ et-xmlfile==2.0.0
     #   openpyxl
 executing==2.3.0
     # via stack-data
-fonttools==4.67.0
+fonttools==4.68.0
     # via
     #   -c backend/requirements/3.11/base.txt
     #   fpdf2
     #   matplotlib
-fpdf2==2.8.9
+fpdf2==2.9.0
     # via
     #   -c backend/requirements/3.11/base.txt
     #   -r backend/requirements/base.in
-grimp==3.17
+grimp==3.19
     # via import-linter
 gunicorn==26.2.0
     # via
@@ -154,9 +150,9 @@ gunicorn==26.2.0
     #   -r backend/requirements/base.in
 h11==0.16.0 ; sys_platform != 'emscripten'
     # via httpcore2
-httpcore2==2.14.0 ; sys_platform != 'emscripten'
+httpcore2==2.16.0 ; sys_platform != 'emscripten'
     # via httpx2
-httpx2==2.14.0
+httpx2==2.16.0
     # via openai
 httpx2-jsfetch==1.0 ; python_full_version >= '3.12' and sys_platform == 'emscripten'
     # via httpx2
@@ -165,7 +161,7 @@ idna==3.20
     #   anyio
     #   httpx2
     #   requests
-import-linter==2.15
+import-linter==2.16
     # via -r backend/requirements/dev.in
 inflection==0.5.1
     # via
@@ -173,13 +169,13 @@ inflection==0.5.1
     #   drf-spectacular
 ipdb==0.13.13
     # via -r backend/requirements/dev.in
-ipython==9.17.1
+ipython==9.18.1
     # via ipdb
 ipython-pygments-lexers==1.1.1
     # via ipython
 jedi==0.20.1
     # via ipython
-jiter==0.17.0
+jiter==0.19.0
     # via openai
 jmespath==1.1.0
     # via
@@ -223,7 +219,7 @@ numpy==2.5.4 ; python_full_version >= '3.12'
     #   contourpy
     #   matplotlib
     #   pandas
-openai==3.35.1
+openai==3.46.0
     # via -r backend/requirements/dev.in
 openpyxl==3.1.5
     # via
@@ -236,7 +232,7 @@ pandas==2.3.3 ; python_full_version < '3.12'
     #   -c backend/requirements/3.11/base.txt
     #   -r backend/requirements/base.in
     #   -r backend/requirements/dev.in
-pandas==3.0.6 ; python_full_version >= '3.12'
+pandas==3.1.1 ; python_full_version >= '3.12'
     # via
     #   -c backend/requirements/3.11/base.txt
     #   -r backend/requirements/base.in
@@ -252,7 +248,7 @@ pillow==13.0.0
     #   matplotlib
 prompt-toolkit==3.0.53
     # via ipython
-psutil==7.2.2 ; sys_platform != 'cygwin' and sys_platform != 'emscripten'
+psutil==7.2.2 ; sys_platform != 'android' and sys_platform != 'cygwin' and sys_platform != 'emscripten'
     # via ipython
 psycopg2==2.9.13
     # via
@@ -262,11 +258,11 @@ ptyprocess==0.7.0 ; sys_platform != 'emscripten' and sys_platform != 'win32'
     # via pexpect
 pure-eval==0.2.4
     # via stack-data
-pycparser==3.11 ; implementation_name != 'PyPy' and platform_python_implementation != 'PyPy'
+pycparser==3.12 ; implementation_name != 'PyPy' and platform_python_implementation != 'PyPy'
     # via cffi
-pydantic==2.14.1
+pydantic==2.14.3
     # via openai
-pydantic-core==2.50.1
+pydantic-core==2.50.4
     # via pydantic
 pygments==2.21.0
     # via
@@ -287,7 +283,7 @@ python-docx==1.2.0
     # via
     #   -c backend/requirements/3.11/base.txt
     #   -r backend/requirements/base.in
-pytz==2026.5 ; python_full_version < '3.12'
+pytz==2026.6 ; python_full_version < '3.12'
     # via
     #   -c backend/requirements/3.11/base.txt
     #   pandas
@@ -302,7 +298,7 @@ referencing==0.37.0
     #   -c backend/requirements/3.11/base.txt
     #   jsonschema
     #   jsonschema-specifications
-regex==2026.9.29
+regex==2026.11.9
     # via tiktoken
 requests==2.34.2
     # via
@@ -317,7 +313,7 @@ rpds-py==2026.9.1
     #   -c backend/requirements/3.11/base.txt
     #   jsonschema
     #   referencing
-s3transfer==0.19.2
+s3transfer==0.19.3
     # via boto3
 six==1.17.0
     # via
@@ -327,9 +323,9 @@ sniffio==1.3.1
     # via openai
 sql-metadata==3.0.1
     # via -r backend/requirements/dev.in
-sqlglot==30.23.0
+sqlglot==30.30.0
     # via sql-metadata
-sqlparse==0.6.0
+sqlparse==0.6.1
     # via
     #   -c backend/requirements/3.11/base.txt
     #   django
@@ -362,7 +358,6 @@ typing-extensions==4.16.0
     #   -c backend/requirements/3.11/base.txt
     #   anyio
     #   httpx2
-    #   import-linter
     #   ipython
     #   openai
     #   pydantic
@@ -370,9 +365,9 @@ typing-extensions==4.16.0
     #   python-docx
     #   referencing
     #   typing-inspection
-typing-inspection==0.4.4
+typing-inspection==0.4.5
     # via pydantic
-tzdata==2026.5 ; python_full_version < '3.12' or sys_platform == 'emscripten' or sys_platform == 'win32'
+tzdata==2026.6 ; python_full_version < '3.12' or sys_platform == 'emscripten' or sys_platform == 'win32'
     # via
     #   -c backend/requirements/3.11/base.txt
     #   django
@@ -385,11 +380,11 @@ urllib3==2.8.0
     # via
     #   botocore
     #   requests
-wcwidth==0.9.2
+wcwidth==0.9.4
     # via prompt-toolkit
 werkzeug==3.1.9
     # via -r backend/requirements/dev.in
-xlsxwriter==3.2.9
+xlsxwriter==3.3.1
     # via -r backend/requirements/dev.in
 xlwt==1.3.0
     # via

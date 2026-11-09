@@ -4,7 +4,7 @@ annotated-types==0.8.0
     # via
     #   -c backend/requirements/3.12/dev.txt
     #   pydantic
-anyio==4.15.1
+anyio==4.16.0
     # via
     #   -c backend/requirements/3.12/dev.txt
     #   httpx2
@@ -13,7 +13,7 @@ appdirs==1.4.4
     # via
     #   -c backend/requirements/3.12/dev.txt
     #   django-migration-linter
-asgiref==3.12.1
+asgiref==3.13.0
     # via
     #   -c backend/requirements/3.12/dev.txt
     #   django
@@ -26,16 +26,16 @@ attrs==26.1.0
     #   -c backend/requirements/3.12/dev.txt
     #   jsonschema
     #   referencing
-boto3==1.43.114
+boto3==1.43.126
     # via
     #   -c backend/requirements/3.12/dev.txt
     #   -r backend/requirements/dev.in
-botocore==1.43.114
+botocore==1.43.126
     # via
     #   -c backend/requirements/3.12/dev.txt
     #   boto3
     #   s3transfer
-certifi==2026.10.18
+certifi==2026.10.23
     # via
     #   -c backend/requirements/3.12/dev.txt
     #   requests
@@ -47,7 +47,7 @@ charset-normalizer==3.5.2
     # via
     #   -c backend/requirements/3.12/dev.txt
     #   requests
-click==8.5.0
+click==8.5.1
     # via
     #   -c backend/requirements/3.12/dev.txt
     #   import-linter
@@ -60,7 +60,7 @@ contourpy==1.4.0
     # via
     #   -c backend/requirements/3.12/dev.txt
     #   matplotlib
-coverage==7.16.2
+coverage==7.17.2
     # via pytest-cov
 cryptography==50.0.2
     # via
@@ -75,10 +75,6 @@ decorator==5.3.1
     # via
     #   -c backend/requirements/3.12/dev.txt
     #   ipdb
-defusedxml==0.7.1
-    # via
-    #   -c backend/requirements/3.12/dev.txt
-    #   fpdf2
 diff-match-patch==20241021
     # via
     #   -c backend/requirements/3.12/dev.txt
@@ -87,7 +83,7 @@ dj-database-url==3.1.2
     # via
     #   -c backend/requirements/3.12/dev.txt
     #   -r backend/requirements/base.in
-django==5.2.18
+django==5.2.19
     # via
     #   -c backend/requirements/3.12/dev.txt
     #   -r backend/requirements/base.in
@@ -114,7 +110,7 @@ django-appconf==1.2.0
     # via
     #   -c backend/requirements/3.12/dev.txt
     #   django-cryptography-django5
-django-authtools @ git+https://github.com/adRn-s/django-authtools@a3284c976719bd26f085fdac9951009acda804dc
+django-authtools @ git+https://github.com/adRn-s/django-authtools@fe852d50c13eea9786ff20f4d913e06e541c1c20
     # via
     #   -c backend/requirements/3.12/dev.txt
     #   -r backend/requirements/base.in
@@ -134,7 +130,7 @@ django-extensions==4.1
     # via
     #   -c backend/requirements/3.12/dev.txt
     #   -r backend/requirements/base.in
-django-import-export==4.4.2
+django-import-export==4.4.4
     # via
     #   -c backend/requirements/3.12/dev.txt
     #   -r backend/requirements/base.in
@@ -181,18 +177,18 @@ executing==2.3.0
     # via
     #   -c backend/requirements/3.12/dev.txt
     #   stack-data
-fonttools==4.67.0
+fonttools==4.68.0
     # via
     #   -c backend/requirements/3.12/dev.txt
     #   fpdf2
     #   matplotlib
-fpdf2==2.8.9
+fpdf2==2.9.0
     # via
     #   -c backend/requirements/3.12/dev.txt
     #   -r backend/requirements/base.in
 greenlet==3.5.6
     # via playwright
-grimp==3.17
+grimp==3.19
     # via
     #   -c backend/requirements/3.12/dev.txt
     #   import-linter
@@ -204,11 +200,11 @@ h11==0.16.0 ; sys_platform != 'emscripten'
     # via
     #   -c backend/requirements/3.12/dev.txt
     #   httpcore2
-httpcore2==2.14.0 ; sys_platform != 'emscripten'
+httpcore2==2.16.0 ; sys_platform != 'emscripten'
     # via
     #   -c backend/requirements/3.12/dev.txt
     #   httpx2
-httpx2==2.14.0
+httpx2==2.16.0
     # via
     #   -c backend/requirements/3.12/dev.txt
     #   openai
@@ -222,7 +218,7 @@ idna==3.20
     #   anyio
     #   httpx2
     #   requests
-import-linter==2.15
+import-linter==2.16
     # via
     #   -c backend/requirements/3.12/dev.txt
     #   -r backend/requirements/dev.in
@@ -236,7 +232,7 @@ ipdb==0.13.13
     # via
     #   -c backend/requirements/3.12/dev.txt
     #   -r backend/requirements/dev.in
-ipython==9.17.1
+ipython==9.18.1
     # via
     #   -c backend/requirements/3.12/dev.txt
     #   ipdb
@@ -248,7 +244,7 @@ jedi==0.20.1
     # via
     #   -c backend/requirements/3.12/dev.txt
     #   ipython
-jiter==0.17.0
+jiter==0.19.0
     # via
     #   -c backend/requirements/3.12/dev.txt
     #   openai
@@ -300,7 +296,7 @@ numpy==2.5.4
     #   contourpy
     #   matplotlib
     #   pandas
-openai==3.35.1
+openai==3.46.0
     # via
     #   -c backend/requirements/3.12/dev.txt
     #   -r backend/requirements/dev.in
@@ -314,7 +310,7 @@ packaging==26.3
     #   matplotlib
     #   pytest
     #   pytest-rerunfailures
-pandas==3.0.6
+pandas==3.1.1
     # via
     #   -c backend/requirements/3.12/dev.txt
     #   -r backend/requirements/base.in
@@ -332,7 +328,7 @@ pillow==13.0.0
     #   -c backend/requirements/3.12/dev.txt
     #   fpdf2
     #   matplotlib
-playwright==1.64.0
+playwright==1.64.1
     # via pytest-playwright
 pluggy==1.7.0
     # via
@@ -342,7 +338,7 @@ prompt-toolkit==3.0.53
     # via
     #   -c backend/requirements/3.12/dev.txt
     #   ipython
-psutil==7.2.2 ; sys_platform != 'cygwin' and sys_platform != 'emscripten'
+psutil==7.2.2 ; sys_platform != 'android' and sys_platform != 'cygwin' and sys_platform != 'emscripten'
     # via
     #   -c backend/requirements/3.12/dev.txt
     #   ipython
@@ -358,15 +354,15 @@ pure-eval==0.2.4
     # via
     #   -c backend/requirements/3.12/dev.txt
     #   stack-data
-pycparser==3.11 ; implementation_name != 'PyPy' and platform_python_implementation != 'PyPy'
+pycparser==3.12 ; implementation_name != 'PyPy' and platform_python_implementation != 'PyPy'
     # via
     #   -c backend/requirements/3.12/dev.txt
     #   cffi
-pydantic==2.14.1
+pydantic==2.14.3
     # via
     #   -c backend/requirements/3.12/dev.txt
     #   openai
-pydantic-core==2.50.1
+pydantic-core==2.50.4
     # via
     #   -c backend/requirements/3.12/dev.txt
     #   pydantic
@@ -383,7 +379,7 @@ pyparsing==3.3.3
     # via
     #   -c backend/requirements/3.12/dev.txt
     #   matplotlib
-pytest==9.1.1
+pytest==9.2.0
     # via
     #   pytest-cov
     #   pytest-django
@@ -427,7 +423,7 @@ referencing==0.37.0
     #   -c backend/requirements/3.12/dev.txt
     #   jsonschema
     #   jsonschema-specifications
-regex==2026.9.29
+regex==2026.11.9
     # via
     #   -c backend/requirements/3.12/dev.txt
     #   tiktoken
@@ -446,7 +442,7 @@ rpds-py==2026.9.1
     #   -c backend/requirements/3.12/dev.txt
     #   jsonschema
     #   referencing
-s3transfer==0.19.2
+s3transfer==0.19.3
     # via
     #   -c backend/requirements/3.12/dev.txt
     #   boto3
@@ -462,11 +458,11 @@ sql-metadata==3.0.1
     # via
     #   -c backend/requirements/3.12/dev.txt
     #   -r backend/requirements/dev.in
-sqlglot==30.23.0
+sqlglot==30.30.0
     # via
     #   -c backend/requirements/3.12/dev.txt
     #   sql-metadata
-sqlparse==0.6.0
+sqlparse==0.6.1
     # via
     #   -c backend/requirements/3.12/dev.txt
     #   django
@@ -509,7 +505,6 @@ typing-extensions==4.16.0
     #   -c backend/requirements/3.12/dev.txt
     #   anyio
     #   httpx2
-    #   import-linter
     #   openai
     #   pydantic
     #   pydantic-core
@@ -517,11 +512,11 @@ typing-extensions==4.16.0
     #   python-docx
     #   referencing
     #   typing-inspection
-typing-inspection==0.4.4
+typing-inspection==0.4.5
     # via
     #   -c backend/requirements/3.12/dev.txt
     #   pydantic
-tzdata==2026.5 ; sys_platform == 'emscripten' or sys_platform == 'win32'
+tzdata==2026.6 ; sys_platform == 'emscripten' or sys_platform == 'win32'
     # via
     #   -c backend/requirements/3.12/dev.txt
     #   django
@@ -535,7 +530,7 @@ urllib3==2.8.0
     #   -c backend/requirements/3.12/dev.txt
     #   botocore
     #   requests
-wcwidth==0.9.2
+wcwidth==0.9.4
     # via
     #   -c backend/requirements/3.12/dev.txt
     #   prompt-toolkit
@@ -543,7 +538,7 @@ werkzeug==3.1.9
     # via
     #   -c backend/requirements/3.12/dev.txt
     #   -r backend/requirements/dev.in
-xlsxwriter==3.2.9
+xlsxwriter==3.3.1
     # via
     #   -c backend/requirements/3.12/dev.txt
     #   -r backend/requirements/dev.in
