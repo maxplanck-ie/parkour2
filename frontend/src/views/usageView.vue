@@ -170,12 +170,12 @@ import {
   BarChart,
   BoxplotChart,
   LineChart,
-  ScatterChart,
+  ScatterChart
 } from "echarts/charts";
 import {
   GridComponent,
   LegendComponent,
-  TooltipComponent,
+  TooltipComponent
 } from "echarts/components";
 import VChart from "vue-echarts";
 import DateInput from "../components/DateInput.vue";
@@ -184,13 +184,13 @@ import {
   formatDateForInput,
   handleError,
   isValidDate,
-  urlStringStartsWith,
+  urlStringStartsWith
 } from "../utilities/utilityFunctions";
 import {
   USAGE_CHARTS,
   USAGE_RECORD_TYPES,
   buildUsageChartOption,
-  usageChartTotal,
+  usageChartTotal
 } from "../constants/usageConsts";
 import { buildProtocolChartOption } from "../constants/protocolConsts";
 import iconUsageHeader from "../assets/icons/header_usage.svg";
@@ -203,7 +203,7 @@ use([
   ScatterChart,
   GridComponent,
   LegendComponent,
-  TooltipComponent,
+  TooltipComponent
 ]);
 
 const axiosRef = createAxiosObject();
@@ -217,14 +217,14 @@ sixMonthsAgo.setMonth(today.getMonth() - 6);
 
 const protocolCharts = [
   { key: "concentration", title: "Library Concentration (ng/µl)" },
-  { key: "optical_duplicates", title: "Optical Duplicate Rate (%)" },
+  { key: "optical_duplicates", title: "Optical Duplicate Rate (%)" }
 ];
 
 export default {
   name: "UsageView",
   components: {
     VChart,
-    DateInput,
+    DateInput
   },
   setup() {
     const usageLoading = ref(true);
@@ -248,7 +248,7 @@ export default {
     const effectiveMinCount = computed(() =>
       Number.isInteger(minCount.value) && minCount.value >= 1
         ? minCount.value
-        : DEFAULT_MIN_COUNT,
+        : DEFAULT_MIN_COUNT
     );
 
     const usageCharts = USAGE_CHARTS;
@@ -262,7 +262,7 @@ export default {
         options[chartDef.key] = buildUsageChartOption(
           chartDef,
           data,
-          recordType.value,
+          recordType.value
         );
       });
       return options;
@@ -274,8 +274,8 @@ export default {
         options[chartDef.key] = buildProtocolChartOption(
           chartDef,
           (protocolData[chartDef.key] || []).filter(
-            (series) => series.values.length > 0,
-          ),
+            (series) => series.values.length > 0
+          )
         );
       });
       return options;
@@ -288,7 +288,7 @@ export default {
 
     function protocolChartHasData(key) {
       return (protocolData[key] || []).some(
-        (series) => series.values.length > 0,
+        (series) => series.values.length > 0
       );
     }
 
@@ -297,19 +297,19 @@ export default {
         start: `${startDateString.value}T00:00:00`,
         end: `${endDateString.value}T23:59:59`,
         record_type: recordType.value,
-        min_count: effectiveMinCount.value,
+        min_count: effectiveMinCount.value
       };
     }
 
     async function fetchProtocolNames() {
       try {
         const response = await axiosRef.get(
-          `${urlStringStart}/api/library_protocols/`,
+          `${urlStringStart}/api/library_protocols/`
         );
         protocolNames.value = response.data
           .map((p) => p.name)
           .sort((a, b) =>
-            a.localeCompare(b, undefined, { sensitivity: "base" }),
+            a.localeCompare(b, undefined, { sensitivity: "base" })
           );
       } catch (error) {
         handleError(error);
@@ -326,7 +326,7 @@ export default {
         try {
           const response = await axiosRef.get(
             `${urlStringStart}/api/usage/protocol_comparison/`,
-            { params: { ...baseParams(), protocols: name } },
+            { params: { ...baseParams(), protocols: name } }
           );
           const row = response.data[0];
           if (
@@ -358,13 +358,13 @@ export default {
       try {
         const response = await axiosRef.get(
           `${urlStringStart}/api/usage/protocol_comparison/`,
-          { params: { ...baseParams(), protocols: protocols.join(",") } },
+          { params: { ...baseParams(), protocols: protocols.join(",") } }
         );
         if (thisRequestId !== protocolRequestId) return;
         protocolCharts.forEach((chartDef) => {
           protocolData[chartDef.key] = response.data.map((row) => ({
             protocol: row.protocol,
-            values: row[chartDef.key] || [],
+            values: row[chartDef.key] || []
           }));
         });
       } catch (error) {
@@ -393,9 +393,9 @@ export default {
               ? { ...params, ...chartDef.extraParams }
               : params;
             return axiosRef.get(`${urlStringStart}/${chartDef.endpoint}`, {
-              params: chartParams,
+              params: chartParams
             });
-          }),
+          })
         );
         if (thisRequestId !== requestId) return;
         usageCharts.forEach((chartDef, index) => {
@@ -413,7 +413,7 @@ export default {
 
     const scheduleProtocolReload = useDebounceFn(
       loadProtocolData,
-      DATE_FILTER_DEBOUNCE_MS,
+      DATE_FILTER_DEBOUNCE_MS
     );
 
     const scheduleReload = useDebounceFn(() => {
@@ -468,9 +468,9 @@ export default {
       protocolChartHasData,
       scheduleReload,
       scheduleProtocolReload,
-      iconUsageHeader,
+      iconUsageHeader
     };
-  },
+  }
 };
 </script>
 
