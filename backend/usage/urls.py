@@ -24,4 +24,9 @@ urlpatterns = [
         views.TurnaroundTimeUsage.as_view(),
         name="turnaround-time-usage",
     ),
+    re_path(
+        "protocol_comparison/",
+        views.ProtocolComparisonUsage.as_view(),
+        name="protocol-comparison-usage",
+    ),
 ]

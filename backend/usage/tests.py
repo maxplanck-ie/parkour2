@@ -195,16 +195,40 @@ class TestTurnaroundTimeUsageAPI(APITestCase):
         self._add_flowcell(req, loaded_days_ago)
         return req
 
-    def _date_range_params(self, group_by=None, record_type=None):
+    def _date_range_params(self, group_by=None, record_type=None, min_count=1):
         params = {
             "start": (self.now - timedelta(days=365)).strftime("%Y-%m-%dT%H:%M:%S"),
             "end": (self.now + timedelta(days=1)).strftime("%Y-%m-%dT%H:%M:%S"),
+            "min_count": min_count,
         }
         if group_by:
             params["group_by"] = group_by
         if record_type:
             params["record_type"] = record_type
         return params
+
+    def test_min_count_hides_sparse_groups(self):
+        # Sequencer group with 2 requests: shown at min_count=2, hidden at 3.
+        self._make_request(self.pi_a, approved_days_ago=30, loaded_days_ago=20)
+        self._make_request(self.pi_a, approved_days_ago=30, loaded_days_ago=10)
+
+        shown = self.client.get(
+            reverse("turnaround-time-usage"), self._date_range_params(min_count=2)
+        )
+        self.assertEqual(len(shown.data), 1)
+        hidden = self.client.get(
+            reverse("turnaround-time-usage"), self._date_range_params(min_count=3)
+        )
+        self.assertEqual(hidden.data, [])
+
+    def test_min_count_defaults_to_three(self):
+        self._make_request(self.pi_a, approved_days_ago=30, loaded_days_ago=20)
+        self._make_request(self.pi_a, approved_days_ago=30, loaded_days_ago=10)
+
+        params = self._date_range_params()
+        del params["min_count"]
+        response = self.client.get(reverse("turnaround-time-usage"), params)
+        self.assertEqual(response.data, [])
 
     def test_returns_box_values_per_sequencer(self):
         # PI A: turnaround of 10 and 20 days.
