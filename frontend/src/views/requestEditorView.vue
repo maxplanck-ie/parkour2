@@ -1710,7 +1710,10 @@ export default {
 
       const withStored = (list, stored) => {
         const known = new Set(list.map((item) => String(item.value)));
-        return [...list, ...stored.filter((item) => !known.has(String(item.value)))];
+        return [
+          ...list,
+          ...stored.filter((item) => !known.has(String(item.value)))
+        ];
       };
       const protocolOptions = withStored(
         normalizeOptions(this.protocolsList),
