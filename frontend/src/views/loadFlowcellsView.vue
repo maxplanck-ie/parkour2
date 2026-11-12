@@ -849,7 +849,6 @@ import {
   formatDisplayDate,
   isSupportedExcelTemplateFile,
   isValidDate,
-  applyValueToAllRows,
   trackModalOpen,
   trackModalSave
 } from "../utilities/utilityFunctions";
@@ -1545,12 +1544,13 @@ export default {
     handleApplyToAllFromContext(payload = {}) {
       const { cell, field, tableRef } = payload;
       if (!cell || !field || !tableRef) return;
-      applyValueToAllRows(cell, () => tableRef, {
-        blockActionsOnDisabledCells: false
-      });
-      // row.update() (used by applyValueToAllRows) does not fire Tabulator's
-      // cellEdited event, so affected rows must be queued for saving here.
+      const value = cell.getValue();
+      const flowcellId = cell.getRow().getData().flowcell_id;
+      // Only lanes of the same flowcell may be touched. row.update() does
+      // not fire Tabulator's cellEdited event, so queue each change here.
       tableRef.getRows().forEach((row) => {
+        if (row.getData().flowcell_id !== flowcellId) return;
+        row.update({ [field]: value });
         const targetCell = row.getCell(field);
         if (targetCell) {
           this.handleCellEdited(targetCell);
