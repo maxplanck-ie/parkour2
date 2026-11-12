@@ -3,7 +3,7 @@
 Unreleased
 ==========
 
-- Request editor: the Analysis Type of a library or sample is shown by name, and stays in its dropdown, even when that type is not linked to the item's Protocol, instead of showing the raw id.
+- Request editor: the Analysis Type of a library or sample is shown by name, and stays in its dropdown, even when that type is not linked to the item's Protocol or is archived; archived Protocols are also shown by name, instead of the raw id.
 - Request form: the "Formblatt S1" download offers the updated template. (Direct commit `89f21068`)
 - Usage: two new density plots on top of the page compare Library Concentration (ng/µl) and Optical Duplicate Rate (%) for a chosen Library Protocol (green), or two protocols side by side (purple and orange), with one tick per library. They follow the page's date range and Show filter. The "Protocol statistics" selector sits in the header; the 2nd Protocol, From/To, Show and a new "Min. data points" setting are in the new Filters popup. "Min. data points" (default 3) now applies to every chart on the page: Principal Investigators, Analysis Types and Turnaround Time categories with fewer data points are hidden, so a protocol or sequencer with one or two requests no longer shows up as a misleading box. (PR #384)
 - Site Administration (gear icon in the top bar) opens in a new tab again, instead of replacing the current page. (Direct commit `bf978c56`)

@@ -843,7 +843,13 @@ export function getRequestEditorSampleColumns(
     const type = meta?.type ? String(meta.type).toLowerCase() : "";
     if (!type) return [];
     return protocols
-      .filter((protocol) => String(protocol?.type ?? "").toLowerCase() === type)
+      .filter(
+        (protocol) =>
+          String(protocol?.type ?? "").toLowerCase() === type ||
+          // stored protocol (e.g. archived, no type known) stays selectable
+          (!protocol?.type &&
+            String(protocol?.value) === String(rowData.library_protocol))
+      )
       .sort((a, b) =>
         String(a.label || "").localeCompare(String(b.label || ""), undefined, {
           sensitivity: "base"
