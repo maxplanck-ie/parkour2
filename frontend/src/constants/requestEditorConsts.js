@@ -155,15 +155,22 @@ function listEditorConfig(options = [], placeholder = "Select") {
   };
 }
 
-function filterAnalysisTypesByProtocol(types = [], protocolId) {
+function filterAnalysisTypesByProtocol(types = [], protocolId, currentId) {
   if (!protocolId) return [];
   const matchId = String(protocolId);
+  const hasCurrent =
+    currentId !== undefined && currentId !== null && currentId !== "";
   return types
     .filter((type) => {
       const protocols = Array.isArray(type.library_protocol)
         ? type.library_protocol.map((item) => String(item))
         : [];
-      return protocols.includes(matchId);
+      // Keep the stored type even if it is not linked to the protocol, so
+      // it is shown by name and stays selectable.
+      return (
+        protocols.includes(matchId) ||
+        (hasCurrent && String(type.value) === String(currentId))
+      );
     })
     .sort((a, b) =>
       String(a.label || "").localeCompare(String(b.label || ""), undefined, {
@@ -329,7 +336,11 @@ export function getRequestEditorLibraryColumns(
     };
 
   const getAnalysisTypeOptions = (rowData) =>
-    filterAnalysisTypesByProtocol(analysisTypes, rowData.library_protocol);
+    filterAnalysisTypesByProtocol(
+      analysisTypes,
+      rowData.library_protocol,
+      rowData.analysis_type
+    );
 
   const isLibraryEditable = (field, rowData) => {
     if (field === "analysis_type") {
@@ -822,13 +833,23 @@ export function getRequestEditorSampleColumns(
     };
   };
   const getAnalysisTypeOptions = (rowData) =>
-    filterAnalysisTypesByProtocol(analysisTypes, rowData.library_protocol);
+    filterAnalysisTypesByProtocol(
+      analysisTypes,
+      rowData.library_protocol,
+      rowData.analysis_type
+    );
   const getProtocolOptions = (rowData) => {
     const meta = getNucleicAcidMeta(rowData);
     const type = meta?.type ? String(meta.type).toLowerCase() : "";
     if (!type) return [];
     return protocols
-      .filter((protocol) => String(protocol?.type ?? "").toLowerCase() === type)
+      .filter(
+        (protocol) =>
+          String(protocol?.type ?? "").toLowerCase() === type ||
+          // stored protocol (e.g. archived, no type known) stays selectable
+          (!protocol?.type &&
+            String(protocol?.value) === String(rowData.library_protocol))
+      )
       .sort((a, b) =>
         String(a.label || "").localeCompare(String(b.label || ""), undefined, {
           sensitivity: "base"

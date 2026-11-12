@@ -1466,6 +1466,9 @@ export default {
         library: [],
         sample: []
       },
+      // Archived protocols/analysis types still referenced by loaded records;
+      // the list endpoints omit them, so they would show as raw ids.
+      storedOptions: { protocols: [], analysisTypes: [] },
       editRecordTypesAvailable: {
         library: false,
         sample: false
@@ -1705,6 +1708,22 @@ export default {
           library_protocol: item.library_protocol
         }));
 
+      const withStored = (list, stored) => {
+        const known = new Set(list.map((item) => String(item.value)));
+        return [
+          ...list,
+          ...stored.filter((item) => !known.has(String(item.value)))
+        ];
+      };
+      const protocolOptions = withStored(
+        normalizeOptions(this.protocolsList),
+        this.storedOptions.protocols
+      );
+      const analysisTypeOptions = withStored(
+        normalizeOptions(this.analysisTypesList),
+        this.storedOptions.analysisTypes
+      );
+
       const getInstance = () => this;
       const onSelectionChange = (table) => this.syncSelectedDraftRows(table);
       const applyReadOnly = (columns = []) =>
@@ -1728,8 +1747,8 @@ export default {
         });
 
       const libraryEditors = {
-        protocols: normalizeOptions(this.protocolsList),
-        analysisTypes: normalizeOptions(this.analysisTypesList),
+        protocols: protocolOptions,
+        analysisTypes: analysisTypeOptions,
         measuringUnits: this.libraryMeasuringUnits,
         readLengths: normalizeOptions(this.readLengthsList),
         indexTypes: normalizeOptions(this.indexTypesList),
@@ -1742,8 +1761,8 @@ export default {
       };
 
       const sampleEditors = {
-        protocols: normalizeOptions(this.protocolsList),
-        analysisTypes: normalizeOptions(this.analysisTypesList),
+        protocols: protocolOptions,
+        analysisTypes: analysisTypeOptions,
         measuringUnits: this.sampleMeasuringUnits,
         readLengths: normalizeOptions(this.readLengthsList),
         organisms: normalizeOptions(this.organismsList),
@@ -2394,6 +2413,7 @@ export default {
         library: [],
         sample: []
       };
+      this.storedOptions = { protocols: [], analysisTypes: [] };
       this.editRecordTypesAvailable = {
         library: false,
         sample: false
@@ -2547,6 +2567,31 @@ export default {
         this.editRecordsByType = {
           library: libraries,
           sample: samples
+        };
+        const storedOption = (records, idKey, nameKey) => {
+          const found = new Map();
+          records.forEach((record) => {
+            if (record[idKey] && !found.has(record[idKey])) {
+              found.set(record[idKey], {
+                value: record[idKey],
+                label: record[nameKey] || String(record[idKey])
+              });
+            }
+          });
+          return [...found.values()];
+        };
+        const allRecords = [...libraries, ...samples];
+        this.storedOptions = {
+          protocols: storedOption(
+            allRecords,
+            "library_protocol",
+            "library_protocol_name"
+          ),
+          analysisTypes: storedOption(
+            allRecords,
+            "analysis_type",
+            "analysis_type_name"
+          )
         };
         this.editRecordTypesAvailable = {
           library: libraries.length > 0,
