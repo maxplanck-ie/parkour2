@@ -22,6 +22,9 @@ What is compared (kind -> Parkour endpoint, entry key):
   sequences -> /api/sequences_statistics/  barcode
       reads_pf_sequenced, optical_duplicates   <sample>.metrics | .duplicate.txt
       mapped_reads, dupped_reads, insert_size  Analysis_*/ Bowtie2, flagstat, deepTools (DNA)
+      fragment_q1/median/q3/p10/p90, fragments_total
+                                               deepTools fragmentSize.metric.tsv, flagstat read1_passed
+      peak_count, frip, peak_genome_coverage   Analysis_*/ MACS2_QC (ATAC)
       mapped_reads, uniq_mapped, multi_mapped, dupped_reads, assigned_reads
                                                Analysis_*/ STAR, flagstat, featureCounts (RNA)
   matrix    -> /api/run_statistics/        name ("Lane N")
@@ -70,6 +73,15 @@ class Roots:
     aviti_root: str = "/rapidus/data/sequencing_data/ElementBiosciences"
     group_data: str = "/data"
 
+
+# Mirrors BRB ET.FRAGMENT_COLS (deepTools fragmentSize.metric.tsv columns, bp).
+FRAGMENT_COLS = {
+    "fragment_q1": "Frag. Len. 1st. Qu.",
+    "fragment_median": "Frag. Len. Median",
+    "fragment_q3": "Frag. Len. 3rd Qu.",
+    "fragment_p10": "Frag. Len. 10%",
+    "fragment_p90": "Frag. Len. 90%",
+}
 
 ENDPOINT = {"sequences": "api/sequences_statistics/", "matrix": "api/run_statistics/"}
 KEY = {"sequences": "barcode", "matrix": "name"}
@@ -244,6 +256,15 @@ def seqStats(runDir, roots):
                 row = f"filtered_bam/{sample}.filtered.bam"
                 if row in fdf.index:
                     add(cand, bc, "insert_size", int(fdf.loc[row, "Frag. Len. Median"]))
+                    for key, col in FRAGMENT_COLS.items():
+                        add(cand, bc, key, int(fdf.loc[row, col]))
+        fs = mq / "multiqc_samtools_flagstat.txt"
+        if fs.exists() and (adir / "Bowtie2").exists():
+            rdf = pd.read_csv(fs, sep="\t", usecols=["Sample", "read1_passed"])
+            r1 = dict(zip(rdf["Sample"].astype(str), rdf["read1_passed"]))
+            for sample, bc in s2l.items():
+                if sample in r1:
+                    add(cand, bc, "fragments_total", int(r1[sample]))
         # RNA
         assigned = {}
         if (mq / "multiqc_featurecounts.txt").exists():
