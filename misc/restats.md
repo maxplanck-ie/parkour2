@@ -21,6 +21,16 @@ PARKOUR_PASSWORD=... python restats.py compare --url test --user <user> --db bac
 ```
 Options: `--field F [F ...]` limits the fields, `--all` also lists equal rows, `--tol` sets the tolerance (default 1e-3). Tested against a stub HTTP server only; not yet run against a real deployment.
 
+## Report: stored vs parsed (`restats_report.py`)
+Read-only. GETs all sequence and lane statistics from `--url`, joins them with every row of the sqlite, and writes one self-contained HTML page (filters by run year, sequencer, library protocol, analysis type, project, field):
+```
+PARKOUR_PASSWORD=... python misc/restats_report.py --url test --user <user> --db misc/backfill.sqlite --out misc/restats_report_test.html --cache /tmp/rpt
+```
+Classes: `ZERO` (Parkour stores 0, files say otherwise, the old-parser bug), `WRONG` (non-zero and different; minor <1 %, moderate 1-10 %, major >=10 %), `MISSING` (API field exists, nothing stored), `NEW` (field the API does not expose: `fragment_*`, `peak_*`, `frip`, `fragments_total`), `NOENTRY` (no Parkour entry for that flowcell/barcode), `MATCH`.
+The page is gitignored (it embeds the data); regenerate it with the command above. Blind spot: the sqlite only holds rows that differed from parkour-dev when it was built, so already-equal values are not counted.
+
+First run, `parkour-test` (2026-11-13), 72,577 rows: ZERO 844 (all `optical_duplicates`), WRONG 368 (major 162, moderate 50, minor 156), MISSING 9,967, NEW 39,290, NOENTRY 22,108.
+
 ## Rules for this backfill
 - `validate` only: it reads flowcell directories and does GET requests against Parkour. It never writes to Parkour.
 - The backfill runs below used `--url https://parkour-dev.ie-freiburg.mpg.de` (now `--url dev`). Production was not queried by them; pushing to it is refused by `push --apply`.

@@ -31,3 +31,4 @@ backend/fixtures_snapshot.dump
 # restats.py review DB
 misc/restats.sqlite
 misc/backfill.sqlite
+misc/restats_report_*.html
