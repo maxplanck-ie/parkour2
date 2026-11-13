@@ -41,10 +41,16 @@ changes only the reviewed field(s), and posts the full dict. A row is skipped
 if Parkour's current value no longer equals old_value (someone re-pushed since
 validation).
 
+Every subcommand that talks to Parkour (validate, push, compare) takes a required
+--url: a full URL, or the short names prod / test / dev. There is no default, so
+nothing hits a deployment by accident. `push --apply` refuses the prod URL.
+`compare` is read-only: it GETs the same flowcells from --url and lists, per
+field, the stored value next to the value parsed into --db.
+
 Runs on rapidus (needs pandas, requests, and interop for Illumina), e.g.
   PARKOUR_PASSWORD=... /localenv/pipegrp/anaconda/miniconda3/bin/python restats.py \\
-      validate --url https://parkour-dev.ie-freiburg.mpg.de --user <user> \\
-      --cert /home/pipegrp/cert.pem --since 2026-08-01
+      validate --url dev --user <user> --cert /home/pipegrp/cert.pem --since 2026-08-01
+  ... restats.py compare --url test --user <user> --db backfill.sqlite --out cmp.tsv
 
 NOTE: the parsing below mirrors dissectBCL fakeNews.pushParkour (matrix) and
 BigRedButton BRB/ET.py (sequences: getNReads, DNA, RNA). If either changes
@@ -314,6 +320,23 @@ def seqStats(runDir, roots):
 
 
 # ------------------------------------------------------------------ Parkour
+# Short names for --url. Anything else must be a full http(s) URL.
+DEPLOYMENTS = {
+    "prod": "https://parkour.ie-freiburg.mpg.de",
+    "test": "https://parkour-test.ie-freiburg.mpg.de",
+    "dev": "https://parkour-dev.ie-freiburg.mpg.de",
+}
+
+
+def resolveUrl(value):
+    url = DEPLOYMENTS.get(value, value)
+    if not url.startswith(("http://", "https://")):
+        raise argparse.ArgumentTypeError(
+            f"{value!r}: expected a URL or one of {sorted(DEPLOYMENTS)}"
+        )
+    return url.rstrip("/")
+
+
 def session(args):
     s = requests.Session()
     s.auth = (args.user, os.environ["PARKOUR_PASSWORD"])
@@ -474,6 +497,8 @@ def validate(args):
 
 # ------------------------------------------------------------------- push
 def push(args):
+    if args.apply and args.url == DEPLOYMENTS["prod"]:
+        sys.exit("refusing --apply against production; use --url dev or test")
     db = sqlite3.connect(args.db)
     rows = db.execute(
         "SELECT id, flowcell_id, kind, key, field, old_value, new_value, run_date "
@@ -538,39 +563,93 @@ def push(args):
     return rc
 
 
+# ---------------------------------------------------------------- compare
+def compare(args):
+    """Read-only: stored value on --url vs the value parsed into the sqlite."""
+    db = sqlite3.connect(f"file:{args.db}?mode=ro", uri=True)
+    rows = db.execute(
+        "SELECT flowcell_id, kind, key, field, new_value, run_date FROM mismatches"
+        + (" WHERE field IN (%s)" % ",".join("?" * len(args.field)) if args.field else ""),
+        args.field or [],
+    ).fetchall()
+    if not rows:
+        sys.exit("no rows in " + args.db)
+    s = session(args)
+    stored = {}
+    for kind in ("matrix", "sequences"):
+        dates = [
+            datetime.datetime.fromisoformat(r[5][:10])
+            for r in rows
+            if r[1] == kind
+        ]
+        if dates:
+            stored[kind] = fetch(s, args, kind, min(dates), max(dates))
+    stats, out = Counter(), []
+    for fcid, kind, key, field, new, _ in rows:
+        entry = stored.get(kind, {}).get(fcid, {}).get(key)
+        if entry is None:
+            stats["not on deployment"] += 1
+            continue
+        old = entry.get(field)
+        old = None if old == "" else old
+        if old is None:
+            state = "absent"
+        elif differs(old, new, args.tol):
+            state = "differs"
+        else:
+            state = "same"
+        stats[state] += 1
+        if state != "same" or args.all:
+            out.append((fcid, kind, key, field, old, new, state))
+    if args.out:
+        with open(args.out, "w") as fh:
+            fh.write("flowcell_id\tkind\tkey\tfield\tstored\tnew\tstate\n")
+            for r in out:
+                fh.write("\t".join("" if v is None else str(v) for v in r) + "\n")
+    print(f"deployment {args.url}: {len(rows)} rows from {args.db}")
+    for k, v in sorted(stats.items()):
+        print(f"  {k}: {v}")
+    if args.out:
+        print(f"wrote {len(out)} rows to {args.out}")
+    return 0
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     sub = ap.add_subparsers(dest="cmd", required=True)
-    for name in ("validate", "push"):
-        p = sub.add_parser(name)
-        p.add_argument("--url", required=True, help="Parkour base URL")
-        p.add_argument("--user", required=True)
-        p.add_argument("--cert", default=True, help="CA bundle (default: system)")
-        p.add_argument("--db", default=str(Path(__file__).with_name("restats.sqlite")))
-        if name == "validate":
-            p.add_argument("runDirs", nargs="*", help="flowcell dirs (…_lanes_N)")
-            p.add_argument(
-                "--since", help="also scan the rapidus roots, runs from YYYY-MM-DD"
-            )
-            p.add_argument("--tol", type=float, default=1e-3, help="abs. tolerance")
-            p.add_argument(
-                "--illumina-root",
-                default="/rapidus/data/sequencing_data/Illumina/NovaSeq6000",
-            )
-            p.add_argument(
-                "--raw-root", default="/dont_touch_this/short_runs/Illumina/NovaSeq6000"
-            )
-            p.add_argument(
-                "--aviti-root",
-                default="/rapidus/data/sequencing_data/ElementBiosciences",
-            )
-            p.add_argument("--group-root", default="/data")
-        else:
-            p.add_argument(
-                "--apply", action="store_true", help="POST (default: dry run)"
-            )
+    parkour = argparse.ArgumentParser(add_help=False)
+    parkour.add_argument(
+        "--url",
+        required=True,
+        type=resolveUrl,
+        help="Parkour deployment: full URL or one of %s" % "/".join(sorted(DEPLOYMENTS)),
+    )
+    parkour.add_argument("--user", required=True)
+    parkour.add_argument("--cert", default=True, help="CA bundle (default: system)")
+    parkour.add_argument("--db", default=str(Path(__file__).with_name("restats.sqlite")))
+    p = sub.add_parser("validate", parents=[parkour])
+    p.add_argument("runDirs", nargs="*", help="flowcell dirs (…_lanes_N)")
+    p.add_argument("--since", help="also scan the rapidus roots, runs from YYYY-MM-DD")
+    p.add_argument("--tol", type=float, default=1e-3, help="abs. tolerance")
+    p.add_argument(
+        "--illumina-root", default="/rapidus/data/sequencing_data/Illumina/NovaSeq6000"
+    )
+    p.add_argument(
+        "--raw-root", default="/dont_touch_this/short_runs/Illumina/NovaSeq6000"
+    )
+    p.add_argument(
+        "--aviti-root", default="/rapidus/data/sequencing_data/ElementBiosciences"
+    )
+    p.add_argument("--group-root", default="/data")
+    p = sub.add_parser("push", parents=[parkour])
+    p.add_argument("--apply", action="store_true", help="POST (default: dry run)")
+    p = sub.add_parser("compare", parents=[parkour], help="read-only stored vs parsed")
+    p.add_argument("--tol", type=float, default=1e-3, help="abs. tolerance")
+    p.add_argument("--field", nargs="+", help="only these fields")
+    p.add_argument("--all", action="store_true", help="also list rows that are equal")
+    p.add_argument("--out", help="write the listed rows as TSV")
     args = ap.parse_args()
-    return validate(args) if args.cmd == "validate" else push(args)
+    return {"validate": validate, "push": push, "compare": compare}[args.cmd](args)
 
 
 if __name__ == "__main__":

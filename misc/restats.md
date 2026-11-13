@@ -4,9 +4,26 @@ Log of how `misc/backfill.sqlite` was produced, and what is in it. Tool docs: do
 
 Status: all three runs done and merged on 2026-11-13. Nothing reviewed (`"update"` is NULL on every row) and nothing pushed.
 
+## Choosing the deployment
+Every subcommand that talks to Parkour (`validate`, `push`, `compare`) has a required `--url`. It takes a full URL or a short name:
+
+| Name | URL |
+|---|---|
+| `prod` | `https://parkour.ie-freiburg.mpg.de` |
+| `test` | `https://parkour-test.ie-freiburg.mpg.de` |
+| `dev` | `https://parkour-dev.ie-freiburg.mpg.de` |
+
+There is no default, so nothing hits a deployment by accident. `push --apply --url prod` exits with an error; use `dev` or `test`.
+
+`compare` is read-only (GET only, sqlite opened read-only). It lists, per field, the value stored on the deployment next to the value parsed into the sqlite, with the state `same`, `differs`, `absent` (nothing stored) or `not on deployment`:
+```
+PARKOUR_PASSWORD=... python restats.py compare --url test --user <user> --db backfill.sqlite --out cmp.tsv
+```
+Options: `--field F [F ...]` limits the fields, `--all` also lists equal rows, `--tol` sets the tolerance (default 1e-3). Tested against a stub HTTP server only; not yet run against a real deployment.
+
 ## Rules for this backfill
 - `validate` only: it reads flowcell directories and does GET requests against Parkour. It never writes to Parkour.
-- URL is always `https://parkour-dev.ie-freiburg.mpg.de`. Production is never queried or pushed to.
+- The backfill runs below used `--url https://parkour-dev.ie-freiburg.mpg.de` (now `--url dev`). Production was not queried by them; pushing to it is refused by `push --apply`.
 - The Parkour login is the production account from `~/configs/dissectBCL_prod.ini` on rapidus (section `[parkour]`). It is only used against the dev URL. It travels through ssh stdin or env vars and is never written to disk or logs.
 - `push --apply` to parkour-dev needs separate, explicit confirmation. Not part of this log yet.
 
