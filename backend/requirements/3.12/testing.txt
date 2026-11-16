@@ -26,11 +26,11 @@ attrs==26.1.0
     #   -c backend/requirements/3.12/dev.txt
     #   jsonschema
     #   referencing
-boto3==1.43.126
+boto3==1.44.3
     # via
     #   -c backend/requirements/3.12/dev.txt
     #   -r backend/requirements/dev.in
-botocore==1.43.126
+botocore==1.44.3
     # via
     #   -c backend/requirements/3.12/dev.txt
     #   boto3
@@ -60,7 +60,7 @@ contourpy==1.4.0
     # via
     #   -c backend/requirements/3.12/dev.txt
     #   matplotlib
-coverage==7.17.2
+coverage==7.17.3
     # via pytest-cov
 cryptography==50.0.2
     # via
@@ -130,7 +130,7 @@ django-extensions==4.1
     # via
     #   -c backend/requirements/3.12/dev.txt
     #   -r backend/requirements/base.in
-django-import-export==4.4.4
+django-import-export==4.4.5
     # via
     #   -c backend/requirements/3.12/dev.txt
     #   -r backend/requirements/base.in
@@ -138,7 +138,7 @@ django-linear-migrations==2.19.0
     # via
     #   -c backend/requirements/3.12/dev.txt
     #   -r backend/requirements/base.in
-django-migration-linter==6.0.0
+django-migration-linter==7.0.0
     # via
     #   -c backend/requirements/3.12/dev.txt
     #   -r backend/requirements/dev.in
@@ -188,11 +188,11 @@ fpdf2==2.9.0
     #   -r backend/requirements/base.in
 greenlet==3.5.6
     # via playwright
-grimp==3.19
+grimp==3.20
     # via
     #   -c backend/requirements/3.12/dev.txt
     #   import-linter
-gunicorn==26.2.0
+gunicorn==27.0.1
     # via
     #   -c backend/requirements/3.12/dev.txt
     #   -r backend/requirements/base.in
@@ -269,7 +269,7 @@ lxml==6.1.3
     # via
     #   -c backend/requirements/3.12/dev.txt
     #   python-docx
-markdown-it-py==4.2.0
+markdown-it-py==4.3.0
     # via
     #   -c backend/requirements/3.12/dev.txt
     #   rich
@@ -289,14 +289,14 @@ mdurl==0.1.2
     # via
     #   -c backend/requirements/3.12/dev.txt
     #   markdown-it-py
-numpy==2.5.4
+numpy==2.5.5
     # via
     #   -c backend/requirements/3.12/dev.txt
     #   -r backend/requirements/base.in
     #   contourpy
     #   matplotlib
     #   pandas
-openai==3.46.0
+openai==3.51.0
     # via
     #   -c backend/requirements/3.12/dev.txt
     #   -r backend/requirements/dev.in
@@ -328,7 +328,7 @@ pillow==13.0.0
     #   -c backend/requirements/3.12/dev.txt
     #   fpdf2
     #   matplotlib
-playwright==1.64.1
+playwright==1.65.2
     # via pytest-playwright
 pluggy==1.7.0
     # via
@@ -366,8 +366,6 @@ pydantic-core==2.50.4
     # via
     #   -c backend/requirements/3.12/dev.txt
     #   pydantic
-pyee==14.0.0
-    # via playwright
 pygments==2.21.0
     # via
     #   -c backend/requirements/3.12/dev.txt
@@ -423,7 +421,7 @@ referencing==0.37.0
     #   -c backend/requirements/3.12/dev.txt
     #   jsonschema
     #   jsonschema-specifications
-regex==2026.11.9
+regex==2026.11.15
     # via
     #   -c backend/requirements/3.12/dev.txt
     #   tiktoken
@@ -458,7 +456,7 @@ sql-metadata==3.0.1
     # via
     #   -c backend/requirements/3.12/dev.txt
     #   -r backend/requirements/dev.in
-sqlglot==30.30.0
+sqlglot==30.31.0
     # via
     #   -c backend/requirements/3.12/dev.txt
     #   sql-metadata
@@ -486,10 +484,6 @@ tiktoken==0.14.0
     # via
     #   -c backend/requirements/3.12/dev.txt
     #   -r backend/requirements/dev.in
-toml==0.10.2
-    # via
-    #   -c backend/requirements/3.12/dev.txt
-    #   django-migration-linter
 traitlets==5.16.1
     # via
     #   -c backend/requirements/3.12/dev.txt
@@ -508,7 +502,6 @@ typing-extensions==4.16.0
     #   openai
     #   pydantic
     #   pydantic-core
-    #   pyee
     #   python-docx
     #   referencing
     #   typing-inspection
