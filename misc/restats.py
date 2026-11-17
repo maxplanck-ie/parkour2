@@ -65,6 +65,7 @@ import os
 import re
 import socket
 import sqlite3
+import urllib.parse
 import sys
 from collections import Counter, defaultdict
 from dataclasses import dataclass
@@ -197,7 +198,10 @@ def discoverRuns(since, roots):
 
 # ------------------------------------------------------------------ parsers
 def add(cand, key, field, value):
-    cand[(key, field)].add(round(float(value), 6))
+    value = float(value)
+    if value != value:  # NaN: BRB would send null, nothing to compare
+        return
+    cand[(key, field)].add(round(value, 6))
 
 
 def laneStats(runDir, aviti, roots):
@@ -249,12 +253,14 @@ def seqStats(runDir, roots):
     """{(barcode, field): {values}}; mirrors BRB ET.getNReads / DNA / RNA."""
     import pandas as pd
 
-    cand, s2l = defaultdict(set), {}
+    cand, s2lAll = defaultdict(set), {}
     # splitFastq: "<optical_dups> <total_reads>" in <sample>.metrics, older runs
     # <sample>.duplicate.txt. Project_* holds .metrics for runs before dissectBCL
     # v1.3.5, FASTQC_Project_* after.
     for sdir in runDir.glob("*Project_*/Sample_*"):
         bc = sdir.name[len("Sample_") :]
+        # BRB scopes sample names to one project (Analysis_<p> pairs with FASTQC_Project_<p>)
+        s2l = s2lAll.setdefault(sdir.parent.name.split("Project_", 1)[1], {})
         for f in list(sdir.glob("*.metrics")) or list(sdir.glob("*.duplicate.txt")):
             text = f.read_text().split()
             if len(text) != 2:  # empty/garbled (e.g. AVITI runs of 2026-01): BRB cannot send these either
@@ -270,6 +276,7 @@ def seqStats(runDir, roots):
         f"{roots.group_data}/*/sequencing_data*/{runDir.name}/Analysis_*/*"
     )
     for adir in map(Path, adirs):
+        s2l = s2lAll.get(adir.parent.name[len("Analysis_") :], {})
         if (adir / "RELACS_sampleSheet.txt").exists():
             continue  # BRB pushes no analysis stats for RELACS
         mq = adir / "multiQC" / "multiqc_data"
@@ -388,11 +395,19 @@ DEPLOYMENTS = {
 
 def resolveUrl(value):
     url = DEPLOYMENTS.get(value, value)
-    if not url.startswith(("http://", "https://")):
+    parts = urllib.parse.urlsplit(url)
+    if parts.scheme not in ("http", "https") or not parts.hostname:
         raise argparse.ArgumentTypeError(
             f"{value!r}: expected a URL or one of {sorted(DEPLOYMENTS)}"
         )
+    if parts.username or parts.password:
+        raise argparse.ArgumentTypeError("credentials in the URL are not accepted")
     return url.rstrip("/")
+
+
+def isProd(url):
+    prod = urllib.parse.urlsplit(DEPLOYMENTS["prod"]).hostname
+    return (urllib.parse.urlsplit(url).hostname or "").lower().rstrip(".") == prod
 
 
 def session(args):
@@ -424,9 +439,14 @@ def fetch(s, args, kind, start, end):
 def differs(old, new, tol):
     if old == "":  # Parkour stores '' for "never set"
         old = None
+    if new == "":
+        new = None
     if old is None or new is None:
         return old is not new
-    return abs(float(old) - new) > tol
+    try:
+        return abs(float(old) - float(new)) > tol
+    except (TypeError, ValueError):  # non-numeric stored value: report it, do not crash
+        return True
 
 
 # --------------------------------------------------------------- validate
@@ -528,6 +548,7 @@ def validate(args):
                 entries = {}  # record disk values against an empty stored side
             for (key, field), vals in fields.items():
                 if key not in entries and not empty:
+                    stats[kind, "library without Parkour entry"] += 1
                     continue  # not an entry Parkour has
                 if len(vals) != 1:
                     print(f"  CONFLICT {fcid} {key} {field}: {sorted(vals)} (skipped)")
@@ -540,6 +561,11 @@ def validate(args):
                     db.execute(
                         "INSERT OR REPLACE INTO matches VALUES (?,?,?,?,?,?)",
                         (fcid, kind, key, field, new, dates[fcid].isoformat()),
+                    )
+                    db.execute(  # fixed in Parkour since the last validate
+                        "DELETE FROM mismatches WHERE flowcell_id=? AND kind=? AND key=?"
+                        " AND field=? AND pushed_at IS NULL",
+                        (fcid, kind, key, field),
                     )
                     continue
                 db.execute(
@@ -584,7 +610,7 @@ def validate(args):
 
 # ------------------------------------------------------------------- push
 def push(args):
-    if args.apply and args.url == DEPLOYMENTS["prod"]:
+    if args.apply and isProd(args.url):
         sys.exit("refusing --apply against production; use --url dev or test")
     db = sqlite3.connect(args.db)
     rows = db.execute(
@@ -599,6 +625,9 @@ def push(args):
         k: fetch(s, args, k, min(dates), max(dates)) for k in {r[2] for r in rows}
     }
 
+    matrix = stored["matrix"] if "matrix" in stored else fetch(
+        s, args, "matrix", min(dates), max(dates)
+    )
     groups = defaultdict(list)
     for r in rows:
         groups[r[1], r[2]].append(r)
@@ -609,10 +638,14 @@ def push(args):
         out, ids = {}, []
         for rid, _, _, key, field, old, new, _ in rs:
             e = entries.get(key)
-            if e is None and old is None and kind == "sequences":
-                e = {
-                    KEY[kind]: key
-                }  # flowcell has no stored entry for this barcode yet
+            if (
+                e is None
+                and old is None
+                and kind == "sequences"
+                and fcid in matrix  # flowcell known to Parkour, only its sequence stats are empty
+                and not entries  # a flowcell WITH entries is never extended by a stub
+            ):
+                e = {KEY[kind]: key}
             elif e is None:
                 print(f"  SKIP {fcid} {key}: not in Parkour")
                 continue

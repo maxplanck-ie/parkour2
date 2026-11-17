@@ -104,8 +104,10 @@ def build(args):
         and db.execute("SELECT 1 FROM matches LIMIT 1").fetchone()
     )
     if has_matches:  # values that equalled the validated deployment: real MATCH counts
-        rows += db.execute(
-            "SELECT flowcell_id, kind, key, field, value, run_date FROM matches"
+        rows += db.execute(  # a key that is also a mismatch counts once, as the mismatch
+            "SELECT flowcell_id, kind, key, field, value, run_date FROM matches m"
+            " WHERE NOT EXISTS (SELECT 1 FROM mismatches x WHERE x.flowcell_id=m.flowcell_id"
+            " AND x.kind=m.kind AND x.key=m.key AND x.field=m.field)"
         ).fetchall()
     # sequencer per flowcell from any entry, so rows without an entry stay segmentable
     fcseq = {}
@@ -186,7 +188,7 @@ def main():
     ap.add_argument("--refresh", action="store_true", help="ignore cached API JSON")
     args = ap.parse_args()
     data = build(args)
-    html = TEMPLATE.read_text().replace("/*DATA*/null", json.dumps(data, separators=(",", ":")))
+    html = TEMPLATE.read_text().replace("/*DATA*/null", json.dumps(data, separators=(",", ":")).replace("</", "<\\/").replace("\u2028", "\\u2028").replace("\u2029", "\\u2029"))
     Path(args.out).write_text(html)
     print(f"wrote {args.out}: {data['meta']['rows']} rows, {len(data['agg'])} groups, {len(data['detail'])} detail rows")
 
