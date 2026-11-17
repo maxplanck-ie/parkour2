@@ -1,6 +1,6 @@
 # restats backfill log
 
-Log of how `misc/backfill.sqlite` was produced, and what is in it. Tool docs: docstring of `misc/restats.py`.
+Log of how `misc/restats_backfill.sqlite` was produced, and what is in it. Tool docs: docstring of `misc/restats.py`.
 
 Status: all three runs done and merged on 2026-11-13. Nothing reviewed (`"update"` is NULL on every row) and nothing pushed.
 
@@ -17,14 +17,14 @@ There is no default, so nothing hits a deployment by accident. `push --apply --u
 
 `compare` is read-only (GET only, sqlite opened read-only). It lists, per field, the value stored on the deployment next to the value parsed into the sqlite, with the state `same`, `differs`, `absent` (nothing stored) or `not on deployment`:
 ```
-PARKOUR_PASSWORD=... python restats.py compare --url test --user <user> --db backfill.sqlite --out cmp.tsv
+PARKOUR_PASSWORD=... python restats.py compare --url test --user <user> --db restats_backfill.sqlite --out cmp.tsv
 ```
 Options: `--field F [F ...]` limits the fields, `--all` also lists equal rows, `--tol` sets the tolerance (default 1e-3). Tested against a stub HTTP server only; not yet run against a real deployment.
 
 ## Report: stored vs parsed (`restats_report.py`)
 Read-only. GETs all sequence and lane statistics from `--url`, joins them with every row of the sqlite, and writes one self-contained HTML page (filters by run year, sequencer, library protocol, analysis type, project, field):
 ```
-PARKOUR_PASSWORD=... python misc/restats_report.py --url test --user <user> --db misc/backfill.sqlite --out misc/restats_report_test.html --cache /tmp/rpt
+PARKOUR_PASSWORD=... python misc/restats_report.py --url test --user <user> --db misc/restats_backfill.sqlite --out misc/restats_report_test.html --cache /tmp/rpt
 ```
 Classes: `ZERO` (Parkour stores 0, files say otherwise, the old-parser bug), `WRONG` (non-zero and different; minor <1 %, moderate 1-10 %, major >=10 %), `MISSING` (API field exists, nothing stored), `NEW` (field the API does not expose: `fragment_*`, `peak_*`, `frip`, `fragments_total`), `NOENTRY` (no Parkour entry for that flowcell/barcode), `MATCH`.
 
@@ -43,7 +43,7 @@ Result on `parkour-test` (2026-11-17, 164,875 values): MATCH 92,298, ZERO 844 (a
 | `dupped_reads` | 2 / 10,381 (0.0 %) | 0 | 2 |
 
 ### MATCH counts
-`validate` writes the values that already equal Parkour into a `matches` table, so the report shows real percentages. `misc/backfill.sqlite` was rebuilt on 2026-11-17 with all three sources rerun (`--url dev`, GET only): 72,577 mismatching values over 642 flowcells and 92,298 matching values over 789 flowcells. `scanned` rows are now recorded by `validate` (2,554 dirs, `origin = validate`).
+`validate` writes the values that already equal Parkour into a `matches` table, so the report shows real percentages. `misc/restats_backfill.sqlite` was rebuilt on 2026-11-17 with all three sources rerun (`--url dev`, GET only): 72,577 mismatching values over 642 flowcells and 92,298 matching values over 789 flowcells. `scanned` rows are now recorded by `validate` (2,554 dirs, `origin = validate`).
 
 ## What `validate` records
 Besides `mismatches` and `matches`, every `validate` run writes:
@@ -55,7 +55,7 @@ Besides `mismatches` and `matches`, every `validate` run writes:
 ## Rerun recipe (for the next agent)
 Labels used so far: `processed_flowcells` (rapidus, `/data/manke/repository/processed_flowcells/*/*/` as positional dirs), `rapidus-2024+` (rapidus, `--since 2024-01-01`), `longus2-inbox` (longus2, `--since 2024-01-01` with `--illumina-root /scratch/INBOX/sequencing_data2 --aviti-root /scratch/INBOX/sequencing_data`). The exact roots and dir lists are in section 6 of the report.
 1. Pipe `restats.py` over ssh stdin into a `mktemp -d` on the host and run `validate --url dev --user <user> --cert /etc/pki/tls/certs/ca-bundle.crt --db <tmp>/<label>.sqlite --source <label> ...`; copy the sqlite back as base64 on stdout. Credentials go over stdin or env only.
-2. Merge: `python misc/restats_merge.py misc/backfill.sqlite rapidus-2024+.sqlite longus2-inbox.sqlite processed_flowcells.sqlite` (first source wins; `mismatches`, `matches`, `scanned`, `scan_runs` are all merged).
+2. Merge: `python misc/restats_merge.py misc/restats_backfill.sqlite rapidus-2024+.sqlite longus2-inbox.sqlite processed_flowcells.sqlite` (first source wins; `mismatches`, `matches`, `scanned`, `scan_runs` are all merged).
 3. Regenerate the report.
 
 ## Rules for this backfill
@@ -86,7 +86,7 @@ Every run: `restats.py validate --url https://parkour-dev.ie-freiburg.mpg.de --u
 2. Credentials read on rapidus (or passed through stdin to longus2), exported as `PARKOUR_PASSWORD`.
 3. The finished sqlite goes back to this machine as base64 on stdout.
 4. Merge with `misc/restats_merge.py` (first source wins on the UNIQUE key `(flowcell_id, kind, key, field)`). Priority: `since2024`, `longus2`, `old`. The first merge was done with an earlier ad-hoc copy of that script.
-5. Result copied to `misc/backfill.sqlite` (12 MB; now larger with `scanned` rows). It is gitignored like `misc/restats.sqlite`; it lives on this machine only, regenerate with the steps above.
+5. Result copied to `misc/restats_backfill.sqlite` (12 MB; now larger with `scanned` rows). It is gitignored like `misc/restats.sqlite`; it lives on this machine only, regenerate with the steps above.
 
 ## Results
 | Source | Rows | Flowcells | Run dates | Notes |
@@ -94,7 +94,7 @@ Every run: `restats.py validate --url https://parkour-dev.ie-freiburg.mpg.de --u
 | `longus2` | 5957 | 27 | 2025-03-03 to 2026-06-16 | 5 flowcells not in Parkour dev; 794 rows skipped as CONFLICT |
 | `since2024` | 19001 | 132 | 2024-07-02 to 2026-11-10 | 2030 CONFLICT lines; 32 flowcell/sequence lines not in Parkour dev; 16 matrix rows |
 | `old` | 47619 | 483 | 2018-04-09 to 2024-06-21 | 598 CONFLICT lines; 178 not in Parkour dev; 1910 lane-stats failures (interop files gone) |
-| merged (`misc/backfill.sqlite`) | 72577 | 642 | 2018-04-09 to 2026-11-10 | 72561 sequence rows, 16 matrix rows, no duplicate keys across sources |
+| merged (`misc/restats_backfill.sqlite`) | 72577 | 642 | 2018-04-09 to 2026-11-10 | 72561 sequence rows, 16 matrix rows, no duplicate keys across sources |
 
 New-key rows in the merged file: `fragment_median` 7399, `fragment_q1` 7399, `fragment_q3` 7396, `fragment_p10` 7400, `fragment_p90` 7385, `fragments_total` 4640, `peak_count` 1030, `frip` 1037, `peak_genome_coverage` 1081. `insert_size` has 2045 rows.
 

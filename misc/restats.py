@@ -50,7 +50,7 @@ field, the stored value next to the value parsed into --db.
 Runs on rapidus (needs pandas, requests, and interop for Illumina), e.g.
   PARKOUR_PASSWORD=... /localenv/pipegrp/anaconda/miniconda3/bin/python restats.py \\
       validate --url dev --user <user> --cert /home/pipegrp/cert.pem --since 2026-08-01
-  ... restats.py compare --url test --user <user> --db backfill.sqlite --out cmp.tsv
+  ... restats.py compare --url test --user <user> --db restats_backfill.sqlite --out cmp.tsv
 
 NOTE: the parsing below mirrors dissectBCL fakeNews.pushParkour (matrix) and
 BigRedButton BRB/ET.py (sequences: getNReads, DNA, RNA). If either changes

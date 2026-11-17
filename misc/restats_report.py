@@ -2,7 +2,7 @@
 """Self-contained HTML report: what Parkour stores vs what restats.py parsed.
 
 Read-only. GETs sequences/run statistics from --url and compares them with the
-`new_value` of every row in --db (a restats.sqlite / backfill.sqlite). Nothing
+`new_value` of every row in --db (a restats.sqlite / restats_backfill.sqlite). Nothing
 is written to Parkour or to the sqlite.
 
 Classes per (library or lane, field):
