@@ -54,6 +54,16 @@ Share of libraries on scanned flowcells with any parsed value in `restats_backfi
 - **Hi-C.** Parkour stored no mapping stats for Hi-C (0 of 265 libraries from 2025-26). `multiqc_hicexplorer.txt` has one row per matrix named `<sample>_bs<binsize>.cool`, and `<sample>` is the Parkour library name. `restats.py` now reads `Pairs mappable, unique and high quality_pct` into `uniq_mapped` (first bin size wins), and BRB `HiC()` sends the same value. Checked read-only on one AVITI flowcell (24 Hi-C libraries). The 106 Hi-C dirs in the backfill were NOT rerun with this parser yet, so the sqlite has no Hi-C `uniq_mapped` values.
 - **10x scRNA and Cel-Seq 2.** All libraries are from 2018-2023 (Cel-Seq 2: 2018-2020); no stats files, nothing to add.
 
+## Parity with BRB (`ET.py`)
+
+`restats.py` is meant to reproduce what BRB sends. Known differences, so a mismatch is not read as a bug in one side:
+
+- A stats file is usable if it holds `<digits> <digits>` with optical <= total. First usable file wins (`.metrics` before `.duplicate.txt`). Both sides skip the rest.
+- No usable stats file: BRB counts R1 reads and sends `optical_duplicates = 0` (no stats files at all) or leaves it out (files present but unusable). `restats.py` records nothing for these libraries, so they show as MISSING or NEW, never as a computed value.
+- A sample missing from the flagstat table: BRB leaves `dupped_reads` out, `restats.py` records nothing.
+- `restats.py` does not read R1 fastqc zips for the sample map outside `FASTQC_Project_*`, and does not store CONFLICT rows (a field with several distinct values, such as Hi-C lanes). BRB sends one of them.
+- Hi-C: the first `multiqc_hicexplorer` row per sample wins; the percentage did not differ between bin sizes in the 6 files checked.
+
 ## What `validate` records
 Besides `mismatches` and `matches`, every `validate` run writes:
 - `scan_runs`: host, `--source` label, `--since`, deployment URL, the four roots, number of dirs, time. One row per invocation.

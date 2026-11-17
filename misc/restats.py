@@ -261,14 +261,18 @@ def seqStats(runDir, roots):
         bc = sdir.name[len("Sample_") :]
         # BRB scopes sample names to one project (Analysis_<p> pairs with FASTQC_Project_<p>)
         s2l = s2lAll.setdefault(sdir.parent.name.split("Project_", 1)[1], {})
-        for f in list(sdir.glob("*.metrics")) or list(sdir.glob("*.duplicate.txt")):
+        # same rule as BRB getNReads: first usable file wins (.metrics before .duplicate.txt);
+        # a usable file is "<digits> <digits>" with optical <= total
+        files = sorted(sdir.glob("*.metrics")) + sorted(sdir.glob("*.duplicate.txt"))
+        for f in files:
             text = f.read_text().split()
-            if len(text) != 2:  # empty/garbled (e.g. AVITI runs of 2026-01): BRB cannot send these either
-                print(f"  {runDir.name}: {f.name}: no '<opt> <total>' ({len(text)} fields), skipped")
+            if len(text) != 2 or not all(t.isdigit() for t in text) or int(text[0]) > int(text[1]):
+                print(f"  {runDir.name}: {f.name}: not '<opt> <total>' ({text[:3]}), skipped")
                 continue
             opt, total = map(int, text)
             add(cand, bc, "reads_pf_sequenced", total - opt)
             add(cand, bc, "optical_duplicates", 100.0 * opt / total if total else -1.0)
+            break
         for z in sdir.glob("*_R1_fastqc.zip"):
             s2l[z.name[: -len("_R1_fastqc.zip")]] = bc
 
@@ -363,7 +367,7 @@ def seqStats(runDir, roots):
             )
             seen = set()
             for name, pct in zip(hdf["Sample"].astype(str), hdf.iloc[:, 1]):
-                sample = re.sub(r"_bs\d+\w*\.cool$", "", name)
+                sample = re.sub(r"_bs\d+[A-Za-z]*\.cool$", "", name)
                 if sample in s2l and sample not in seen:
                     seen.add(sample)  # several bin sizes: first row wins
                     add(cand, s2l[sample], "uniq_mapped", pct)
