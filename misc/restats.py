@@ -256,7 +256,11 @@ def seqStats(runDir, roots):
     for sdir in runDir.glob("*Project_*/Sample_*"):
         bc = sdir.name[len("Sample_") :]
         for f in list(sdir.glob("*.metrics")) or list(sdir.glob("*.duplicate.txt")):
-            opt, total = map(int, f.read_text().split())
+            text = f.read_text().split()
+            if len(text) != 2:  # empty/garbled (e.g. AVITI runs of 2026-01): BRB cannot send these either
+                print(f"  {runDir.name}: {f.name}: no '<opt> <total>' ({len(text)} fields), skipped")
+                continue
+            opt, total = map(int, text)
             add(cand, bc, "reads_pf_sequenced", total - opt)
             add(cand, bc, "optical_duplicates", 100.0 * opt / total if total else -1.0)
         for z in sdir.glob("*_R1_fastqc.zip"):
