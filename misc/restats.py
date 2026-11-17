@@ -493,7 +493,8 @@ def validate(args):
     for runDir in runs:
         aviti, fcid, _ = runInfo(runDir, roots)
         if aviti:
-            n = int(re.search(r"_lanes_(\d+)", runDir.name).group(1))
+            m = re.search(r"_lanes_(\d+)", runDir.name)
+            n = int(m.group(1)) if m else 0  # name without lanes_N: lowest priority
             lastAviti[fcid] = max(lastAviti.get(fcid, (0, runDir)), (n, runDir))
     for runDir in runs:
         aviti, fcid, date = runInfo(runDir, roots)
