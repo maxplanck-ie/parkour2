@@ -63,6 +63,7 @@ import glob
 import json
 import os
 import re
+import socket
 import sqlite3
 import sys
 from collections import Counter, defaultdict
@@ -121,6 +122,45 @@ CREATE TABLE IF NOT EXISTS mismatches (
     run_date TEXT NOT NULL,
     pushed_at TEXT,
     UNIQUE (flowcell_id, kind, key, field)
+);
+-- parsed values that already equal Parkour at validation time; lets the report
+-- count real MATCHes (a value that differs is in `mismatches` instead).
+CREATE TABLE IF NOT EXISTS matches (
+    flowcell_id TEXT NOT NULL,
+    kind TEXT NOT NULL,
+    key TEXT NOT NULL,
+    field TEXT NOT NULL,
+    value REAL,
+    run_date TEXT NOT NULL,
+    UNIQUE (flowcell_id, kind, key, field)
+);
+-- every flowcell dir validate considered, so a rerun knows what was scanned
+CREATE TABLE IF NOT EXISTS scanned (
+    run_dir TEXT NOT NULL,
+    host TEXT NOT NULL,
+    source TEXT NOT NULL,
+    flowcell_id TEXT,
+    run_date TEXT,
+    status TEXT NOT NULL,   -- parsed | lane stats failed | library stats failed | skipped
+    detail TEXT,
+    scanned_at TEXT NOT NULL,
+    origin TEXT NOT NULL DEFAULT 'validate',  -- validate | reconstructed
+    UNIQUE (host, run_dir)
+);
+-- one row per validate invocation: roots and deployment, to reproduce the scan
+CREATE TABLE IF NOT EXISTS scan_runs (
+    host TEXT NOT NULL,
+    source TEXT NOT NULL,
+    since TEXT,
+    url TEXT NOT NULL,
+    illumina_root TEXT,
+    raw_root TEXT,
+    aviti_root TEXT,
+    group_root TEXT,
+    n_dirs INTEGER NOT NULL,
+    scanned_at TEXT NOT NULL,
+    origin TEXT NOT NULL DEFAULT 'validate',
+    UNIQUE (host, source, scanned_at)
 )
 """
 
@@ -383,12 +423,21 @@ def validate(args):
     if args.since:
         runs += discoverRuns(datetime.datetime.strptime(args.since, "%Y-%m-%d"), roots)
     ok = []
+    scan = {}  # run dir -> [flowcell_id, run_date, status, detail]
+
+    def mark(runDir, status, detail):
+        row = scan[str(runDir)]
+        row[2] = status if row[2] == "parsed" else f"{row[2]}, {status}"
+        row[3] = f"{row[3]}; {detail}" if row[3] else detail
+
     for r in runs:
         try:
-            runInfo(r, roots)
+            _, fcid, date = runInfo(r, roots)
         except (ValueError, IndexError):
             print(f"  skip {r}: not a short-read flowcell dir name")
+            scan[str(r)] = [None, None, "skipped", "not a short-read flowcell dir name"]
             continue
+        scan[str(r)] = [fcid, date.isoformat(), "parsed", None]
         ok.append(r)
     runs = ok
     if not runs:
@@ -417,18 +466,30 @@ def validate(args):
                     cand["matrix"][fcid][k].add(round(float(v), 6))
             except Exception as e:  # noqa: BLE001 - report, carry on with other runs
                 print(f"  {runDir.name}: lane stats failed: {e!r}")
+                mark(runDir, "lane stats failed", repr(e))
         try:
             for k, vs in seqStats(runDir, roots).items():
                 cand["sequences"][fcid][k] |= vs
         except Exception as e:  # noqa: BLE001
             print(f"  {runDir.name}: library stats failed: {e!r}")
+            mark(runDir, "library stats failed", repr(e))
     print(f"parsed {len(runs)} run dirs, {len(dates)} flowcells")
 
     s = session(args)
     start, end = min(dates.values()), max(dates.values())
     db = sqlite3.connect(args.db)
-    db.execute(SCHEMA)
+    db.executescript(SCHEMA)
     now = datetime.datetime.now().isoformat(timespec="seconds")
+    host = socket.gethostname()
+    db.executemany(
+        "INSERT OR REPLACE INTO scanned VALUES (?,?,?,?,?,?,?,?,'validate')",
+        [(d, host, args.source, *v, now) for d, v in scan.items()],
+    )
+    db.execute(
+        "INSERT OR REPLACE INTO scan_runs VALUES (?,?,?,?,?,?,?,?,?,?,'validate')",
+        (host, args.source, args.since, args.url, args.illumina_root, args.raw_root,
+         args.aviti_root, args.group_root, len(scan), now),
+    )
     stats = Counter()
     fetched = {k: fetch(s, args, k, start, end) for k in ("matrix", "sequences")}
     for kind in ("sequences", "matrix"):
@@ -458,7 +519,15 @@ def validate(args):
                 old = entries.get(key, {}).get(field)
                 stats[kind, "compared"] += 1
                 if not differs(old, new, args.tol):
+                    db.execute(
+                        "INSERT OR REPLACE INTO matches VALUES (?,?,?,?,?,?)",
+                        (fcid, kind, key, field, new, dates[fcid].isoformat()),
+                    )
                     continue
+                db.execute(
+                    "DELETE FROM matches WHERE flowcell_id=? AND kind=? AND key=? AND field=?",
+                    (fcid, kind, key, field),
+                )
                 stats[kind, f"mismatch {field}"] += 1
                 row = db.execute(
                     "SELECT old_value, new_value FROM mismatches "
@@ -641,6 +710,11 @@ def main():
         "--aviti-root", default="/rapidus/data/sequencing_data/ElementBiosciences"
     )
     p.add_argument("--group-root", default="/data")
+    p.add_argument(
+        "--source",
+        default="adhoc",
+        help="label recorded with the scanned dirs, e.g. rapidus-2024+, longus2-inbox, processed_flowcells",
+    )
     p = sub.add_parser("push", parents=[parkour])
     p.add_argument("--apply", action="store_true", help="POST (default: dry run)")
     p = sub.add_parser("compare", parents=[parkour], help="read-only stored vs parsed")

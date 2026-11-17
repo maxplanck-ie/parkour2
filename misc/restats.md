@@ -27,9 +27,26 @@ Read-only. GETs all sequence and lane statistics from `--url`, joins them with e
 PARKOUR_PASSWORD=... python misc/restats_report.py --url test --user <user> --db misc/backfill.sqlite --out misc/restats_report_test.html --cache /tmp/rpt
 ```
 Classes: `ZERO` (Parkour stores 0, files say otherwise, the old-parser bug), `WRONG` (non-zero and different; minor <1 %, moderate 1-10 %, major >=10 %), `MISSING` (API field exists, nothing stored), `NEW` (field the API does not expose: `fragment_*`, `peak_*`, `frip`, `fragments_total`), `NOENTRY` (no Parkour entry for that flowcell/barcode), `MATCH`.
-The page is gitignored (it embeds the data); regenerate it with the command above. Blind spot: the sqlite only holds rows that differed from parkour-dev when it was built, so already-equal values are not counted.
+
+The page is gitignored. It embeds the data and the private run-dir paths, so it is the place that lists every scanned flowcell dir (section 6: one row per `validate` run with its roots and URL, then every dir with its status). Regenerate it with the command above.
 
 First run, `parkour-test` (2026-11-13), 72,577 rows: ZERO 844 (all `optical_duplicates`), WRONG 368 (major 162, moderate 50, minor 156), MISSING 9,967, NEW 39,290, NOENTRY 22,108.
+
+### MATCH counts need a rerun of `validate`
+`validate` now also writes the values that already equal Parkour into a `matches` table, so the report can show real percentages. The current `backfill.sqlite` was built before that, so it has no `matches` rows and the report says "ranking only" for the wrong share. To fix it, rerun the three sources below with `--source`, then merge. Not done yet (code update only).
+
+## What `validate` records
+Besides `mismatches` and `matches`, every `validate` run writes:
+- `scan_runs`: host, `--source` label, `--since`, deployment URL, the four roots, number of dirs, time. One row per invocation.
+- `scanned`: every flowcell dir considered, its flowcell id, run date and status (`parsed`, `lane stats failed`, `library stats failed`, `skipped`) plus the error text. `lane stats failed` still has sequence rows; only lane (matrix) rows are missing.
+
+`origin` is `validate` for rows recorded by the script and `reconstructed` for rows listed afterwards. The existing `backfill.sqlite` has `reconstructed` rows only (listed read-only on 2026-11-17 from the three hosts' roots; problems taken from the 2026-11-13 run logs). A dir that was created after 2026-11-13 can appear there and was not part of the validated data.
+
+## Rerun recipe (for the next agent)
+Labels used so far: `processed_flowcells` (rapidus, `/data/manke/repository/processed_flowcells/*/*/` as positional dirs), `rapidus-2024+` (rapidus, `--since 2024-01-01`), `longus2-inbox` (longus2, `--since 2024-01-01` with `--illumina-root /scratch/INBOX/sequencing_data2 --aviti-root /scratch/INBOX/sequencing_data`). The exact roots and dir lists are in section 6 of the report.
+1. Pipe `restats.py` over ssh stdin into a `mktemp -d` on the host and run `validate --url dev --user <user> --cert /etc/pki/tls/certs/ca-bundle.crt --db <tmp>/<label>.sqlite --source <label> ...`; copy the sqlite back as base64 on stdout. Credentials go over stdin or env only.
+2. Merge: `python misc/restats_merge.py misc/backfill.sqlite rapidus-2024+.sqlite longus2-inbox.sqlite processed_flowcells.sqlite` (first source wins; `mismatches`, `matches`, `scanned`, `scan_runs` are all merged).
+3. Regenerate the report.
 
 ## Rules for this backfill
 - `validate` only: it reads flowcell directories and does GET requests against Parkour. It never writes to Parkour.
@@ -58,8 +75,8 @@ Every run: `restats.py validate --url https://parkour-dev.ie-freiburg.mpg.de --u
 1. `restats.py` piped over ssh stdin into a `mktemp -d /tmp/restats_bf.*` directory on the host. The directory is deleted on exit; nothing else on rapidus or longus2 is touched.
 2. Credentials read on rapidus (or passed through stdin to longus2), exported as `PARKOUR_PASSWORD`.
 3. The finished sqlite goes back to this machine as base64 on stdout.
-4. Merge with first source winning on the UNIQUE key `(flowcell_id, kind, key, field)`. Priority: `since2024`, `longus2`, `old`.
-5. Result copied to `misc/backfill.sqlite` (12 MB). It is gitignored like `misc/restats.sqlite`; it lives on this machine only, regenerate with the steps above.
+4. Merge with `misc/restats_merge.py` (first source wins on the UNIQUE key `(flowcell_id, kind, key, field)`). Priority: `since2024`, `longus2`, `old`. The first merge was done with an earlier ad-hoc copy of that script.
+5. Result copied to `misc/backfill.sqlite` (12 MB; now larger with `scanned` rows). It is gitignored like `misc/restats.sqlite`; it lives on this machine only, regenerate with the steps above.
 
 ## Results
 | Source | Rows | Flowcells | Run dates | Notes |
