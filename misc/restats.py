@@ -175,8 +175,10 @@ def runInfo(runDir, roots):
 
 
 def discoverRuns(since, roots):
-    runs = glob.glob(f"{roots.illumina_root}/*_lanes_*") + glob.glob(
-        f"{roots.aviti_root}/*/*_lanes_*"
+    runs = (
+        glob.glob(f"{roots.illumina_root}/*_lanes_*")
+        + glob.glob(f"{roots.aviti_root}/*/*_lanes_*")  # rapidus: AV<instrument>/<run>
+        + glob.glob(f"{roots.aviti_root}/*_lanes_*")  # longus2: runs directly under the root
     )
     out = []
     for r in map(Path, sorted(runs)):
