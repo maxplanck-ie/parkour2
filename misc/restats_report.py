@@ -83,7 +83,7 @@ def load(args):
         r.raise_for_status()
         out[kind] = r.json()
         if cache:
-            cache.parent.mkdir(parents=True, exist_ok=True)
+            cache.parent.mkdir(parents=True, exist_ok=True, mode=0o700)
             cache.write_text(json.dumps(out[kind]))
     return out
 

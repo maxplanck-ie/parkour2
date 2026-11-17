@@ -79,7 +79,7 @@ code { background: #eef0f3; padding: 0 4px; border-radius: 3px; }
 <section>
   <h2>3. Where it is wrong <small>(segment the decision)</small></h2>
   <div class="tabs" id="tabs"></div>
-  <p class="note">"Wrong share" = (ZERO + WRONG) / (ZERO + WRONG + MISSING + MATCH): the part of the compared values that Parkour stores wrongly. Without the <code>matches</code> table (see top) MATCH is 0 and this only ranks segments.</p>
+  <p class="note">"Wrong share" = (ZERO + WRONG) / (ZERO + WRONG + MATCH): the part of the values Parkour stores that is wrong. MISSING is left out, nothing is stored there. Without the <code>matches</code> table (see top) MATCH is 0 and this only ranks segments.</p>
   <div class="scroll"><table id="byseg"></table></div>
 </section>
 
@@ -148,7 +148,7 @@ function render() {
   rows.forEach(r => tot[r[6]] += r[7]);
   const all = tot.reduce((a, b) => a + b, 0);
   const wrong = tot[CI.ZERO] + WRONGS.reduce((a, c) => a + tot[c], 0);
-  const comparable = tot[CI.MATCH] + wrong + tot[CI.MISSING];
+  const comparable = tot[CI.MATCH] + wrong;
   document.getElementById("sumsub").textContent = `(${all.toLocaleString()} rows in selection)`;
   const card = (cls, big, small) => `<div class="card ${cls}"><b>${big.toLocaleString()}</b><span>${small}</span></div>`;
   document.getElementById("cards").innerHTML =
@@ -160,7 +160,7 @@ function render() {
     card("new", tot[CI.NEW], "NEW (field not in Parkour)") +
     card("", tot[CI.NOENTRY], "NOENTRY (no Parkour entry)") +
     card("ok", tot[CI.MATCH], "MATCH") +
-    card(wrong ? "bad" : "ok", comparable ? Math.round(1000 * wrong / comparable) / 10 : 0, D.meta.has_matches ? "% of compared values ZERO/WRONG" : "% of differing rows ZERO/WRONG (ranking only)");
+    card(wrong ? "bad" : "ok", comparable ? Math.round(1000 * wrong / comparable) / 10 : 0, D.meta.has_matches ? "% of stored values ZERO/WRONG" : "% of differing rows ZERO/WRONG (ranking only)");
 
   // by field
   const byF = {};
@@ -188,7 +188,7 @@ function render() {
     rows.forEach(r => { (m[r[DIMS.indexOf(dim)]] ??= new Array(C.length).fill(0))[r[6]] += r[7]; });
     let l = Object.entries(m).map(([k, a]) => {
       const w = a[CI.ZERO] + WRONGS.reduce((s, c) => s + a[c], 0);
-      const comp = a[CI.MATCH] + w + a[CI.MISSING];
+      const comp = a[CI.MATCH] + w;
       return [+k, a, w, comp ? w / comp : 0];
     });
     l.sort((x, y) => dim === "year" ? D.dims.year[x[0]].localeCompare(D.dims.year[y[0]]) : y[2] - x[2]);

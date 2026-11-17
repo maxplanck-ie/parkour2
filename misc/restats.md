@@ -30,11 +30,11 @@ Classes: `ZERO` (Parkour stores 0, files say otherwise, the old-parser bug), `WR
 
 The page is gitignored. It embeds the data and the private run-dir paths, so it is the place that lists every scanned flowcell dir (section 6: one row per `validate` run with its roots and URL, then every dir with its status). Regenerate it with the command above.
 
-Result on `parkour-test` (2026-11-17, 164,875 values): MATCH 92,298, ZERO 844 (all `optical_duplicates`), WRONG 368 (major 162, moderate 50, minor 156), MISSING 9,967, NEW 39,290, NOENTRY 22,108. Of the 103,477 values that exist in Parkour and can be compared (MATCH + MISSING + ZERO + WRONG), 1,212 (1.2 %) are ZERO or WRONG.
+Result on `parkour-test` (2026-11-17, before the review fixes, 164,875 values): MATCH 92,298, ZERO 844 (all `optical_duplicates`), WRONG 368 (major 162, moderate 50, minor 156), MISSING 9,967, NEW 39,290, NOENTRY 22,108. Of the 93,510 values Parkour stores and that were compared (MATCH + ZERO + WRONG), 1,212 (1.3 %) are ZERO or WRONG. MISSING is not in the denominator, nothing is stored there. This table and the figure are from before the 2026-11-17 review fixes and need a regenerated report.
 
 | Field | ZERO + WRONG / comparable | ZERO | WRONG major |
 |---|---|---|---|
-| `optical_duplicates` | 970 / 20,659 (4.7 %) | 844 | 46 |
+| `optical_duplicates` | 970 / 20,659 (4.7 %, MISSING included) | 844 | 46 |
 | `reads_pf_sequenced` | 126 / 20,659 (0.6 %) | 0 | 61 |
 | `mapped_reads` | 47 / 17,806 (0.3 %) | 0 | 17 |
 | `assigned_reads` | 34 / 3,146 (1.1 %) | 0 | 34 |
