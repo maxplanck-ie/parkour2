@@ -45,6 +45,15 @@ Result on `parkour-test` (2026-11-17, 164,875 values): MATCH 92,298, ZERO 844 (a
 ### MATCH counts
 `validate` writes the values that already equal Parkour into a `matches` table, so the report shows real percentages. `misc/restats_backfill.sqlite` was rebuilt on 2026-11-17 with all three sources rerun (`--url dev`, GET only): 72,577 mismatching values over 642 flowcells and 92,298 matching values over 789 flowcells. `scanned` rows are now recorded by `validate` (2,554 dirs, `origin = validate`).
 
+## Protocol coverage (2026-11-17, `parkour-test`)
+Share of libraries on scanned flowcells with any parsed value in `restats_backfill.sqlite`: 85-96 % for the big RNA, ATAC and CUT_and_x protocols; low for NEBNext Ultra II DNA (30 %), Cel-Seq 2 (6 %), 10x scRNA (59 %), Hi-C (74 %, base stats only). "Other - ..." protocols are out of scope. Causes:
+
+- **Empty stats file crash (fixed).** 121 scanned dirs on 103 flowcells (2025-26, NovaSeq and AVITI, about 3,650 libraries) failed with `ValueError: not enough values to unpack (expected 2, got 0)`: an empty `<sample>.duplicate.txt`. `seqStats` lost the whole flowcell, including the Analysis-based stats. It now skips the empty file and keeps going. The `restats_backfill.sqlite` built on 2026-11-17 still has the failure. A rerun of those dirs adds their values. BRB `getNReads` has the same `s.split()` unpack and cannot send base stats for those runs either.
+- **Old runs have no per-library stats files.** None of the 2,004 `processed_flowcells` dirs (2018-2024) has a `.metrics` or `.duplicate.txt`. NEBNext Ultra II DNA, 10x scRNA and Cel-Seq 2 are mostly such runs, so there is nothing to parse. `getNReads` falls back to counting R1 lines and reports `optical_duplicates = 0.0` for them (`BRB/ET.py`), so a stored 0 on an old run is a placeholder, not a measurement.
+- **`# Reads` is not `reads_pf_sequenced`.** `Reports/Demultiplex_Stats.csv` (2022-24 runs) equals Parkour's value for 215 sampled libraries but is 4-8 % higher for more than 1,000. Do not use it as a fallback: it would create false WRONG rows. Pre-2022 `Stats/DemultiplexingStats.xml` names samples by free text, not barcode.
+- **Hi-C.** Parkour stores no mapping stats for Hi-C (0 of 265 libraries from 2025-26). `multiqc_hicexplorer.txt` has one row per file name, not per barcode. Not parsed.
+- **10x scRNA and Cel-Seq 2.** All libraries are from 2018-2023 (Cel-Seq 2: 2018-2020); no stats files, nothing to add.
+
 ## What `validate` records
 Besides `mismatches` and `matches`, every `validate` run writes:
 - `scan_runs`: host, `--source` label, `--since`, deployment URL, the four roots, number of dirs, time. One row per invocation.
