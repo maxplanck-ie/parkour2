@@ -30,17 +30,27 @@ Classes: `ZERO` (Parkour stores 0, files say otherwise, the old-parser bug), `WR
 
 The page is gitignored. It embeds the data and the private run-dir paths, so it is the place that lists every scanned flowcell dir (section 6: one row per `validate` run with its roots and URL, then every dir with its status). Regenerate it with the command above.
 
-First run, `parkour-test` (2026-11-13), 72,577 rows: ZERO 844 (all `optical_duplicates`), WRONG 368 (major 162, moderate 50, minor 156), MISSING 9,967, NEW 39,290, NOENTRY 22,108.
+Result on `parkour-test` (2026-11-17, 164,875 values): MATCH 92,298, ZERO 844 (all `optical_duplicates`), WRONG 368 (major 162, moderate 50, minor 156), MISSING 9,967, NEW 39,290, NOENTRY 22,108. Of the 103,477 values that exist in Parkour and can be compared (MATCH + MISSING + ZERO + WRONG), 1,212 (1.2 %) are ZERO or WRONG.
 
-### MATCH counts need a rerun of `validate`
-`validate` now also writes the values that already equal Parkour into a `matches` table, so the report can show real percentages. The current `backfill.sqlite` was built before that, so it has no `matches` rows and the report says "ranking only" for the wrong share. To fix it, rerun the three sources below with `--source`, then merge. Not done yet (code update only).
+| Field | ZERO + WRONG / comparable | ZERO | WRONG major |
+|---|---|---|---|
+| `optical_duplicates` | 970 / 20,659 (4.7 %) | 844 | 46 |
+| `reads_pf_sequenced` | 126 / 20,659 (0.6 %) | 0 | 61 |
+| `mapped_reads` | 47 / 17,806 (0.3 %) | 0 | 17 |
+| `assigned_reads` | 34 / 3,146 (1.1 %) | 0 | 34 |
+| `uniq_mapped` | 29 / 11,413 (0.3 %) | 0 | 0 |
+| `insert_size` | 4 / 6,394 (0.1 %) | 0 | 2 |
+| `dupped_reads` | 2 / 10,381 (0.0 %) | 0 | 2 |
+
+### MATCH counts
+`validate` writes the values that already equal Parkour into a `matches` table, so the report shows real percentages. `misc/backfill.sqlite` was rebuilt on 2026-11-17 with all three sources rerun (`--url dev`, GET only): 72,577 mismatching values over 642 flowcells and 92,298 matching values over 789 flowcells. `scanned` rows are now recorded by `validate` (2,554 dirs, `origin = validate`).
 
 ## What `validate` records
 Besides `mismatches` and `matches`, every `validate` run writes:
 - `scan_runs`: host, `--source` label, `--since`, deployment URL, the four roots, number of dirs, time. One row per invocation.
 - `scanned`: every flowcell dir considered, its flowcell id, run date and status (`parsed`, `lane stats failed`, `library stats failed`, `skipped`) plus the error text. `lane stats failed` still has sequence rows; only lane (matrix) rows are missing.
 
-`origin` is `validate` for rows recorded by the script and `reconstructed` for rows listed afterwards. The existing `backfill.sqlite` has `reconstructed` rows only (listed read-only on 2026-11-17 from the three hosts' roots; problems taken from the 2026-11-13 run logs). A dir that was created after 2026-11-13 can appear there and was not part of the validated data.
+`origin` is `validate` for rows recorded by the script and `reconstructed` for rows listed afterwards. `reconstructed` rows come from before the rerun (listed read-only on 2026-11-17); the current `backfill.sqlite` has `validate` rows.
 
 ## Rerun recipe (for the next agent)
 Labels used so far: `processed_flowcells` (rapidus, `/data/manke/repository/processed_flowcells/*/*/` as positional dirs), `rapidus-2024+` (rapidus, `--since 2024-01-01`), `longus2-inbox` (longus2, `--since 2024-01-01` with `--illumina-root /scratch/INBOX/sequencing_data2 --aviti-root /scratch/INBOX/sequencing_data`). The exact roots and dir lists are in section 6 of the report.
