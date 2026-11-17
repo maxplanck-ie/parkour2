@@ -346,6 +346,20 @@ def seqStats(runDir, roots):
                 add(cand, bc, "dupped_reads", dup[sample])
             if sample + ".filtered" in assigned:
                 add(cand, bc, "assigned_reads", assigned[sample + ".filtered"])
+        # Hi-C: one multiqc_hicexplorer row per matrix file, named <sample>_bs<binsize>.cool
+        hic = mq / "multiqc_hicexplorer.txt"
+        if hic.exists():
+            hdf = pd.read_csv(
+                hic,
+                sep="\t",
+                usecols=["Sample", "Pairs mappable, unique and high quality_pct"],
+            )
+            seen = set()
+            for name, pct in zip(hdf["Sample"].astype(str), hdf.iloc[:, 1]):
+                sample = re.sub(r"_bs\d+\w*\.cool$", "", name)
+                if sample in s2l and sample not in seen:
+                    seen.add(sample)  # several bin sizes: first row wins
+                    add(cand, s2l[sample], "uniq_mapped", pct)
         # peak QC (ATAC / ChIP / CUT&Tag runs with peak calling); mirrors ET.peakQC
         for f in adir.glob("MACS2_QC/*.filtered.BAM_peaks.qc.txt"):
             sample = f.name.removesuffix(".filtered.BAM_peaks.qc.txt")
