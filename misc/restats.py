@@ -375,12 +375,13 @@ def seqStats(runDir, roots):
                 sep="\t",
                 usecols=["Sample", "Pairs mappable, unique and high quality_pct"],
             )
-            seen = set()
+            rate = {}  # several bin sizes per sample: the 10kb row wins, else the first row
             for name, pct in zip(hdf["Sample"].astype(str), hdf.iloc[:, 1]):
                 sample = re.sub(r"_bs\d+[A-Za-z]*\.cool$", "", name)
-                if sample in s2l and sample not in seen:
-                    seen.add(sample)  # several bin sizes: first row wins
-                    add(cand, s2l[sample], "uniq_mapped", pct)
+                if sample in s2l and (sample not in rate or name.endswith("_bs10kb.cool")):
+                    rate[sample] = pct
+            for sample, pct in rate.items():
+                add(cand, s2l[sample], "uniq_mapped", pct)
         # peak QC (ATAC / ChIP / CUT&Tag runs with peak calling); mirrors ET.peakQC
         for f in adir.glob("MACS2_QC/*.filtered.BAM_peaks.qc.txt"):
             sample = f.name.removesuffix(".filtered.BAM_peaks.qc.txt")
