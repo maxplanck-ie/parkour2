@@ -30,11 +30,11 @@ attrs==26.1.0
     #   -c backend/requirements/3.10/dev.txt
     #   jsonschema
     #   referencing
-boto3==1.43.126
+boto3==1.44.3
     # via
     #   -c backend/requirements/3.10/dev.txt
     #   -r backend/requirements/dev.in
-botocore==1.43.126
+botocore==1.44.3
     # via
     #   -c backend/requirements/3.10/dev.txt
     #   boto3
@@ -74,7 +74,7 @@ contourpy==1.4.0 ; python_full_version >= '3.12'
     #   matplotlib
 coverage==7.16.2 ; python_full_version < '3.11'
     # via pytest-cov
-coverage==7.17.2 ; python_full_version >= '3.11'
+coverage==7.17.3 ; python_full_version >= '3.11'
     # via pytest-cov
 cryptography==50.0.2
     # via
@@ -149,7 +149,7 @@ django-extensions==4.1
     # via
     #   -c backend/requirements/3.10/dev.txt
     #   -r backend/requirements/base.in
-django-import-export==4.4.4
+django-import-export==4.4.5
     # via
     #   -c backend/requirements/3.10/dev.txt
     #   -r backend/requirements/base.in
@@ -157,7 +157,11 @@ django-linear-migrations==2.19.0
     # via
     #   -c backend/requirements/3.10/dev.txt
     #   -r backend/requirements/base.in
-django-migration-linter==6.0.0
+django-migration-linter==6.0.0 ; python_full_version < '3.11'
+    # via
+    #   -c backend/requirements/3.10/dev.txt
+    #   -r backend/requirements/dev.in
+django-migration-linter==7.0.0 ; python_full_version >= '3.11'
     # via
     #   -c backend/requirements/3.10/dev.txt
     #   -r backend/requirements/dev.in
@@ -226,11 +230,11 @@ grimp==3.18 ; python_full_version < '3.11'
     # via
     #   -c backend/requirements/3.10/dev.txt
     #   import-linter
-grimp==3.19 ; python_full_version >= '3.11'
+grimp==3.20 ; python_full_version >= '3.11'
     # via
     #   -c backend/requirements/3.10/dev.txt
     #   import-linter
-gunicorn==26.2.0
+gunicorn==27.0.1
     # via
     #   -c backend/requirements/3.10/dev.txt
     #   -r backend/requirements/base.in
@@ -327,7 +331,7 @@ lxml==6.1.3
     # via
     #   -c backend/requirements/3.10/dev.txt
     #   python-docx
-markdown-it-py==4.2.0
+markdown-it-py==4.3.0
     # via
     #   -c backend/requirements/3.10/dev.txt
     #   rich
@@ -358,14 +362,14 @@ numpy==1.25.2 ; python_full_version < '3.12'
     #   contourpy
     #   matplotlib
     #   pandas
-numpy==2.5.4 ; python_full_version >= '3.12'
+numpy==2.5.5 ; python_full_version >= '3.12'
     # via
     #   -c backend/requirements/3.10/dev.txt
     #   -r backend/requirements/base.in
     #   contourpy
     #   matplotlib
     #   pandas
-openai==3.46.0
+openai==3.51.0
     # via
     #   -c backend/requirements/3.10/dev.txt
     #   -r backend/requirements/dev.in
@@ -407,7 +411,7 @@ pillow==13.0.0 ; python_full_version >= '3.11'
     #   -c backend/requirements/3.10/dev.txt
     #   fpdf2
     #   matplotlib
-playwright==1.64.1
+playwright==1.65.2
     # via pytest-playwright
 pluggy==1.7.0
     # via
@@ -449,10 +453,6 @@ pydantic-core==2.50.4
     # via
     #   -c backend/requirements/3.10/dev.txt
     #   pydantic
-pyee==13.0.1 ; python_full_version < '3.12'
-    # via playwright
-pyee==14.0.0 ; python_full_version >= '3.12'
-    # via playwright
 pygments==2.21.0
     # via
     #   -c backend/requirements/3.10/dev.txt
@@ -516,7 +516,7 @@ regex==2026.9.29 ; python_full_version < '3.11'
     # via
     #   -c backend/requirements/3.10/dev.txt
     #   tiktoken
-regex==2026.11.9 ; python_full_version >= '3.11'
+regex==2026.11.15 ; python_full_version >= '3.11'
     # via
     #   -c backend/requirements/3.10/dev.txt
     #   tiktoken
@@ -556,7 +556,7 @@ sql-metadata==3.0.1
     # via
     #   -c backend/requirements/3.10/dev.txt
     #   -r backend/requirements/dev.in
-sqlglot==30.30.0
+sqlglot==30.31.0
     # via
     #   -c backend/requirements/3.10/dev.txt
     #   sql-metadata
@@ -584,7 +584,7 @@ tiktoken==0.14.0
     # via
     #   -c backend/requirements/3.10/dev.txt
     #   -r backend/requirements/dev.in
-toml==0.10.2
+toml==0.10.2 ; python_full_version < '3.11'
     # via
     #   -c backend/requirements/3.10/dev.txt
     #   django-migration-linter
@@ -618,7 +618,6 @@ typing-extensions==4.16.0
     #   openai
     #   pydantic
     #   pydantic-core
-    #   pyee
     #   python-docx
     #   referencing
     #   typing-inspection
