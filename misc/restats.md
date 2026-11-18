@@ -30,12 +30,12 @@ Classes: `ZERO` (Parkour stores 0, files say otherwise, the old-parser bug), `WR
 
 The page is gitignored. It embeds the data and the private run-dir paths, so it is the place that lists every scanned flowcell dir (section 6: one row per `validate` run with its roots and URL, then every dir with its status). Regenerate it with the command above.
 
-Result on `parkour-test` (2026-11-17, after the review fixes and a full rerun, 178,304 values): MATCH 99,809, ZERO 844 (all `optical_duplicates`), WRONG 362 (major 156, moderate 50, minor 156), MISSING 10,103, NEW 45,127, NOENTRY 22,059. Of the 101,015 values Parkour stores and that were compared (MATCH + ZERO + WRONG), 1,206 (1.19 %) are ZERO or WRONG. MISSING is not in the denominator, nothing is stored there. The Parkour values come from `parkour-test`; the sqlite `old_value` comes from `parkour-dev` at validate time.
+Result on `parkour-test` (2026-11-18, after the review fixes, a full rerun and the longus2 Aviti discovery fix, 183,342 values): MATCH 103,613, ZERO 844 (all `optical_duplicates`), WRONG 362 (major 156, moderate 50, minor 156), MISSING 10,217, NEW 45,127, NOENTRY 23,179. Of the 104,819 values Parkour stores and that were compared (MATCH + ZERO + WRONG), 1,206 (1.15 %) are ZERO or WRONG. MISSING is not in the denominator, nothing is stored there. The Parkour values come from `parkour-test`; the sqlite `old_value` comes from `parkour-dev` at validate time.
 
 | Field | ZERO + WRONG / comparable | ZERO | WRONG major |
 |---|---|---|---|
-| `optical_duplicates` | 970 / 20,659 (4.7 %) | 844 | 46 |
-| `reads_pf_sequenced` | 126 / 20,659 (0.6 %) | 0 | 61 |
+| `optical_duplicates` | 970 / 22,333 (4.3 %) | 844 | 46 |
+| `reads_pf_sequenced` | 126 / 22,333 (0.6 %) | 0 | 61 |
 | `mapped_reads` | 41 / 18,511 (0.2 %) | 0 | 11 |
 | `assigned_reads` | 34 / 4,057 (0.8 %) | 0 | 34 |
 | `uniq_mapped` | 29 / 8,835 (0.3 %) | 0 | 0 |
@@ -43,25 +43,25 @@ Result on `parkour-test` (2026-11-17, after the review fixes and a full rerun, 1
 | `dupped_reads` | 2 / 11,537 (0.0 %) | 0 | 2 |
 
 ### MATCH counts
-`validate` writes the values that already equal Parkour into a `matches` table, so the report shows real percentages. `misc/restats_backfill.sqlite` was rebuilt on 2026-11-17 with all three sources rerun with the fixed code (`--url dev`, GET only, merged by `restats_merge.py`): 78,495 mismatching values over 674 flowcells and 99,809 matching values over 828 flowcells. `scanned` rows are recorded by `validate` (2,554 dirs: `rapidus-2024+` 404, `longus2-inbox` 146, `processed_flowcells` 2,004; `origin = validate`).
+`validate` writes the values that already equal Parkour into a `matches` table, so the report shows real percentages. `misc/restats_backfill.sqlite` was rebuilt on 2026-11-18 with all three sources rerun with the fixed code (`--url dev`, GET only, merged by `restats_merge.py`): 79,729 mismatching values over 705 flowcells and 103,613 matching values over 845 flowcells. `scanned` rows are recorded by `validate` (2,616 dirs: `rapidus-2024+` 404, `longus2-inbox` 208, `processed_flowcells` 2,004; `origin = validate`).
 
-## Protocol coverage (2026-11-17, `parkour-test`)
-Per-protocol result after the full rerun of 2026-11-17 (values compared against `parkour-test`; `MISSING` = parsed value, Parkour empty, so backfillable). "Other - ..." protocols are out of scope.
+## Protocol coverage (2026-11-18, `parkour-test`)
+Per-protocol result after the full rerun of 2026-11-18 (values compared against `parkour-test`; `MISSING` = parsed value, Parkour empty, so backfillable). "Other - ..." protocols are out of scope.
 
 | Protocol | MATCH | ZERO + WRONG | MISSING | Note |
 |---|---|---|---|---|
-| HI-C | 908 | 16 (ZERO) | 228 | all MISSING are `uniq_mapped`, now parsed |
+| HI-C | 1,020 | 16 (ZERO) | 232 | all MISSING are `uniq_mapped`, now parsed |
 | NEBNext Ultra II DNA Library Prep Kit for Illumina | 4,824 | 0 | 48 (`mapped_reads` 24, `insert_size` 24) | 5,465 NEW `fragment_*` values |
-| NEBNext Single Cell RNA Library Preparation | 3,057 | 94 (ZERO 60 `optical_duplicates`, WRONG 34 `assigned_reads`) | 0 | |
+| NEBNext Single Cell RNA Library Preparation | 3,265 | 94 (ZERO 60 `optical_duplicates`, WRONG 34 `assigned_reads`) | 4 | |
 | scRNA-Seq 10xGenomics | 690 | 16 (WRONG: `reads_pf_sequenced` 8, `optical_duplicates` 8) | 0 | |
 | Cel-Seq 2 for single cell RNA-Seq | 64 | 0 | 0 | |
 
 Causes of the remaining gaps:
 
-- **Empty or garbled stats file crash (fixed).** 121 scanned dirs on 103 flowcells (2025-26, NovaSeq and AVITI, about 3,650 libraries) failed with `ValueError: not enough values to unpack (expected 2, got 0)`: an empty `<sample>.duplicate.txt`. `seqStats` lost the whole flowcell, including the Analysis-based stats. It now skips unusable files and keeps going; BRB `getNReads` does the same and falls back to the next usable file or to the R1 read count. All three sources were rerun in full on 2026-11-17 with the fixed code.
+- **Empty stats files on rapidus are stubs of runs moved to longus2 (fixed).** 121 scanned dirs on 103 flowcells (2025-03 to 2026-06, NovaSeq and AVITI, 4,628 libraries) have a 0-byte fastq and a 0-byte `.duplicate.txt` on rapidus, and an adjacent `<run>.is_on_longus2` flag. The real data (non-empty `.duplicate.txt`) is on longus2 under `/scratch/INBOX/sequencing_data*`. Before the fix the empty file crashed `seqStats` (`ValueError: not enough values to unpack (expected 2, got 0)`) and lost the whole flowcell, including the Analysis-based stats. `seqStats` now skips unusable files and keeps going; BRB `getNReads` does the same and falls back to the next usable file or to the R1 read count. The `longus2-inbox` source supplies the values. `restats.py` first missed longus2's Aviti runs because they sit directly under the root (`<root>/<run>_lanes_N`, not `<root>/AV<id>/<run>`); now fixed, so 62 Aviti runs are scanned. After the rerun 120 of the 121 runs are covered at flowcell level; the 121st has no entries in Parkour. 227 stub samples still have no value because Parkour has no entry for that (flowcell, barcode) on dev or test.
 - **Old runs have no per-library stats files.** None of the 2,004 `processed_flowcells` dirs (2018-2024) has a `.metrics` or `.duplicate.txt`. NEBNext Ultra II DNA, 10x scRNA and Cel-Seq 2 are mostly such runs, so there is nothing to parse. `getNReads` falls back to counting R1 lines and reports `optical_duplicates = 0.0` for them (`BRB/ET.py`), so a stored 0 on an old run is a placeholder, not a measurement.
 - **`# Reads` is not `reads_pf_sequenced`.** `Reports/Demultiplex_Stats.csv` (2022-24 runs) equals Parkour's value for 215 sampled libraries but is 4-8 % higher for more than 1,000. Do not use it as a fallback: it would create false WRONG rows. Pre-2022 `Stats/DemultiplexingStats.xml` names samples by free text, not barcode.
-- **Hi-C.** Parkour stored no mapping stats for Hi-C (0 of 265 libraries from 2025-26). `multiqc_hicexplorer.txt` has one row per matrix named `<sample>_bs<binsize>.cool`, and `<sample>` is the Parkour library name. `restats.py` reads `Pairs mappable, unique and high quality_pct` into `uniq_mapped` (first bin size wins), and BRB `HiC()` sends the same value. Verified on the full rerun: 228 Hi-C `uniq_mapped` values are MISSING in Parkour and ready to backfill.
+- **Hi-C.** Parkour stored no mapping stats for Hi-C (0 of 265 libraries from 2025-26). `multiqc_hicexplorer.txt` has one row per matrix named `<sample>_bs<binsize>.cool`, and `<sample>` is the Parkour library name. `restats.py` reads `Pairs mappable, unique and high quality_pct` into `uniq_mapped` (first bin size wins), and BRB `HiC()` sends the same value. Verified on the full rerun: 232 Hi-C `uniq_mapped` values are MISSING in Parkour and ready to backfill.
 - **10x scRNA and Cel-Seq 2.** All libraries are from 2018-2023 (Cel-Seq 2: 2018-2020); no stats files, nothing to add.
 
 ## Parity with BRB (`ET.py`)
@@ -120,10 +120,10 @@ Every run: `restats.py validate --url https://parkour-dev.ie-freiburg.mpg.de --u
 ## Results
 | Source | Mismatch rows | Match rows | Flowcells | Run dates | Notes |
 |---|---|---|---|---|---|
-| `rapidus-2024+` (404 dirs) | 30,053 | 42,906 | 288 | 2024-07-02 to 2026-11-11 | 36 flowcell/sequence lines not in Parkour dev; 1,239 CONFLICT lines; 249 lane-stats failures; 4,628 empty `.duplicate.txt` skipped |
-| `longus2-inbox` (146 dirs) | 6,312 | 11,819 | 47 | 2025-03-03 to 2026-06-18 | 6 not in Parkour dev; 418 CONFLICT lines; 85 lane-stats failures |
-| `processed_flowcells` (2,004 dirs) | 47,970 | 52,581 | 719 | 2018-04-09 to 2024-06-28 | 178 not in Parkour dev; 201 CONFLICT lines; 1,910 lane-stats failures (interop files gone) |
-| merged (`misc/restats_backfill.sqlite`) | 78,495 | 99,809 | 674 with mismatches, 828 with matches | 2018-04-09 to 2026-11-11 | 78,479 sequence rows, 16 matrix rows, no key in both tables |
+| `rapidus-2024+` (404 dirs) | 30,053 | 42,906 | 288 | 2024-07-02 to 2026-11-11 | 32 sequence lines not in Parkour dev; 1,239 CONFLICT lines; 249 lane-stats failures; 4,628 empty `.duplicate.txt` skipped |
+| `longus2-inbox` (208 dirs, 62 Aviti) | 12,006 | 22,081 | 104 | 2025-03-03 to 2026-06-25 | 20 sequence lines not in Parkour dev; 418 CONFLICT lines; 85 lane-stats failures |
+| `processed_flowcells` (2,004 dirs) | 47,970 | 52,581 | 719 | 2018-04-09 to 2024-06-28 | 177 sequence lines not in Parkour dev; 201 CONFLICT lines; 1,910 lane-stats failures (interop files gone) |
+| merged (`misc/restats_backfill.sqlite`) | 79,729 | 103,613 | 705 with mismatches, 845 with matches | 2018-04-09 to 2026-11-11 | 79,599 sequence rows, 130 matrix rows, no key in both tables |
 
 New-key rows in the merged file: `fragment_median` 8,382, `fragment_q1` 8,381, `fragment_q3` 8,379, `fragment_p10` 8,380, `fragment_p90` 8,364, `fragments_total` 5,463, `peak_count` 1,050, `frip` 1,057, `peak_genome_coverage` 1,098. `insert_size` has 2,054 rows.
 
