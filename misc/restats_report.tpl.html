@@ -35,6 +35,17 @@ tr.hot td:first-child { border-left: 3px solid var(--bad); }
 .tabs button { border: 1px solid var(--line); background: #fff; padding: 4px 10px; cursor: pointer; border-radius: 4px; margin-right: 4px; }
 .tabs button.on { background: #1c1e21; color: #fff; }
 .scroll { max-height: 520px; overflow: auto; border: 1px solid var(--line); }
+.runs { display: grid; gap: 12px; }
+.run { border: 1px solid var(--line); border-radius: 6px; padding: 8px 12px; margin: 0; }
+.run h3 { margin: 0 0 6px; font-size: 1em; }
+.run dl { display: grid; grid-template-columns: max-content 1fr; gap: 2px 12px; margin: 0; }
+.run dt { color: var(--mute); }
+.run dd { margin: 0; overflow-wrap: anywhere; }
+.dirs { list-style: none; margin: 0; padding: 0; }
+.dirs li { padding: 5px 8px; border-bottom: 1px solid var(--line); overflow-wrap: anywhere; }
+.dirs li.hot { border-left: 3px solid var(--bad); }
+.dirs .meta { color: var(--mute); display: block; }
+.dirs .warn { color: var(--warn); font-weight: 600; }
 .bar { display: inline-block; height: 8px; vertical-align: middle; margin-left: 4px; }
 button.more { margin-top: 8px; padding: 4px 12px; cursor: pointer; }
 code { background: #eef0f3; padding: 0 4px; border-radius: 3px; }
@@ -98,9 +109,9 @@ code { background: #eef0f3; padding: 0 4px; border-radius: 3px; }
 <section>
   <h2>6. Scanned flowcell dirs <small id="scansub"></small></h2>
   <p class="note">Every flowcell dir <code>validate</code> considered, with the roots and deployment of each run, so a rerun after a code update can repeat the same scan. Paths are private: this page is gitignored. Rows marked <code>reconstructed</code> were listed afterwards from the host, not recorded by <code>validate</code>.</p>
-  <div class="scroll"><table id="scanruns"></table></div>
+  <div class="scroll"><div id="scanruns" class="runs"></div></div>
   <p class="note">Dirs with a problem (skipped or a parser failed) first:</p>
-  <div class="scroll"><table id="scanned"></table></div>
+  <div class="scroll"><ul id="scanned" class="dirs"></ul></div>
 </section>
 </main>
 <script>
@@ -224,18 +235,24 @@ function render() {
   const bySource = {};
   S.forEach(r => { const o = bySource[r[0]] ??= {n: 0, bad: 0}; o.n++; if (r[5] !== "parsed") o.bad++; });
   document.getElementById("scansub").textContent = S.length ? `(${S.length.toLocaleString()} dirs)` : "(none recorded)";
+  const field = (k, v) => `<dt>${k}</dt><dd>${esc(v ?? "") || "-"}</dd>`;
   document.getElementById("scanruns").innerHTML = R.length
-    ? `<tr><th>Source</th><th>Host</th><th>Since</th><th>URL</th><th>Illumina root</th><th>Raw root</th><th>Aviti root</th><th>Group root</th><th>Dirs</th><th>With problem</th><th>When</th><th>Origin</th></tr>` +
-      R.map(r => `<tr><td>${esc(r[0])}</td><td style="text-align:left">${esc(r[1])}</td><td style="text-align:left">${esc(r[2] ?? "")}</td><td style="text-align:left">${esc(r[3])}</td>` +
-        [4, 5, 6, 7].map(i => `<td style="text-align:left">${esc(r[i] ?? "")}</td>`).join("") +
-        `<td>${r[8].toLocaleString()}</td><td>${(bySource[r[0]]?.bad ?? 0).toLocaleString()}</td><td style="text-align:left">${esc(r[9])}</td><td style="text-align:left">${esc(r[10])}</td></tr>`).join("")
-    : "<tr><td>No scan runs recorded in this sqlite (it predates the scanned table). Rerun validate, or merge in a recorded sqlite.</td></tr>";
+    ? R.map(r => `<section class="run"><h3>${esc(r[0])}</h3><dl>` +
+        field("Host", r[1]) + field("Since", r[2]) + field("URL", r[3]) +
+        field("Illumina root", r[4]) + field("Raw root", r[5]) + field("Aviti root", r[6]) + field("Group root", r[7]) +
+        field("Dirs", r[8].toLocaleString()) + field("With problem", (bySource[r[0]]?.bad ?? 0).toLocaleString()) +
+        field("When", r[9]) + field("Origin", r[10]) + `</dl></section>`).join("")
+    : "<p>No scan runs recorded in this sqlite (it predates the scanned table). Rerun validate, or merge in a recorded sqlite.</p>";
   const bad = S.filter(r => r[5] !== "parsed"), good = S.filter(r => r[5] === "parsed");
   document.getElementById("scanned").innerHTML = S.length
-    ? `<tr><th>Run dir</th><th>Source</th><th>Host</th><th>Flowcell</th><th>Run date</th><th>Status</th><th>Detail</th></tr>` +
-      [...bad, ...good].slice(0, 3000).map(r => `<tr class="${r[5] !== "parsed" ? "hot" : ""}"><td>${esc(r[2])}</td><td style="text-align:left">${esc(r[0])}</td><td style="text-align:left">${esc(r[1])}</td><td style="text-align:left">${esc(r[3] ?? "")}</td><td style="text-align:left">${esc(r[4] ?? "")}</td><td style="text-align:left" class="${r[5] !== "parsed" ? "warn" : ""}">${esc(r[5])}</td><td style="text-align:left">${esc((r[6] ?? "").slice(0, 160))}</td></tr>`).join("") +
-      (S.length > 3000 ? `<tr><td>${(S.length - 3000).toLocaleString()} more parsed dirs not shown</td></tr>` : "")
-    : "<tr><td>none</td></tr>";
+    ? [...bad, ...good].slice(0, 3000).map(r => {
+        const meta = [["source", r[0]], ["host", r[1]], ["flowcell", r[3]], ["run date", r[4]]].filter(p => p[1]).map(p => `${p[0]} ${esc(p[1])}`).join(", ");
+        const detail = (r[6] ?? "").slice(0, 160);
+        return `<li class="${r[5] !== "parsed" ? "hot" : ""}"><code>${esc(r[2])}</code>` +
+          `<span class="meta">${meta}; status <span class="${r[5] !== "parsed" ? "warn" : ""}">${esc(r[5])}</span>${detail ? `; ${esc(detail)}` : ""}</span></li>`;
+      }).join("") +
+      (S.length > 3000 ? `<li>${(S.length - 3000).toLocaleString()} more parsed dirs not shown</li>` : "")
+    : "<li>none</li>";
 })();
 
 const tabs = document.getElementById("tabs");
