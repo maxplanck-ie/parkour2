@@ -36,14 +36,26 @@ import requests
 sys.path.insert(0, str(Path(__file__).parent))
 from restats import ENDPOINT, KEY, resolveUrl  # noqa: E402
 
-CLASSES = ["MATCH", "ZERO", "WRONG_minor", "WRONG_mod", "WRONG_major", "MISSING", "NEW", "NOENTRY"]
+CLASSES = [
+    "MATCH",
+    "ZERO",
+    "WRONG_minor",
+    "WRONG_mod",
+    "WRONG_major",
+    "MISSING",
+    "NEW",
+    "NOENTRY",
+]
 
 
 def family(sequencer):
     s = (sequencer or "").lower()
     for tag, name in (
-        ("aviti", "AVITI"), ("novaseq", "NovaSeq"), ("miseq", "MiSeq"),
-        ("hiseq", "HiSeq"), ("nextseq", "NextSeq"),
+        ("aviti", "AVITI"),
+        ("novaseq", "NovaSeq"),
+        ("miseq", "MiSeq"),
+        ("hiseq", "HiSeq"),
+        ("nextseq", "NextSeq"),
     ):
         if tag in s:
             return name
@@ -67,7 +79,11 @@ def load(args):
     out = {}
     s = None
     for kind in ("sequences", "matrix"):
-        cache = Path(args.cache) / f"{args.url.split('//')[1]}_{kind}.json" if args.cache else None
+        cache = (
+            Path(args.cache) / f"{args.url.split('//')[1]}_{kind}.json"
+            if args.cache
+            else None
+        )
         if cache and cache.exists() and not args.refresh:
             out[kind] = json.loads(cache.read_text())
             continue
@@ -77,7 +93,10 @@ def load(args):
             s.verify = args.cert
         r = s.get(
             f"{args.url}/{ENDPOINT[kind]}",
-            params={"start": "2015-01-01T00:00:00", "end": datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%S")},
+            params={
+                "start": "2015-01-01T00:00:00",
+                "end": datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%S"),
+            },
             timeout=900,
         )
         r.raise_for_status()
@@ -126,7 +145,11 @@ def build(args):
         e = index[kind].get((fc, key))
         year = (run_date or "")[:4] or "?"
         if e is None:
-            seg, cls, stored = (family(fcseq.get(fc)), "(no entry)", "(no entry)", "(no entry)"), "NOENTRY", None
+            seg, cls, stored = (
+                (family(fcseq.get(fc)), "(no entry)", "(no entry)", "(no entry)"),
+                "NOENTRY",
+                None,
+            )
         else:
             seg = (
                 family(e.get("sequencer")),
@@ -139,33 +162,57 @@ def build(args):
             else:
                 stored = e.get(field)
                 cls = classify(stored, new, args.tol)
-        d = (vi("year", year), vi("fam", seg[0]), vi("proto", seg[1]), vi("atype", seg[2]),
-             vi("req", seg[3]), vi("field", field), CLASSES.index(cls))
+        d = (
+            vi("year", year),
+            vi("fam", seg[0]),
+            vi("proto", seg[1]),
+            vi("atype", seg[2]),
+            vi("req", seg[3]),
+            vi("field", field),
+            CLASSES.index(cls),
+        )
         agg[d] += 1
         if cls in ("ZERO", "MISSING") or cls.startswith("WRONG"):
             detail.append([fc, key, *d[:6], d[6], stored, new])
 
-    tables = {r[0] for r in db.execute("SELECT name FROM sqlite_master WHERE type='table'")}
+    tables = {
+        r[0] for r in db.execute("SELECT name FROM sqlite_master WHERE type='table'")
+    }
     scanned = scan_runs = []
     if "scanned" in tables:
-        scanned = [list(r) for r in db.execute(
-            "SELECT source, host, run_dir, flowcell_id, run_date, status, detail, scanned_at, origin"
-            " FROM scanned ORDER BY source, run_date, run_dir")]
+        scanned = [
+            list(r)
+            for r in db.execute(
+                "SELECT source, host, run_dir, flowcell_id, run_date, status, detail, scanned_at, origin"
+                " FROM scanned ORDER BY source, run_date, run_dir"
+            )
+        ]
     if "scan_runs" in tables:
-        scan_runs = [list(r) for r in db.execute(
-            "SELECT source, host, since, url, illumina_root, raw_root, aviti_root, group_root,"
-            " n_dirs, scanned_at, origin FROM scan_runs ORDER BY scanned_at")]
+        scan_runs = [
+            list(r)
+            for r in db.execute(
+                "SELECT source, host, since, url, illumina_root, raw_root, aviti_root, group_root,"
+                " n_dirs, scanned_at, origin FROM scan_runs ORDER BY scanned_at"
+            )
+        ]
 
     def vocab_list(dim):
         return [v for v, _ in sorted(vocab[dim].items(), key=lambda kv: kv[1])]
 
     return {
         "meta": {
-            "url": args.url, "db": os.path.basename(args.db), "generated": datetime.datetime.now().strftime("%Y-%m-%d %H:%M"),
-            "rows": len(rows), "has_matches": has_matches, "entries": {k: len(v) for k, v in entries.items()}, "tol": args.tol,
+            "url": args.url,
+            "db": os.path.basename(args.db),
+            "generated": datetime.datetime.now().strftime("%Y-%m-%d %H:%M"),
+            "rows": len(rows),
+            "has_matches": has_matches,
+            "entries": {k: len(v) for k, v in entries.items()},
+            "tol": args.tol,
         },
         "classes": CLASSES,
-        "dims": {d: vocab_list(d) for d in ("year", "fam", "proto", "atype", "req", "field")},
+        "dims": {
+            d: vocab_list(d) for d in ("year", "fam", "proto", "atype", "req", "field")
+        },
         "agg": [[*k, n] for k, n in agg.items()],
         "detail": detail,
         "scanned": scanned,
@@ -173,24 +220,41 @@ def build(args):
     }
 
 
-TEMPLATE = (Path(__file__).with_name("restats_report.tpl.html"))
+TEMPLATE = Path(__file__).with_name("restats_report.tpl.html")
 
 
 def main():
-    ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("--url", required=True, type=resolveUrl, help="Parkour deployment: URL or prod/test/dev")
+    ap = argparse.ArgumentParser(
+        description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter
+    )
+    ap.add_argument(
+        "--url",
+        required=True,
+        type=resolveUrl,
+        help="Parkour deployment: URL or prod/test/dev",
+    )
     ap.add_argument("--user", required=True)
     ap.add_argument("--cert", default=True)
     ap.add_argument("--db", required=True)
     ap.add_argument("--out", required=True)
     ap.add_argument("--tol", type=float, default=1e-3)
-    ap.add_argument("--cache", help="directory for the downloaded API JSON (reused on next run)")
+    ap.add_argument(
+        "--cache", help="directory for the downloaded API JSON (reused on next run)"
+    )
     ap.add_argument("--refresh", action="store_true", help="ignore cached API JSON")
     args = ap.parse_args()
     data = build(args)
-    html = TEMPLATE.read_text().replace("/*DATA*/null", json.dumps(data, separators=(",", ":")).replace("</", "<\\/").replace("\u2028", "\\u2028").replace("\u2029", "\\u2029"))
+    html = TEMPLATE.read_text().replace(
+        "/*DATA*/null",
+        json.dumps(data, separators=(",", ":"))
+        .replace("</", "<\\/")
+        .replace("\u2028", "\\u2028")
+        .replace("\u2029", "\\u2029"),
+    )
     Path(args.out).write_text(html)
-    print(f"wrote {args.out}: {data['meta']['rows']} rows, {len(data['agg'])} groups, {len(data['detail'])} detail rows")
+    print(
+        f"wrote {args.out}: {data['meta']['rows']} rows, {len(data['agg'])} groups, {len(data['detail'])} detail rows"
+    )
 
 
 if __name__ == "__main__":

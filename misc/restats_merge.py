@@ -5,6 +5,7 @@ First source wins on the UNIQUE key (flowcell_id, kind, key, field). Both the
 `mismatches`, `matches`, `scanned` and `scan_runs` tables are merged (the last
 three only if a source has them). An earlier source wins per key across both tables (a later match never replaces an earlier mismatch, and the reverse).
 """
+
 import shutil
 import sqlite3
 import sys
@@ -27,7 +28,9 @@ import restats  # noqa: E402  (schema of the optional tables)
 for t in ("scanned", "scan_runs"):
     sql = next(x for x in restats.SCHEMA.split(";") if f"EXISTS {t} " in x)
     con.execute(sql)
-cols = ", ".join(f'"{r[1]}"' for r in con.execute("PRAGMA table_info(mismatches)") if r[1] != "id")
+cols = ", ".join(
+    f'"{r[1]}"' for r in con.execute("PRAGMA table_info(mismatches)") if r[1] != "id"
+)
 count = lambda t, p="": con.execute(f"select count(*) from {p}{t}").fetchone()[0]
 print(f"{srcs[0]}: {count('mismatches')} mismatches, {count('matches')} matches")
 for i, s in enumerate(srcs[1:]):
@@ -47,6 +50,10 @@ for i, s in enumerate(srcs[1:]):
     for t in ("scanned", "scan_runs"):
         if con.execute(f"SELECT 1 FROM o{i}.sqlite_master WHERE name='{t}'").fetchone():
             con.execute(f"INSERT OR IGNORE INTO {t} SELECT * FROM o{i}.{t}")
-    print(f"{s}: +{count('mismatches') - m0} mismatches, +{count('matches') - k0} matches")
+    print(
+        f"{s}: +{count('mismatches') - m0} mismatches, +{count('matches') - k0} matches"
+    )
 con.commit()
-print(f"{out}: {count('mismatches')} mismatches, {count('matches')} matches, {count('scanned')} scanned dirs")
+print(
+    f"{out}: {count('mismatches')} mismatches, {count('matches')} matches, {count('scanned')} scanned dirs"
+)

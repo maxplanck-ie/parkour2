@@ -178,7 +178,9 @@ def discoverRuns(since, roots):
     runs = (
         glob.glob(f"{roots.illumina_root}/*_lanes_*")
         + glob.glob(f"{roots.aviti_root}/*/*_lanes_*")  # rapidus: AV<instrument>/<run>
-        + glob.glob(f"{roots.aviti_root}/*_lanes_*")  # longus2: runs directly under the root
+        + glob.glob(
+            f"{roots.aviti_root}/*_lanes_*"
+        )  # longus2: runs directly under the root
     )
     out = []
     for r in map(Path, sorted(runs)):
@@ -268,8 +270,14 @@ def seqStats(runDir, roots):
         files = sorted(sdir.glob("*.metrics")) + sorted(sdir.glob("*.duplicate.txt"))
         for f in files:
             text = f.read_text().split()
-            if len(text) != 2 or not all(t.isdigit() for t in text) or int(text[0]) > int(text[1]):
-                print(f"  {runDir.name}: {f.name}: not '<opt> <total>' ({text[:3]}), skipped")
+            if (
+                len(text) != 2
+                or not all(t.isdigit() for t in text)
+                or int(text[0]) > int(text[1])
+            ):
+                print(
+                    f"  {runDir.name}: {f.name}: not '<opt> <total>' ({text[:3]}), skipped"
+                )
                 continue
             opt, total = map(int, text)
             add(cand, bc, "reads_pf_sequenced", total - opt)
@@ -532,8 +540,18 @@ def validate(args):
     )
     db.execute(
         "INSERT OR REPLACE INTO scan_runs VALUES (?,?,?,?,?,?,?,?,?,?,'validate')",
-        (host, args.source, args.since, args.url, args.illumina_root, args.raw_root,
-         args.aviti_root, args.group_root, len(scan), now),
+        (
+            host,
+            args.source,
+            args.since,
+            args.url,
+            args.illumina_root,
+            args.raw_root,
+            args.aviti_root,
+            args.group_root,
+            len(scan),
+            now,
+        ),
     )
     stats = Counter()
     fetched = {k: fetch(s, args, k, start, end) for k in ("matrix", "sequences")}
@@ -632,8 +650,10 @@ def push(args):
         k: fetch(s, args, k, min(dates), max(dates)) for k in {r[2] for r in rows}
     }
 
-    matrix = stored["matrix"] if "matrix" in stored else fetch(
-        s, args, "matrix", min(dates), max(dates)
+    matrix = (
+        stored["matrix"]
+        if "matrix" in stored
+        else fetch(s, args, "matrix", min(dates), max(dates))
     )
     groups = defaultdict(list)
     for r in rows:
@@ -649,7 +669,8 @@ def push(args):
                 e is None
                 and old is None
                 and kind == "sequences"
-                and fcid in matrix  # flowcell known to Parkour, only its sequence stats are empty
+                and fcid
+                in matrix  # flowcell known to Parkour, only its sequence stats are empty
                 and not entries  # a flowcell WITH entries is never extended by a stub
             ):
                 e = {KEY[kind]: key}
@@ -696,7 +717,11 @@ def compare(args):
     db = sqlite3.connect(f"file:{args.db}?mode=ro", uri=True)
     rows = db.execute(
         "SELECT flowcell_id, kind, key, field, new_value, run_date FROM mismatches"
-        + (" WHERE field IN (%s)" % ",".join("?" * len(args.field)) if args.field else ""),
+        + (
+            " WHERE field IN (%s)" % ",".join("?" * len(args.field))
+            if args.field
+            else ""
+        ),
         args.field or [],
     ).fetchall()
     if not rows:
@@ -705,9 +730,7 @@ def compare(args):
     stored = {}
     for kind in ("matrix", "sequences"):
         dates = [
-            datetime.datetime.fromisoformat(r[5][:10])
-            for r in rows
-            if r[1] == kind
+            datetime.datetime.fromisoformat(r[5][:10]) for r in rows if r[1] == kind
         ]
         if dates:
             stored[kind] = fetch(s, args, kind, min(dates), max(dates))
@@ -749,11 +772,14 @@ def main():
         "--url",
         required=True,
         type=resolveUrl,
-        help="Parkour deployment: full URL or one of %s" % "/".join(sorted(DEPLOYMENTS)),
+        help="Parkour deployment: full URL or one of %s"
+        % "/".join(sorted(DEPLOYMENTS)),
     )
     parkour.add_argument("--user", required=True)
     parkour.add_argument("--cert", default=True, help="CA bundle (default: system)")
-    parkour.add_argument("--db", default=str(Path(__file__).with_name("restats.sqlite")))
+    parkour.add_argument(
+        "--db", default=str(Path(__file__).with_name("restats.sqlite"))
+    )
     p = sub.add_parser("validate", parents=[parkour])
     p.add_argument("runDirs", nargs="*", help="flowcell dirs (…_lanes_N)")
     p.add_argument("--since", help="also scan the rapidus roots, runs from YYYY-MM-DD")
