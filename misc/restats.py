@@ -378,7 +378,9 @@ def seqStats(runDir, roots):
             rate = {}  # several bin sizes per sample: the 10kb row wins, else the first row
             for name, pct in zip(hdf["Sample"].astype(str), hdf.iloc[:, 1]):
                 sample = re.sub(r"_bs\d+[A-Za-z]*\.cool$", "", name)
-                if sample in s2l and (sample not in rate or name.endswith("_bs10kb.cool")):
+                if sample in s2l and (
+                    sample not in rate or name.endswith("_bs10kb.cool")
+                ):
                     rate[sample] = pct
             for sample, pct in rate.items():
                 add(cand, s2l[sample], "uniq_mapped", pct)
