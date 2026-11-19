@@ -1,5 +1,3 @@
-from common.admin import ArchivedFilter
-from common.utils import set_archived
 from django.contrib import admin
 from simple_history.admin import SimpleHistoryAdmin
 
@@ -12,22 +10,9 @@ from .models import (
 
 @admin.register(FixedCosts)
 class FixedCostsAdmin(SimpleHistoryAdmin):
-    list_display = ("sequencer", "price_amount", "archived")
-
-    list_filter = (ArchivedFilter,)
-
-    actions = (
-        "mark_as_archived",
-        "mark_as_non_archived",
-    )
-
-    @admin.action(description="Mark as archived")
-    def mark_as_archived(self, request, queryset):
-        set_archived(queryset, True)
-
-    @admin.action(description="Mark as non-archived")
-    def mark_as_non_archived(self, request, queryset):
-        set_archived(queryset, False)
+    # Prices are versioned through history records; archiving a price would
+    # price old runs as 0, so the flag is not offered here.
+    list_display = ("sequencer", "price_amount")
 
 
 @admin.register(LibraryPreparationCosts)
@@ -36,22 +21,7 @@ class LibraryPreparationCostsAdmin(SimpleHistoryAdmin):
         "library_protocol__name",
         "price",
     )
-    list_display = ("library_protocol", "price_amount", "archived")
-
-    list_filter = (ArchivedFilter,)
-
-    actions = (
-        "mark_as_archived",
-        "mark_as_non_archived",
-    )
-
-    @admin.action(description="Mark as archived")
-    def mark_as_archived(self, request, queryset):
-        set_archived(queryset, True)
-
-    @admin.action(description="Mark as non-archived")
-    def mark_as_non_archived(self, request, queryset):
-        set_archived(queryset, False)
+    list_display = ("library_protocol", "price_amount")
 
 
 @admin.register(SequencingCosts)
@@ -61,18 +31,7 @@ class SequencingCostsAdmin(SimpleHistoryAdmin):
         "read_length__name",
         "price",
     )
-    list_display = ("sequencer", "read_length", "price_amount", "archived")
-    list_filter = ("sequencer", "read_length", ArchivedFilter)
+    list_display = ("sequencer", "read_length", "price_amount")
+    list_filter = ("sequencer", "read_length")
 
-    actions = (
-        "mark_as_archived",
-        "mark_as_non_archived",
-    )
 
-    @admin.action(description="Mark as archived")
-    def mark_as_archived(self, request, queryset):
-        set_archived(queryset, True)
-
-    @admin.action(description="Mark as non-archived")
-    def mark_as_non_archived(self, request, queryset):
-        set_archived(queryset, False)

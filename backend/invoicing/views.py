@@ -123,7 +123,7 @@ class FixedCostsViewSet(mixins.UpdateModelMixin, viewsets.ReadOnlyModelViewSet):
     """Get the list of Fixed Costs."""
 
     permission_classes = [IsAdminUser]
-    queryset = FixedCosts.objects.filter(sequencer__archived=False)
+    queryset = FixedCosts.objects.all()
     serializer_class = FixedCostsSerializer
 
 
@@ -133,17 +133,15 @@ class LibraryPreparationCostsViewSet(
     """Get the list of Library Preparation Costs."""
 
     permission_classes = [IsAdminUser]
-    queryset = LibraryPreparationCosts.objects.filter(
-        archived=False, library_protocol__archived=False
-    )
-    # print(queryset.query)
-
+    queryset = LibraryPreparationCosts.objects.all()
     serializer_class = LibraryPreparationCostsSerializer
 
 
-class SequencingCostsViewSet(mixins.UpdateModelMixin, viewsets.ReadOnlyModelViewSet):
+class SequencingCostsViewSet(
+    mixins.UpdateModelMixin, viewsets.ReadOnlyModelViewSet
+):
     """Get the list of Sequencing Costs."""
 
     permission_classes = [IsAdminUser]
-    queryset = SequencingCosts.objects.filter(sequencer__archived=False)
+    queryset = SequencingCosts.objects.all()
     serializer_class = SequencingCostsSerializer
