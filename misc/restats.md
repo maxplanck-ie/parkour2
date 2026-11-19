@@ -74,6 +74,7 @@ Causes of the remaining gaps:
 - Duplicate rows of one sample in `multiqc_samtools_flagstat.txt` or `multiqc_featurecounts.txt`: both sides take the first row.
 - A sample missing from the flagstat table: both sides leave `dupped_reads` out.
 - RNA: a library needs STAR `Log.final.out`, a flagstat row and a featureCounts row (`<sample>.filtered`). Without all three neither side sends STAR values.
+- `confident_reads`: restats gets the organism label per library from `GET /api/analysis_list/analysis_list/?flowcell_id=<id>` (the call BRB's inputs come from), then mirrors `getOffSpeciesRate`: first `*rep` file in `FASTQC_Project_<p>/Sample_<lib>`, group per label (`h38`, `mm10`, `m39`, `lambda`, `nematode`, `drosophila`), `1 - pct/100` of the last matching line, 0 if no line matches, 0 for a label outside that map. No label from Parkour or no `*rep` file: nothing is recorded (BRB raises IndexError without a `*rep`). BRB takes `glob(...)[0]` unsorted, restats the first sorted; one `*rep` per library exists in practice.
 - `restats.py` does not store CONFLICT rows (a field with several distinct values, such as Hi-C lanes). BRB sends one of them.
 - Hi-C: the `_bs10kb` row of a sample wins, else the first `multiqc_hicexplorer` row.
 - Several stats files per sample: none exist (0 of 19,437 samples checked on rapidus and longus2, 2026-11-18).

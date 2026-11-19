@@ -21,6 +21,8 @@ flowcell_id / kind / key / field that identify the value.
 What is compared (kind -> Parkour endpoint, entry key):
   sequences -> /api/sequences_statistics/  barcode
       reads_pf_sequenced, optical_duplicates   <sample>.metrics | .duplicate.txt
+      confident_reads                          FASTQC_*/Sample_*/*rep (kraken) + organism label
+                                               from GET /api/analysis_list/analysis_list/
       mapped_reads, dupped_reads, insert_size  Analysis_*/ Bowtie2, flagstat, deepTools (DNA)
       fragment_q1/median/q3/p10/p90, fragments_total
                                                deepTools fragmentSize.metric.tsv, flagstat read1_passed
@@ -31,8 +33,7 @@ What is compared (kind -> Parkour endpoint, entry key):
       reads_pf, undetermined_indices, read_1, read_2, cluster_pf
                                                Illumina: interop + Reports/Quality_Metrics.csv
                                                Aviti: RunStats.json
-Not compared: confident_reads (needs the library's organism label, which only
-Parkour knows).
+Needs the organism label of each library, so validate also GETs analysis_list per flowcell.
 
 Why push does GET-merge-POST: the upload views replace a whole entry (per
 barcode / per lane), so posting one field would drop the others. Push fetches
@@ -367,8 +368,54 @@ def firstByKey(keys, values):
     return out
 
 
-def seqStats(runDir, roots):
-    """{(barcode, field): {values}}; mirrors BRB ET.getNReads / DNA / RNA."""
+# BRB ET.getOffSpeciesRate: Parkour Organism.label -> kraken db group.
+KRAKEN_GROUP = {
+    "h38": "humangrp",
+    "mm10": "mousegrp",
+    "m39": "mousegrp",
+    "lambda": "lambdaphage",
+    "nematode": "c-elegans",
+    "drosophila": "flygrp",
+}
+
+
+def offSpeciesRate(fdir, label):
+    """BRB ET.getOffSpeciesRate: 1 - kraken % of reads in the expected group.
+
+    None when it cannot be told: no organism label from Parkour, or no kraken
+    report (BRB would crash there). A label BRB does not know gives 0, like BRB."""
+    reports = sorted(fdir.glob("*rep"))
+    if label is None or not reports:
+        return None
+    if label not in KRAKEN_GROUP:
+        return 0.0
+    off = 0.0
+    for line in reports[0].read_text().splitlines():
+        if KRAKEN_GROUP[label] in line:
+            off = 1 - (float(line.strip().split()[0]) / 100)
+    return off
+
+
+def orgLabels(s, args, fcid):
+    """{barcode: Organism.label} of one flowcell, from the analysis_list endpoint
+    BRB and dissectBCL use (GET only). {} when Parkour has no answer."""
+    r = s.get(
+        args.url.rstrip("/") + "/api/analysis_list/analysis_list/",
+        params={"flowcell_id": fcid},
+        timeout=60,
+    )
+    if r.status_code != 200:
+        print(
+            f"  {fcid}: organism labels unavailable (HTTP {r.status_code}), confident_reads skipped"
+        )
+        return {}
+    return {bc: info[3][1] for reqs in r.json().values() for bc, info in reqs.items()}
+
+
+def seqStats(runDir, roots, labels=None):
+    """{(barcode, field): {values}}; mirrors BRB ET.getNReads / DNA / RNA.
+
+    labels: {barcode: Parkour Organism.label}, for confident_reads."""
     import pandas as pd
 
     cand, s2lAll = defaultdict(set), {}
@@ -386,6 +433,9 @@ def seqStats(runDir, roots):
         # BRB keeps only the first R1 sample of a library (baseDict[lib][0])
         first = min(zips)
         s2l[first.name[: -len("_R1_fastqc.zip")]] = bc
+        off = offSpeciesRate(fdir, (labels or {}).get(bc))
+        if off is not None:
+            add(cand, bc, "confident_reads", off)
         # same rule as BRB getNReads: FASTQC_Project_* first, then Project_*; in each
         # the first usable file wins (.metrics before .duplicate.txt); a usable file is
         # "<digits> <digits>" with optical <= total
@@ -657,6 +707,8 @@ def validate(args):
             m = re.search(r"_lanes_(\d+)", runDir.name)
             n = int(m.group(1)) if m else 0  # name without lanes_N: lowest priority
             lastAviti[fcid] = max(lastAviti.get(fcid, (0, runDir)), (n, runDir))
+    s = session(args)
+    labels = {}  # fcid -> {barcode: Parkour Organism.label}
     for runDir in runs:
         aviti, fcid, date = runInfo(runDir, roots)
         dates[fcid] = min(date, dates.get(fcid, date))
@@ -668,14 +720,15 @@ def validate(args):
                 print(f"  {runDir.name}: lane stats failed: {e!r}")
                 mark(runDir, "lane stats failed", repr(e))
         try:
-            for k, vs in seqStats(runDir, roots).items():
+            if fcid not in labels:
+                labels[fcid] = orgLabels(s, args, fcid)
+            for k, vs in seqStats(runDir, roots, labels[fcid]).items():
                 cand["sequences"][fcid][k] |= vs
         except Exception as e:  # noqa: BLE001
             print(f"  {runDir.name}: library stats failed: {e!r}")
             mark(runDir, "library stats failed", repr(e))
     print(f"parsed {len(runs)} run dirs, {len(dates)} flowcells")
 
-    s = session(args)
     start, end = min(dates.values()), max(dates.values())
     db = sqlite3.connect(args.db)
     db.executescript(SCHEMA)
