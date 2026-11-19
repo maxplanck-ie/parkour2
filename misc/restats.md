@@ -26,7 +26,7 @@ Read-only. GETs all sequence and lane statistics from `--url`, joins them with e
 ```
 PARKOUR_PASSWORD=... python misc/restats_report.py --url test --user <user> --db misc/restats_backfill.sqlite --out misc/restats_report_test.html --cache /tmp/rpt
 ```
-Classes: `ZERO` (Parkour stores 0, files say otherwise, the old-parser bug), `WRONG` (non-zero and different; minor <1 %, moderate 1-10 %, major >=10 %), `MISSING` (API field exists, nothing stored), `NEW` (field the API does not expose: `fragment_*`, `peak_*`, `frip`, `fragments_total`), `NOENTRY` (no Parkour entry for that flowcell/barcode), `MATCH`.
+Classes: `ZERO` (Parkour stores 0, files say otherwise, the old-parser bug), `WRONG_minor` / `WRONG_mod` / `WRONG_major` (non-zero and different; <1 %, 1-10 %, >=10 %), `WRONG` (text field whose stored string differs from the parsed one; one class, no size band), `MISSING` (API field exists, nothing stored), `NEW` (field the API does not expose: `fragment_*`, `peak_*`, `frip`, `fragments_total`), `NOENTRY` (no Parkour entry for that flowcell/barcode), `MATCH`.
 
 The page is gitignored. It embeds the data and the private run-dir paths, so it is the place that lists every scanned flowcell dir (section 6: one row per `validate` run with its roots and URL, then every dir with its status). Regenerate it with the command above.
 
@@ -75,6 +75,33 @@ Causes of the remaining gaps:
 - Hi-C: the `_bs10kb` row of a sample wins, else the first `multiqc_hicexplorer` row. The percentage did not differ between bin sizes in the 6 files checked. BRB takes the rate from the sample listed in the library's base statistics when several samples share one barcode.
 - Several stats files per sample: none exist (0 of 19,437 samples checked on rapidus and longus2, 2026-11-18). Both sides keep the first usable file and do not sum. Runs present on both hosts have one empty and one filled copy, never two filled ones.
 - CONFLICT rows (a key with several distinct parsed values, 1,858 lines in the last run) come from different runs or pipelines for `mapped_reads`, `dupped_reads`, `fragment_*`, `insert_size`. Parkour holds one of the candidates, sometimes the lower and sometimes the higher, so no min or max rule fits. They are skipped and reported, not stored.
+
+## Lane and micro-C fields
+
+| Field | Protocol | Type | Source file and rule |
+|---|---|---|---|
+| `polony_density` | AVITI | text | `RunParameters.json` `AdvancedSettings.PolonyDensity`, as given |
+| `pmg_shift` | AVITI | num | `RunParameters.json` top-level `ShiftPMGBy`, else `AdvancedSettings.ShiftPmgBy` |
+| `custom_recipe` | AVITI | text | `RunParameters.json` `AdvancedSettings.CustomRecipeName`, `.rec` suffix stripped |
+| `occupancy_score` | AVITI | num | `RunParameters.json` `AdvancedSettings.OccupancyScore` (almost never present) |
+| `sequencer_side` | AVITI | text | `RunParameters.json` `Side`, `SideA`/`SideB` reduced to `A`/`B` |
+| `lane_loading_format` | AVITI | text | `RunManifest.csv` `[SAMPLES]` Lane column: any `1+2` gives `1 pool`; both `1` and `2` present gives `2 pools`; otherwise `1 pool`; no lane rows gives nothing |
+| `gb_yield` | AVITI | num | `<outBaseDir>/<lane>/RunStats.json` lane `TotalYield`, rounded to 2 decimals |
+| `lane_loading_format` | Illumina | text | `RunParameters.xml` `WorkflowType`: `NovaSeqXp` gives `XP`, `NovaSeqStandard` gives `Standard`, any other value is kept raw |
+| `percent_occupied` | Illumina | num | interop summary `% Occupied`, read 1, 2 decimals |
+| `gb_yield` | Illumina | num | interop `Projected Yield G`, read 1, 2 decimals |
+| `phix_alignment_rate` | Illumina | num | interop `% Aligned` x 100, read 1, 2 decimals |
+| `percent_pf` | Illumina | num | interop `% Pf`, read 1, 2 decimals |
+| `mapped_reads` | micro-C | num | `Analysis_*/<micro-C dir>/pairs/<sample>.pairs.dedup.stats`: 100 x `total_mapped` / `total` |
+| `dupped_reads` | micro-C | num | same file: 100 x `total_dups` / `total_mapped` |
+
+Text fields are compared by string equality, never parsed as numbers. Sqlite stores them as TEXT (REAL affinity keeps `220` as a number, so `restats_report.py` compares both sides as text). A text field with no stored value is `MISSING`; a stored value that differs is `WRONG`; equal text is `MATCH`. Numeric fields keep the size bands above.
+
+micro-C: the sample is the R1 fastqc basename minus `_R1_fastqc.zip`, mapped to the barcode the same way as the other pipelines. A library whose `pairs/<sample>.pairs.dedup.stats` is absent gets no keys (detected by file presence, as for Hi-C). A file missing `total`, `total_mapped` or `total_dups` is logged and those keys are omitted. A zero denominator also omits the field (BRB sends NaN, which is left out of the payload).
+
+Parity: lane fields mirror dissectBCL `fakeNews.pushParkour` (`parseAvitiRunParameters`, `parseAvitiLoadingFormat`, `parseIlluminaRunParameters`, and the AVITI/Illumina branches). micro-C mirrors BRB `ET.py` `makePairs` and `pairsStats`. Both are read, not imported.
+
+The wrong share is `(ZERO + WRONG_* + WRONG) / (ZERO + WRONG_* + WRONG + MATCH)`. Text mismatches count in the numerator like any other WRONG.
 
 ## What `validate` records
 Besides `mismatches` and `matches`, every `validate` run writes:

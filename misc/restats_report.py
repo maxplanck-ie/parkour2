@@ -11,6 +11,8 @@ Classes per (library or lane, field):
             mismatching rows are known and MATCH counts are zero
   ZERO      stored value is 0, parsed value is not (old parser wrote 0)
   WRONG_*   stored value is non-zero and differs; minor <1 %, mod 1-10 %, major >=10 %
+  WRONG     text field (polony_density, custom_recipe, sequencer_side,
+            lane_loading_format): stored text differs from parsed text (one class)
   MISSING   field exists in the API but nothing is stored for this entry
   NEW       field the API does not expose at all (fragment_*, peak_*, ...)
   NOENTRY   no Parkour entry for this flowcell/barcode on --url
@@ -34,7 +36,7 @@ from pathlib import Path
 import requests
 
 sys.path.insert(0, str(Path(__file__).parent))
-from restats import ENDPOINT, KEY, resolveUrl  # noqa: E402
+from restats import ENDPOINT, KEY, TEXT_FIELDS, resolveUrl
 
 CLASSES = [
     "MATCH",
@@ -42,6 +44,7 @@ CLASSES = [
     "WRONG_minor",
     "WRONG_mod",
     "WRONG_major",
+    "WRONG",
     "MISSING",
     "NEW",
     "NOENTRY",
@@ -62,9 +65,18 @@ def family(sequencer):
     return "other" if s else "unknown"
 
 
-def classify(stored, new, tol):
+def as_text(v):
+    """TEXT field as str; sqlite REAL affinity reads '220' back as 220.0."""
+    if v is None or isinstance(v, str):
+        return v
+    return str(int(v)) if float(v).is_integer() else str(v)
+
+
+def classify(stored, new, tol, field=None):
     if stored is None or stored == "":
         return "MISSING"
+    if field in TEXT_FIELDS:
+        return "MATCH" if as_text(stored) == as_text(new) else "WRONG"
     stored, new = float(stored), float(new)
     if abs(stored - new) <= tol:
         return "MATCH"
@@ -142,6 +154,8 @@ def build(args):
     agg = Counter()
     detail = []
     for fc, kind, key, field, new, run_date in rows:
+        if field in TEXT_FIELDS:
+            new = as_text(new)
         e = index[kind].get((fc, key))
         year = (run_date or "")[:4] or "?"
         if e is None:
@@ -161,7 +175,7 @@ def build(args):
                 cls, stored = "NEW", None
             else:
                 stored = e.get(field)
-                cls = classify(stored, new, args.tol)
+                cls = classify(stored, new, args.tol, field)
         d = (
             vi("year", year),
             vi("fam", seg[0]),

@@ -58,6 +58,7 @@ what it pushes or where it reads from, update this file too.
 """
 
 import argparse
+import csv
 import datetime
 import glob
 import json
@@ -66,6 +67,7 @@ import re
 import socket
 import sqlite3
 import urllib.parse
+import xml.etree.ElementTree as ET
 import sys
 from collections import Counter, defaultdict
 from dataclasses import dataclass
@@ -201,11 +203,82 @@ def discoverRuns(since, roots):
 
 
 # ------------------------------------------------------------------ parsers
+# Text fields: compared by string equality, never parsed as numbers. Stored in the
+# same sqlite columns as numbers (SQLite keeps non-numeric text as TEXT).
+TEXT_FIELDS = {
+    "polony_density",
+    "custom_recipe",
+    "sequencer_side",
+    "lane_loading_format",
+}
+
+
 def add(cand, key, field, value):
+    if isinstance(value, str):
+        cand[(key, field)].add(value)
+        return
     value = float(value)
     if value != value:  # NaN: BRB would send null, nothing to compare
         return
     cand[(key, field)].add(round(value, 6))
+
+
+# Illumina Lane summary (interop, Read 1): column -> (Parkour field, scale).
+ILLUMINA_LANE_COLS = {
+    "% Occupied": ("percent_occupied", 1),
+    "Projected Yield G": ("gb_yield", 1),
+    "% Aligned": ("phix_alignment_rate", 100),
+    "% Pf": ("percent_pf", 1),
+}
+
+
+def parseAvitiRunParameters(path):
+    """AVITI RunParameters.json -> run-level fields; a missing key is left out."""
+    data = json.loads(Path(path).read_text())
+    adv = data.get("AdvancedSettings") or {}
+    pmg = data["ShiftPMGBy"] if "ShiftPMGBy" in data else adv.get("ShiftPmgBy")
+    recipe = adv.get("CustomRecipeName")
+    side = data.get("Side")
+    fields = {
+        "polony_density": adv.get("PolonyDensity"),
+        "pmg_shift": pmg,
+        "custom_recipe": None if recipe is None else str(recipe).removesuffix(".rec"),
+        "occupancy_score": adv.get("OccupancyScore"),
+        "sequencer_side": None if side is None else side.replace("Side", ""),
+    }
+    return {k: v for k, v in fields.items() if v is not None}
+
+
+def parseAvitiLoadingFormat(path):
+    """RunManifest.csv [SAMPLES] Lane column: "1+2" -> "1 pool"; lanes 1 and 2 -> "2 pools"."""
+    lanes, inSamples, header = set(), False, None
+    with open(path, newline="") as f:
+        for row in csv.reader(f):
+            if not row:
+                continue
+            if row[0].startswith("["):
+                inSamples, header = row[0] == "[SAMPLES]", None
+            elif inSamples and header is None:
+                header = row
+            elif inSamples and "Lane" in header and len(row) == len(header):
+                lanes.add(row[header.index("Lane")].strip())
+    if "1+2" in lanes:
+        return "1 pool"
+    if {"1", "2"} <= lanes:
+        return "2 pools"
+    return "1 pool" if lanes else None
+
+
+def aviti_run_params(runDir):
+    """Run-level AVITI fields from the run dir; a missing file leaves its fields out."""
+    out = {}
+    if (runDir / "RunParameters.json").exists():
+        out = parseAvitiRunParameters(runDir / "RunParameters.json")
+    if (runDir / "RunManifest.csv").exists():
+        loading = parseAvitiLoadingFormat(runDir / "RunManifest.csv")
+        if loading:
+            out["lane_loading_format"] = loading
+    return out
 
 
 def laneStats(runDir, aviti, roots):
@@ -213,6 +286,7 @@ def laneStats(runDir, aviti, roots):
     out = {}
     if aviti:
         data = json.loads((runDir / "RunStats.json").read_text())
+        run = aviti_run_params(runDir)
         for ln in data["Lanes"]:
             name = f"Lane {ln['Lane']}"
             out[(name, "reads_pf")] = float(ln["NumPolonies"])
@@ -223,6 +297,10 @@ def laneStats(runDir, aviti, roots):
             out[(name, "undetermined_indices")] = round(
                 100 - ln["PercentAssignedReads"], 2
             )
+            if ln.get("TotalYield") is not None:
+                out[(name, "gb_yield")] = round(ln["TotalYield"], 2)
+            for field, value in run.items():
+                out[(name, field)] = value
         return out
 
     import interop
@@ -231,6 +309,11 @@ def laneStats(runDir, aviti, roots):
     raw = Path(roots.illumina_raw, re.sub(r"_lanes_.*$", "", runDir.name))
     iop = pd.DataFrame(interop.summary(interop.read(str(raw)), "Lane"))
     qdf = pd.read_csv(runDir / "Reports" / "Quality_Metrics.csv")
+    raw_rp = raw / "RunParameters.xml"
+    loading = None
+    if raw_rp.exists():
+        wf = ET.parse(raw_rp).getroot().findtext(".//WorkflowType")
+        loading = {"NovaSeqXp": "XP", "NovaSeqStandard": "Standard"}.get(wf)
     for lane in qdf["Lane"].unique():
         sub = qdf[qdf["Lane"] == lane]
         name = f"Lane {lane}"
@@ -250,6 +333,24 @@ def laneStats(runDir, aviti, roots):
         out[(name, "cluster_pf")] = round(
             real["YieldQ30"].sum() / real["Yield"].sum() * 100, 2
         )
+        row = iop[(iop["ReadNumber"] == 1) & (iop["Lane"] == lane)]
+        for col, (field, scale) in ILLUMINA_LANE_COLS.items():
+            vals = row[col].values if col in row else []
+            if len(vals) and not pd.isna(vals[0]):
+                out[(name, field)] = round(float(vals[0]) * scale, 2)
+        if loading:
+            out[(name, "lane_loading_format")] = loading
+    return out
+
+
+def pairsStats(fname):
+    """{key: int} from a pairtools *.dedup.stats file (tab separated key/value lines)."""
+    out = {}
+    with open(fname) as f:
+        for line in f:
+            key, _, val = line.rstrip("\n").partition("\t")
+            if val.isdigit():
+                out[key] = int(val)
     return out
 
 
@@ -398,6 +499,18 @@ def seqStats(runDir, roots):
                 "peak_genome_coverage",
                 float(row["peak_genome_coverage"]),
             )
+        # micro-C: pairtools dedup summary per sample; mirrors BRB ET.makePairs
+        for sample, bc in s2l.items():
+            pf = adir / "pairs" / f"{sample}.pairs.dedup.stats"
+            if not pf.exists():
+                continue
+            st = pairsStats(pf)
+            if {"total", "total_mapped", "total_dups"} <= st.keys():
+                tot, mp, dup = st["total"], st["total_mapped"], st["total_dups"]
+                if tot:
+                    add(cand, bc, "mapped_reads", 100.0 * mp / tot)
+                if mp:
+                    add(cand, bc, "dupped_reads", 100.0 * dup / mp)
     return cand
 
 
@@ -453,13 +566,15 @@ def fetch(s, args, kind, start, end):
     return byFc
 
 
-def differs(old, new, tol):
+def differs(old, new, tol, field=None):
     if old == "":  # Parkour stores '' for "never set"
         old = None
     if new == "":
         new = None
     if old is None or new is None:
         return old is not new
+    if field in TEXT_FIELDS:
+        return str(old) != str(new)
     try:
         return abs(float(old) - float(new)) > tol
     except (TypeError, ValueError):  # non-numeric stored value: report it, do not crash
@@ -519,7 +634,7 @@ def validate(args):
         if not aviti or lastAviti[fcid][1] == runDir:
             try:
                 for k, v in laneStats(runDir, aviti, roots).items():
-                    cand["matrix"][fcid][k].add(round(float(v), 6))
+                    add(cand["matrix"][fcid], k[0], k[1], v)
             except Exception as e:  # noqa: BLE001 - report, carry on with other runs
                 print(f"  {runDir.name}: lane stats failed: {e!r}")
                 mark(runDir, "lane stats failed", repr(e))
@@ -585,7 +700,7 @@ def validate(args):
                 new = next(iter(vals))
                 old = entries.get(key, {}).get(field)
                 stats[kind, "compared"] += 1
-                if not differs(old, new, args.tol):
+                if not differs(old, new, args.tol, field):
                     db.execute(
                         "INSERT OR REPLACE INTO matches VALUES (?,?,?,?,?,?)",
                         (fcid, kind, key, field, new, dates[fcid].isoformat()),
@@ -680,7 +795,7 @@ def push(args):
             elif e is None:
                 print(f"  SKIP {fcid} {key}: not in Parkour")
                 continue
-            if differs(e.get(field), old, 1e-9):
+            if differs(e.get(field), old, 1e-9, field):
                 print(
                     f"  SKIP {fcid} {key} {field}: Parkour now {e.get(field)}, "
                     f"was {old} at validation; re-run validate"
@@ -747,7 +862,7 @@ def compare(args):
         old = None if old == "" else old
         if old is None:
             state = "absent"
-        elif differs(old, new, args.tol):
+        elif differs(old, new, args.tol, field):
             state = "differs"
         else:
             state = "same"

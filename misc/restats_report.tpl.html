@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <title>restats report: stored vs parsed</title>
 <style>
-:root { --bad:#b3261e; --warn:#b26a00; --ok:#1b6e3c; --new:#1f5fa8; --mute:#6b6f76; --line:#d9dce1; --bg:#f7f8fa; }
+:root { --bad:#b3261e; --warn:#b26a00; --ok:#1b6e3c; --new:#1f5fa8; --wtext:#7a3e9d; --mute:#6b6f76; --line:#d9dce1; --bg:#f7f8fa; }
 * { box-sizing: border-box; }
 body { font: 14px/1.45 system-ui, sans-serif; margin: 0; background: var(--bg); color: #1c1e21; }
 header { background: #1c1e21; color: #fff; padding: 14px 24px; }
@@ -26,6 +26,7 @@ h2 small { color: var(--mute); font-weight: normal; }
 .card.warn b, td.warn { color: var(--warn); }
 .card.ok b, td.ok { color: var(--ok); }
 .card.new b, td.new { color: var(--new); }
+.card.wtext b, td.wtext { color: var(--wtext); }
 table { border-collapse: collapse; width: 100%; font-size: 13px; }
 th, td { border-bottom: 1px solid var(--line); padding: 4px 8px; text-align: right; white-space: nowrap; }
 th:first-child, td:first-child { text-align: left; white-space: normal; word-break: break-word; }
@@ -63,6 +64,7 @@ code { background: #eef0f3; padding: 0 4px; border-radius: 3px; }
   Each row of the sqlite is one (library or lane, field). It is compared with the value Parkour stores now.
   <b class="bad" style="color:var(--bad)">ZERO</b> = Parkour stores 0, the files say otherwise (old parser bug).
   <b style="color:var(--bad)">WRONG</b> = Parkour stores a non-zero value that differs (minor &lt;1 %, moderate 1-10 %, major &ge;10 %).
+  <b class="wtext">WRONG text</b> = text field (polony_density, custom_recipe, sequencer_side, lane_loading_format): the stored string differs from the parsed one. No size band.
   <b style="color:var(--warn)">MISSING</b> = the API has this field but nothing is stored.
   <b style="color:var(--new)">NEW</b> = a field Parkour does not expose yet (fragment_*, peak_*, ...).
   NOENTRY = no entry for that flowcell/barcode on this deployment. MATCH = nothing to fix.<br>
@@ -117,7 +119,7 @@ code { background: #eef0f3; padding: 0 4px; border-radius: 3px; }
 <script>
 const D = /*DATA*/null;
 const C = D.classes, CI = Object.fromEntries(C.map((c, i) => [c, i]));
-const WRONGS = [CI.WRONG_minor, CI.WRONG_mod, CI.WRONG_major];
+const WRONGS = [CI.WRONG_minor, CI.WRONG_mod, CI.WRONG_major, CI.WRONG];
 const DIMS = ["year", "fam", "proto", "atype", "req", "field"];
 const LABEL = {year: "Run year", fam: "Sequencer", proto: "Library protocol", atype: "Analysis type", req: "Project", field: "Field"};
 const SEGTABS = ["year", "fam", "proto", "atype"];
@@ -167,6 +169,7 @@ function render() {
     card("bad", tot[CI.WRONG_major], "WRONG major (&ge;10 %)") +
     card("warn", tot[CI.WRONG_mod], "WRONG moderate (1-10 %)") +
     card("", tot[CI.WRONG_minor], "WRONG minor (&lt;1 %)") +
+    card("wtext", tot[CI.WRONG], "WRONG text (string differs)") +
     card("warn", tot[CI.MISSING], "MISSING (nothing stored)") +
     card("new", tot[CI.NEW], "NEW (field not in Parkour)") +
     card("", tot[CI.NOENTRY], "NOENTRY (no Parkour entry)") +
@@ -179,9 +182,9 @@ function render() {
   const fl = Object.entries(byF).map(([f, a]) => [+f, a, a[CI.ZERO] + WRONGS.reduce((s, c) => s + a[c], 0)])
     .sort((x, y) => y[2] - x[2]);
   document.getElementById("byfield").innerHTML =
-    `<tr><th>Field</th><th>ZERO</th><th>WRONG major</th><th>WRONG mod</th><th>WRONG minor</th><th>MISSING</th><th>NEW</th><th>NOENTRY</th><th>MATCH</th></tr>` +
+    `<tr><th>Field</th><th>ZERO</th><th>WRONG major</th><th>WRONG mod</th><th>WRONG minor</th><th>WRONG text</th><th>MISSING</th><th>NEW</th><th>NOENTRY</th><th>MATCH</th></tr>` +
     fl.map(([f, a, w]) => `<tr class="${w ? "hot" : ""}"><td>${esc(D.dims.field[f])}</td>` +
-      num(a[CI.ZERO], "bad") + num(a[CI.WRONG_major], "bad") + num(a[CI.WRONG_mod], "warn") + num(a[CI.WRONG_minor]) +
+      num(a[CI.ZERO], "bad") + num(a[CI.WRONG_major], "bad") + num(a[CI.WRONG_mod], "warn") + num(a[CI.WRONG_minor]) + num(a[CI.WRONG], "wtext") +
       num(a[CI.MISSING], "warn") + num(a[CI.NEW], "new") + num(a[CI.NOENTRY]) + num(a[CI.MATCH], "ok") + `</tr>`).join("");
 
   // ZERO matrix: protocol x sequencer
@@ -206,9 +209,9 @@ function render() {
     const total = l.length;
     if (limit) l = l.slice(0, limit);
     const maxw = Math.max(1, ...l.map(x => x[2]));
-    return [`<tr><th>${LABEL[dim]}</th><th>ZERO</th><th>WRONG major</th><th>WRONG mod</th><th>WRONG minor</th><th>MISSING</th><th>NEW</th><th>NOENTRY</th><th>MATCH</th><th>wrong share</th></tr>` +
+    return [`<tr><th>${LABEL[dim]}</th><th>ZERO</th><th>WRONG major</th><th>WRONG mod</th><th>WRONG minor</th><th>WRONG text</th><th>MISSING</th><th>NEW</th><th>NOENTRY</th><th>MATCH</th><th>wrong share</th></tr>` +
       l.map(([k, a, w, share]) => `<tr class="${w ? "hot" : ""}"><td>${esc(D.dims[dim][k])}</td>` +
-        num(a[CI.ZERO], "bad") + num(a[CI.WRONG_major], "bad") + num(a[CI.WRONG_mod], "warn") + num(a[CI.WRONG_minor]) +
+        num(a[CI.ZERO], "bad") + num(a[CI.WRONG_major], "bad") + num(a[CI.WRONG_mod], "warn") + num(a[CI.WRONG_minor]) + num(a[CI.WRONG], "wtext") +
         num(a[CI.MISSING], "warn") + num(a[CI.NEW], "new") + num(a[CI.NOENTRY]) + num(a[CI.MATCH], "ok") +
         `<td class="${share >= 0.1 ? "bad" : ""}">${(share * 100).toFixed(1)}%<span class="bar" style="width:${Math.round(60 * w / maxw)}px;background:var(--bad)"></span></td></tr>`).join(""), total];
   };
@@ -219,7 +222,7 @@ function render() {
 
   // examples: detail rows -> [fc,key,year,fam,proto,atype,req,field,cls,stored,new]
   const det = D.detail.filter(r => DIMS.every((d, i) => sel[d] === "" || r[2 + i] === sel[d]));
-  const gap = r => r[9] === null || r[9] === "" ? -1 : Math.abs(r[9] - r[10]) / Math.max(Math.abs(r[9]), Math.abs(r[10]), 1e-9);
+  const gap = r => typeof r[9] !== "number" || typeof r[10] !== "number" ? -1 : Math.abs(r[9] - r[10]) / Math.max(Math.abs(r[9]), Math.abs(r[10]), 1e-9);
   det.sort((a, b) => (isBad(b[8]) - isBad(a[8])) || gap(b) - gap(a));
   document.getElementById("exsub").textContent = `(${det.length.toLocaleString()} ZERO / WRONG / MISSING rows in selection)`;
   document.getElementById("examples").innerHTML =
