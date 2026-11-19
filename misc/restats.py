@@ -235,8 +235,12 @@ ILLUMINA_LANE_COLS = {
 def parseAvitiRunParameters(path):
     """AVITI RunParameters.json -> run-level fields; a missing key is left out."""
     data = json.loads(Path(path).read_text())
-    adv = data.get("AdvancedSettings") or {}
-    pmg = data["ShiftPMGBy"] if "ShiftPMGBy" in data else adv.get("ShiftPmgBy")
+    adv = data.get("AdvancedSettings")
+    if not isinstance(adv, dict):
+        adv = {}
+    pmg = data.get("ShiftPMGBy")
+    if pmg is None:
+        pmg = adv.get("ShiftPmgBy")
     recipe = adv.get("CustomRecipeName")
     side = data.get("Side")
     fields = {
@@ -313,7 +317,8 @@ def laneStats(runDir, aviti, roots):
     loading = None
     if raw_rp.exists():
         wf = ET.parse(raw_rp).getroot().findtext(".//WorkflowType")
-        loading = {"NovaSeqXp": "XP", "NovaSeqStandard": "Standard"}.get(wf)
+        # unknown non-empty values are kept raw, like dissectBCL parseIlluminaRunParameters
+        loading = {"NovaSeqXp": "XP", "NovaSeqStandard": "Standard"}.get(wf, wf or None)
     for lane in qdf["Lane"].unique():
         sub = qdf[qdf["Lane"] == lane]
         name = f"Lane {lane}"
