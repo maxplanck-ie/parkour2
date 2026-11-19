@@ -12,6 +12,7 @@ from rest_framework.fields import empty
 from rest_framework.serializers import ModelSerializer, SerializerMethodField
 
 from .models import FixedCosts, LibraryPreparationCosts, SequencingCosts
+from .pricing import PriceBook
 
 Request = apps.get_model("request", "Request")
 ReadLength = apps.get_model("library_sample_shared", "ReadLength")
@@ -103,35 +104,14 @@ class InvoicingSerializer(ModelSerializer):
             .order_by("pk")
         )
 
-        # Fetch Fixed Costs
-        fixed_costs = FixedCosts.objects.filter(archived=False).values(
-            "sequencer", "price"
-        )
-        fixed_costs = {x["sequencer"]: x["price"] for x in fixed_costs}
-
-        # Fetch Preparation Costs
-        preparation_costs = LibraryPreparationCosts.objects.filter(
-            archived=False
-        ).values("library_protocol", "price")
-        preparation_costs = {
-            x["library_protocol"]: x["price"] for x in preparation_costs
-        }
-
-        # Fetch Sequencing Costs
-        sequencing_costs = SequencingCosts.objects.filter(archived=False).values(
-            "sequencer", "read_length", "price"
-        )
-        sequencing_costs = {
-            str(x["sequencer"]) + "_" + str(x["read_length"]): x["price"]
-            for x in sequencing_costs
-        }
+        # Prices as they were in force on each flowcell's date, from the
+        # cost models' history records.
+        price_book = PriceBook()
 
         self.context.update(
             {
                 "pools": pools,
-                "fixed_costs": fixed_costs,
-                "preparation_costs": preparation_costs,
-                "sequencing_costs": sequencing_costs,
+                "price_book": price_book,
                 "start_date": start_date,
                 "end_date": end_date,
             }
@@ -324,9 +304,7 @@ class InvoicingSerializer(ModelSerializer):
         library_protocol = ret.get("library_protocol")
         num_libraries_samples = ret.get("num_libraries_samples")
 
-        fixed_costs = self.context["fixed_costs"]
-        preparation_costs = self.context["preparation_costs"]
-        sequencing_costs = self.context["sequencing_costs"]
+        price_book = self.context["price_book"]
 
         """
         Fix so samples of a request that have been sequenced in different months are not billed twice
@@ -340,10 +318,11 @@ class InvoicingSerializer(ModelSerializer):
         for flowcell in percentage:
             dt = flowcell["flowcell_create_time"]
             dt = trunc_datetime(timezone.datetime(dt.year, dt.month, 1))
-            # if flowcell['flowcell_create_month'] == int(self.context['curr_month']) and flowcell['flowcell_create_year'] == int(self.context['curr_year']):
             if dt <= curr_date:
                 for pool in flowcell["pools"]:
-                    costs += fixed_costs.get(flowcell["sequencer"], 0) * reduce(
+                    costs += price_book.fixed(
+                        flowcell["sequencer"], flowcell["flowcell_create_time"]
+                    ) * reduce(
                         lambda x, y: Decimal(x) * Decimal(y),
                         pool["percentage"].split("*"),
                     )
@@ -354,11 +333,13 @@ class InvoicingSerializer(ModelSerializer):
         for flowcell in percentage:
             dt = flowcell["flowcell_create_time"]
             dt = trunc_datetime(timezone.datetime(dt.year, dt.month, 1))
-            # if flowcell['flowcell_create_month'] == self.context['curr_month'] and flowcell['flowcell_create_year'] == self.context['curr_year']:
             if dt <= curr_date:
                 for pool in flowcell["pools"]:
-                    key = f"{flowcell['sequencer']}_{pool['read_length']}"
-                    costs += sequencing_costs.get(key, 0) * reduce(
+                    costs += price_book.sequencing(
+                        flowcell["sequencer"],
+                        pool["read_length"],
+                        flowcell["flowcell_create_time"],
+                    ) * reduce(
                         lambda x, y: Decimal(x) * Decimal(y),
                         pool["percentage"].split("*"),
                     )
@@ -368,17 +349,17 @@ class InvoicingSerializer(ModelSerializer):
         costs = 0
         split = num_libraries_samples.split(" ")
         if split[1] == "samples":
-            costs = preparation_costs.get(library_protocol, 0) * Decimal(split[0])
+            costs = price_book.preparation(
+                library_protocol, self.context["end_date"]
+            ) * Decimal(split[0])
         else:
-            try:
-                price = (
-                    LibraryPreparationCosts.objects.filter(archived=False)
-                    .get(library_protocol__name="Quality Control")
-                    .price
-                )
-                costs = Decimal(split[0]) * price
-            except LibraryPreparationCosts.DoesNotExist:
-                logger.exception(f"Preparation Cost for libraries is not set.")
+            qc_price = price_book.preparation_by_name(
+                "Quality Control", self.context["end_date"]
+            )
+            if qc_price is None:
+                logger.exception("Preparation Cost for libraries is not set.")
+            else:
+                costs = Decimal(split[0]) * qc_price
         ret["preparation_costs"] = costs
 
         ret["variable_costs"] = ret["sequencing_costs"] + ret["preparation_costs"]
