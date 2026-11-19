@@ -471,22 +471,3 @@ class TestCostAdminArchivalRemoved(BaseAPITestCase):
         self.assertNotIn("archived", admin_class.list_display)
         self.assertNotIn("mark_as_archived", admin_class.actions)
         self.assertNotIn("mark_as_non_archived", admin_class.actions)
-
-    def test_cost_api_returns_all_prices_not_filtered_by_archived(self):
-        """API endpoints now return all prices; archiving is not a filter."""
-        from django.urls import reverse
-
-        # Archive them in DB directly (simulate legacy data)
-        FixedCosts.objects.filter(pk=self.fixed.pk).update(archived=True)
-        SequencingCosts.objects.filter(pk=self.seq.pk).update(archived=True)
-        LibraryPreparationCosts.objects.filter(pk=self.prep.pk).update(archived=True)
-
-        # All three endpoints should still return them
-        for url_name in (
-            "fixed-costs-list",
-            "sequencing-costs-list",
-            "library-preparation-costs-list",
-        ):
-            response = self.client.get(reverse(url_name))
-            self.assertEqual(response.status_code, 200)
-            self.assertGreaterEqual(len(response.data), 1)

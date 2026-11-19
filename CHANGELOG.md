@@ -2,7 +2,7 @@
 
 Unreleased
 ==========
-- Invoicing: costs on an invoice are now calculated with the prices that were in force on each flowcell's date, tracked via the change history of the cost tables, instead of always the current prices; archiving a price in the admin is no longer needed to keep old invoices stable (archived rows still show in the price lists and count as 0 for their period). (PR #390)
+- Invoicing: costs on an invoice are now calculated with the prices that were in force on each flowcell's date, tracked via the change history of the cost tables, instead of always the current prices; staff can edit prices directly and past months keep their old totals, so archiving prices in the admin is no longer offered. (PR #390)
 
 - Request editor: the Analysis Type of a library or sample is shown by name, and stays in its dropdown, even when that type is not linked to the item's Protocol or is archived; archived Protocols are also shown by name, instead of the raw id. (PR #387)
 - Request form: the "Formblatt S1" download offers the updated template. (Direct commit `89f21068`)
