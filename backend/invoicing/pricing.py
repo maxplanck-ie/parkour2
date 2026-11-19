@@ -41,6 +41,7 @@ class _Table:
     def get(self, key, when):
         if when is not None and when.tzinfo is None:
             from datetime import timezone as _tz
+
             when = when.replace(tzinfo=_tz.utc)
         if key not in self.history:
             return self.current.get(key, 0)

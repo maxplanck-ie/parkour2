@@ -33,5 +33,3 @@ class SequencingCostsAdmin(SimpleHistoryAdmin):
     )
     list_display = ("sequencer", "read_length", "price_amount")
     list_filter = ("sequencer", "read_length")
-
-

@@ -345,7 +345,6 @@ class InvoicingSerializer(ModelSerializer):
                     )
         ret["sequencing_costs"] = costs
 
-
         # Calculate Preparation Costs
         costs = 0
         split = num_libraries_samples.split(" ")

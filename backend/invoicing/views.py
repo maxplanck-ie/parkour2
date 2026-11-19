@@ -137,9 +137,7 @@ class LibraryPreparationCostsViewSet(
     serializer_class = LibraryPreparationCostsSerializer
 
 
-class SequencingCostsViewSet(
-    mixins.UpdateModelMixin, viewsets.ReadOnlyModelViewSet
-):
+class SequencingCostsViewSet(mixins.UpdateModelMixin, viewsets.ReadOnlyModelViewSet):
     """Get the list of Sequencing Costs."""
 
     permission_classes = [IsAdminUser]

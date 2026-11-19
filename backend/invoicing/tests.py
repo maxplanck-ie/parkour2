@@ -261,9 +261,13 @@ class TestPriceBook(BaseTestCase):
         after_change = datetime(2026, 12, 31, tzinfo=dt_timezone.utc)
 
         # Before change -> old price
-        self.assertEqual(str(self.price_book.fixed(self.sequencer.pk, before_change)), old_price)
+        self.assertEqual(
+            str(self.price_book.fixed(self.sequencer.pk, before_change)), old_price
+        )
         # After change -> new price
-        self.assertEqual(str(self.price_book.fixed(self.sequencer.pk, after_change)), "400.00")
+        self.assertEqual(
+            str(self.price_book.fixed(self.sequencer.pk, after_change)), "400.00"
+        )
 
     def test_sequencing_price_history_updates(self):
         from datetime import datetime, timezone as dt_timezone
@@ -321,7 +325,9 @@ class TestPriceBook(BaseTestCase):
             0,
         )
         self.assertEqual(
-            self.price_book.preparation(create_library_protocol("Other").pk, self.base_date),
+            self.price_book.preparation(
+                create_library_protocol("Other").pk, self.base_date
+            ),
             0,
         )
 
@@ -420,7 +426,11 @@ class TestCostAdminArchivalRemoved(BaseAPITestCase):
 
     def setUp(self):
         from django.contrib.admin.sites import site
-        from invoicing.models import FixedCosts, LibraryPreparationCosts, SequencingCosts
+        from invoicing.models import (
+            FixedCosts,
+            LibraryPreparationCosts,
+            SequencingCosts,
+        )
 
         self.create_user()
         self.login()
