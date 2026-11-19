@@ -214,8 +214,8 @@ TEXT_FIELDS = {
 
 
 def add(cand, key, field, value):
-    if isinstance(value, str):
-        cand[(key, field)].add(value)
+    if field in TEXT_FIELDS:
+        cand[(key, field)].add(str(value))
         return
     value = float(value)
     if value != value:  # NaN: BRB would send null, nothing to compare
@@ -354,6 +354,14 @@ def pairsStats(fname):
     return out
 
 
+def firstByKey(keys, values):
+    """BRB _multiqcRows takes the first row of a sample; dict(zip()) would keep the last."""
+    out = {}
+    for k, v in zip(keys, values):
+        out.setdefault(k, v)
+    return out
+
+
 def seqStats(runDir, roots):
     """{(barcode, field): {values}}; mirrors BRB ET.getNReads / DNA / RNA."""
     import pandas as pd
@@ -362,30 +370,48 @@ def seqStats(runDir, roots):
     # splitFastq: "<optical_dups> <total_reads>" in <sample>.metrics, older runs
     # <sample>.duplicate.txt. Project_* holds .metrics for runs before dissectBCL
     # v1.3.5, FASTQC_Project_* after.
-    for sdir in runDir.glob("*Project_*/Sample_*"):
-        bc = sdir.name[len("Sample_") :]
+    for fdir in sorted(runDir.glob("FASTQC_Project_*/Sample_*")):
+        bc = fdir.name[len("Sample_") :]
+        project = fdir.parent.name.split("Project_", 1)[1]
         # BRB scopes sample names to one project (Analysis_<p> pairs with FASTQC_Project_<p>)
-        s2l = s2lAll.setdefault(sdir.parent.name.split("Project_", 1)[1], {})
-        # same rule as BRB getNReads: first usable file wins (.metrics before .duplicate.txt);
-        # a usable file is "<digits> <digits>" with optical <= total
-        files = sorted(sdir.glob("*.metrics")) + sorted(sdir.glob("*.duplicate.txt"))
-        for f in files:
-            text = f.read_text().split()
-            if (
-                len(text) != 2
-                or not all(t.isdigit() for t in text)
-                or int(text[0]) > int(text[1])
-            ):
-                print(
-                    f"  {runDir.name}: {f.name}: not '<opt> <total>' ({text[:3]}), skipped"
+        s2l = s2lAll.setdefault(project, {})
+        zips = list(fdir.glob("*_R1_fastqc.zip"))
+        if not zips:
+            continue  # BRB drops a library without a R1 fastqc zip: no stats at all
+        # BRB keeps only the first R1 sample of a library (baseDict[lib][0])
+        first = min(zips)
+        s2l[first.name[: -len("_R1_fastqc.zip")]] = bc
+        # same rule as BRB getNReads: FASTQC_Project_* first, then Project_*; in each
+        # the first usable file wins (.metrics before .duplicate.txt); a usable file is
+        # "<digits> <digits>" with optical <= total
+        for sdir in (fdir, runDir / f"Project_{project}" / fdir.name):
+            files = sorted(sdir.glob("*.metrics")) + sorted(
+                sdir.glob("*.duplicate.txt")
+            )
+            found = False
+            for f in files:
+                text = f.read_text().split()
+                if (
+                    len(text) != 2
+                    or not all(t.isdigit() for t in text)
+                    or int(text[0]) > int(text[1])
+                ):
+                    print(
+                        f"  {runDir.name}: {f.name}: not '<opt> <total>' ({text[:3]}), skipped"
+                    )
+                    continue
+                opt, total = map(int, text)
+                add(cand, bc, "reads_pf_sequenced", total - opt)
+                add(
+                    cand,
+                    bc,
+                    "optical_duplicates",
+                    100.0 * opt / total if total else -1.0,
                 )
-                continue
-            opt, total = map(int, text)
-            add(cand, bc, "reads_pf_sequenced", total - opt)
-            add(cand, bc, "optical_duplicates", 100.0 * opt / total if total else -1.0)
-            break
-        for z in sdir.glob("*_R1_fastqc.zip"):
-            s2l[z.name[: -len("_R1_fastqc.zip")]] = bc
+                found = True
+                break
+            if found:
+                break
 
     adirs = glob.glob(f"{runDir}/Analysis_*/*") + glob.glob(
         f"{roots.group_data}/*/sequencing_data*/{runDir.name}/Analysis_*/*"
@@ -402,11 +428,9 @@ def seqStats(runDir, roots):
                 sep="\t",
                 usecols=["Sample", "total_passed", "duplicates_passed"],
             )
-            dup = dict(
-                zip(
-                    df["Sample"].astype(str),
-                    df["duplicates_passed"] / df["total_passed"] * 100,
-                )
+            dup = firstByKey(
+                df["Sample"].astype(str),
+                df["duplicates_passed"] / df["total_passed"] * 100,
             )
         # DNA
         for f in (adir / "Bowtie2").glob("*.Bowtie2_summary.txt"):
@@ -433,7 +457,7 @@ def seqStats(runDir, roots):
         fs = mq / "multiqc_samtools_flagstat.txt"
         if fs.exists() and (adir / "Bowtie2").exists():
             rdf = pd.read_csv(fs, sep="\t", usecols=["Sample", "read1_passed"])
-            r1 = dict(zip(rdf["Sample"].astype(str), rdf["read1_passed"]))
+            r1 = firstByKey(rdf["Sample"].astype(str), rdf["read1_passed"])
             for sample, bc in s2l.items():
                 if sample in r1:
                     add(cand, bc, "fragments_total", int(r1[sample]))
@@ -445,8 +469,8 @@ def seqStats(runDir, roots):
                 sep="\t",
                 usecols=["Sample", "Total", "Assigned"],
             )
-            assigned = dict(
-                zip(adf["Sample"].astype(str), adf["Assigned"] / adf["Total"] * 100)
+            assigned = firstByKey(
+                adf["Sample"].astype(str), adf["Assigned"] / adf["Total"] * 100
             )
         for f in adir.glob("STAR/*/*.Log.final.out"):
             sample = f.name.split(".")[0]
@@ -460,14 +484,14 @@ def seqStats(runDir, roots):
                 elif "% of reads mapped to multiple loci" in line:
                     multi = float(line.strip().split("\t")[-1][:-1])
                     tot += multi
+            if sample not in dup or sample + ".filtered" not in assigned:
+                continue  # BRB RNA() needs STAR, flagstat and featureCounts: else base only
             bc = s2l[sample]
             add(cand, bc, "mapped_reads", tot)
             add(cand, bc, "uniq_mapped", uniq)
             add(cand, bc, "multi_mapped", multi)
-            if sample in dup:
-                add(cand, bc, "dupped_reads", dup[sample])
-            if sample + ".filtered" in assigned:
-                add(cand, bc, "assigned_reads", assigned[sample + ".filtered"])
+            add(cand, bc, "dupped_reads", dup[sample])
+            add(cand, bc, "assigned_reads", assigned[sample + ".filtered"])
         # Hi-C: one multiqc_hicexplorer row per matrix file, named <sample>_bs<binsize>.cool
         hic = mq / "multiqc_hicexplorer.txt"
         if hic.exists():

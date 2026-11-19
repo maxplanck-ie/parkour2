@@ -68,12 +68,15 @@ Causes of the remaining gaps:
 
 `restats.py` is meant to reproduce what BRB sends. Known differences, so a mismatch is not read as a bug in one side:
 
-- A stats file is usable if it holds `<digits> <digits>` with optical <= total. First usable file wins (`.metrics` before `.duplicate.txt`). Both sides skip the rest.
-- No usable stats file: BRB counts R1 reads and sends `optical_duplicates = 0` (no stats files at all) or leaves it out (files present but unusable). `restats.py` records nothing for these libraries, so they show as MISSING or NEW, never as a computed value.
-- A sample missing from the flagstat table: BRB leaves `dupped_reads` out, `restats.py` records nothing.
-- `restats.py` does not read R1 fastqc zips for the sample map outside `FASTQC_Project_*`, and does not store CONFLICT rows (a field with several distinct values, such as Hi-C lanes). BRB sends one of them.
-- Hi-C: the `_bs10kb` row of a sample wins, else the first `multiqc_hicexplorer` row. The percentage did not differ between bin sizes in the 6 files checked. BRB takes the rate from the sample listed in the library's base statistics when several samples share one barcode.
-- Several stats files per sample: none exist (0 of 19,437 samples checked on rapidus and longus2, 2026-11-18). Both sides keep the first usable file and do not sum. Runs present on both hosts have one empty and one filled copy, never two filled ones.
+- Base statistics only exist for a library with a `*_R1_fastqc.zip` in `FASTQC_Project_<p>/Sample_<lib>`. Without one, neither side reports anything for it. With several zips, both sides use the first (sorted) as the sample for Hi-C, micro-C and the sample map.
+- A stats file is usable if it holds `<digits> <digits>` with optical <= total. Both sides look in `FASTQC_Project_<p>/Sample_<lib>` first, then `Project_<p>/Sample_<lib>`, and keep the first usable file (`.metrics` before `.duplicate.txt`). They never sum.
+- No usable stats file: BRB counts R1 reads and sends `optical_duplicates = 0` (no stats files at all) or leaves it out (files present but unusable). `restats.py` records nothing for these libraries, so they show as MISSING or NEW, never as a computed value. This is the one known deviation.
+- Duplicate rows of one sample in `multiqc_samtools_flagstat.txt` or `multiqc_featurecounts.txt`: both sides take the first row.
+- A sample missing from the flagstat table: both sides leave `dupped_reads` out.
+- RNA: a library needs STAR `Log.final.out`, a flagstat row and a featureCounts row (`<sample>.filtered`). Without all three neither side sends STAR values.
+- `restats.py` does not store CONFLICT rows (a field with several distinct values, such as Hi-C lanes). BRB sends one of them.
+- Hi-C: the `_bs10kb` row of a sample wins, else the first `multiqc_hicexplorer` row.
+- Several stats files per sample: none exist (0 of 19,437 samples checked on rapidus and longus2, 2026-11-18).
 - CONFLICT rows (a key with several distinct parsed values, 1,858 lines in the last run) come from different runs or pipelines for `mapped_reads`, `dupped_reads`, `fragment_*`, `insert_size`. Parkour holds one of the candidates, sometimes the lower and sometimes the higher, so no min or max rule fits. They are skipped and reported, not stored.
 
 ## Lane and micro-C fields
