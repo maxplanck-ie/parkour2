@@ -221,7 +221,7 @@ def add(cand, key, field, value):
     value = float(value)
     if value != value:  # NaN: BRB would send null, nothing to compare
         return
-    cand[(key, field)].add(round(value, 6))
+    cand[(key, field)].add(value)
 
 
 # Illumina Lane summary (interop, Read 1): column -> (Parkour field, scale).
@@ -473,8 +473,8 @@ def seqStats(runDir, roots, labels=None):
     )
     for adir in map(Path, adirs):
         s2l = s2lAll.get(adir.parent.name[len("Analysis_") :], {})
-        if (adir / "RELACS_sampleSheet.txt").exists():
-            continue  # BRB pushes no analysis stats for RELACS
+        # RELACS: BRB DNA() returns base stats only, chromatin() still adds fragment and peak QC
+        relacs = (adir / "RELACS_sampleSheet.txt").exists()
         mq = adir / "multiQC" / "multiqc_data"
         dup = {}
         if (mq / "multiqc_samtools_flagstat.txt").exists():
@@ -488,7 +488,7 @@ def seqStats(runDir, roots, labels=None):
                 df["duplicates_passed"] / df["total_passed"] * 100,
             )
         # DNA
-        for f in (adir / "Bowtie2").glob("*.Bowtie2_summary.txt"):
+        for f in [] if relacs else (adir / "Bowtie2").glob("*.Bowtie2_summary.txt"):
             sample = f.name.split(".Bowtie2_summary")[0]
             if sample not in s2l:
                 continue
@@ -501,16 +501,24 @@ def seqStats(runDir, roots, labels=None):
             if sample in dup:
                 add(cand, s2l[sample], "dupped_reads", dup[sample])
         frag = adir / "deepTools_qc/bamPEFragmentSize/fragmentSize.metric.tsv"
-        if frag.exists() and (adir / "Bowtie2").exists():
+        isChromatin = relacs or (adir / "Bowtie2").exists()
+        if frag.exists() and isChromatin:
             fdf = pd.read_csv(frag, sep="\t", index_col=0)
             for sample, bc in s2l.items():
                 row = f"filtered_bam/{sample}.filtered.bam"
                 if row in fdf.index:
-                    add(cand, bc, "insert_size", int(fdf.loc[row, "Frag. Len. Median"]))
+                    if not relacs:
+                        add(
+                            cand,
+                            bc,
+                            "insert_size",
+                            int(fdf.loc[row, "Frag. Len. Median"]),
+                        )
                     for key, col in FRAGMENT_COLS.items():
                         add(cand, bc, key, int(fdf.loc[row, col]))
         fs = mq / "multiqc_samtools_flagstat.txt"
-        if fs.exists() and (adir / "Bowtie2").exists():
+        # BRB chromatin() (DNA/ATAC) alone reads read1_passed; DNA() fails without Bowtie2 output
+        if fs.exists() and isChromatin:
             rdf = pd.read_csv(fs, sep="\t", usecols=["Sample", "read1_passed"])
             r1 = firstByKey(rdf["Sample"].astype(str), rdf["read1_passed"])
             for sample, bc in s2l.items():
