@@ -212,6 +212,14 @@ TEXT_FIELDS = {
     "sequencer_side",
     "lane_loading_format",
 }
+# Counts and base-pair lengths BRB sends as ints (everything else is a float).
+INT_FIELDS = {
+    "reads_pf_sequenced",
+    "insert_size",
+    "fragments_total",
+    "peak_count",
+    *FRAGMENT_COLS,
+}
 
 
 def add(cand, key, field, value):
@@ -221,6 +229,8 @@ def add(cand, key, field, value):
     value = float(value)
     if value != value:  # NaN: BRB would send null, nothing to compare
         return
+    if field in INT_FIELDS:
+        value = int(value)
     cand[(key, field)].add(value)
 
 
