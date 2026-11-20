@@ -552,7 +552,7 @@ def seqStats(runDir, roots, labels=None):
         if (
             relacs
         ):  # mirrors ET._relacsSamples: stats per demuxed sample, under the library
-            fsr = {}
+            fsr, weights, libs, cand_sum = {}, {}, {}, {}
             if fs.exists():
                 rdf = pd.read_csv(fs, sep="\t")
                 rdf["Sample"] = rdf["Sample"].astype(str).str.removesuffix(".markdup")
@@ -564,31 +564,55 @@ def seqStats(runDir, roots, labels=None):
                 if len(p) < 3 or not p[0].startswith("Sample_"):
                     continue
                 lib, name = p[0][7:], p[2]
-                pre = f"demuxed_samples/{name}/"
+                st = {}
                 row = f"filtered_bam/{name}.filtered.bam"
                 if fdf is not None and row in fdf.index:
                     for key, col in FRAGMENT_COLS.items():
-                        add(cand, lib, pre + key, int(fdf.loc[row, col]))
-                    median = int(fdf.loc[row, "Frag. Len. Median"])
-                    add(cand, lib, pre + "insert_size", median)
+                        st[key] = int(fdf.loc[row, col])
+                    st["insert_size"] = int(fdf.loc[row, "Frag. Len. Median"])
                 bt = adir / "Bowtie2" / f"{name}.Bowtie2_summary.txt"
                 if bt.exists():
                     last = bt.read_text().split("\n")[-2]
-                    add(cand, lib, pre + "mapped_reads", last.split("%")[0])
+                    st["mapped_reads"] = float(last.split("%")[0])
                 r = fsr.get(name)
                 if r is not None:
                     if r["total_passed"]:
                         dp = 100.0 * r["duplicates_passed"] / r["total_passed"]
-                        add(cand, lib, pre + "dupped_reads", dp)
+                        st["dupped_reads"] = dp
                     if "read1_passed" in r:
-                        add(cand, lib, pre + "fragments_total", int(r["read1_passed"]))
+                        st["fragments_total"] = int(r["read1_passed"])
+                    weights[name] = int(r["total_passed"])
                 pf = adir / "MACS2_QC" / f"{name}.filtered.BAM_peaks.qc.txt"
                 if pf.exists():
                     pr = pd.read_csv(pf, sep="\t").iloc[0]
-                    add(cand, lib, pre + "peak_count", int(pr["peak_count"]))
-                    add(cand, lib, pre + "frip", float(pr["FRiP"]))
-                    pgc = float(pr["peak_genome_coverage"])
-                    add(cand, lib, pre + "peak_genome_coverage", pgc)
+                    st["peak_count"] = int(pr["peak_count"])
+                    st["frip"] = float(pr["FRiP"])
+                    st["peak_genome_coverage"] = float(pr["peak_genome_coverage"])
+                for key, value in st.items():
+                    add(cand, lib, f"demuxed_samples/{name}/{key}", value)
+                if st:
+                    libs.setdefault(lib, {})[name] = st
+            # library level, like ET._relacsLibrary: read-weighted means (weight =
+            # flagstat total_passed), fragments_total summed, peak_count left out
+            for lib, samples in libs.items():
+                acc = {}
+                for name, st in samples.items():
+                    if "fragments_total" in st:
+                        total = int(cand_sum.get(lib, 0)) + st["fragments_total"]
+                        cand_sum[lib] = total
+                    if not weights.get(name):
+                        continue
+                    for key, value in st.items():
+                        if key in ("fragments_total", "peak_count"):
+                            continue
+                        a = acc.setdefault(key, [0.0, 0])
+                        a[0] += weights[name] * value
+                        a[1] += weights[name]
+                for key, (tot, w) in acc.items():
+                    mean = tot / w
+                    add(cand, lib, key, round(mean) if key in INT_FIELDS else mean)
+                if lib in cand_sum:
+                    add(cand, lib, "fragments_total", cand_sum[lib])
         # RNA
         assigned = {}
         if (mq / "multiqc_featurecounts.txt").exists():
