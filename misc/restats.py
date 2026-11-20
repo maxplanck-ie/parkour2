@@ -552,7 +552,7 @@ def seqStats(runDir, roots, labels=None):
         if (
             relacs
         ):  # mirrors ET._relacsSamples: stats per demuxed sample, under the library
-            fsr, weights, libs, cand_sum = {}, {}, {}, {}
+            fsr, weights, libs = {}, {}, {}
             if fs.exists():
                 rdf = pd.read_csv(fs, sep="\t")
                 rdf["Sample"] = rdf["Sample"].astype(str).str.removesuffix(".markdup")
@@ -592,27 +592,20 @@ def seqStats(runDir, roots, labels=None):
                     add(cand, lib, f"demuxed_samples/{name}/{key}", value)
                 if st:
                     libs.setdefault(lib, {})[name] = st
-            # library level, like ET._relacsLibrary: read-weighted means (weight =
-            # flagstat total_passed), fragments_total summed, peak_count left out
+            # library level, like ET._relacsLibrary: only exact values, fragments_total
+            # summed and dupped_reads pooled (rates weighted by flagstat total_passed)
             for lib, samples in libs.items():
-                acc = {}
+                frags, dup, reads = [], 0.0, 0
                 for name, st in samples.items():
                     if "fragments_total" in st:
-                        total = int(cand_sum.get(lib, 0)) + st["fragments_total"]
-                        cand_sum[lib] = total
-                    if not weights.get(name):
-                        continue
-                    for key, value in st.items():
-                        if key in ("fragments_total", "peak_count"):
-                            continue
-                        a = acc.setdefault(key, [0.0, 0])
-                        a[0] += weights[name] * value
-                        a[1] += weights[name]
-                for key, (tot, w) in acc.items():
-                    mean = tot / w
-                    add(cand, lib, key, round(mean) if key in INT_FIELDS else mean)
-                if lib in cand_sum:
-                    add(cand, lib, "fragments_total", cand_sum[lib])
+                        frags.append(st["fragments_total"])
+                    if weights.get(name) and "dupped_reads" in st:
+                        dup += weights[name] * st["dupped_reads"]
+                        reads += weights[name]
+                if frags:
+                    add(cand, lib, "fragments_total", sum(frags))
+                if reads:
+                    add(cand, lib, "dupped_reads", dup / reads)
         # RNA
         assigned = {}
         if (mq / "multiqc_featurecounts.txt").exists():
