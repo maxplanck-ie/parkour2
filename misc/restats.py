@@ -26,7 +26,7 @@ What is compared (kind -> Parkour endpoint, entry key):
       mapped_reads, dupped_reads, insert_size  Analysis_*/ Bowtie2, flagstat, deepTools (DNA)
       fragment_q1/median/q3/p10/p90, fragments_total
                                                deepTools fragmentSize.metric.tsv, flagstat read1_passed
-      peak_count, frip, peak_genome_coverage   Analysis_*/ MACS2_QC (ATAC)
+      peak_count, frip, peak_genome_coverage   Analysis_*/ MACS2_QC, else MACS2 (ATAC, ChIP, CUT&Tag, RELACS)
       mapped_reads, uniq_mapped, multi_mapped, dupped_reads, assigned_reads
                                                Analysis_*/ STAR, flagstat, featureCounts (RNA)
   matrix    -> /api/run_statistics/        name ("Lane N")
@@ -583,6 +583,8 @@ def seqStats(runDir, roots, labels=None):
                         st["fragments_total"] = int(r["read1_passed"])
                     weights[name] = int(r["total_passed"])
                 pf = adir / "MACS2_QC" / f"{name}.filtered.BAM_peaks.qc.txt"
+                if not pf.exists():
+                    pf = adir / "MACS2" / f"{name}.filtered.BAM_peaks.qc.txt"
                 if pf.exists():
                     pr = pd.read_csv(pf, sep="\t").iloc[0]
                     st["peak_count"] = int(pr["peak_count"])
@@ -654,20 +656,18 @@ def seqStats(runDir, roots, labels=None):
                     rate[sample] = pct
             for sample, pct in rate.items():
                 add(cand, s2l[sample], "uniq_mapped", pct)
-        # peak QC (ATAC / ChIP / CUT&Tag runs with peak calling); mirrors ET.peakQC
-        for f in adir.glob("MACS2_QC/*.filtered.BAM_peaks.qc.txt"):
-            sample = f.name.removesuffix(".filtered.BAM_peaks.qc.txt")
-            if sample not in s2l:
+        # peak QC (ATAC / ChIP / CUT&Tag; RELACS peaks are per demuxed sample above): mirrors ET.peakQC,
+        # MACS2_QC/ first, else MACS2/
+        for sample, bc in [] if relacs else s2l.items():
+            f = adir / "MACS2_QC" / f"{sample}.filtered.BAM_peaks.qc.txt"
+            if not f.exists():
+                f = adir / "MACS2" / f"{sample}.filtered.BAM_peaks.qc.txt"
+            if not f.exists():
                 continue
             row = pd.read_csv(f, sep="\t").iloc[0]
-            add(cand, s2l[sample], "peak_count", int(row["peak_count"]))
-            add(cand, s2l[sample], "frip", float(row["FRiP"]))
-            add(
-                cand,
-                s2l[sample],
-                "peak_genome_coverage",
-                float(row["peak_genome_coverage"]),
-            )
+            add(cand, bc, "peak_count", int(row["peak_count"]))
+            add(cand, bc, "frip", float(row["FRiP"]))
+            add(cand, bc, "peak_genome_coverage", float(row["peak_genome_coverage"]))
         # micro-C: pairtools dedup summary per sample; mirrors BRB ET.makePairs
         for sample, bc in s2l.items():
             pf = adir / "pairs" / f"{sample}.pairs.dedup.stats"
