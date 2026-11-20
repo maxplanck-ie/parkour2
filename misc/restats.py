@@ -563,7 +563,7 @@ def seqStats(runDir, roots, labels=None):
                 p = line.split("\t")
                 if len(p) < 3 or not p[0].startswith("Sample_"):
                     continue
-                lib, name = p[0][7:], p[2]
+                lib, name = p[0][7:], p[-1].replace(" ", "_")
                 st = {}
                 row = f"filtered_bam/{name}.filtered.bam"
                 if fdf is not None and row in fdf.index:
