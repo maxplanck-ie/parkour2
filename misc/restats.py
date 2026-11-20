@@ -229,9 +229,30 @@ def add(cand, key, field, value):
     value = float(value)
     if value != value:  # NaN: BRB would send null, nothing to compare
         return
-    if field in INT_FIELDS:
+    if field.rsplit("/", 1)[-1] in INT_FIELDS:
         value = int(value)
     cand[(key, field)].add(value)
+
+
+DEMUX = "demuxed_samples"  # BRB sends RELACS stats as {DEMUX: {name: {field: value}}}
+
+
+def getField(entry, field):
+    """entry[field]; "demuxed_samples/<name>/<f>" reads the nested per-sample value."""
+    if not field.startswith(DEMUX + "/"):
+        return entry.get(field)
+    _, name, f = field.split("/", 2)
+    return (entry.get(DEMUX) or {}).get(name, {}).get(f)
+
+
+def setField(entry, field, value):
+    if not field.startswith(DEMUX + "/"):
+        entry[field] = value
+        return
+    _, name, f = field.split("/", 2)
+    samples = {k: dict(v) for k, v in (entry.get(DEMUX) or {}).items()}
+    samples.setdefault(name, {})[f] = value
+    entry[DEMUX] = samples
 
 
 # Illumina Lane summary (interop, Read 1): column -> (Parkour field, scale).
@@ -483,7 +504,7 @@ def seqStats(runDir, roots, labels=None):
     )
     for adir in map(Path, adirs):
         s2l = s2lAll.get(adir.parent.name[len("Analysis_") :], {})
-        # RELACS: BRB DNA() returns base stats only, chromatin() still adds fragment and peak QC
+        # RELACS: mapping ran on demuxed samples, so BRB sends them per sample under the library
         relacs = (adir / "RELACS_sampleSheet.txt").exists()
         mq = adir / "multiQC" / "multiqc_data"
         dup = {}
@@ -511,19 +532,13 @@ def seqStats(runDir, roots, labels=None):
             if sample in dup:
                 add(cand, s2l[sample], "dupped_reads", dup[sample])
         frag = adir / "deepTools_qc/bamPEFragmentSize/fragmentSize.metric.tsv"
-        isChromatin = relacs or (adir / "Bowtie2").exists()
+        isChromatin = not relacs and (adir / "Bowtie2").exists()
         if frag.exists() and isChromatin:
             fdf = pd.read_csv(frag, sep="\t", index_col=0)
             for sample, bc in s2l.items():
                 row = f"filtered_bam/{sample}.filtered.bam"
                 if row in fdf.index:
-                    if not relacs:
-                        add(
-                            cand,
-                            bc,
-                            "insert_size",
-                            int(fdf.loc[row, "Frag. Len. Median"]),
-                        )
+                    add(cand, bc, "insert_size", int(fdf.loc[row, "Frag. Len. Median"]))
                     for key, col in FRAGMENT_COLS.items():
                         add(cand, bc, key, int(fdf.loc[row, col]))
         fs = mq / "multiqc_samtools_flagstat.txt"
@@ -534,6 +549,46 @@ def seqStats(runDir, roots, labels=None):
             for sample, bc in s2l.items():
                 if sample in r1:
                     add(cand, bc, "fragments_total", int(r1[sample]))
+        if (
+            relacs
+        ):  # mirrors ET._relacsSamples: stats per demuxed sample, under the library
+            fsr = {}
+            if fs.exists():
+                rdf = pd.read_csv(fs, sep="\t")
+                rdf["Sample"] = rdf["Sample"].astype(str).str.removesuffix(".markdup")
+                for r in rdf.to_dict("records"):
+                    fsr.setdefault(r["Sample"], r)
+            fdf = pd.read_csv(frag, sep="\t", index_col=0) if frag.exists() else None
+            for line in (adir / "RELACS_sampleSheet.txt").read_text().split("\n"):
+                p = line.split("\t")
+                if len(p) < 3 or not p[0].startswith("Sample_"):
+                    continue
+                lib, name = p[0][7:], p[2]
+                pre = f"demuxed_samples/{name}/"
+                row = f"filtered_bam/{name}.filtered.bam"
+                if fdf is not None and row in fdf.index:
+                    for key, col in FRAGMENT_COLS.items():
+                        add(cand, lib, pre + key, int(fdf.loc[row, col]))
+                    median = int(fdf.loc[row, "Frag. Len. Median"])
+                    add(cand, lib, pre + "insert_size", median)
+                bt = adir / "Bowtie2" / f"{name}.Bowtie2_summary.txt"
+                if bt.exists():
+                    last = bt.read_text().split("\n")[-2]
+                    add(cand, lib, pre + "mapped_reads", last.split("%")[0])
+                r = fsr.get(name)
+                if r is not None:
+                    if r["total_passed"]:
+                        dp = 100.0 * r["duplicates_passed"] / r["total_passed"]
+                        add(cand, lib, pre + "dupped_reads", dp)
+                    if "read1_passed" in r:
+                        add(cand, lib, pre + "fragments_total", int(r["read1_passed"]))
+                pf = adir / "MACS2_QC" / f"{name}.filtered.BAM_peaks.qc.txt"
+                if pf.exists():
+                    pr = pd.read_csv(pf, sep="\t").iloc[0]
+                    add(cand, lib, pre + "peak_count", int(pr["peak_count"]))
+                    add(cand, lib, pre + "frip", float(pr["FRiP"]))
+                    pgc = float(pr["peak_genome_coverage"])
+                    add(cand, lib, pre + "peak_genome_coverage", pgc)
         # RNA
         assigned = {}
         if (mq / "multiqc_featurecounts.txt").exists():
@@ -798,7 +853,7 @@ def validate(args):
                     stats[kind, "conflict"] += 1
                     continue
                 new = next(iter(vals))
-                old = entries.get(key, {}).get(field)
+                old = getField(entries.get(key, {}), field)
                 stats[kind, "compared"] += 1
                 if not differs(old, new, args.tol, field):
                     db.execute(
@@ -895,15 +950,15 @@ def push(args):
             elif e is None:
                 print(f"  SKIP {fcid} {key}: not in Parkour")
                 continue
-            if differs(e.get(field), old, 1e-9, field):
+            if differs(getField(e, field), old, 1e-9, field):
                 print(
-                    f"  SKIP {fcid} {key} {field}: Parkour now {e.get(field)}, "
+                    f"  SKIP {fcid} {key} {field}: Parkour now {getField(e, field)}, "
                     f"was {old} at validation; re-run validate"
                 )
                 continue
             if key not in out:
                 out[key] = {k: v for k, v in e.items() if k not in READ_TIME_KEYS[kind]}
-            out[key][field] = new
+            setField(out[key], field, new)
             ids.append(rid)
             print(f"  {fcid} {key} {field}: {old} -> {new}")
         if not out:
@@ -958,7 +1013,7 @@ def compare(args):
         if entry is None:
             stats["not on deployment"] += 1
             continue
-        old = entry.get(field)
+        old = getField(entry, field)
         old = None if old == "" else old
         if old is None:
             state = "absent"
