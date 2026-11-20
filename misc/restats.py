@@ -234,6 +234,33 @@ def add(cand, key, field, value):
     cand[(key, field)].add(value)
 
 
+# Errors a missing or malformed stats file raises; they cost only the value read from it.
+SALVAGE = (IndexError, KeyError, ValueError, OSError)
+PEAK_COLS = (
+    ("peak_count", "peak_count", int),
+    ("frip", "FRiP", float),
+    ("peak_genome_coverage", "peak_genome_coverage", float),
+)
+
+
+class salvage:
+    """Context manager: BRB reads each stats source on its own, a broken one only costs its values."""
+
+    def __init__(self, what):
+        self.what = what
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, typ, exc, tb):
+        if typ is not None and issubclass(typ, SALVAGE):
+            print(
+                f"warning: {self.what} unreadable ({exc!r}), skipped", file=sys.stderr
+            )
+            return True
+        return False
+
+
 DEMUX = "demuxed_samples"  # BRB sends RELACS stats as {DEMUX: {name: {field: value}}}
 
 
@@ -509,56 +536,83 @@ def seqStats(runDir, roots, labels=None):
         mq = adir / "multiQC" / "multiqc_data"
         dup = {}
         if (mq / "multiqc_samtools_flagstat.txt").exists():
-            df = pd.read_csv(
-                mq / "multiqc_samtools_flagstat.txt",
-                sep="\t",
-                usecols=["Sample", "total_passed", "duplicates_passed"],
-            )
-            dup = firstByKey(
-                df["Sample"].astype(str),
-                df["duplicates_passed"] / df["total_passed"] * 100,
-            )
+            with salvage(mq / "multiqc_samtools_flagstat.txt"):
+                df = pd.read_csv(
+                    mq / "multiqc_samtools_flagstat.txt",
+                    sep="\t",
+                    usecols=["Sample", "total_passed", "duplicates_passed"],
+                )
+                for col in ("total_passed", "duplicates_passed"):
+                    df[col] = pd.to_numeric(df[col], errors="coerce")
+                dup = firstByKey(
+                    df["Sample"].astype(str),
+                    df["duplicates_passed"] / df["total_passed"] * 100,
+                )
         # DNA
         for f in [] if relacs else (adir / "Bowtie2").glob("*.Bowtie2_summary.txt"):
             sample = f.name.split(".Bowtie2_summary")[0]
             if sample not in s2l:
                 continue
-            add(
-                cand,
-                s2l[sample],
-                "mapped_reads",
-                f.read_text().split("\n")[-2].split("%")[0],
-            )
+            with salvage(f):
+                add(
+                    cand,
+                    s2l[sample],
+                    "mapped_reads",
+                    f.read_text().split("\n")[-2].split("%")[0],
+                )
             if sample in dup:
                 add(cand, s2l[sample], "dupped_reads", dup[sample])
         frag = adir / "deepTools_qc/bamPEFragmentSize/fragmentSize.metric.tsv"
-        isChromatin = not relacs and (adir / "Bowtie2").exists()
+        isChromatin = not relacs and ((adir / "Bowtie2").exists() or frag.exists())
         if frag.exists() and isChromatin:
-            fdf = pd.read_csv(frag, sep="\t", index_col=0)
-            for sample, bc in s2l.items():
+            fdf = None
+            with salvage(frag):
+                fdf = pd.read_csv(frag, sep="\t", index_col=0)
+            for sample, bc in s2l.items() if fdf is not None else ():
                 row = f"filtered_bam/{sample}.filtered.bam"
                 if row in fdf.index:
-                    add(cand, bc, "insert_size", int(fdf.loc[row, "Frag. Len. Median"]))
-                    for key, col in FRAGMENT_COLS.items():
-                        add(cand, bc, key, int(fdf.loc[row, col]))
+                    cols = dict(FRAGMENT_COLS)
+                    # BRB DNA() reads insert_size only for samples with a Bowtie2 summary
+                    if (adir / "Bowtie2" / f"{sample}.Bowtie2_summary.txt").exists():
+                        cols["insert_size"] = "Frag. Len. Median"
+                    for key, col in cols.items():
+                        with salvage(f"{sample} {key}"):
+                            add(cand, bc, key, int(fdf.loc[row, col]))
         fs = mq / "multiqc_samtools_flagstat.txt"
-        # BRB chromatin() (DNA/ATAC) alone reads read1_passed; DNA() fails without Bowtie2 output
+        # BRB chromatin() (DNA/ATAC) alone reads read1_passed; Bowtie2/ or the deepTools fragment file marks such a dir
         if fs.exists() and isChromatin:
-            rdf = pd.read_csv(fs, sep="\t", usecols=["Sample", "read1_passed"])
-            r1 = firstByKey(rdf["Sample"].astype(str), rdf["read1_passed"])
+            r1 = {}
+            with salvage(fs):
+                rdf = pd.read_csv(fs, sep="\t", usecols=["Sample", "read1_passed"])
+                rdf["read1_passed"] = pd.to_numeric(
+                    rdf["read1_passed"], errors="coerce"
+                )
+                r1 = firstByKey(rdf["Sample"].astype(str), rdf["read1_passed"])
             for sample, bc in s2l.items():
                 if sample in r1:
-                    add(cand, bc, "fragments_total", int(r1[sample]))
+                    with salvage(f"{sample} fragments_total"):
+                        add(cand, bc, "fragments_total", int(r1[sample]))
         if (
             relacs
         ):  # mirrors ET._relacsSamples: stats per demuxed sample, under the library
             fsr, weights, libs = {}, {}, {}
             if fs.exists():
-                rdf = pd.read_csv(fs, sep="\t")
-                rdf["Sample"] = rdf["Sample"].astype(str).str.removesuffix(".markdup")
-                for r in rdf.to_dict("records"):
-                    fsr.setdefault(r["Sample"], r)
-            fdf = pd.read_csv(frag, sep="\t", index_col=0) if frag.exists() else None
+                with salvage(fs):
+                    rdf = pd.read_csv(fs, sep="\t")
+                    rdf["Sample"] = (
+                        rdf["Sample"].astype(str).str.removesuffix(".markdup")
+                    )
+                    for col in ("total_passed", "duplicates_passed", "read1_passed"):
+                        if (
+                            col in rdf
+                        ):  # a corrupt cell must not turn the column to text
+                            rdf[col] = pd.to_numeric(rdf[col], errors="coerce")
+                    for r in rdf.to_dict("records"):
+                        fsr.setdefault(r["Sample"], r)
+            fdf = None
+            if frag.exists():
+                with salvage(frag):
+                    fdf = pd.read_csv(frag, sep="\t", index_col=0)
             for line in (adir / "RELACS_sampleSheet.txt").read_text().split("\n"):
                 p = line.split("\t")
                 if len(p) < 3 or not p[0].startswith("Sample_"):
@@ -567,29 +621,36 @@ def seqStats(runDir, roots, labels=None):
                 st = {}
                 row = f"filtered_bam/{name}.filtered.bam"
                 if fdf is not None and row in fdf.index:
-                    for key, col in FRAGMENT_COLS.items():
-                        st[key] = int(fdf.loc[row, col])
-                    st["insert_size"] = int(fdf.loc[row, "Frag. Len. Median"])
+                    for key, col in {
+                        **FRAGMENT_COLS,
+                        "insert_size": "Frag. Len. Median",
+                    }.items():
+                        with salvage(f"{name} {key}"):
+                            st[key] = int(fdf.loc[row, col])
                 bt = adir / "Bowtie2" / f"{name}.Bowtie2_summary.txt"
                 if bt.exists():
-                    last = bt.read_text().split("\n")[-2]
-                    st["mapped_reads"] = float(last.split("%")[0])
+                    with salvage(bt):
+                        last = bt.read_text().split("\n")[-2]
+                        st["mapped_reads"] = float(last.split("%")[0])
                 r = fsr.get(name)
                 if r is not None:
-                    if r["total_passed"]:
-                        dp = 100.0 * r["duplicates_passed"] / r["total_passed"]
-                        st["dupped_reads"] = dp
-                    if "read1_passed" in r:
-                        st["fragments_total"] = int(r["read1_passed"])
-                    weights[name] = int(r["total_passed"])
+                    with salvage(f"{name} dupped_reads"):
+                        weights[name] = int(r["total_passed"])
+                        if r["total_passed"]:
+                            dp = 100.0 * r["duplicates_passed"] / r["total_passed"]
+                            st["dupped_reads"] = dp
+                    with salvage(f"{name} fragments_total"):
+                        if "read1_passed" in r:
+                            st["fragments_total"] = int(r["read1_passed"])
                 pf = adir / "MACS2_QC" / f"{name}.filtered.BAM_peaks.qc.txt"
                 if not pf.exists():
                     pf = adir / "MACS2" / f"{name}.filtered.BAM_peaks.qc.txt"
                 if pf.exists():
-                    pr = pd.read_csv(pf, sep="\t").iloc[0]
-                    st["peak_count"] = int(pr["peak_count"])
-                    st["frip"] = float(pr["FRiP"])
-                    st["peak_genome_coverage"] = float(pr["peak_genome_coverage"])
+                    with salvage(pf):
+                        pr = pd.read_csv(pf, sep="\t").iloc[0]
+                        for key, col, cast in PEAK_COLS:
+                            with salvage(f"{pf} {key}"):
+                                st[key] = cast(pr[col])
                 for key, value in st.items():
                     add(cand, lib, f"demuxed_samples/{name}/{key}", value)
                 if st:
@@ -664,10 +725,11 @@ def seqStats(runDir, roots, labels=None):
                 f = adir / "MACS2" / f"{sample}.filtered.BAM_peaks.qc.txt"
             if not f.exists():
                 continue
-            row = pd.read_csv(f, sep="\t").iloc[0]
-            add(cand, bc, "peak_count", int(row["peak_count"]))
-            add(cand, bc, "frip", float(row["FRiP"]))
-            add(cand, bc, "peak_genome_coverage", float(row["peak_genome_coverage"]))
+            with salvage(f):
+                row = pd.read_csv(f, sep="\t").iloc[0]
+                for key, col, cast in PEAK_COLS:
+                    with salvage(f"{f} {key}"):
+                        add(cand, bc, key, cast(row[col]))
         # micro-C: pairtools dedup summary per sample; mirrors BRB ET.makePairs
         for sample, bc in s2l.items():
             pf = adir / "pairs" / f"{sample}.pairs.dedup.stats"
