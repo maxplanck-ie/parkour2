@@ -2,6 +2,7 @@
 
 Unreleased
 ==========
+- Sequences Statistics: the Excel export now leaves out RELACS libraries, which hold one value per demultiplexed sample for some metrics, and shows a warning with the number of skipped rows instead of exporting them with empty cells. (PR #392)
 - Invoicing: costs on an invoice are now calculated with the prices that were in force on each flowcell's date, tracked via the change history of the cost tables, instead of always the current prices; staff can edit prices directly and past months keep their old totals, so archiving prices in the admin is no longer offered. (PR #390)
 
 - Request editor: the Analysis Type of a library or sample is shown by name, and stays in its dropdown, even when that type is not linked to the item's Protocol or is archived; archived Protocols are also shown by name, instead of the raw id. (PR #387)
