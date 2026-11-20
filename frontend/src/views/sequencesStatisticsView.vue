@@ -897,12 +897,25 @@ export default {
     }
 
     async function handleExport() {
-      const exportRows = getRowsForExport();
-      if (!exportRows.length) {
+      const allRows = getRowsForExport();
+      if (!allRows.length) {
         showNotification(
           "No sequenced samples statistics available for export.",
           "warning"
         );
+        return;
+      }
+      // RELACS libraries hold one value per demultiplexed sample for some
+      // metrics, which the flat export columns cannot represent.
+      const exportRows = allRows.filter((row) => !row.demuxed_samples);
+      const skippedCount = allRows.length - exportRows.length;
+      if (skippedCount) {
+        showNotification(
+          `${skippedCount} rows were skipped because RELACS hold multiple values for some metrics.`,
+          "warning"
+        );
+      }
+      if (!exportRows.length) {
         return;
       }
       try {
