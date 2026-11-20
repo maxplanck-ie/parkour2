@@ -121,6 +121,35 @@ class Command(BaseCommand):
                     title="read_stats",
                 )
                 read_stats.save()
+
+                relacs_stats = Query(
+                    sql="""SELECT fc.flowcell_id,
+                          fc.create_time as flowcell_time,
+                          x.barcode,
+                          sam.name as sample_name,
+                          d.demuxed_sample,
+                          (d.stats->>'mapped_reads')::float as mapped_reads,
+                          (d.stats->>'dupped_reads')::float as dupped_reads,
+                          (d.stats->>'insert_size')::float as insert_size,
+                          (d.stats->>'fragments_total')::float as fragments_total,
+                          (d.stats->>'peak_count')::float as peak_count,
+                          (d.stats->>'frip')::float as frip,
+                          (d.stats->>'peak_genome_coverage')::float as peak_genome_coverage
+                        /* RELACS: one row per demultiplexed sample of each library */
+                        FROM flowcell_flowcell fc,
+                             jsonb_to_recordset(fc.sequences)
+                             as x(
+                               barcode text,
+                               demuxed_samples jsonb
+                             ),
+                             jsonb_each(x.demuxed_samples)
+                             as d(demuxed_sample, stats),
+                             sample_sample sam
+                        WHERE sam.barcode = x.barcode
+                        ;""",
+                    title="relacs_stats",
+                )
+                relacs_stats.save()
             self.stdout.write(self.style.SUCCESS("Successfully created sample queries"))
         except Exception as e:
             self.stdout.write(self.style.ERROR(f"Error: {e}"))
