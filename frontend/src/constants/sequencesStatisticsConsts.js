@@ -234,6 +234,119 @@ export function sequencesStatisticsColumnDefs(onSelectionChanged) {
         numericFilterExamples(400, 100, 150, 350)
       ),
       hozAlign: "right"
+    },
+    {
+      title: "Fragment Q1",
+      field: "fragment_q1",
+      minWidth: 70,
+      visible: true,
+      ...numericFilterConfig(
+        (v) => Number(v),
+        numericFilterExamples(150, 100, 100, 200)
+      ),
+      hozAlign: "right"
+    },
+    {
+      title: "Fragment Median",
+      field: "fragment_median",
+      minWidth: 90,
+      visible: true,
+      ...numericFilterConfig(
+        (v) => Number(v),
+        numericFilterExamples(200, 100, 150, 300)
+      ),
+      hozAlign: "right"
+    },
+    {
+      title: "Fragment Q3",
+      field: "fragment_q3",
+      minWidth: 70,
+      visible: true,
+      ...numericFilterConfig(
+        (v) => Number(v),
+        numericFilterExamples(300, 150, 200, 400)
+      ),
+      hozAlign: "right"
+    },
+    {
+      title: "Fragment P10",
+      field: "fragment_p10",
+      minWidth: 75,
+      visible: true,
+      ...numericFilterConfig(
+        (v) => Number(v),
+        numericFilterExamples(100, 50, 50, 150)
+      ),
+      hozAlign: "right"
+    },
+    {
+      title: "Fragment P90",
+      field: "fragment_p90",
+      minWidth: 75,
+      visible: true,
+      ...numericFilterConfig(
+        (v) => Number(v),
+        numericFilterExamples(500, 300, 300, 700)
+      ),
+      hozAlign: "right"
+    },
+    {
+      title: "Fragments Counted",
+      field: "fragments_total",
+      minWidth: 100,
+      visible: true,
+      ...numericFilterConfig(
+        (v) => Number(v),
+        numericFilterExamples(1000000, 1000, 10000, 1000000)
+      ),
+      hozAlign: "right"
+    },
+    {
+      title: "Peaks",
+      field: "peak_count",
+      minWidth: 65,
+      visible: true,
+      ...numericFilterConfig(
+        (v) => Number(v),
+        numericFilterExamples(10000, 1000, 1000, 50000)
+      ),
+      hozAlign: "right"
+    },
+    {
+      title: "FRiP",
+      field: "frip",
+      minWidth: 60,
+      visible: true,
+      ...numericFilterConfig(
+        (v) => Number(v),
+        numericFilterExamples(0.2, 0.1, 0.1, 0.3)
+      ),
+      formatter: fixedFormatter(3),
+      hozAlign: "right"
+    },
+    {
+      title: "Peak Genome Coverage",
+      field: "peak_genome_coverage",
+      minWidth: 100,
+      visible: true,
+      ...numericFilterConfig(
+        (v) => Number(v),
+        numericFilterExamples(0.01, 0.005, 0.005, 0.02)
+      ),
+      formatter: fixedFormatter(4),
+      hozAlign: "right"
+    },
+    {
+      title: "Unique Pairs (%)",
+      field: "uniq_mapped",
+      minWidth: 90,
+      visible: true,
+      ...numericFilterConfig(
+        (v) => Number(v),
+        numericFilterExamples(50, 30, 40, 70)
+      ),
+      formatter: fixedFormatter(),
+      hozAlign: "right"
     }
   ]);
 }
@@ -375,6 +488,44 @@ export function sequencesStatisticsExportColumns() {
       key: "insert_size",
       width: 16,
       excelType: "number"
+    },
+    { header: "Fragment Q1", key: "fragment_q1", width: 14, excelType: "number" },
+    {
+      header: "Fragment Median",
+      key: "fragment_median",
+      width: 18,
+      excelType: "number"
+    },
+    { header: "Fragment Q3", key: "fragment_q3", width: 14, excelType: "number" },
+    { header: "Fragment P10", key: "fragment_p10", width: 14, excelType: "number" },
+    { header: "Fragment P90", key: "fragment_p90", width: 14, excelType: "number" },
+    {
+      header: "Fragments Counted",
+      key: "fragments_total",
+      width: 20,
+      excelType: "number"
+    },
+    { header: "Peaks", key: "peak_count", width: 12, excelType: "number" },
+    {
+      header: "FRiP",
+      key: "frip",
+      width: 10,
+      excelType: "number",
+      decimalPlaces: 3
+    },
+    {
+      header: "Peak Genome Coverage",
+      key: "peak_genome_coverage",
+      width: 24,
+      excelType: "number",
+      decimalPlaces: 4
+    },
+    {
+      header: "Unique Pairs (%)",
+      key: "uniq_mapped",
+      width: 18,
+      excelType: "number",
+      decimalPlaces: 2
     }
   ];
 }
