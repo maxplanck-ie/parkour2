@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>restats report: stored vs parsed</title>
+<style>
+:root { --bad:#b3261e; --warn:#b26a00; --ok:#1b6e3c; --new:#1f5fa8; --wtext:#7a3e9d; --mute:#6b6f76; --line:#d9dce1; --bg:#f7f8fa; }
+* { box-sizing: border-box; }
+body { font: 14px/1.45 system-ui, sans-serif; margin: 0; background: var(--bg); color: #1c1e21; }
+header { background: #1c1e21; color: #fff; padding: 14px 24px; }
+header h1 { margin: 0 0 4px; font-size: 20px; }
+header .meta { color: #c9ccd1; font-size: 12px; }
+main { max-width: 1280px; margin: 0 auto; padding: 16px 24px 60px; }
+section { background: #fff; border: 1px solid var(--line); border-radius: 6px; padding: 14px 18px; margin: 14px 0; }
+h2 { margin: 0 0 8px; font-size: 16px; }
+h2 small { color: var(--mute); font-weight: normal; }
+.note { color: var(--mute); font-size: 12px; margin: 4px 0 8px; }
+.filters { display: flex; flex-wrap: wrap; gap: 10px; align-items: end; position: sticky; top: 0; background: #fff; z-index: 5; }
+.filters label { display: flex; flex-direction: column; font-size: 12px; color: var(--mute); }
+.filters select { min-width: 150px; max-width: 260px; font-size: 13px; padding: 3px; }
+.cards { display: flex; flex-wrap: wrap; gap: 10px; }
+.card { border: 1px solid var(--line); border-radius: 6px; padding: 8px 14px; min-width: 130px; }
+.card b { display: block; font-size: 22px; }
+.card span { font-size: 12px; color: var(--mute); }
+.card.bad b, td.bad { color: var(--bad); }
+.card.warn b, td.warn { color: var(--warn); }
+.card.ok b, td.ok { color: var(--ok); }
+.card.new b, td.new { color: var(--new); }
+.card.wtext b, td.wtext { color: var(--wtext); }
+table { border-collapse: collapse; width: 100%; font-size: 13px; }
+th, td { border-bottom: 1px solid var(--line); padding: 4px 8px; text-align: right; white-space: nowrap; }
+th:first-child, td:first-child { text-align: left; white-space: normal; word-break: break-word; }
+th { background: #eef0f3; position: sticky; top: 0; cursor: pointer; user-select: none; }
+td.num0 { color: #b8bcc3; }
+tr.hot td:first-child { border-left: 3px solid var(--bad); }
+.tabs button { border: 1px solid var(--line); background: #fff; padding: 4px 10px; cursor: pointer; border-radius: 4px; margin-right: 4px; }
+.tabs button.on { background: #1c1e21; color: #fff; }
+.scroll { max-height: 520px; overflow: auto; border: 1px solid var(--line); }
+.runs { display: grid; gap: 12px; }
+.run { border: 1px solid var(--line); border-radius: 6px; padding: 8px 12px; margin: 0; }
+.run h3 { margin: 0 0 6px; font-size: 1em; }
+.run dl { display: grid; grid-template-columns: max-content 1fr; gap: 2px 12px; margin: 0; }
+.run dt { color: var(--mute); }
+.run dd { margin: 0; overflow-wrap: anywhere; }
+.dirs { list-style: none; margin: 0; padding: 0; }
+.dirs li { padding: 5px 8px; border-bottom: 1px solid var(--line); overflow-wrap: anywhere; }
+.dirs li.hot { border-left: 3px solid var(--bad); }
+.dirs .meta { color: var(--mute); display: block; }
+.dirs .warn { color: var(--warn); font-weight: 600; }
+.bar { display: inline-block; height: 8px; vertical-align: middle; margin-left: 4px; }
+button.more { margin-top: 8px; padding: 4px 12px; cursor: pointer; }
+code { background: #eef0f3; padding: 0 4px; border-radius: 3px; }
+</style>
+</head>
+<body>
+<header>
+  <h1>restats report: what Parkour stores vs what the new parser reads</h1>
+  <div class="meta" id="meta"></div>
+</header>
+<main>
+<section>
+  <h2>How to read this</h2>
+  <p class="note" style="font-size:13px;color:#1c1e21">
+  Each row of the sqlite is one (library or lane, field). It is compared with the value Parkour stores now.
+  <b class="bad" style="color:var(--bad)">ZERO</b> = Parkour stores 0, the files say otherwise (old parser bug).
+  <b style="color:var(--bad)">WRONG</b> = Parkour stores a non-zero value that differs (minor &lt;1 %, moderate 1-10 %, major &ge;10 %).
+  <b class="wtext">WRONG text</b> = text field (polony_density, custom_recipe, sequencer_side, lane_loading_format): the stored string differs from the parsed one. No size band.
+  <b style="color:var(--warn)">MISSING</b> = the API has this field but nothing is stored.
+  <b style="color:var(--new)">NEW</b> = a field Parkour does not expose yet (fragment_*, peak_*, ...).
+  NOENTRY = no entry for that flowcell/barcode on this deployment. MATCH = nothing to fix.<br>
+  <span id="blind"></span>
+  </p>
+</section>
+
+<section class="filters" id="filters"></section>
+
+<section>
+  <h2>1. Summary <small id="sumsub"></small></h2>
+  <div class="cards" id="cards"></div>
+</section>
+
+<section>
+  <h2>2. Wrong values by field <small>(focus: ZERO and WRONG)</small></h2>
+  <div class="scroll"><table id="byfield"></table></div>
+</section>
+
+<section>
+  <h2>2b. Stored 0 where the files say otherwise <small>(ZERO, by protocol and sequencer)</small></h2>
+  <div class="scroll"><table id="zeros"></table></div>
+</section>
+
+<section>
+  <h2>3. Where it is wrong <small>(segment the decision)</small></h2>
+  <div class="tabs" id="tabs"></div>
+  <p class="note">"Wrong share" = (ZERO + WRONG) / (ZERO + WRONG + MATCH): the part of the values Parkour stores that is wrong. MISSING is left out, nothing is stored there. Without the <code>matches</code> table (see top) MATCH is 0 and this only ranks segments.</p>
+  <div class="scroll"><table id="byseg"></table></div>
+</section>
+
+<section>
+  <h2>4. Projects (requests) <small id="projsub"></small></h2>
+  <p class="note">Sorted by ZERO + WRONG. A project with only MISSING / NEW rows has nothing wrong, updating only adds values.</p>
+  <div class="scroll"><table id="byproj"></table></div>
+</section>
+
+<section>
+  <h2>5. Examples <small id="exsub"></small></h2>
+  <p class="note">Stored in Parkour (<code>stored</code>) next to the parsed value (<code>parsed</code>). WRONG and ZERO first, biggest relative gap first.</p>
+  <div class="scroll"><table id="examples"></table></div>
+  <button class="more" id="more">Show 300 more</button>
+</section>
+<section>
+  <h2>6. Scanned flowcell dirs <small id="scansub"></small></h2>
+  <p class="note">Every flowcell dir <code>validate</code> considered, with the roots and deployment of each run, so a rerun after a code update can repeat the same scan. Paths are private: this page is gitignored. Rows marked <code>reconstructed</code> were listed afterwards from the host, not recorded by <code>validate</code>.</p>
+  <div class="scroll"><div id="scanruns" class="runs"></div></div>
+  <p class="note">Dirs with a problem (skipped or a parser failed) first:</p>
+  <div class="scroll"><ul id="scanned" class="dirs"></ul></div>
+</section>
+</main>
+<script>
+const D = /*DATA*/null;
+const C = D.classes, CI = Object.fromEntries(C.map((c, i) => [c, i]));
+const WRONGS = [CI.WRONG_minor, CI.WRONG_mod, CI.WRONG_major, CI.WRONG];
+const DIMS = ["year", "fam", "proto", "atype", "req", "field"];
+const LABEL = {year: "Run year", fam: "Sequencer", proto: "Library protocol", atype: "Analysis type", req: "Project", field: "Field"};
+const SEGTABS = ["year", "fam", "proto", "atype"];
+const sel = {};      // dim -> selected index or ""
+let segDim = "year", shown = 300;
+
+const esc = s => String(s).replace(/[&<>"']/g, ch => ({"&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"}[ch]));
+const fmt = x => x === null || x === undefined ? "" : (typeof x === "number" ? (Math.abs(x) >= 100 ? x.toFixed(0) : x.toFixed(2)) : esc(x));
+const num = (n, cls) => `<td class="${n ? (cls || "") : "num0"}">${n.toLocaleString()}</td>`;
+
+document.getElementById("blind").innerHTML = D.meta.has_matches
+  ? "MATCH counts come from the sqlite <code>matches</code> table (parsed values that already equalled the validated deployment), so the shares below are real percentages of compared values."
+  : "Blind spot: this sqlite has no <code>matches</code> table, so values that were already equal are not counted. Shares only rank segments; they are NOT the share of all stored values that are wrong.";
+document.getElementById("meta").textContent =
+  `${D.meta.url}  |  ${D.meta.db}: ${D.meta.rows.toLocaleString()} rows  |  Parkour entries: ` +
+  Object.entries(D.meta.entries).map(([k, v]) => `${k} ${v.toLocaleString()}`).join(", ") +
+  `  |  tolerance ${D.meta.tol}  |  generated ${D.meta.generated}`;
+
+// filters
+const fbox = document.getElementById("filters");
+for (const d of DIMS) {
+  const lab = document.createElement("label");
+  lab.append(LABEL[d]);
+  const s = document.createElement("select");
+  s.innerHTML = `<option value="">all (${D.dims[d].length})</option>` +
+    D.dims[d].map((v, i) => `<option value="${i}">${esc(v)}</option>`).join("");
+  s.onchange = () => { sel[d] = s.value === "" ? "" : +s.value; shown = 300; render(); };
+  sel[d] = "";
+  lab.append(s); fbox.append(lab);
+}
+
+const keep = r => DIMS.every((d, i) => sel[d] === "" || r[i] === sel[d]);
+const AGG = D.agg;                      // [year,fam,proto,atype,req,field,cls,n]
+const isBad = c => c === CI.ZERO || WRONGS.includes(c);
+
+function render() {
+  const rows = AGG.filter(keep);
+  const tot = new Array(C.length).fill(0);
+  rows.forEach(r => tot[r[6]] += r[7]);
+  const all = tot.reduce((a, b) => a + b, 0);
+  const wrong = tot[CI.ZERO] + WRONGS.reduce((a, c) => a + tot[c], 0);
+  const comparable = tot[CI.MATCH] + wrong;
+  document.getElementById("sumsub").textContent = `(${all.toLocaleString()} rows in selection)`;
+  const card = (cls, big, small) => `<div class="card ${cls}"><b>${big.toLocaleString()}</b><span>${small}</span></div>`;
+  document.getElementById("cards").innerHTML =
+    card("bad", tot[CI.ZERO], "ZERO: stored 0, parsed non-zero") +
+    card("bad", tot[CI.WRONG_major], "WRONG major (&ge;10 %)") +
+    card("warn", tot[CI.WRONG_mod], "WRONG moderate (1-10 %)") +
+    card("", tot[CI.WRONG_minor], "WRONG minor (&lt;1 %)") +
+    card("wtext", tot[CI.WRONG], "WRONG text (string differs)") +
+    card("warn", tot[CI.MISSING], "MISSING (nothing stored)") +
+    card("new", tot[CI.NEW], "NEW (field not in Parkour)") +
+    card("", tot[CI.NOENTRY], "NOENTRY (no Parkour entry)") +
+    card("ok", tot[CI.MATCH], "MATCH") +
+    card(wrong ? "bad" : "ok", comparable ? Math.round(1000 * wrong / comparable) / 10 : 0, D.meta.has_matches ? "% of stored values ZERO/WRONG" : "% of differing rows ZERO/WRONG (ranking only)");
+
+  // by field
+  const byF = {};
+  rows.forEach(r => { (byF[r[5]] ??= new Array(C.length).fill(0))[r[6]] += r[7]; });
+  const fl = Object.entries(byF).map(([f, a]) => [+f, a, a[CI.ZERO] + WRONGS.reduce((s, c) => s + a[c], 0)])
+    .sort((x, y) => y[2] - x[2]);
+  document.getElementById("byfield").innerHTML =
+    `<tr><th>Field</th><th>ZERO</th><th>WRONG major</th><th>WRONG mod</th><th>WRONG minor</th><th>WRONG text</th><th>MISSING</th><th>NEW</th><th>NOENTRY</th><th>MATCH</th></tr>` +
+    fl.map(([f, a, w]) => `<tr class="${w ? "hot" : ""}"><td>${esc(D.dims.field[f])}</td>` +
+      num(a[CI.ZERO], "bad") + num(a[CI.WRONG_major], "bad") + num(a[CI.WRONG_mod], "warn") + num(a[CI.WRONG_minor]) + num(a[CI.WRONG], "wtext") +
+      num(a[CI.MISSING], "warn") + num(a[CI.NEW], "new") + num(a[CI.NOENTRY]) + num(a[CI.MATCH], "ok") + `</tr>`).join("");
+
+  // ZERO matrix: protocol x sequencer
+  const zm = {}, zf = new Set();
+  rows.filter(r => r[6] === CI.ZERO).forEach(r => { (zm[r[2]] ??= {})[r[1]] = (zm[r[2]]?.[r[1]] || 0) + r[7]; zf.add(r[1]); });
+  const zcols = [...zf].sort(), zl = Object.entries(zm).map(([p, m]) => [+p, m, Object.values(m).reduce((a, b) => a + b, 0)]).sort((a, b) => b[2] - a[2]);
+  document.getElementById("zeros").innerHTML = zl.length
+    ? `<tr><th>Protocol</th>${zcols.map(f => `<th>${esc(D.dims.fam[f])}</th>`).join("")}<th>total</th></tr>` +
+      zl.map(([p, m, t]) => `<tr class="hot"><td>${esc(D.dims.proto[p])}</td>${zcols.map(f => num(m[f] || 0, "bad")).join("")}${num(t, "bad")}</tr>`).join("")
+    : "<tr><td>none in selection</td></tr>";
+
+  // segments and projects share a table builder
+  const table = (dim, limit) => {
+    const m = {};
+    rows.forEach(r => { (m[r[DIMS.indexOf(dim)]] ??= new Array(C.length).fill(0))[r[6]] += r[7]; });
+    let l = Object.entries(m).map(([k, a]) => {
+      const w = a[CI.ZERO] + WRONGS.reduce((s, c) => s + a[c], 0);
+      const comp = a[CI.MATCH] + w;
+      return [+k, a, w, comp ? w / comp : 0];
+    });
+    l.sort((x, y) => dim === "year" ? D.dims.year[x[0]].localeCompare(D.dims.year[y[0]]) : y[2] - x[2]);
+    const total = l.length;
+    if (limit) l = l.slice(0, limit);
+    const maxw = Math.max(1, ...l.map(x => x[2]));
+    return [`<tr><th>${LABEL[dim]}</th><th>ZERO</th><th>WRONG major</th><th>WRONG mod</th><th>WRONG minor</th><th>WRONG text</th><th>MISSING</th><th>NEW</th><th>NOENTRY</th><th>MATCH</th><th>wrong share</th></tr>` +
+      l.map(([k, a, w, share]) => `<tr class="${w ? "hot" : ""}"><td>${esc(D.dims[dim][k])}</td>` +
+        num(a[CI.ZERO], "bad") + num(a[CI.WRONG_major], "bad") + num(a[CI.WRONG_mod], "warn") + num(a[CI.WRONG_minor]) + num(a[CI.WRONG], "wtext") +
+        num(a[CI.MISSING], "warn") + num(a[CI.NEW], "new") + num(a[CI.NOENTRY]) + num(a[CI.MATCH], "ok") +
+        `<td class="${share >= 0.1 ? "bad" : ""}">${(share * 100).toFixed(1)}%<span class="bar" style="width:${Math.round(60 * w / maxw)}px;background:var(--bad)"></span></td></tr>`).join(""), total];
+  };
+  document.getElementById("byseg").innerHTML = table(segDim)[0];
+  const [ph, pt] = table("req", 200);
+  document.getElementById("byproj").innerHTML = ph;
+  document.getElementById("projsub").textContent = `(${pt.toLocaleString()} projects in selection${pt > 200 ? ", top 200 shown" : ""})`;
+
+  // examples: detail rows -> [fc,key,year,fam,proto,atype,req,field,cls,stored,new]
+  const det = D.detail.filter(r => DIMS.every((d, i) => sel[d] === "" || r[2 + i] === sel[d]));
+  const gap = r => typeof r[9] !== "number" || typeof r[10] !== "number" ? -1 : Math.abs(r[9] - r[10]) / Math.max(Math.abs(r[9]), Math.abs(r[10]), 1e-9);
+  det.sort((a, b) => (isBad(b[8]) - isBad(a[8])) || gap(b) - gap(a));
+  document.getElementById("exsub").textContent = `(${det.length.toLocaleString()} ZERO / WRONG / MISSING rows in selection)`;
+  document.getElementById("examples").innerHTML =
+    `<tr><th>Flowcell</th><th>Library / lane</th><th>Field</th><th>Class</th><th>stored</th><th>parsed</th><th>Sequencer</th><th>Protocol</th><th>Project</th></tr>` +
+    det.slice(0, shown).map(r => `<tr><td>${esc(r[0])}</td><td style="text-align:left">${esc(r[1])}</td><td style="text-align:left">${esc(D.dims.field[r[7]])}</td>` +
+      `<td class="${isBad(r[8]) ? "bad" : "warn"}" style="text-align:left">${C[r[8]]}</td><td>${fmt(r[9])}</td><td>${fmt(r[10])}</td>` +
+      `<td style="text-align:left">${esc(D.dims.fam[r[3]])}</td><td style="text-align:left">${esc(D.dims.proto[r[4]])}</td><td style="text-align:left">${esc(D.dims.req[r[6]])}</td></tr>`).join("");
+  document.getElementById("more").style.display = det.length > shown ? "" : "none";
+}
+
+(function scanSection() {
+  const S = D.scanned || [], R = D.scan_runs || [];
+  const bySource = {};
+  S.forEach(r => { const o = bySource[r[0]] ??= {n: 0, bad: 0}; o.n++; if (r[5] !== "parsed") o.bad++; });
+  document.getElementById("scansub").textContent = S.length ? `(${S.length.toLocaleString()} dirs)` : "(none recorded)";
+  const field = (k, v) => `<dt>${k}</dt><dd>${esc(v ?? "") || "-"}</dd>`;
+  document.getElementById("scanruns").innerHTML = R.length
+    ? R.map(r => `<section class="run"><h3>${esc(r[0])}</h3><dl>` +
+        field("Host", r[1]) + field("Since", r[2]) + field("URL", r[3]) +
+        field("Illumina root", r[4]) + field("Raw root", r[5]) + field("Aviti root", r[6]) + field("Group root", r[7]) +
+        field("Dirs", r[8].toLocaleString()) + field("With problem", (bySource[r[0]]?.bad ?? 0).toLocaleString()) +
+        field("When", r[9]) + field("Origin", r[10]) + `</dl></section>`).join("")
+    : "<p>No scan runs recorded in this sqlite (it predates the scanned table). Rerun validate, or merge in a recorded sqlite.</p>";
+  const bad = S.filter(r => r[5] !== "parsed"), good = S.filter(r => r[5] === "parsed");
+  document.getElementById("scanned").innerHTML = S.length
+    ? [...bad, ...good].slice(0, 3000).map(r => {
+        const meta = [["source", r[0]], ["host", r[1]], ["flowcell", r[3]], ["run date", r[4]]].filter(p => p[1]).map(p => `${p[0]} ${esc(p[1])}`).join(", ");
+        const detail = (r[6] ?? "").slice(0, 160);
+        return `<li class="${r[5] !== "parsed" ? "hot" : ""}"><code>${esc(r[2])}</code>` +
+          `<span class="meta">${meta}; status <span class="${r[5] !== "parsed" ? "warn" : ""}">${esc(r[5])}</span>${detail ? `; ${esc(detail)}` : ""}</span></li>`;
+      }).join("") +
+      (S.length > 3000 ? `<li>${(S.length - 3000).toLocaleString()} more parsed dirs not shown</li>` : "")
+    : "<li>none</li>";
+})();
+
+const tabs = document.getElementById("tabs");
+SEGTABS.forEach(d => {
+  const b = document.createElement("button");
+  b.textContent = LABEL[d];
+  b.onclick = () => { segDim = d; [...tabs.children].forEach(x => x.classList.toggle("on", x === b)); render(); };
+  if (d === segDim) b.classList.add("on");
+  tabs.append(b);
+});
+document.getElementById("more").onclick = () => { shown += 300; render(); };
+render();
+</script>
+</body>
+</html>
