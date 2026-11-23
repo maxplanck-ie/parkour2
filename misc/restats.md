@@ -94,6 +94,8 @@ Causes of the remaining gaps:
 | `sequencer_side` | AVITI | text | `RunParameters.json` `Side`, `SideA`/`SideB` reduced to `A`/`B` |
 | `lane_loading_format` | AVITI | text | `RunManifest.csv` `[SAMPLES]` Lane column: any `1+2` gives `1 pool`; both `1` and `2` present gives `2 pools`; otherwise `1 pool`; no lane rows gives nothing |
 | `gb_yield` | AVITI | num | `<outBaseDir>/<lane>/RunStats.json` lane `TotalYield`, rounded to 2 decimals |
+| `phix_alignment_rate` | AVITI | num | `<aviti-raw-root>/<instrument>/<run>/AvitiRunStats.json` `LaneStats[i].Reads[0].PhiXAlignmentRate` (percent, read 1), 2 decimals. `LaneStats[].Lane` is 0 in production runs, so list order is the lane order (checked against 45 dual-lane runs); filled-in `Lane` values are used as given. An unreadable entry costs only its lane |
+| `run_outcome` | AVITI | text | `<aviti-raw-root>/<instrument>/<run>/RunUploaded.json` `outcome` (`OutcomeCompleted`, `OutcomeStopped`, `OutcomeFailed`), copied to every lane; no file or no value gives nothing |
 | `lane_loading_format` | Illumina | text | `RunParameters.xml` `WorkflowType`: `NovaSeqXp` gives `XP`, `NovaSeqStandard` gives `Standard`, any other value is kept raw |
 | `percent_occupied` | Illumina | num | interop summary `% Occupied`, read 1, 2 decimals |
 | `gb_yield` | Illumina | num | interop `Projected Yield G`, read 1, 2 decimals |
@@ -106,7 +108,7 @@ Text fields are compared by string equality, never parsed as numbers. Sqlite sto
 
 micro-C: the sample is the R1 fastqc basename minus `_R1_fastqc.zip`, mapped to the barcode the same way as the other pipelines. A library whose `pairs/<sample>.pairs.dedup.stats` is absent gets no keys (detected by file presence, as for Hi-C). A file missing `total`, `total_mapped` or `total_dups` is logged and those keys are omitted. A zero denominator also omits the field (BRB sends NaN, which is left out of the payload).
 
-Parity: lane fields mirror dissectBCL `fakeNews.pushParkour` (`parseAvitiRunParameters`, `parseAvitiLoadingFormat`, `parseIlluminaRunParameters`, and the AVITI/Illumina branches). micro-C mirrors BRB `ET.py` `makePairs` and `pairsStats`. Both are read, not imported.
+Parity: lane fields mirror dissectBCL `fakeNews.pushParkour` (`parseAvitiRunParameters`, `parseAvitiLoadingFormat`, `parseAvitiPhixByLane`, `parseAvitiRunOutcome`, `parseIlluminaRunParameters`, and the AVITI/Illumina branches). micro-C mirrors BRB `ET.py` `makePairs` and `pairsStats`. Both are read, not imported. The AVITI instrument run folder is `--aviti-raw-root` (default `/dont_touch_this/short_runs/ElementBiosciences`) plus the instrument id and the run name without `_lanes_N`.
 
 The wrong share is `(ZERO + WRONG_* + WRONG) / (ZERO + WRONG_* + WRONG + MATCH)`. Text mismatches count in the numerator like any other WRONG.
 
