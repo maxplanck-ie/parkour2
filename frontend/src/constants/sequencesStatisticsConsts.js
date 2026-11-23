@@ -489,16 +489,36 @@ export function sequencesStatisticsExportColumns() {
       width: 16,
       excelType: "number"
     },
-    { header: "Fragment Q1", key: "fragment_q1", width: 14, excelType: "number" },
+    {
+      header: "Fragment Q1",
+      key: "fragment_q1",
+      width: 14,
+      excelType: "number"
+    },
     {
       header: "Fragment Median",
       key: "fragment_median",
       width: 18,
       excelType: "number"
     },
-    { header: "Fragment Q3", key: "fragment_q3", width: 14, excelType: "number" },
-    { header: "Fragment P10", key: "fragment_p10", width: 14, excelType: "number" },
-    { header: "Fragment P90", key: "fragment_p90", width: 14, excelType: "number" },
+    {
+      header: "Fragment Q3",
+      key: "fragment_q3",
+      width: 14,
+      excelType: "number"
+    },
+    {
+      header: "Fragment P10",
+      key: "fragment_p10",
+      width: 14,
+      excelType: "number"
+    },
+    {
+      header: "Fragment P90",
+      key: "fragment_p90",
+      width: 14,
+      excelType: "number"
+    },
     {
       header: "Fragments Counted",
       key: "fragments_total",

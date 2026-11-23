@@ -484,9 +484,24 @@ export function runStatisticsExportColumns() {
       excelType: "number",
       decimalPlaces: 2
     },
-    { header: "Polony Density", key: "polony_density", width: 16, excelType: "text" },
-    { header: "Custom Recipe", key: "custom_recipe", width: 18, excelType: "text" },
-    { header: "Sequencer Side", key: "sequencer_side", width: 16, excelType: "text" },
+    {
+      header: "Polony Density",
+      key: "polony_density",
+      width: 16,
+      excelType: "text"
+    },
+    {
+      header: "Custom Recipe",
+      key: "custom_recipe",
+      width: 18,
+      excelType: "text"
+    },
+    {
+      header: "Sequencer Side",
+      key: "sequencer_side",
+      width: 16,
+      excelType: "text"
+    },
     {
       header: "Lane Loading Format",
       key: "lane_loading_format",
