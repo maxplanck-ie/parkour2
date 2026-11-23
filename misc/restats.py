@@ -81,6 +81,7 @@ import requests
 class Roots:
     illumina_root: str = "/rapidus/data/sequencing_data/Illumina/NovaSeq6000"
     illumina_raw: str = "/dont_touch_this/short_runs/Illumina/NovaSeq6000"
+    aviti_raw: str = "/dont_touch_this/short_runs/ElementBiosciences"
     aviti_root: str = "/rapidus/data/sequencing_data/ElementBiosciences"
     group_data: str = "/data"
 
@@ -211,6 +212,7 @@ TEXT_FIELDS = {
     "custom_recipe",
     "sequencer_side",
     "lane_loading_format",
+    "run_outcome",
 }
 # Counts and base-pair lengths BRB sends as ints (everything else is a float).
 INT_FIELDS = {
@@ -332,6 +334,37 @@ def parseAvitiLoadingFormat(path):
     return "1 pool" if lanes else None
 
 
+def parseAvitiRunOutcome(path):
+    """RunUploaded.json -> OutcomeCompleted, OutcomeStopped or OutcomeFailed; None if absent."""
+    return json.loads(Path(path).read_text()).get("outcome") or None
+
+
+def parseAvitiPhixByLane(path):
+    """AvitiRunStats.json -> {lane: PhiX alignment rate (percent, read 1)}.
+
+    LaneStats[].Lane is 0 in production runs, so the list order is the lane order;
+    an entry with a filled-in Lane is mapped by that number. Mirrors dissectBCL.
+    """
+    lane_stats = json.loads(Path(path).read_text())["LaneStats"]
+    by_order = all(not int(ls.get("Lane") or 0) for ls in lane_stats)
+    out = {}
+    for i, ls in enumerate(lane_stats):
+        with salvage(f"AvitiRunStats.json lane entry {i + 1}"):
+            rate = ls["Reads"][0]["PhiXAlignmentRate"]
+            if rate is not None:
+                out[i + 1 if by_order else int(ls["Lane"])] = float(rate)
+    return out
+
+
+def aviti_raw_dir(runDir, roots):
+    """Instrument run folder (AvitiRunStats.json, RunUploaded.json) of a bases2fastq dir.
+
+    Name: <date>_<instrument>_<flowcell>_lanes_N; the raw folder drops the _lanes_N suffix.
+    """
+    run = re.sub(r"_lanes_.*$", "", runDir.name)
+    return Path(roots.aviti_raw, run.split("_")[1], run)
+
+
 def aviti_run_params(runDir):
     """Run-level AVITI fields from the run dir; a missing file leaves its fields out."""
     out = {}
@@ -350,6 +383,16 @@ def laneStats(runDir, aviti, roots):
     if aviti:
         data = json.loads((runDir / "RunStats.json").read_text())
         run = aviti_run_params(runDir)
+        raw = aviti_raw_dir(runDir, roots)
+        phix = {}
+        if (raw / "AvitiRunStats.json").exists():
+            with salvage(raw / "AvitiRunStats.json"):
+                phix = parseAvitiPhixByLane(raw / "AvitiRunStats.json")
+        if (raw / "RunUploaded.json").exists():
+            with salvage(raw / "RunUploaded.json"):
+                outcome = parseAvitiRunOutcome(raw / "RunUploaded.json")
+                if outcome:
+                    run["run_outcome"] = outcome
         for ln in data["Lanes"]:
             name = f"Lane {ln['Lane']}"
             out[(name, "reads_pf")] = float(ln["NumPolonies"])
@@ -364,6 +407,10 @@ def laneStats(runDir, aviti, roots):
                 out[(name, "gb_yield")] = round(ln["TotalYield"], 2)
             for field, value in run.items():
                 out[(name, field)] = value
+            with salvage(f"{name} phix_alignment_rate"):
+                rate = phix.get(int(ln["Lane"]))
+                if rate is not None:
+                    out[(name, "phix_alignment_rate")] = round(rate, 2)
         return out
 
     import interop
@@ -818,6 +865,7 @@ def validate(args):
         illumina_root=args.illumina_root,
         illumina_raw=args.raw_root,
         aviti_root=args.aviti_root,
+        aviti_raw=args.aviti_raw_root,
         group_data=args.group_root,
     )
     runs = [Path(r) for r in args.runDirs]
@@ -1144,6 +1192,9 @@ def main():
     )
     p.add_argument(
         "--aviti-root", default="/rapidus/data/sequencing_data/ElementBiosciences"
+    )
+    p.add_argument(
+        "--aviti-raw-root", default="/dont_touch_this/short_runs/ElementBiosciences"
     )
     p.add_argument("--group-root", default="/data")
     p.add_argument(
