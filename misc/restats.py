@@ -487,14 +487,13 @@ KRAKEN_GROUP = {
 def offSpeciesRate(fdir, label):
     """BRB ET.getOffSpeciesRate: 1 - kraken % of reads in the expected group.
 
-    None when it cannot be told: no organism label from Parkour, or no kraken
-    report (BRB would crash there). A label BRB does not know gives 0, like BRB."""
+    None when it cannot be told: no organism label from Parkour, no kraken
+    report, a label BRB does not know, or no line of the expected group in the
+    report. BRB returns NaN there and leaves confident_reads out of the payload."""
     reports = sorted(fdir.glob("*rep"))
-    if label is None or not reports:
+    if label is None or not reports or label not in KRAKEN_GROUP:
         return None
-    if label not in KRAKEN_GROUP:
-        return 0.0
-    off = 0.0
+    off = None
     for line in reports[0].read_text().splitlines():
         if KRAKEN_GROUP[label] in line:
             off = 1 - (float(line.strip().split()[0]) / 100)
@@ -566,7 +565,7 @@ def seqStats(runDir, roots, labels=None):
                     cand,
                     bc,
                     "optical_duplicates",
-                    100.0 * opt / total if total else -1.0,
+                    100.0 * opt / total if total else float("nan"),
                 )
                 found = True
                 break
@@ -731,14 +730,13 @@ def seqStats(runDir, roots, labels=None):
             sample = f.name.split(".")[0]
             if sample not in s2l:
                 continue
-            tot = uniq = multi = 0.0
+            uniq = multi = float("nan")  # BRB _starMapping: a missing line is NaN, not 0
             for line in f.read_text().splitlines():
                 if "Uniquely mapped reads %" in line:
                     uniq = float(line.strip().split("\t")[-1][:-1])
-                    tot += uniq
                 elif "% of reads mapped to multiple loci" in line:
                     multi = float(line.strip().split("\t")[-1][:-1])
-                    tot += multi
+            tot = uniq + multi
             if sample not in dup or sample + ".filtered" not in assigned:
                 continue  # BRB RNA() needs STAR, flagstat and featureCounts: else base only
             bc = s2l[sample]
