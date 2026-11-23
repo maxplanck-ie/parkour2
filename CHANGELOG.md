@@ -3,7 +3,7 @@
 Unreleased
 ==========
 - Invoicing: costs on an invoice are now calculated with the prices that were in force on each flowcell's date, tracked via the change history of the cost tables, instead of always the current prices; staff can edit prices directly and past months keep their old totals, so archiving prices in the admin is no longer offered. (PR #390)
-- Run Statistics and Sequences Statistics: the tables and their Excel exports now show the values the pipelines newly send. Run Statistics adds PhiX Alignment Rate, Yield, PF, Occupied, PMG Shift, Polony Density, Custom Recipe, Sequencer Side, Lane Loading Format and Run Outcome. Sequences Statistics adds the Fragment size quartiles and 10th/90th percentiles, Fragments Counted, Peaks, FRiP, Peak Genome Coverage and the Hi-C Unique Pairs (%).
+- Run Statistics and Sequences Statistics: the tables and their Excel exports now show the values the pipelines newly send. Run Statistics adds PhiX Alignment Rate, Yield, PF, Occupied, PMG Shift, Polony Density, Custom Recipe, Sequencer Side, Lane Loading Format and Run Outcome. Sequences Statistics adds the Fragment size quartiles and 10th/90th percentiles, Fragments Counted, Peaks, FRiP, Peak Genome Coverage and the Hi-C Unique Pairs (%). (PR #398)
 
 - Request editor: the Analysis Type of a library or sample is shown by name, and stays in its dropdown, even when that type is not linked to the item's Protocol or is archived; archived Protocols are also shown by name, instead of the raw id. (PR #387)
 - Request form: the "Formblatt S1" download offers the updated template. (Direct commit `89f21068`)
