@@ -1,3 +1,4 @@
+import hmac
 import itertools
 import json
 import logging
@@ -1004,7 +1005,9 @@ class ApproveViewSet(viewsets.ModelViewSet):
             instance = list(Request.objects.filter(id=pk))[0]
             if not all(s == 0 for s in instance.statuses):
                 raise ValueError(f"Not all statuses are zero: {instance.statuses}")
-            if token == instance.token:
+            if not token or not instance.token:
+                raise ValueError("Missing approval token.")
+            if hmac.compare_digest(str(token), str(instance.token)):
                 library_ids = list(instance.libraries.values_list("id", flat=True))
                 sample_ids = list(instance.samples.values_list("id", flat=True))
                 with transaction.atomic():
