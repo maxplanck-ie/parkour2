@@ -730,7 +730,9 @@ def seqStats(runDir, roots, labels=None):
             sample = f.name.split(".")[0]
             if sample not in s2l:
                 continue
-            uniq = multi = float("nan")  # BRB _starMapping: a missing line is NaN, not 0
+            uniq = multi = float(
+                "nan"
+            )  # BRB _starMapping: a missing line is NaN, not 0
             for line in f.read_text().splitlines():
                 if "Uniquely mapped reads %" in line:
                     uniq = float(line.strip().split("\t")[-1][:-1])
