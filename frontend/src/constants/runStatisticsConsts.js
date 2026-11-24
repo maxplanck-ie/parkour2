@@ -219,6 +219,101 @@ export function runStatisticsColumnDefs(onSelectionChanged) {
       ),
       formatter: numberFormatter(2),
       hozAlign: "right"
+    },
+    {
+      title: "PhiX Alignment Rate (%)",
+      field: "phix_alignment_rate",
+      minWidth: 90,
+      visible: true,
+      ...numericFilterConfig(
+        (v) => Number(v),
+        numericFilterExamples(2, 1, 5, 10)
+      ),
+      formatter: numberFormatter(2),
+      hozAlign: "right"
+    },
+    {
+      title: "Yield (Gb)",
+      field: "gb_yield",
+      minWidth: 80,
+      visible: true,
+      ...numericFilterConfig(
+        (v) => Number(v),
+        numericFilterExamples(100, 50, 200, 400)
+      ),
+      formatter: numberFormatter(2),
+      hozAlign: "right"
+    },
+    {
+      title: "PF (%)",
+      field: "percent_pf",
+      minWidth: 70,
+      visible: true,
+      ...numericFilterConfig(
+        (v) => Number(v),
+        numericFilterExamples(80, 50, 75, 90)
+      ),
+      formatter: numberFormatter(2),
+      hozAlign: "right"
+    },
+    {
+      title: "Occupied (%)",
+      field: "percent_occupied",
+      minWidth: 80,
+      visible: true,
+      ...numericFilterConfig(
+        (v) => Number(v),
+        numericFilterExamples(60, 30, 50, 90)
+      ),
+      formatter: numberFormatter(2),
+      hozAlign: "right"
+    },
+    {
+      title: "PMG Shift",
+      field: "pmg_shift",
+      minWidth: 80,
+      visible: true,
+      ...numericFilterConfig(
+        (v) => Number(v),
+        numericFilterExamples(0, -1, 1, 2)
+      ),
+      formatter: numberFormatter(2),
+      hozAlign: "right"
+    },
+    {
+      title: "Polony Density",
+      field: "polony_density",
+      minWidth: 90,
+      visible: true,
+      ...textFilterConfig("Polony Density")
+    },
+    {
+      title: "Custom Recipe",
+      field: "custom_recipe",
+      minWidth: 110,
+      visible: true,
+      ...textFilterConfig("Custom Recipe")
+    },
+    {
+      title: "Sequencer Side",
+      field: "sequencer_side",
+      minWidth: 90,
+      visible: true,
+      ...textFilterConfig("Sequencer Side")
+    },
+    {
+      title: "Lane Loading Format",
+      field: "lane_loading_format",
+      minWidth: 120,
+      visible: true,
+      ...textFilterConfig("Lane Loading Format")
+    },
+    {
+      title: "Run Outcome",
+      field: "run_outcome",
+      minWidth: 110,
+      visible: true,
+      ...textFilterConfig("Run Outcome")
     }
   ]);
 }
@@ -353,6 +448,66 @@ export function runStatisticsExportColumns() {
       width: 22,
       excelType: "number",
       decimalPlaces: 2
-    }
+    },
+    {
+      header: "PhiX Alignment Rate (%)",
+      key: "phix_alignment_rate",
+      width: 24,
+      excelType: "number",
+      decimalPlaces: 2
+    },
+    {
+      header: "Yield (Gb)",
+      key: "gb_yield",
+      width: 14,
+      excelType: "number",
+      decimalPlaces: 2
+    },
+    {
+      header: "PF (%)",
+      key: "percent_pf",
+      width: 12,
+      excelType: "number",
+      decimalPlaces: 2
+    },
+    {
+      header: "Occupied (%)",
+      key: "percent_occupied",
+      width: 14,
+      excelType: "number",
+      decimalPlaces: 2
+    },
+    {
+      header: "PMG Shift",
+      key: "pmg_shift",
+      width: 12,
+      excelType: "number",
+      decimalPlaces: 2
+    },
+    {
+      header: "Polony Density",
+      key: "polony_density",
+      width: 16,
+      excelType: "text"
+    },
+    {
+      header: "Custom Recipe",
+      key: "custom_recipe",
+      width: 18,
+      excelType: "text"
+    },
+    {
+      header: "Sequencer Side",
+      key: "sequencer_side",
+      width: 16,
+      excelType: "text"
+    },
+    {
+      header: "Lane Loading Format",
+      key: "lane_loading_format",
+      width: 22,
+      excelType: "text"
+    },
+    { header: "Run Outcome", key: "run_outcome", width: 18, excelType: "text" }
   ];
 }
