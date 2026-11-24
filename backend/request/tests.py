@@ -375,6 +375,32 @@ class TestApprovalFlow(BaseTestCase):
             )
         self.assertEqual(response.status_code, 400)
 
+    def test_approve_this_rejects_unsolicited_request_without_valid_token(self):
+        # Never solicited: stored token is NULL. Missing, empty and non-ASCII
+        # query tokens must all be rejected, not matched against None.
+        self.assertIsNone(self.request.token)
+
+        for params in ({}, {"token": ""}, {"token": "é"}):
+            with self.subTest(params=params):
+                with self.assertLogs("db", "ERROR"):
+                    response = self.client.get(
+                        "/api/approve/this/", {"pk": self.request.pk, **params}
+                    )
+                self.assertEqual(response.status_code, 400)
+
+                self.library.refresh_from_db()
+                self.assertEqual(self.library.status, 0)
+
+    def test_approve_this_rejects_unsolicited_request_without_records(self):
+        empty_request = create_request(self.owner)
+
+        with self.assertLogs("db", "ERROR"):
+            response = self.client.get("/api/approve/this/", {"pk": empty_request.pk})
+        self.assertEqual(response.status_code, 400)
+
+        empty_request.refresh_from_db()
+        self.assertIsNone(empty_request.approval["TIMESTAMP"])
+
 
 # Views
 

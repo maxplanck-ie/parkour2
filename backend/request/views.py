@@ -1,3 +1,4 @@
+import hmac
 import itertools
 import json
 import logging
@@ -1002,9 +1003,11 @@ class ApproveViewSet(viewsets.ModelViewSet):
             token = request.query_params.get("token")
             pk = request.query_params.get("pk")
             instance = list(Request.objects.filter(id=pk))[0]
+            if not token or not instance.token:
+                raise ValueError("Missing approval token.")
             if not all(s == 0 for s in instance.statuses):
                 raise ValueError(f"Not all statuses are zero: {instance.statuses}")
-            if token == instance.token:
+            if hmac.compare_digest(token.encode(), instance.token.encode()):
                 library_ids = list(instance.libraries.values_list("id", flat=True))
                 sample_ids = list(instance.samples.values_list("id", flat=True))
                 with transaction.atomic():
@@ -1026,7 +1029,7 @@ class ApproveViewSet(viewsets.ModelViewSet):
                     instance.save(update_fields=["token", "approval"])
                 refresh_batched(library_ids=library_ids, sample_ids=sample_ids)
             else:
-                raise ValueError(f"Token mismatch.")
+                raise ValueError("Token mismatch.")
         except Exception as e:
             logger.exception(e)
             return render(request, "approval_expired.html", status=400)
