@@ -175,3 +175,4 @@ The merge priority only matters where sources overlap a flowcell. The merged fil
 ## Next
 - Compare numbers now on production with the values that would be pushed. Production is read-only for this: GET only.
 - Review rows in the sqlite, mark `"update"`, then push to parkour-dev only, after confirmation.
+- `push` fills empty values only. A row whose Parkour value is already stored is skipped with a `SKIP` line. Pass `--overwrite` to replace stored values, for example a number from a partial run that the file now contradicts. Without `--apply` nothing is posted either way.
