@@ -1087,6 +1087,12 @@ def push(args):
         entries = stored[kind].get(fcid, {})
         out, ids = {}, []
         for rid, _, _, key, field, old, new, _ in rs:
+            if old not in (None, "") and not args.overwrite:
+                print(
+                    f"  SKIP {fcid} {key} {field}: Parkour has {old}, file says {new}; "
+                    "pass --overwrite to replace a stored value"
+                )
+                continue
             e = entries.get(key)
             if (
                 e is None
@@ -1227,6 +1233,11 @@ def main():
     )
     p = sub.add_parser("push", parents=[parkour])
     p.add_argument("--apply", action="store_true", help="POST (default: dry run)")
+    p.add_argument(
+        "--overwrite",
+        action="store_true",
+        help="also replace values Parkour already stores (default: only fill empty ones)",
+    )
     p = sub.add_parser("compare", parents=[parkour], help="read-only stored vs parsed")
     p.add_argument("--tol", type=float, default=1e-3, help="abs. tolerance")
     p.add_argument("--field", nargs="+", help="only these fields")

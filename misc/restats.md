@@ -167,6 +167,23 @@ New-key rows in the merged file: `fragment_median` 8,382, `fragment_q1` 8,381, `
 
 The merge priority only matters where sources overlap a flowcell. The merged file has no key in both tables.
 
+## Push policy: what to overwrite
+`push` fills empty Parkour values. `--overwrite` also replaces stored ones. Mark only the groups below with `"update" = 1`; everything else stays 0. The files are the better source when Parkour holds a placeholder or a value from an old automated push that a rerun never corrected. They are not always right.
+
+Overwrite (the file looks right):
+- `optical_duplicates` stored as exactly `0.0` (844 rows, 27 flowcells, runs Aug 18 to Oct 29 2026). BRB sent 0.0 before v1.3.1 when it had no stats file or a total of 0. File values are consistent per flowcell (about 1 to 17 %).
+- `HH72VDRX7`: `reads_pf_sequenced` (8, Parkour 1.44 to 1.47 times the file; 25L010585 is 2,747,558 and confirmed in Parkour) and `optical_duplicates` (8).
+
+Hold (unexplained, check first):
+- `HKTWFDRX7`: `reads_pf_sequenced` 3.7 to 8.3 times the file (32 rows), `optical_duplicates` 1.7 to 3.1 times (32 rows).
+- `HTM23DRX5` RNA block (34 libraries): `assigned_reads` 24 to 26 in Parkour against 44 to 49 in the file, mapped and duplicate fields differ too. Probably a rerun that was never pushed. The `Analysis_*` directory was not located.
+
+Leave alone (the file is probably wrong):
+- Old runs whose lane stats failed or whose counting differs: `HKJ3VDRXY` (2021, reads 0.39 times, optical 2.5 % against 0.00005 %), `HMTWHDRXX` (2020, mapped 9 to 13 % against 72 to 87 %), `HVJ5JDRXY` (reads 0.50), `HNFT5DRX5`, `HNK3VDRXX`, `HWFTGDRXY`.
+- `HMJVHDRXX` and `HLHNGDRXY` differ by rounding only (ratio 0.99 to 1.02).
+
+Safeguards: a library with two different values across analysis directories is a CONFLICT and is never pushed. `push` skips a row whose Parkour value is no longer the recorded `old_value`, so a manual correction made after the scan is not overwritten. Nothing is posted without `--apply`, and prod is refused. Keep a copy of the sqlite: `old_value` is the undo record.
+
 ## Known quirks
 - CONFLICT rows: a barcode with two different values across run dirs of the same flowcell is skipped, not guessed. Example: `HLCH3DRX7 26L002823 mapped_reads [55.66, 55.68]`.
 - `lane stats failed` lines for old runs: the Illumina interop files are gone. Lane (matrix) rows are missing for those flowcells. Sequence rows are unaffected.
@@ -175,3 +192,4 @@ The merge priority only matters where sources overlap a flowcell. The merged fil
 ## Next
 - Compare numbers now on production with the values that would be pushed. Production is read-only for this: GET only.
 - Review rows in the sqlite, mark `"update"`, then push to parkour-dev only, after confirmation.
+- `push` fills empty values only. A row whose Parkour value is already stored is skipped with a `SKIP` line. Pass `--overwrite` to replace stored values, for example a number from a partial run that the file now contradicts. Without `--apply` nothing is posted either way.
