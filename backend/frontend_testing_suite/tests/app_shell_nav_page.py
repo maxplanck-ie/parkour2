@@ -97,4 +97,3 @@ def test_nav_state_is_recomputed_after_reload(page: Page):
     page.reload()
     expect(page.locator(f"{NAV} .app-shell-nav-link").first).to_be_visible()
     _expect_collapsed(page)
-
