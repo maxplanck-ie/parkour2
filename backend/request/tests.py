@@ -322,9 +322,7 @@ class TestApprovalFlow(BaseTestCase):
         self.assertTrue(self._solicit().json()["success"])
 
         sent = mail.outbox[0]
-        self.assertEqual(
-            [a.lower() for a in sent.to].count(self.pi.email.lower()), 1
-        )
+        self.assertEqual([a.lower() for a in sent.to].count(self.pi.email.lower()), 1)
         self.assertIn("master@test.io", sent.to)
 
     def test_solicit_approval_delegate_alone_suffices_when_pi_email_unset(self):
