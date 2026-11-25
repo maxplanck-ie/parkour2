@@ -809,7 +809,14 @@ class RequestViewSet(viewsets.ModelViewSet):
                     + instance.user.pi.name
                     + ", is no longer enrolled. Please contact an admin."
                 )
-            elif instance.user.pi.email == "Unset":
+            delegate_emails = [
+                email
+                for email in instance.user.pi.delegate_users.filter(
+                    pi=instance.user.pi, is_pi=True, is_active=True
+                ).values_list("email", flat=True)
+                if email
+            ]
+            if instance.user.pi.email == "Unset" and not delegate_emails:
                 raise ValueError(
                     "PI: "
                     + instance.user.pi.name
@@ -846,7 +853,12 @@ class RequestViewSet(viewsets.ModelViewSet):
                     },
                 ),
                 from_email=settings.SERVER_EMAIL,
-                recipient_list=_recipient_list_with_sender_copy(instance.user.pi.email),
+                recipient_list=_recipient_list_with_sender_copy(
+                    None
+                    if instance.user.pi.email == "Unset"
+                    else instance.user.pi.email,
+                    delegate_emails,
+                ),
             )
         except Exception as e:
             error = str(e)
