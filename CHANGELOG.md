@@ -4,7 +4,7 @@ Unreleased
 ==========
 - Request approval: the approval link no longer approves a request that was never sent to the PI for approval, or when the token is missing from the link. (PR #396)
 - Sequences Statistics: the Excel export now leaves out RELACS libraries, which hold one value per demultiplexed sample for some metrics, and shows a warning with the number of skipped rows instead of exporting them with empty cells. (PR #392)
-- Request approval: admins can pick "Approval delegates" on a Principal Investigator in the admin panel (master accounts of that PI only). Approval emails are then sent to the PI and to these delegates; a PI without an email address works as long as one delegate is set.
+- Request approval: admins can pick "Approval delegates" on a Principal Investigator in the admin panel (master accounts of that PI only). Approval emails are then sent to the PI and to these delegates; a PI without an email address works as long as one delegate is set. (PR #400)
 - Invoicing: costs on an invoice are now calculated with the prices that were in force on each flowcell's date, tracked via the change history of the cost tables, instead of always the current prices; staff can edit prices directly and past months keep their old totals, so archiving prices in the admin is no longer offered. (PR #390)
 - Run Statistics and Sequences Statistics: the tables and their Excel exports now show the values the pipelines newly send. Run Statistics adds PhiX Alignment Rate, Yield, PF, Occupied, PMG Shift, Polony Density, Custom Recipe, Sequencer Side, Lane Loading Format and Run Outcome. Sequences Statistics adds the Fragment size quartiles and 10th/90th percentiles, Fragments Counted, Peaks, FRiP, Peak Genome Coverage and the Hi-C Unique Pairs (%). (PR #398)
 
