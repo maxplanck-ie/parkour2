@@ -224,16 +224,28 @@ INT_FIELDS = {
 }
 
 
-def add(cand, key, field, value):
+def add(cand, key, field, value, asInt=True):
     if field in TEXT_FIELDS:
         cand[(key, field)].add(str(value))
         return
     value = float(value)
     if value != value:  # NaN: BRB would send null, nothing to compare
         return
-    if field.rsplit("/", 1)[-1] in INT_FIELDS:
+    if asInt and field.rsplit("/", 1)[-1] in INT_FIELDS:
         value = int(value)
     cand[(key, field)].add(value)
+
+
+def weightedMean(cand, lib, samples, key, weightOf):
+    """Add weighted mean of `key` over `samples` to `cand` as float."""
+    num = den = 0.0
+    for name, st in samples.items():
+        w = weightOf(name, st)
+        if w and key in st:
+            num += w * st[key]
+            den += w
+    if den:
+        add(cand, lib, key, num / den, asInt=False)
 
 
 # Errors a missing or malformed stats file raises; they cost only the value read from it.
@@ -701,8 +713,10 @@ def seqStats(runDir, roots, labels=None):
                     add(cand, lib, f"demuxed_samples/{name}/{key}", value)
                 if st:
                     libs.setdefault(lib, {})[name] = st
-            # library level, like ET._relacsLibrary: only exact values, fragments_total
-            # summed and dupped_reads pooled (rates weighted by flagstat total_passed)
+            # library level, like BRB ET._relacsLibrary: fragments_total summed,
+            # dupped_reads and mapped_reads weighted by flagstat total_passed,
+            # fragment_*, insert_size and frip by the sample's fragments_total.
+            # The weighted means are floats (BRB sends them unrounded), no peak_count.
             for lib, samples in libs.items():
                 frags, dup, reads = [], 0.0, 0
                 for name, st in samples.items():
