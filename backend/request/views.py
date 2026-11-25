@@ -813,7 +813,9 @@ class RequestViewSet(viewsets.ModelViewSet):
                 email
                 for email in instance.user.pi.delegate_users.filter(
                     pi=instance.user.pi, is_pi=True, is_active=True
-                ).values_list("email", flat=True)
+                )
+                .exclude(email__iexact=instance.user.pi.email)
+                .values_list("email", flat=True)
                 if email
             ]
             if instance.user.pi.email == "Unset" and not delegate_emails:

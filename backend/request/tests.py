@@ -314,6 +314,19 @@ class TestApprovalFlow(BaseTestCase):
         self.assertNotIn("inactive@test.io", sent.to)
         self.assertNotIn("plain@test.io", sent.to)
 
+    def test_solicit_approval_skips_delegate_with_the_pi_email(self):
+        same_person = self._master(self.pi.email.upper())
+        other = self._master("master@test.io")
+        self.pi.delegate_users.add(same_person, other)
+
+        self.assertTrue(self._solicit().json()["success"])
+
+        sent = mail.outbox[0]
+        self.assertEqual(
+            [a.lower() for a in sent.to].count(self.pi.email.lower()), 1
+        )
+        self.assertIn("master@test.io", sent.to)
+
     def test_solicit_approval_delegate_alone_suffices_when_pi_email_unset(self):
         self.pi.email = "Unset"
         self.pi.save()

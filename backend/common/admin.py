@@ -111,9 +111,10 @@ class PrincipalInvestigatorForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        # The PI's own account (same e-mail) is already a recipient.
         self.fields["delegate_users"].queryset = User.objects.filter(
             pi=self.instance.pk, is_pi=True
-        )
+        ).exclude(email__iexact=self.instance.email)
 
 
 @admin.register(PrincipalInvestigator)
