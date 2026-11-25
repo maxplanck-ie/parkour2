@@ -325,16 +325,15 @@ class TestApprovalFlow(BaseTestCase):
         self.assertEqual([a.lower() for a in sent.to].count(self.pi.email.lower()), 1)
         self.assertIn("master@test.io", sent.to)
 
-    def test_solicit_approval_delegate_alone_suffices_when_pi_email_unset(self):
+    def test_solicit_approval_rejects_pi_without_email_even_with_delegates(self):
         self.pi.email = "Unset"
         self.pi.save()
         self.pi.delegate_users.add(self._master("master@test.io"))
 
-        self.assertTrue(self._solicit().json()["success"])
-
-        sent = mail.outbox[0]
-        self.assertIn("master@test.io", sent.to)
-        self.assertNotIn("Unset", sent.to)
+        with self.assertLogs("db", "ERROR"):
+            response = self._solicit()
+        self.assertFalse(response.json()["success"])
+        self.assertEqual(len(mail.outbox), 0)
 
     def test_solicit_approval_rejects_archived_pi(self):
         self.pi.archived = True

@@ -818,7 +818,7 @@ class RequestViewSet(viewsets.ModelViewSet):
                 .values_list("email", flat=True)
                 if email
             ]
-            if instance.user.pi.email == "Unset" and not delegate_emails:
+            if instance.user.pi.email == "Unset":
                 raise ValueError(
                     "PI: "
                     + instance.user.pi.name
@@ -856,10 +856,7 @@ class RequestViewSet(viewsets.ModelViewSet):
                 ),
                 from_email=settings.SERVER_EMAIL,
                 recipient_list=_recipient_list_with_sender_copy(
-                    None
-                    if instance.user.pi.email == "Unset"
-                    else instance.user.pi.email,
-                    delegate_emails,
+                    instance.user.pi.email, delegate_emails
                 ),
             )
         except Exception as e:
