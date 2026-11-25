@@ -718,17 +718,26 @@ def seqStats(runDir, roots, labels=None):
             # fragment_*, insert_size and frip by the sample's fragments_total.
             # The weighted means are floats (BRB sends them unrounded), no peak_count.
             for lib, samples in libs.items():
-                frags, dup, reads = [], 0.0, 0
-                for name, st in samples.items():
-                    if "fragments_total" in st:
-                        frags.append(st["fragments_total"])
-                    if weights.get(name) and "dupped_reads" in st:
-                        dup += weights[name] * st["dupped_reads"]
-                        reads += weights[name]
+                frags = [
+                    st["fragments_total"]
+                    for st in samples.values()
+                    if "fragments_total" in st
+                ]
                 if frags:
                     add(cand, lib, "fragments_total", sum(frags))
-                if reads:
-                    add(cand, lib, "dupped_reads", dup / reads)
+
+                for key in ("dupped_reads", "mapped_reads"):
+                    weightedMean(
+                        cand, lib, samples, key, lambda name, st, w=weights: w.get(name)
+                    )
+                for key in (*FRAGMENT_COLS, "insert_size", "frip"):
+                    weightedMean(
+                        cand,
+                        lib,
+                        samples,
+                        key,
+                        lambda name, st: st.get("fragments_total"),
+                    )
         # RNA
         assigned = {}
         if (mq / "multiqc_featurecounts.txt").exists():
