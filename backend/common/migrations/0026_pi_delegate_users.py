@@ -7,28 +7,67 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('common', '0025_historicaluser_historicaluser_cost_unit'),
+        ("common", "0025_historicaluser_historicaluser_cost_unit"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='principalinvestigator',
-            name='delegate_users',
-            field=models.ManyToManyField(blank=True, help_text='Master (PI) accounts under this PI that also receive the request approval e-mails. Set by an admin.', related_name='delegate_for_pis', to=settings.AUTH_USER_MODEL, verbose_name='Approval delegates'),
+            model_name="principalinvestigator",
+            name="delegate_users",
+            field=models.ManyToManyField(
+                blank=True,
+                help_text="Master (PI) accounts under this PI that also receive the request approval e-mails. Set by an admin.",
+                related_name="delegate_for_pis",
+                to=settings.AUTH_USER_MODEL,
+                verbose_name="Approval delegates",
+            ),
         ),
         migrations.CreateModel(
-            name='HistoricalPrincipalInvestigator_delegate_users',
+            name="HistoricalPrincipalInvestigator_delegate_users",
             fields=[
-                ('id', models.BigIntegerField(auto_created=True, blank=True, db_index=True, verbose_name='ID')),
-                ('m2m_history_id', models.AutoField(primary_key=True, serialize=False)),
-                ('history', models.ForeignKey(db_constraint=False, on_delete=django.db.models.deletion.DO_NOTHING, to='common.historicalprincipalinvestigator')),
-                ('principalinvestigator', models.ForeignKey(blank=True, db_constraint=False, db_tablespace='', null=True, on_delete=django.db.models.deletion.DO_NOTHING, related_name='+', to='common.principalinvestigator')),
-                ('user', models.ForeignKey(blank=True, db_constraint=False, db_tablespace='', null=True, on_delete=django.db.models.deletion.DO_NOTHING, related_name='+', to=settings.AUTH_USER_MODEL)),
+                (
+                    "id",
+                    models.BigIntegerField(
+                        auto_created=True, blank=True, db_index=True, verbose_name="ID"
+                    ),
+                ),
+                ("m2m_history_id", models.AutoField(primary_key=True, serialize=False)),
+                (
+                    "history",
+                    models.ForeignKey(
+                        db_constraint=False,
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        to="common.historicalprincipalinvestigator",
+                    ),
+                ),
+                (
+                    "principalinvestigator",
+                    models.ForeignKey(
+                        blank=True,
+                        db_constraint=False,
+                        db_tablespace="",
+                        null=True,
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        related_name="+",
+                        to="common.principalinvestigator",
+                    ),
+                ),
+                (
+                    "user",
+                    models.ForeignKey(
+                        blank=True,
+                        db_constraint=False,
+                        db_tablespace="",
+                        null=True,
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        related_name="+",
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'HistoricalPrincipalInvestigator_delegate_users',
+                "verbose_name": "HistoricalPrincipalInvestigator_delegate_users",
             },
             bases=(simple_history.models.HistoricalChanges, models.Model),
         ),
