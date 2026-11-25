@@ -26,6 +26,8 @@
               v-if="node.leaf"
               :to="navPath(node)"
               class="app-shell-nav-link"
+              :aria-label="navCollapsed ? node.text : null"
+              :title="navCollapsed ? node.text : null"
             >
               <font-awesome-icon
                 v-if="navIcon(node)"
@@ -39,6 +41,8 @@
               <button
                 :id="`app-shell-dropdown-${node.text}`"
                 class="app-shell-nav-link app-shell-nav-button"
+                :aria-label="navCollapsed ? node.text : null"
+                :title="navCollapsed ? node.text : null"
                 :aria-expanded="openDropdown === node.text"
                 @click="toggleDropdown(node.text)"
               >
@@ -144,7 +148,7 @@
 </template>
 
 <script>
-import { getCurrentInstance } from "vue";
+import { getCurrentInstance, ref } from "vue";
 import { onClickOutside, onKeyStroke, useResizeObserver } from "@vueuse/core";
 import {
   createAxiosObject,
@@ -164,15 +168,20 @@ export default {
   name: "AppShell",
   setup() {
     const instance = getCurrentInstance();
+    // Real refs (not `$refs` getters): `$refs` isn't reactive, so a getter
+    // evaluated during setup() resolved to undefined and the observer was
+    // never attached -- the nav only measured once, on mount.
+    const appShellBar = ref(null);
+    const navMeasure = ref(null);
     onClickOutside(
       () => instance.proxy.$refs.appShellNav,
       (event) => instance.proxy.handleDocumentClick(event)
     );
     onKeyStroke("Escape", (event) => instance.proxy.handleKeyDown(event));
-    useResizeObserver(
-      () => instance.proxy.$refs.appShellBar,
-      () => instance.proxy.updateNavCollapse()
+    useResizeObserver([appShellBar, navMeasure], () =>
+      instance.proxy.updateNavCollapse()
     );
+    return { appShellBar, navMeasure };
   },
   data() {
     return {

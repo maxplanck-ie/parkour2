@@ -2,6 +2,7 @@
 
 Unreleased
 ==========
+- Top navigation bar: it now switches between full-text buttons and icon-only buttons as the window is resized, instead of only when the page loads. Icon-only buttons show a tooltip and have an accessible name. New browser tests cover wide, narrow, resize and reload cases.
 - Request approval: the approval link no longer approves a request that was never sent to the PI for approval, or when the token is missing from the link. (PR #396)
 - Sequences Statistics: the Excel export now leaves out RELACS libraries, which hold one value per demultiplexed sample for some metrics, and shows a warning with the number of skipped rows instead of exporting them with empty cells. (PR #392)
 - Request approval: admins can pick "Approval delegates" on a Principal Investigator in the admin panel (master accounts of that PI only). Approval emails are then sent to the PI and to these delegates; the PI always stays a recipient. (PR #400, direct commit `5466645f`.)
