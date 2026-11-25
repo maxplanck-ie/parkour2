@@ -288,6 +288,54 @@ class TestApprovalFlow(BaseTestCase):
         self.assertIn(f"token={self.request.token}", html)
         self.assertIn(f"pk={self.request.id}", html)
 
+    def _master(self, email, **kwargs):
+        return User.objects.create_user(
+            first_name="Mas",
+            last_name="Ter",
+            email=email,
+            password="foo-foo",
+            organization=self.org,
+            pi=kwargs.pop("pi", self.pi),
+            is_pi=kwargs.pop("is_pi", True),
+            **kwargs,
+        )
+
+    def test_solicit_approval_also_emails_active_master_delegates(self):
+        master = self._master("master@test.io")
+        inactive = self._master("inactive@test.io", is_active=False)
+        not_master = self._master("plain@test.io", is_pi=False)
+        self.pi.delegate_users.add(master, inactive, not_master)
+
+        self.assertTrue(self._solicit().json()["success"])
+
+        sent = mail.outbox[0]
+        self.assertIn(self.pi.email, sent.to)
+        self.assertIn("master@test.io", sent.to)
+        self.assertNotIn("inactive@test.io", sent.to)
+        self.assertNotIn("plain@test.io", sent.to)
+
+    def test_solicit_approval_skips_delegate_with_the_pi_email(self):
+        same_person = self._master(self.pi.email.upper())
+        other = self._master("master@test.io")
+        self.pi.delegate_users.add(same_person, other)
+
+        self.assertTrue(self._solicit().json()["success"])
+
+        sent = mail.outbox[0]
+        self.assertEqual([a.lower() for a in sent.to].count(self.pi.email.lower()), 1)
+        self.assertIn("master@test.io", sent.to)
+
+    def test_solicit_approval_delegate_alone_suffices_when_pi_email_unset(self):
+        self.pi.email = "Unset"
+        self.pi.save()
+        self.pi.delegate_users.add(self._master("master@test.io"))
+
+        self.assertTrue(self._solicit().json()["success"])
+
+        sent = mail.outbox[0]
+        self.assertIn("master@test.io", sent.to)
+        self.assertNotIn("Unset", sent.to)
+
     def test_solicit_approval_rejects_archived_pi(self):
         self.pi.archived = True
         self.pi.save()

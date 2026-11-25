@@ -52,8 +52,18 @@ class PrincipalInvestigator(models.Model):
             "PI name."
         ),
     )
+    delegate_users = models.ManyToManyField(
+        "common.User",
+        verbose_name="Approval delegates",
+        related_name="delegate_for_pis",
+        blank=True,
+        help_text=(
+            "Master (PI) accounts under this PI that also receive the request "
+            "approval e-mails. Set by an admin."
+        ),
+    )
     archived = models.BooleanField("Archived", default=False)
-    history = HistoricalRecords()
+    history = HistoricalRecords(m2m_fields=["delegate_users"])
 
     class Meta:
         verbose_name = "Principal Investigator"

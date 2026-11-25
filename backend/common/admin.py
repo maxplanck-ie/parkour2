@@ -102,14 +102,31 @@ class CostUnitInline(admin.TabularInline):
     extra = 1
 
 
+class PrincipalInvestigatorForm(forms.ModelForm):
+    """Delegates must be master (PI) accounts that belong to this PI."""
+
+    class Meta:
+        model = PrincipalInvestigator
+        fields = "__all__"
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # The PI's own account (same e-mail) is already a recipient.
+        self.fields["delegate_users"].queryset = User.objects.filter(
+            pi=self.instance.pk, is_pi=True
+        ).exclude(email__iexact=self.instance.email)
+
+
 @admin.register(PrincipalInvestigator)
 class PrincipalInvestigatorAdmin(ReferencedGuardedDeleteMixin, SimpleHistoryAdmin):
+    form = PrincipalInvestigatorForm
     list_display = ("name", "organization", "deliver_to", "archived")
     search_fields = (
         "name",
         "organization__name",
     )
     list_filter = ("organization", ArchivedFilter)
+    filter_horizontal = ("delegate_users",)
     inlines = [CostUnitInline]
 
     actions = (
