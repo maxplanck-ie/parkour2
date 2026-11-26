@@ -4,7 +4,9 @@ import json
 import logging
 import io
 import os
+import re
 import zipfile
+from datetime import datetime
 from mimetypes import guess_type
 from os.path import basename
 from unicodedata import normalize
@@ -58,14 +60,20 @@ logger = logging.getLogger("db")
 
 # Documents offered in the "Submission forms" checklist of the Add Request
 # dialog. To offer another one, drop the file into backend/static/docs/ and
-# add a line here.
+# add a line here. The file name MUST start with its version date
+# (YYYYMMDD_), which is shown in the checklist so users can tell old templates
+# from current ones. To publish a new version of a form, add the new dated
+# file and point the entry at it; delete the old file.
 SUBMISSION_FORMS = {
     "guidelines": (
         "Submission guidelines 2026",
-        "docs/Submission guidelines_2026.pdf",
+        "docs/20261125_Submission_guidelines_2026.pdf",
     ),
-    "s1": ("Formblatt S1 (GMO)", "docs/S1.docx"),
-    "relacs": ("RELACS submission form", "docs/RELACS_submission_form.xlsx"),
+    "s1": ("Formblatt S1 (GMO)", "docs/20261112_Formblatt_S1_GMO.docx"),
+    "relacs": (
+        "RELACS submission form",
+        "docs/20260727_RELACS_submission_form.xlsx",
+    ),
     "cut_and_tag": (
         "Cut&Tag submission form",
         "docs/20261125_Cut&Tag_submission_form.xlsx",
@@ -75,6 +83,38 @@ SUBMISSION_FORMS = {
         "docs/20261125_GEM-X_Universal_3_v4_4-plex_OCM_submission_form.xlsx",
     ),
 }
+
+# A form whose version date is at most this many days old gets a "New!" badge.
+SUBMISSION_FORM_NEW_DAYS = 15
+
+
+def _submission_form_date(path):
+    """Version date from the YYYYMMDD_ prefix of the file name, or None."""
+    match = re.match(r"(\d{8})_", basename(path))
+    if not match:
+        return None
+    try:
+        return datetime.strptime(match.group(1), "%Y%m%d").date()
+    except ValueError:
+        return None
+
+
+def _submission_form_is_new(form_date, today):
+    return (
+        form_date is not None
+        and 0 <= (today - form_date).days <= SUBMISSION_FORM_NEW_DAYS
+    )
+
+
+def _submission_form_entry(form_id, label, path):
+    form_date = _submission_form_date(path)
+    return {
+        "id": form_id,
+        "label": label,
+        "filename": basename(path),
+        "date": form_date.isoformat() if form_date else None,
+        "is_new": _submission_form_is_new(form_date, timezone.localdate()),
+    }
 
 
 def _recipient_list_with_sender_copy(*recipients):
@@ -664,7 +704,7 @@ class RequestViewSet(viewsets.ModelViewSet):
         """List the downloadable submission documents."""
         return Response(
             [
-                {"id": form_id, "label": label, "filename": basename(path)}
+                _submission_form_entry(form_id, label, path)
                 for form_id, (label, path) in SUBMISSION_FORMS.items()
             ]
         )

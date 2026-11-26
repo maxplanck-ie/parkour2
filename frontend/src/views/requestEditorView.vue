@@ -602,6 +602,9 @@
               >
                 <div class="request-form-actions-title">Submission forms</div>
                 <div class="submission-forms">
+                  <p class="submission-forms-hint">
+                    Always use the latest version of a form (check the date).
+                  </p>
                   <p v-if="submissionFormsError" class="submission-forms-empty">
                     Could not load the forms.
                   </p>
@@ -628,7 +631,13 @@
                         type="checkbox"
                         :value="form.id"
                       />
-                      <span>{{ form.label }}</span>
+                      <span class="submission-forms-label">{{ form.label }}</span>
+                      <span v-if="form.date" class="submission-forms-date">
+                        {{ form.date }}
+                      </span>
+                      <span v-if="form.is_new" class="submission-forms-new">
+                        New!
+                      </span>
                     </label>
                   </template>
                   <button
@@ -6738,6 +6747,28 @@ export default {
   font-weight: 600;
   padding-bottom: 4px;
   border-bottom: 1px solid #d0d0d0;
+}
+
+.submission-forms-hint {
+  margin: 0 0 2px;
+  font-size: 12px;
+  color: #555;
+}
+
+.submission-forms-date {
+  font-size: 11px;
+  color: #555;
+  white-space: nowrap;
+}
+
+.submission-forms-new {
+  padding: 0 6px;
+  border-radius: 8px;
+  background: #1a7f37;
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1.6;
 }
 
 .submission-forms-empty {
