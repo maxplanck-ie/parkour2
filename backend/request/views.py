@@ -2,7 +2,9 @@ import hmac
 import itertools
 import json
 import logging
+import io
 import os
+import zipfile
 from mimetypes import guess_type
 from os.path import basename
 from unicodedata import normalize
@@ -22,6 +24,7 @@ from django.core.mail import send_mail
 from django.db import transaction
 from django.db.models import Prefetch, Q
 from django.http import (
+    FileResponse,
     Http404,
     HttpRequest,
     HttpResponse,
@@ -52,6 +55,26 @@ Library = apps.get_model("library", "Library")
 Sample = apps.get_model("sample", "Sample")
 
 logger = logging.getLogger("db")
+
+# Documents offered in the "Submission forms" checklist of the Add Request
+# dialog. To offer another one, drop the file into backend/static/docs/ and
+# add a line here.
+SUBMISSION_FORMS = {
+    "guidelines": (
+        "Submission guidelines 2026",
+        "docs/Submission guidelines_2026.pdf",
+    ),
+    "s1": ("Formblatt S1 (GMO)", "docs/S1.docx"),
+    "relacs": ("RELACS submission form", "docs/RELACS_submission_form.xlsx"),
+    "cut_and_tag": (
+        "Cut&Tag submission form",
+        "docs/20261125_Cut&Tag_submission_form.xlsx",
+    ),
+    "gem_x": (
+        "GEM-X Universal 3' v4 4-plex OCM submission form",
+        "docs/20261125_GEM-X_Universal_3_v4_4-plex_OCM_submission_form.xlsx",
+    ),
+}
 
 
 def _recipient_list_with_sender_copy(*recipients):
@@ -637,17 +660,50 @@ class RequestViewSet(viewsets.ModelViewSet):
         )
 
     @action(methods=["get"], detail=False)
-    def download_RELACS_Pellets_Abs_form(self, request):
-        file_path = find_static("docs/RELACS_submission_form.xlsx")
-        if not file_path:
-            raise Http404("RELACS submission form not found")
+    def submission_forms(self, request):
+        """List the downloadable submission documents."""
+        return Response(
+            [
+                {"id": form_id, "label": label, "filename": basename(path)}
+                for form_id, (label, path) in SUBMISSION_FORMS.items()
+            ]
+        )
 
-        with open(file_path, "rb") as fh:
-            response = HttpResponse(fh.read(), content_type="application/vnd.ms-excel")
-            response["Content-Disposition"] = "inline; filename=" + os.path.basename(
-                file_path
+    @action(methods=["get"], detail=False)
+    def download_submission_forms(self, request):
+        """Download the submission documents named in ?forms=id1,id2.
+
+        One document is sent as is, several are sent as a single zip file.
+        """
+        form_ids = [f for f in request.query_params.get("forms", "").split(",") if f]
+        if not form_ids:
+            return JsonResponse(
+                {"success": False, "error": "No forms selected."}, status=400
             )
-            return response
+        unknown = [f for f in form_ids if f not in SUBMISSION_FORMS]
+        if unknown:
+            raise Http404("Unknown submission form: " + ", ".join(unknown))
+
+        file_paths = []
+        for form_id in dict.fromkeys(form_ids):
+            file_path = find_static(SUBMISSION_FORMS[form_id][1])
+            if not file_path:
+                raise Http404(f"Submission form file not found: {form_id}")
+            file_paths.append(file_path)
+
+        if len(file_paths) == 1:
+            return FileResponse(
+                open(file_paths[0], "rb"),
+                as_attachment=True,
+                filename=basename(file_paths[0]),
+            )
+
+        buffer = io.BytesIO()
+        with zipfile.ZipFile(buffer, "w", zipfile.ZIP_DEFLATED) as archive:
+            for file_path in file_paths:
+                archive.write(file_path, basename(file_path))
+        buffer.seek(0)
+        return FileResponse(buffer, as_attachment=True, filename="submission_forms.zip")
 
     @action(methods=["get"], detail=True)
     def download_deep_sequencing_request(self, request, pk=None):  # pragma: no cover

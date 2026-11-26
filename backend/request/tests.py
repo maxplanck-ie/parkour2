@@ -1,5 +1,7 @@
+import io
 import json
 import tempfile
+import zipfile
 from datetime import timedelta
 from unittest.mock import patch
 
@@ -7,6 +9,7 @@ from common.models import Organization, PrincipalInvestigator
 from common.tests import BaseTestCase
 from common.utils import get_random_name
 from django.contrib.auth import get_user_model
+from django.contrib.staticfiles.finders import find as find_static
 from django.core import mail
 from django.core.files.uploadedfile import SimpleUploadedFile
 
@@ -18,6 +21,7 @@ from library.tests import create_library
 from sample.tests import create_sample
 
 from .models import FileRequest, Request, is_valid_file_type
+from .views import SUBMISSION_FORMS
 
 User = get_user_model()
 
@@ -1473,19 +1477,46 @@ class TestRequestDownloadEndpoints(BaseTestCase):
         self.user = user
         self.request = create_request(user)
 
-    def test_download_relacs_pellets_abs_form(self):
-        """
-        Test that RELACS Pellets Abs form download endpoint returns 200,
-        correct content-type, and non-empty body.
-        """
+    def test_submission_forms_list(self):
         self.login()
-        # Use direct API path for the action
-        response = self.client.get("/api/requests/download_RELACS_Pellets_Abs_form/")
-
+        response = self.client.get("/api/requests/submission_forms/")
         self.assertEqual(response.status_code, 200)
-        self.assertIn("application", response["Content-Type"])
-        # Check that response has content
-        self.assertGreater(len(response.content), 0)
+        ids = [form["id"] for form in response.json()]
+        self.assertIn("relacs", ids)
+        self.assertEqual(len(ids), len(SUBMISSION_FORMS))
+
+    def test_every_listed_submission_form_file_exists(self):
+        for form_id, (_label, path) in SUBMISSION_FORMS.items():
+            self.assertTrue(find_static(path), f"{form_id}: {path} not found")
+
+    def test_download_single_submission_form(self):
+        self.login()
+        response = self.client.get(
+            "/api/requests/download_submission_forms/?forms=relacs"
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertIn("attachment", response["Content-Disposition"])
+        self.assertIn("RELACS_submission_form.xlsx", response["Content-Disposition"])
+        self.assertGreater(len(b"".join(response.streaming_content)), 0)
+
+    def test_download_several_submission_forms_as_zip(self):
+        self.login()
+        response = self.client.get(
+            "/api/requests/download_submission_forms/?forms=relacs,s1"
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertIn("submission_forms.zip", response["Content-Disposition"])
+        with zipfile.ZipFile(io.BytesIO(b"".join(response.streaming_content))) as zf:
+            self.assertEqual(
+                sorted(zf.namelist()), ["RELACS_submission_form.xlsx", "S1.docx"]
+            )
+
+    def test_download_submission_forms_rejects_bad_input(self):
+        self.login()
+        base = "/api/requests/download_submission_forms/"
+        self.assertEqual(self.client.get(base).status_code, 400)
+        self.assertEqual(self.client.get(base + "?forms=nope").status_code, 404)
+        self.assertEqual(self.client.get(base + "?forms=relacs,../x").status_code, 404)
 
     def test_display_date_precedence(self):
         """submission > approval > creation (same as the Date column)."""

@@ -600,28 +600,44 @@
                 v-if="requestEditorMode === 'sample' && !isEditMode"
                 class="request-form-actions"
               >
-                <div class="request-form-actions-title">Sample Forms</div>
-                <div class="download-buttons">
-                  <a
+                <div class="request-form-actions-title">Submission forms</div>
+                <div class="submission-forms">
+                  <p v-if="submissionFormsError" class="submission-forms-empty">
+                    Could not load the forms.
+                  </p>
+                  <template v-else>
+                    <label class="submission-forms-item select-all">
+                      <input
+                        type="checkbox"
+                        :checked="allSubmissionFormsSelected"
+                        :indeterminate.prop="someSubmissionFormsSelected"
+                        :disabled="!submissionForms.length"
+                        @change="toggleAllSubmissionForms($event.target.checked)"
+                      />
+                      <span>Select all</span>
+                    </label>
+                    <label
+                      v-for="form in submissionForms"
+                      :key="form.id"
+                      class="submission-forms-item"
+                    >
+                      <input
+                        v-model="selectedSubmissionForms"
+                        type="checkbox"
+                        :value="form.id"
+                      />
+                      <span>{{ form.label }}</span>
+                    </label>
+                  </template>
+                  <button
+                    type="button"
                     class="download-button"
-                    :href="gmoFormUrl"
-                    target="_blank"
-                    rel="noopener"
-                    title="Download Formblatt S1 (GMO)"
+                    :disabled="!selectedSubmissionForms.length"
+                    @click="downloadSubmissionForms"
                   >
                     <font-awesome-icon icon="fa-solid fa-download" />
-                    <span>Formblatt S1</span>
-                  </a>
-                  <a
-                    class="download-button"
-                    :href="relacsDownloadUrl"
-                    target="_blank"
-                    rel="noopener"
-                    title="Download the RELACS submission form"
-                  >
-                    <font-awesome-icon icon="fa-solid fa-download" />
-                    <span>RELACS form</span>
-                  </a>
+                    <span>{{ downloadSubmissionFormsLabel }}</span>
+                  </button>
                 </div>
               </div>
 
@@ -1440,8 +1456,9 @@ export default {
         { value: true, label: "Yes" },
         { value: false, label: "No" }
       ],
-      gmoFormUrl: `${urlStringStart}/static/docs/S1.docx`,
-      relacsDownloadUrl: `${urlStringStart}/api/requests/download_RELACS_Pellets_Abs_form`,
+      submissionForms: [],
+      selectedSubmissionForms: [],
+      submissionFormsError: false,
       indexI7OptionsByType: {},
       indexI5OptionsByType: {},
       indexPairsByType: {},
@@ -1613,6 +1630,7 @@ export default {
     }
   },
   mounted() {
+    this.loadSubmissionForms();
     if (this.show) {
       this.schedulePrepareRequestEditorModal();
     }
@@ -1661,6 +1679,23 @@ export default {
         current.length !== base.length ||
         current.some((id, index) => id !== base[index])
       );
+    },
+    allSubmissionFormsSelected() {
+      return (
+        this.submissionForms.length > 0 &&
+        this.selectedSubmissionForms.length === this.submissionForms.length
+      );
+    },
+    someSubmissionFormsSelected() {
+      return (
+        this.selectedSubmissionForms.length > 0 &&
+        !this.allSubmissionFormsSelected
+      );
+    },
+    downloadSubmissionFormsLabel() {
+      const count = this.selectedSubmissionForms.length;
+      if (count === 0) return "Download";
+      return count === 1 ? "Download" : `Download ${count} (zip)`;
     },
     requestEditorModeLabel() {
       return this.requestEditorMode === "library" ? "Library" : "Sample";
@@ -4315,6 +4350,47 @@ export default {
         this.confirmFileDelete();
       }
     },
+    async loadSubmissionForms() {
+      try {
+        const response = await axiosRef.get(
+          `${urlStringStart}/api/requests/submission_forms/`
+        );
+        this.submissionForms = response.data;
+        this.submissionFormsError = false;
+      } catch (error) {
+        this.submissionFormsError = true;
+        handleError(error);
+      }
+    },
+    toggleAllSubmissionForms(checked) {
+      this.selectedSubmissionForms = checked
+        ? this.submissionForms.map((form) => form.id)
+        : [];
+    },
+    async downloadSubmissionForms() {
+      const ids = this.selectedSubmissionForms;
+      if (!ids.length) return;
+      try {
+        const response = await axiosRef.get(
+          `${urlStringStart}/api/requests/download_submission_forms/`,
+          { params: { forms: ids.join(",") }, responseType: "blob" }
+        );
+        const single = ids.length === 1;
+        const filename = single
+          ? this.submissionForms.find((form) => form.id === ids[0])?.filename
+          : "submission_forms.zip";
+        const objectUrl = URL.createObjectURL(response.data);
+        const link = document.createElement("a");
+        link.href = objectUrl;
+        link.download = filename || "submission_forms";
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(objectUrl);
+      } catch (error) {
+        handleError(error);
+      }
+    },
     downloadUploadedFile(file) {
       if (!file?.path) {
         showNotification("Download link unavailable for this file.", "warning");
@@ -6553,20 +6629,6 @@ export default {
   color: #a3272b;
 }
 
-.download-buttons {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 4px;
-  border: 1px solid #d0d0d0;
-  border-radius: 6px;
-  background: #f6f8fa;
-  width: 100%;
-  min-height: 42px;
-  box-sizing: border-box;
-  min-width: 0;
-}
-
 .download-button {
   display: inline-flex;
   align-items: center;
@@ -6647,6 +6709,51 @@ export default {
   flex-direction: column;
   gap: 8px;
   margin-bottom: 4px;
+}
+
+.submission-forms {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 6px 8px;
+  border: 1px solid #d0d0d0;
+  border-radius: 6px;
+  background: #f6f8fa;
+  box-sizing: border-box;
+  min-width: 0;
+}
+
+.submission-forms-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  line-height: 1.4;
+  cursor: pointer;
+}
+
+.submission-forms-item.select-all {
+  font-weight: 600;
+  padding-bottom: 4px;
+  border-bottom: 1px solid #d0d0d0;
+}
+
+.submission-forms-empty {
+  margin: 0;
+  font-size: 12px;
+  color: #a3272b;
+}
+
+.submission-forms .download-button {
+  align-self: flex-end;
+  flex: 0 0 auto;
+  margin-top: 4px;
+  cursor: pointer;
+}
+
+.submission-forms .download-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 .request-form-actions-title {
