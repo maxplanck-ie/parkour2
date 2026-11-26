@@ -631,7 +631,9 @@
                         type="checkbox"
                         :value="form.id"
                       />
-                      <span class="submission-forms-label">{{ form.label }}</span>
+                      <span class="submission-forms-label">{{
+                        form.label
+                      }}</span>
                       <span v-if="form.date" class="submission-forms-date">
                         {{ form.date }}
                       </span>
