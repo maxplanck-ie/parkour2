@@ -1,8 +1,10 @@
 import hmac
+import io
 import itertools
 import json
 import logging
 import os
+import zipfile
 from mimetypes import guess_type
 from os.path import basename
 from unicodedata import normalize
@@ -22,6 +24,7 @@ from django.core.mail import send_mail
 from django.db import transaction
 from django.db.models import Prefetch, Q
 from django.http import (
+    FileResponse,
     Http404,
     HttpRequest,
     HttpResponse,
@@ -46,6 +49,11 @@ from rest_framework.response import Response
 from .models import DEFAULT_FILE_TYPE, FileRequest, Request, is_valid_file_type
 from .resources import LibrariesResource, SamplesResource
 from .serializers import RequestFileSerializer, RequestSerializer
+from .submission_forms import (
+    load_submission_forms,
+    submission_form_entry,
+    submission_form_static_path,
+)
 
 User = get_user_model()
 Library = apps.get_model("library", "Library")
@@ -637,17 +645,51 @@ class RequestViewSet(viewsets.ModelViewSet):
         )
 
     @action(methods=["get"], detail=False)
-    def download_RELACS_Pellets_Abs_form(self, request):
-        file_path = find_static("docs/RELACS_submission_form.xlsx")
-        if not file_path:
-            raise Http404("RELACS submission form not found")
+    def submission_forms(self, request):
+        """List the downloadable submission documents."""
+        return Response(
+            [
+                submission_form_entry(form_id, form, timezone.localdate())
+                for form_id, form in load_submission_forms().items()
+            ]
+        )
 
-        with open(file_path, "rb") as fh:
-            response = HttpResponse(fh.read(), content_type="application/vnd.ms-excel")
-            response["Content-Disposition"] = "inline; filename=" + os.path.basename(
-                file_path
+    @action(methods=["get"], detail=False)
+    def download_submission_forms(self, request):
+        """Download the submission documents named in ?forms=id1,id2.
+
+        One document is sent as is, several are sent as a single zip file.
+        """
+        form_ids = [f for f in request.query_params.get("forms", "").split(",") if f]
+        if not form_ids:
+            return JsonResponse(
+                {"success": False, "error": "No forms selected."}, status=400
             )
-            return response
+        forms = load_submission_forms()
+        unknown = [f for f in form_ids if f not in forms]
+        if unknown:
+            raise Http404("Unknown submission form: " + ", ".join(unknown))
+
+        file_paths = []
+        for form_id in dict.fromkeys(form_ids):
+            file_path = find_static(submission_form_static_path(forms[form_id]))
+            if not file_path:
+                raise Http404(f"Submission form file not found: {form_id}")
+            file_paths.append(file_path)
+
+        if len(file_paths) == 1:
+            return FileResponse(
+                open(file_paths[0], "rb"),
+                as_attachment=True,
+                filename=basename(file_paths[0]),
+            )
+
+        buffer = io.BytesIO()
+        with zipfile.ZipFile(buffer, "w", zipfile.ZIP_DEFLATED) as archive:
+            for file_path in file_paths:
+                archive.write(file_path, basename(file_path))
+        buffer.seek(0)
+        return FileResponse(buffer, as_attachment=True, filename="submission_forms.zip")
 
     @action(methods=["get"], detail=True)
     def download_deep_sequencing_request(self, request, pk=None):  # pragma: no cover

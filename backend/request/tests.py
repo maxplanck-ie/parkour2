@@ -1,12 +1,20 @@
+import io
 import json
+import os
+import re
+import shutil
 import tempfile
-from datetime import timedelta
+import zipfile
+from datetime import date, timedelta
+from pathlib import Path
 from unittest.mock import patch
 
 from common.models import Organization, PrincipalInvestigator
 from common.tests import BaseTestCase
 from common.utils import get_random_name
+from django.conf import settings
 from django.contrib.auth import get_user_model
+from django.contrib.staticfiles.finders import find as find_static
 from django.core import mail
 from django.core.files.uploadedfile import SimpleUploadedFile
 
@@ -18,6 +26,13 @@ from library.tests import create_library
 from sample.tests import create_sample
 
 from .models import FileRequest, Request, is_valid_file_type
+from .submission_forms import (
+    load_submission_forms,
+    normalize_submission_form_name,
+    submission_form_date,
+    submission_form_is_new,
+    submission_form_static_path,
+)
 
 User = get_user_model()
 
@@ -1473,19 +1488,196 @@ class TestRequestDownloadEndpoints(BaseTestCase):
         self.user = user
         self.request = create_request(user)
 
-    def test_download_relacs_pellets_abs_form(self):
-        """
-        Test that RELACS Pellets Abs form download endpoint returns 200,
-        correct content-type, and non-empty body.
-        """
+    def test_submission_forms_list(self):
         self.login()
-        # Use direct API path for the action
-        response = self.client.get("/api/requests/download_RELACS_Pellets_Abs_form/")
-
+        response = self.client.get("/api/requests/submission_forms/")
         self.assertEqual(response.status_code, 200)
-        self.assertIn("application", response["Content-Type"])
-        # Check that response has content
-        self.assertGreater(len(response.content), 0)
+        ids = [form["id"] for form in response.json()]
+        self.assertIn("relacs", ids)
+        self.assertEqual(len(ids), len(load_submission_forms()))
+
+    def test_every_listed_submission_form_file_follows_naming_rule(self):
+        for form_id, form in load_submission_forms().items():
+            path = submission_form_static_path(form)
+            self.assertTrue(find_static(path), f"{form_id}: {path} not found")
+            name = os.path.basename(path)
+            self.assertIsNotNone(
+                submission_form_date(path),
+                f"{form_id}: {name} has no valid YYYYMMDD_ prefix",
+            )
+            self.assertIsNone(
+                re.search(r"\s", name), f"{form_id}: {name} contains whitespace"
+            )
+
+    def test_no_unregistered_dated_files_in_docs(self):
+        """A dated file nobody lists is an old version that should be deleted."""
+        docs = os.path.join(settings.BASE_DIR, "static", "docs")
+        registered = {f["file"] for f in load_submission_forms().values()}
+        dated = {f for f in os.listdir(docs) if submission_form_date(f)}
+        self.assertEqual(dated - registered, set())
+
+    def _run_publish(self, docs, *args):
+        from django.core.management import call_command
+
+        with patch("request.submission_forms.docs_path", return_value=docs):
+            call_command("publish_submission_form", *args, stdout=io.StringIO())
+
+    def _docs_copy(self):
+        src = Path(settings.BASE_DIR) / "static" / "docs"
+        tmp = Path(tempfile.mkdtemp())
+        self.addCleanup(shutil.rmtree, tmp, True)
+        for f in src.glob("2*_*"):
+            shutil.copy(f, tmp / f.name)
+        shutil.copy(src / "forms.json", tmp / "forms.json")
+        return tmp
+
+    def test_publish_replace_swaps_file_and_keeps_id_and_label(self):
+        docs = self._docs_copy()
+        upload = docs.parent / "Submission guidelines 2027.pdf"
+        upload.write_bytes(b"new")
+        self.addCleanup(upload.unlink)
+        self._run_publish(
+            docs, str(upload), "--replace", "guidelines", "--date", "20270105"
+        )
+        with patch("request.submission_forms.docs_path", return_value=docs):
+            forms = load_submission_forms()
+        self.assertEqual(
+            forms["guidelines"]["file"], "20270105_Submission_guidelines_2027.pdf"
+        )
+        self.assertEqual(forms["guidelines"]["label"], "Submission guidelines 2026")
+        self.assertTrue((docs / "20270105_Submission_guidelines_2027.pdf").exists())
+        self.assertFalse((docs / "20261125_Submission_guidelines_2026.pdf").exists())
+        self.assertEqual(len(forms), 5)
+
+    def test_publish_new_adds_entry_but_refuses_a_twin_or_taken_id(self):
+        from django.core.management.base import CommandError
+
+        docs = self._docs_copy()
+        upload = docs.parent / "Brand new form.xlsx"
+        upload.write_bytes(b"x")
+        self.addCleanup(upload.unlink)
+        self._run_publish(
+            docs,
+            str(upload),
+            "--new",
+            "brand_new",
+            "--label",
+            "Brand new",
+            "--date",
+            "20270105",
+        )
+        with patch("request.submission_forms.docs_path", return_value=docs):
+            self.assertEqual(
+                load_submission_forms()["brand_new"]["file"],
+                "20270105_Brand_new_form.xlsx",
+            )
+        twin = docs.parent / "RELACS submission form.xlsx"
+        twin.write_bytes(b"x")
+        self.addCleanup(twin.unlink)
+        with self.assertRaisesRegex(CommandError, "--replace relacs"):
+            self._run_publish(
+                docs,
+                str(twin),
+                "--new",
+                "relacs2",
+                "--label",
+                "R",
+                "--date",
+                "20270106",
+            )
+        with self.assertRaisesRegex(CommandError, "exists"):
+            self._run_publish(
+                docs,
+                str(upload),
+                "--new",
+                "relacs",
+                "--label",
+                "R",
+                "--date",
+                "20270107",
+            )
+
+    def test_normalize_submission_form_name(self):
+        day = date(2026, 11, 25)
+        self.assertEqual(
+            normalize_submission_form_name("My form (v2).XLSX", day),
+            "20261125_My_form_v2.xlsx",
+        )
+        self.assertEqual(
+            normalize_submission_form_name("/x/20200101_Old  name.pdf", day),
+            "20261125_Old_name.pdf",
+        )
+        self.assertEqual(
+            normalize_submission_form_name("Cut&Tag form.xlsx", day),
+            "20261125_Cut&Tag_form.xlsx",
+        )
+        with self.assertRaises(ValueError):
+            normalize_submission_form_name("().xlsx", day)
+
+    def test_submission_forms_list_has_dates_and_new_flag(self):
+        self.login()
+        forms = {
+            form["id"]: form
+            for form in self.client.get("/api/requests/submission_forms/").json()
+        }
+        self.assertEqual(forms["relacs"]["date"], "2026-07-27")
+        self.assertEqual(
+            {i for i, f in forms.items() if f["for_libraries"]}, {"guidelines"}
+        )
+        self.assertEqual(
+            forms["relacs"]["filename"], "20260727_RELACS_submission_form.xlsx"
+        )
+        self.assertIsInstance(forms["relacs"]["is_new"], bool)
+
+    def test_submission_form_is_new_window(self):
+        today = date(2026, 12, 1)
+        self.assertTrue(submission_form_is_new(today, today))
+        self.assertTrue(submission_form_is_new(today - timedelta(days=15), today))
+        self.assertFalse(submission_form_is_new(today - timedelta(days=16), today))
+        self.assertFalse(submission_form_is_new(today + timedelta(days=1), today))
+        self.assertFalse(submission_form_is_new(None, today))
+
+    def test_submission_form_date_parsing(self):
+        self.assertEqual(
+            submission_form_date("docs/20261125_X.xlsx").isoformat(), "2026-11-25"
+        )
+        self.assertIsNone(submission_form_date("docs/X.xlsx"))
+        self.assertIsNone(submission_form_date("docs/20261340_X.xlsx"))
+
+    def test_download_single_submission_form(self):
+        self.login()
+        response = self.client.get(
+            "/api/requests/download_submission_forms/?forms=relacs"
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertIn("attachment", response["Content-Disposition"])
+        self.assertIn(
+            "20260727_RELACS_submission_form.xlsx", response["Content-Disposition"]
+        )
+        self.assertGreater(len(b"".join(response.streaming_content)), 0)
+
+    def test_download_several_submission_forms_as_zip(self):
+        self.login()
+        response = self.client.get(
+            "/api/requests/download_submission_forms/?forms=relacs,s1"
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertIn("submission_forms.zip", response["Content-Disposition"])
+        with zipfile.ZipFile(io.BytesIO(b"".join(response.streaming_content))) as zf:
+            self.assertEqual(
+                sorted(zf.namelist()),
+                [
+                    "20260727_RELACS_submission_form.xlsx",
+                    "20261112_Formblatt_S1_GMO.docx",
+                ],
+            )
+
+    def test_download_submission_forms_rejects_bad_input(self):
+        self.login()
+        base = "/api/requests/download_submission_forms/"
+        self.assertEqual(self.client.get(base).status_code, 400)
+        self.assertEqual(self.client.get(base + "?forms=nope").status_code, 404)
+        self.assertEqual(self.client.get(base + "?forms=relacs,../x").status_code, 404)
 
     def test_display_date_precedence(self):
         """submission > approval > creation (same as the Date column)."""
