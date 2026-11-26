@@ -1,47 +1,48 @@
 """Documents offered in the "Submission forms" checklist of the Add Request dialog.
 
-File naming rule (enforced by tests and by the `add_submission_form`
-management command): `YYYYMMDD_Name_with_underscores.ext`, in
-backend/static/docs/. The date is the version date; it is shown in the
+The registry is backend/static/docs/forms.json: {id: {label, file,
+for_libraries}}. Do not edit it or the files next to it by hand; use
+
+    python manage.py publish_submission_form "<path>" --replace <id> [--date YYYYMMDD]
+    python manage.py publish_submission_form "<path>" --new <id> --label "..." [--date YYYYMMDD]
+
+File naming rule (enforced by the command and by tests):
+`YYYYMMDD_Name_with_underscores.ext`. The date is the version date, shown in the
 checklist so users can tell old templates from current ones.
-
-To add or update a form, run (from backend/):
-
-    python manage.py add_submission_form "path/to/My form.xlsx" --date 20261125
-
-It cleans the name, copies the file into backend/static/docs/ and prints the
-SUBMISSION_FORMS line to add below. When publishing a new version of an
-existing form, point the entry at the new file and delete the old file.
 """
 
+import json
 import re
 from datetime import datetime
 from os.path import basename
+from pathlib import Path
+
+from django.conf import settings
 
 DOCS_DIR = "docs"
+REGISTRY_NAME = "forms.json"
 
-SUBMISSION_FORMS = {
-    "guidelines": (
-        "Submission guidelines 2026",
-        "docs/20261125_Submission_guidelines_2026.pdf",
-    ),
-    "s1": ("Formblatt S1 (GMO)", "docs/20261112_Formblatt_S1_GMO.docx"),
-    "relacs": (
-        "RELACS submission form",
-        "docs/20260727_RELACS_submission_form.xlsx",
-    ),
-    "cut_and_tag": (
-        "Cut&Tag submission form",
-        "docs/20261125_Cut&Tag_submission_form.xlsx",
-    ),
-    "gem_x": (
-        "GEM-X Universal 3' v4 4-plex OCM submission form",
-        "docs/20261125_GEM-X_Universal_3_v4_4-plex_OCM_submission_form.xlsx",
-    ),
-}
 
-# Forms also offered when the dialog is in "Libraries" mode (not tied to samples).
-LIBRARY_FORM_IDS = {"guidelines"}
+def docs_path():
+    return Path(settings.BASE_DIR) / "static" / DOCS_DIR
+
+
+def load_submission_forms():
+    """Registry as {id: {"label", "file", "for_libraries"}} (ordered as in the file)."""
+    with open(docs_path() / REGISTRY_NAME, encoding="utf-8") as fh:
+        return json.load(fh)
+
+
+def save_submission_forms(forms):
+    with open(docs_path() / REGISTRY_NAME, "w", encoding="utf-8") as fh:
+        json.dump(forms, fh, indent=2, ensure_ascii=False)
+        fh.write("\n")
+
+
+def submission_form_static_path(form):
+    """Path relative to the static root, as `find_static` expects."""
+    return f"{DOCS_DIR}/{form['file']}"
+
 
 # A form whose version date is at most this many days old gets a "New!" badge.
 SUBMISSION_FORM_NEW_DAYS = 15
@@ -67,16 +68,21 @@ def submission_form_is_new(form_date, today):
     )
 
 
-def submission_form_entry(form_id, label, path, today):
-    form_date = submission_form_date(path)
+def submission_form_entry(form_id, form, today):
+    form_date = submission_form_date(form["file"])
     return {
         "id": form_id,
-        "label": label,
-        "filename": basename(path),
+        "label": form["label"],
+        "filename": form["file"],
         "date": form_date.isoformat() if form_date else None,
         "is_new": submission_form_is_new(form_date, today),
-        "for_libraries": form_id in LIBRARY_FORM_IDS,
+        "for_libraries": form["for_libraries"],
     }
+
+
+def name_without_date(filename):
+    """`20261125_Foo_bar.pdf` -> `foo_bar.pdf`, for duplicate detection."""
+    return _DATE_PREFIX.sub("", basename(filename), count=1).lower()
 
 
 def normalize_submission_form_name(filename, date):

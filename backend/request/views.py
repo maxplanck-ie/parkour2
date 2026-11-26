@@ -49,7 +49,11 @@ from rest_framework.response import Response
 from .models import DEFAULT_FILE_TYPE, FileRequest, Request, is_valid_file_type
 from .resources import LibrariesResource, SamplesResource
 from .serializers import RequestFileSerializer, RequestSerializer
-from .submission_forms import SUBMISSION_FORMS, submission_form_entry
+from .submission_forms import (
+    load_submission_forms,
+    submission_form_entry,
+    submission_form_static_path,
+)
 
 User = get_user_model()
 Library = apps.get_model("library", "Library")
@@ -645,8 +649,8 @@ class RequestViewSet(viewsets.ModelViewSet):
         """List the downloadable submission documents."""
         return Response(
             [
-                submission_form_entry(form_id, label, path, timezone.localdate())
-                for form_id, (label, path) in SUBMISSION_FORMS.items()
+                submission_form_entry(form_id, form, timezone.localdate())
+                for form_id, form in load_submission_forms().items()
             ]
         )
 
@@ -661,13 +665,14 @@ class RequestViewSet(viewsets.ModelViewSet):
             return JsonResponse(
                 {"success": False, "error": "No forms selected."}, status=400
             )
-        unknown = [f for f in form_ids if f not in SUBMISSION_FORMS]
+        forms = load_submission_forms()
+        unknown = [f for f in form_ids if f not in forms]
         if unknown:
             raise Http404("Unknown submission form: " + ", ".join(unknown))
 
         file_paths = []
         for form_id in dict.fromkeys(form_ids):
-            file_path = find_static(SUBMISSION_FORMS[form_id][1])
+            file_path = find_static(submission_form_static_path(forms[form_id]))
             if not file_path:
                 raise Http404(f"Submission form file not found: {form_id}")
             file_paths.append(file_path)

@@ -109,21 +109,27 @@ Prevent recurring regressions. No deviate without explicit ask.
 ## Submission forms (Add Request dialog)
 
 - Downloadable documents shown in the "Submission forms" checklist live in
-  `backend/static/docs/` and are listed in `SUBMISSION_FORMS` in
-  `backend/request/submission_forms.py`.
+  `backend/static/docs/`. The registry is `backend/static/docs/forms.json`
+  (`{id: {label, file, for_libraries}}`).
 - File naming is mandatory: `YYYYMMDD_Name_with_underscores.ext` (version date
   first, no spaces, no other special characters). The date is shown to users and
   drives the "New!" badge (15 days). Tests fail on a registered file that breaks
   the rule, and on a dated file in `docs/` that is not registered.
-- NEVER rename or copy such a file by hand. When the user hands over a new or
-  updated form, run from `backend/`
-  `python manage.py add_submission_form "<path>" --date YYYYMMDD` (date defaults
-  to today; use the date the user gives, or ask). It cleans the name, copies the
-  file into `docs/` and prints the `SUBMISSION_FORMS` line to add. Then add that
-  line (id, label, path), add a changelog bullet, and run
+- NEVER rename, copy, delete or register such a file by hand. Use, from `backend/`:
+  - `python manage.py publish_submission_form "<path>" --replace <id> [--date YYYYMMDD]`
+    for a new version of an existing form. It copies the file under the right
+    name, repoints the entry (id and label kept; `--label` overrides) and deletes
+    the old file.
+  - `python manage.py publish_submission_form "<path>" --new <id> --label "..." [--for-libraries]`
+    for a form that does not exist yet. It refuses a taken id and a file whose
+    name (minus the date) matches an existing form.
+  - The date defaults to today; use the date the user gives.
+- Replace or new? If the user does not say "replace X" or "new", ASK which one,
+  listing the current ids and labels (`jq -r 'to_entries[] | "\(.key): \(.value.label)"' backend/static/docs/forms.json`).
+  Never guess from file names: a 2027 guideline is a replacement of the 2026 one
+  even though the names differ. Do not add a second entry for the same document.
+- After publishing: add a changelog bullet and run
   `python manage.py test request.tests.TestRequestDownloadEndpoints`.
-- A new version of an existing form: point the existing entry at the new file and
-  delete the old file (`git rm`). Keep the entry id stable.
 
 ## Commands
 

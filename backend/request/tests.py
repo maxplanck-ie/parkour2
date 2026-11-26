@@ -2,9 +2,11 @@ import io
 import json
 import os
 import re
+import shutil
 import tempfile
 import zipfile
 from datetime import date, timedelta
+from pathlib import Path
 from unittest.mock import patch
 
 from common.models import Organization, PrincipalInvestigator
@@ -25,10 +27,11 @@ from sample.tests import create_sample
 
 from .models import FileRequest, Request, is_valid_file_type
 from .submission_forms import (
-    SUBMISSION_FORMS,
+    load_submission_forms,
     normalize_submission_form_name,
     submission_form_date,
     submission_form_is_new,
+    submission_form_static_path,
 )
 
 User = get_user_model()
@@ -1491,10 +1494,11 @@ class TestRequestDownloadEndpoints(BaseTestCase):
         self.assertEqual(response.status_code, 200)
         ids = [form["id"] for form in response.json()]
         self.assertIn("relacs", ids)
-        self.assertEqual(len(ids), len(SUBMISSION_FORMS))
+        self.assertEqual(len(ids), len(load_submission_forms()))
 
     def test_every_listed_submission_form_file_follows_naming_rule(self):
-        for form_id, (_label, path) in SUBMISSION_FORMS.items():
+        for form_id, form in load_submission_forms().items():
+            path = submission_form_static_path(form)
             self.assertTrue(find_static(path), f"{form_id}: {path} not found")
             name = os.path.basename(path)
             self.assertIsNotNone(
@@ -1508,9 +1512,90 @@ class TestRequestDownloadEndpoints(BaseTestCase):
     def test_no_unregistered_dated_files_in_docs(self):
         """A dated file nobody lists is an old version that should be deleted."""
         docs = os.path.join(settings.BASE_DIR, "static", "docs")
-        registered = {os.path.basename(p) for _l, p in SUBMISSION_FORMS.values()}
+        registered = {f["file"] for f in load_submission_forms().values()}
         dated = {f for f in os.listdir(docs) if submission_form_date(f)}
         self.assertEqual(dated - registered, set())
+
+    def _run_publish(self, docs, *args):
+        from django.core.management import call_command
+
+        with patch("request.submission_forms.docs_path", return_value=docs):
+            call_command("publish_submission_form", *args, stdout=io.StringIO())
+
+    def _docs_copy(self):
+        src = Path(settings.BASE_DIR) / "static" / "docs"
+        tmp = Path(tempfile.mkdtemp())
+        self.addCleanup(shutil.rmtree, tmp, True)
+        for f in src.glob("2*_*"):
+            shutil.copy(f, tmp / f.name)
+        shutil.copy(src / "forms.json", tmp / "forms.json")
+        return tmp
+
+    def test_publish_replace_swaps_file_and_keeps_id_and_label(self):
+        docs = self._docs_copy()
+        upload = docs.parent / "Submission guidelines 2027.pdf"
+        upload.write_bytes(b"new")
+        self.addCleanup(upload.unlink)
+        self._run_publish(
+            docs, str(upload), "--replace", "guidelines", "--date", "20270105"
+        )
+        with patch("request.submission_forms.docs_path", return_value=docs):
+            forms = load_submission_forms()
+        self.assertEqual(
+            forms["guidelines"]["file"], "20270105_Submission_guidelines_2027.pdf"
+        )
+        self.assertEqual(forms["guidelines"]["label"], "Submission guidelines 2026")
+        self.assertTrue((docs / "20270105_Submission_guidelines_2027.pdf").exists())
+        self.assertFalse((docs / "20261125_Submission_guidelines_2026.pdf").exists())
+        self.assertEqual(len(forms), 5)
+
+    def test_publish_new_adds_entry_but_refuses_a_twin_or_taken_id(self):
+        from django.core.management.base import CommandError
+
+        docs = self._docs_copy()
+        upload = docs.parent / "Brand new form.xlsx"
+        upload.write_bytes(b"x")
+        self.addCleanup(upload.unlink)
+        self._run_publish(
+            docs,
+            str(upload),
+            "--new",
+            "brand_new",
+            "--label",
+            "Brand new",
+            "--date",
+            "20270105",
+        )
+        with patch("request.submission_forms.docs_path", return_value=docs):
+            self.assertEqual(
+                load_submission_forms()["brand_new"]["file"],
+                "20270105_Brand_new_form.xlsx",
+            )
+        twin = docs.parent / "RELACS submission form.xlsx"
+        twin.write_bytes(b"x")
+        self.addCleanup(twin.unlink)
+        with self.assertRaisesRegex(CommandError, "--replace relacs"):
+            self._run_publish(
+                docs,
+                str(twin),
+                "--new",
+                "relacs2",
+                "--label",
+                "R",
+                "--date",
+                "20270106",
+            )
+        with self.assertRaisesRegex(CommandError, "exists"):
+            self._run_publish(
+                docs,
+                str(upload),
+                "--new",
+                "relacs",
+                "--label",
+                "R",
+                "--date",
+                "20270107",
+            )
 
     def test_normalize_submission_form_name(self):
         day = date(2026, 11, 25)

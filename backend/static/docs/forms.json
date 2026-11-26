@@ -1,0 +1,27 @@
+{
+  "guidelines": {
+    "label": "Submission guidelines 2026",
+    "file": "20261125_Submission_guidelines_2026.pdf",
+    "for_libraries": true
+  },
+  "s1": {
+    "label": "Formblatt S1 (GMO)",
+    "file": "20261112_Formblatt_S1_GMO.docx",
+    "for_libraries": false
+  },
+  "relacs": {
+    "label": "RELACS submission form",
+    "file": "20260727_RELACS_submission_form.xlsx",
+    "for_libraries": false
+  },
+  "cut_and_tag": {
+    "label": "Cut&Tag submission form",
+    "file": "20261125_Cut&Tag_submission_form.xlsx",
+    "for_libraries": false
+  },
+  "gem_x": {
+    "label": "GEM-X Universal 3' v4 4-plex OCM submission form",
+    "file": "20261125_GEM-X_Universal_3_v4_4-plex_OCM_submission_form.xlsx",
+    "for_libraries": false
+  }
+}
