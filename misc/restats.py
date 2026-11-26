@@ -287,12 +287,19 @@ def getField(entry, field):
 
 
 def setField(entry, field, value):
+    """Set the field; None removes it (a missing key shows empty in Parkour)."""
     if not field.startswith(DEMUX + "/"):
-        entry[field] = value
+        if value is None:
+            entry.pop(field, None)
+        else:
+            entry[field] = value
         return
     _, name, f = field.split("/", 2)
     samples = {k: dict(v) for k, v in (entry.get(DEMUX) or {}).items()}
-    samples.setdefault(name, {})[f] = value
+    if value is None:
+        samples.get(name, {}).pop(f, None)
+    else:
+        samples.setdefault(name, {})[f] = value
     entry[DEMUX] = samples
 
 
@@ -1061,12 +1068,17 @@ def push(args):
     if args.apply and isProd(args.url):
         sys.exit("refusing --apply against production; use --url dev or test")
     db = sqlite3.connect(args.db)
+    done = "NOT NULL" if args.revert else "NULL"
     rows = db.execute(
         "SELECT id, flowcell_id, kind, key, field, old_value, new_value, run_date "
-        'FROM mismatches WHERE "update" = 1 AND pushed_at IS NULL'
+        f'FROM mismatches WHERE "update" = 1 AND pushed_at IS {done}'
     ).fetchall()
     if not rows:
-        sys.exit("nothing to push: no rows with update=1 that are not yet pushed")
+        sys.exit(
+            "nothing to revert: no pushed rows"
+            if args.revert
+            else "nothing to push: no rows with update=1 that are not yet pushed"
+        )
     s = session(args)
     dates = [datetime.datetime.fromisoformat(r[7]) for r in rows]
     stored = {
@@ -1087,7 +1099,9 @@ def push(args):
         entries = stored[kind].get(fcid, {})
         out, ids = {}, []
         for rid, _, _, key, field, old, new, _ in rs:
-            if old not in (None, "") and not args.overwrite:
+            if args.revert:  # undo: expect the pushed value, restore the old one
+                old, new = new, old
+            if old not in (None, "") and not args.overwrite and not args.revert:
                 print(
                     f"  SKIP {fcid} {key} {field}: Parkour has {old}, file says {new}; "
                     "pass --overwrite to replace a stored value"
@@ -1109,7 +1123,8 @@ def push(args):
             if differs(getField(e, field), old, 1e-9, field):
                 print(
                     f"  SKIP {fcid} {key} {field}: Parkour now {getField(e, field)}, "
-                    f"was {old} at validation; re-run validate"
+                    f"expected {old}; changed since the "
+                    f"{'push' if args.revert else 'validate'}, not touched"
                 )
                 continue
             if key not in out:
@@ -1130,7 +1145,8 @@ def push(args):
         )
         if r.status_code == 200:
             db.executemany(
-                "UPDATE mismatches SET pushed_at=? WHERE id=?", [(now, i) for i in ids]
+                "UPDATE mismatches SET pushed_at=? WHERE id=?",
+                [(None if args.revert else now, i) for i in ids],
             )
             db.commit()
         else:
@@ -1237,6 +1253,11 @@ def main():
         "--overwrite",
         action="store_true",
         help="also replace values Parkour already stores (default: only fill empty ones)",
+    )
+    p.add_argument(
+        "--revert",
+        action="store_true",
+        help="undo pushed rows: restore old_value where Parkour still holds new_value",
     )
     p = sub.add_parser("compare", parents=[parkour], help="read-only stored vs parsed")
     p.add_argument("--tol", type=float, default=1e-3, help="abs. tolerance")

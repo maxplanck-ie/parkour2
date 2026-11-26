@@ -2,7 +2,7 @@
 
 Log of how `misc/restats_backfill.sqlite` was produced, and what is in it. Tool docs: docstring of `misc/restats.py`.
 
-Status: all three runs done and merged on 2026-11-13. Nothing reviewed (`"update"` is NULL on every row) and nothing pushed.
+Status (2026-11-26): the backfill runs are done and merged. Rows were scoped per "Push policy" below and pushed to `parkour-test` on 2026-11-25 (745 POSTs, all 200; 79,383 rows). `parkour-dev` and production are not pushed. The values on `parkour-test` were not yet checked in the UI. `push --revert` has only been tested against a stub, never against a real Parkour.
 
 ## Choosing the deployment
 Every subcommand that talks to Parkour (`validate`, `push`, `compare`) has a required `--url`. It takes a full URL or a short name:
@@ -184,12 +184,55 @@ Leave alone (the file is probably wrong):
 
 Safeguards: a library with two different values across analysis directories is a CONFLICT and is never pushed. `push` skips a row whose Parkour value is no longer the recorded `old_value`, so a manual correction made after the scan is not overwritten. Nothing is posted without `--apply`, and prod is refused. Keep a copy of the sqlite: `old_value` is the undo record.
 
+### Mark the rows (scoping SQL)
+`validate` writes every difference with `"update"` NULL. Nothing is pushed until a row has `"update" = 1`. Work on a copy of the sqlite and run this once:
+
+```sql
+UPDATE mismatches SET "update" = 0;
+UPDATE mismatches SET "update" = 1
+WHERE pushed_at IS NULL AND (
+  (old_value IS NULL OR old_value = '')                                   -- fill: Parkour is empty (78,523 rows)
+  OR (field = 'optical_duplicates' AND old_value <> '' AND CAST(old_value AS REAL) = 0)   -- 844 placeholder zeros
+  OR (flowcell_id = 'HH72VDRX7' AND field IN ('reads_pf_sequenced', 'optical_duplicates') AND old_value <> '')  -- 16 stale rows
+);
+```
+
+Expected on the 2026-11-17 database: 79,383 rows with `"update" = 1` (78,523 fills plus 860 overwrites), 346 with 0. Check with `SELECT "update", COUNT(*) FROM mismatches GROUP BY 1;`. `old_value` is TEXT `''` on 136 rows (`mapped_reads`, `insert_size`) and NULL elsewhere when empty. Both count as empty.
+
+### Which sqlite state you have
+`SELECT COUNT(*), SUM(pushed_at IS NOT NULL) FROM mismatches WHERE "update" = 1;`
+- `pushed_at` NULL on all rows: not pushed. `push` will post them.
+- `pushed_at` set: already pushed. `push` posts nothing. To push to another host (for example dev after test), copy the file and run `UPDATE mismatches SET pushed_at = NULL;` on the copy first.
+
+### Push
+Dry run first, then apply. `--user` is your Parkour user, `PARKOUR_PASSWORD` must be set in the environment (never put it in a file in the repo). `--url` takes `dev`, `test` or a full URL; `prod` is refused.
+```
+cd misc
+uv run --with requests --with pandas --with pyyaml python restats.py push --url dev  --user <user> --db <copy.sqlite> --overwrite          # plan only
+uv run --with requests --with pandas --with pyyaml python restats.py push --url dev  --user <user> --db <copy.sqlite> --overwrite --apply  # posts
+```
+Without `--overwrite` the 860 overwrite rows are skipped with `SKIP` lines. The plan of the 2026-11-25 dry run: 78,523 fills, 860 overwrites, 0 skips. The run takes about 12 minutes for 745 flowcells (one POST each) and writes `pushed_at` per row.
+
+### Undo (`push --revert`)
+`push --revert` takes the rows with `pushed_at` set and writes `old_value` back into Parkour. Dry run by default, `--apply` posts, same `--url` and `--user`. It clears `pushed_at` on the rows it restored, so a later `push` posts them again.
+```
+cd misc
+uv run --with requests --with pandas --with pyyaml python restats.py push --revert --url test --user <user> --db <the sqlite used for the push>          # plan only
+uv run --with requests --with pandas --with pyyaml python restats.py push --revert --url test --user <user> --db <the sqlite used for the push> --apply  # posts
+```
+Rules and limits:
+- Use the same sqlite that did the push. A copy made before the push has no `pushed_at`, so there is nothing to revert.
+- A row is restored only when Parkour still holds `new_value`. If someone changed it since the push, it is skipped with a `SKIP ... changed since the push` line and left alone.
+- Fills go back to empty. `old_value` NULL removes the key, `old_value` `''` writes `''`. A flowcell that had no entry gets a stub entry holding only the barcode from the push; revert leaves that stub. [INFERENCE] Parkour shows it as empty; not checked in the UI.
+- Caveat on `old_value`: it is the value Parkour held on the host that `validate` ran against (`parkour-dev` for the 2026-11-17 run). The 2026-11-25 push went to `parkour-test`, whose stored values may have differed. `--revert` therefore restores the dev-era value, which may not be what test held before. Compare a few libraries first. Fills are safe either way (empty before, empty after).
+- Revert only the rows you pushed. Limit with `UPDATE mismatches SET "update" = 0 WHERE ...` on a copy before running it.
+
 ## Known quirks
 - CONFLICT rows: a barcode with two different values across run dirs of the same flowcell is skipped, not guessed. Example: `HLCH3DRX7 26L002823 mapped_reads [55.66, 55.68]`.
 - `lane stats failed` lines for old runs: the Illumina interop files are gone. Lane (matrix) rows are missing for those flowcells. Sequence rows are unaffected.
 - `not in Parkour (no sequence stats stored)`: flowcell has no entry on dev; nothing to compare, nothing to push.
 
 ## Next
+- Open 25L010585 on `parkour-test` and confirm `reads_pf_sequenced` is 2,747,558, then decide on dev.
+- Held groups (`HKTWFDRX7`, the `HTM23DRX5` RNA block) need a decision before they get `"update" = 1`; see "Push policy".
 - Compare numbers now on production with the values that would be pushed. Production is read-only for this: GET only.
-- Review rows in the sqlite, mark `"update"`, then push to parkour-dev only, after confirmation.
-- `push` fills empty values only. A row whose Parkour value is already stored is skipped with a `SKIP` line. Pass `--overwrite` to replace stored values, for example a number from a partial run that the file now contradicts. Without `--apply` nothing is posted either way.
