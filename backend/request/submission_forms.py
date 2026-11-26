@@ -40,6 +40,9 @@ SUBMISSION_FORMS = {
     ),
 }
 
+# Forms also offered when the dialog is in "Libraries" mode (not tied to samples).
+LIBRARY_FORM_IDS = {"guidelines"}
+
 # A form whose version date is at most this many days old gets a "New!" badge.
 SUBMISSION_FORM_NEW_DAYS = 15
 
@@ -72,6 +75,7 @@ def submission_form_entry(form_id, label, path, today):
         "filename": basename(path),
         "date": form_date.isoformat() if form_date else None,
         "is_new": submission_form_is_new(form_date, today),
+        "for_libraries": form_id in LIBRARY_FORM_IDS,
     }
 
 

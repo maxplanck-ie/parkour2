@@ -1537,6 +1537,9 @@ class TestRequestDownloadEndpoints(BaseTestCase):
         }
         self.assertEqual(forms["relacs"]["date"], "2026-07-27")
         self.assertEqual(
+            {i for i, f in forms.items() if f["for_libraries"]}, {"guidelines"}
+        )
+        self.assertEqual(
             forms["relacs"]["filename"], "20260727_RELACS_submission_form.xlsx"
         )
         self.assertIsInstance(forms["relacs"]["is_new"], bool)

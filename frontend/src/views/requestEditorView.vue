@@ -597,13 +597,13 @@
               :class="{ collapsed: isFormPanelCollapsed }"
             >
               <div
-                v-if="requestEditorMode === 'sample' && !isEditMode"
+                v-if="!isEditMode"
                 class="request-form-actions"
               >
                 <div class="request-form-actions-title">Submission forms</div>
                 <div class="submission-forms">
                   <p class="submission-forms-hint">
-                    Always use the latest version of a form (check the date).
+                    {{ submissionFormsHint }}
                   </p>
                   <p v-if="submissionFormsError" class="submission-forms-empty">
                     Could not load the forms.
@@ -614,7 +614,7 @@
                         type="checkbox"
                         :checked="allSubmissionFormsSelected"
                         :indeterminate.prop="someSubmissionFormsSelected"
-                        :disabled="!submissionForms.length"
+                        :disabled="!visibleSubmissionForms.length"
                         @change="
                           toggleAllSubmissionForms($event.target.checked)
                         "
@@ -622,7 +622,7 @@
                       <span>Select all</span>
                     </label>
                     <label
-                      v-for="form in submissionForms"
+                      v-for="form in visibleSubmissionForms"
                       :key="form.id"
                       class="submission-forms-item"
                     >
@@ -631,14 +631,18 @@
                         type="checkbox"
                         :value="form.id"
                       />
-                      <span class="submission-forms-label">{{
-                        form.label
-                      }}</span>
-                      <span v-if="form.date" class="submission-forms-date">
-                        {{ form.date }}
-                      </span>
-                      <span v-if="form.is_new" class="submission-forms-new">
-                        New!
+                      <span class="submission-forms-text">
+                        <span class="submission-forms-label">{{
+                          form.label
+                        }}</span>
+                        <span class="submission-forms-meta">
+                          <span v-if="form.date" class="submission-forms-date">
+                            {{ form.date }}
+                          </span>
+                          <span v-if="form.is_new" class="submission-forms-new">
+                            New!
+                          </span>
+                        </span>
                       </span>
                     </label>
                   </template>
@@ -1570,6 +1574,9 @@ export default {
     };
   },
   watch: {
+    requestEditorMode() {
+      this.selectedSubmissionForms = [];
+    },
     show(newVal) {
       if (newVal) {
         if (this.isEditMode) {
@@ -1693,10 +1700,20 @@ export default {
         current.some((id, index) => id !== base[index])
       );
     },
+    visibleSubmissionForms() {
+      return this.requestEditorMode === "library"
+        ? this.submissionForms.filter((form) => form.for_libraries)
+        : this.submissionForms;
+    },
+    submissionFormsHint() {
+      return this.requestEditorMode === "library"
+        ? "Read the submission guidelines before you submit."
+        : "Download the latest form for your experiment type, fill it in, and upload it to your request.";
+    },
     allSubmissionFormsSelected() {
       return (
-        this.submissionForms.length > 0 &&
-        this.selectedSubmissionForms.length === this.submissionForms.length
+        this.visibleSubmissionForms.length > 0 &&
+        this.selectedSubmissionForms.length === this.visibleSubmissionForms.length
       );
     },
     someSubmissionFormsSelected() {
@@ -4377,7 +4394,7 @@ export default {
     },
     toggleAllSubmissionForms(checked) {
       this.selectedSubmissionForms = checked
-        ? this.submissionForms.map((form) => form.id)
+        ? this.visibleSubmissionForms.map((form) => form.id)
         : [];
     },
     async downloadSubmissionForms() {
@@ -4390,7 +4407,7 @@ export default {
         );
         const single = ids.length === 1;
         const filename = single
-          ? this.submissionForms.find((form) => form.id === ids[0])?.filename
+          ? this.visibleSubmissionForms.find((form) => form.id === ids[0])?.filename
           : "submission_forms.zip";
         const objectUrl = URL.createObjectURL(response.data);
         const link = document.createElement("a");
@@ -6738,11 +6755,32 @@ export default {
 
 .submission-forms-item {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 8px;
   font-size: 12px;
   line-height: 1.4;
   cursor: pointer;
+}
+
+.submission-forms-item input[type="checkbox"] {
+  flex: 0 0 14px;
+  width: 14px;
+  height: 14px;
+  margin: 2px 0 0;
+}
+
+.submission-forms-text {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.submission-forms-meta {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: 4px;
+  white-space: nowrap;
+  vertical-align: baseline;
 }
 
 .submission-forms-item.select-all {
