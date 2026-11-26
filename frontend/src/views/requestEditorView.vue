@@ -612,7 +612,9 @@
                         :checked="allSubmissionFormsSelected"
                         :indeterminate.prop="someSubmissionFormsSelected"
                         :disabled="!submissionForms.length"
-                        @change="toggleAllSubmissionForms($event.target.checked)"
+                        @change="
+                          toggleAllSubmissionForms($event.target.checked)
+                        "
                       />
                       <span>Select all</span>
                     </label>
