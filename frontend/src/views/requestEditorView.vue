@@ -6766,8 +6766,8 @@ export default {
 .submission-forms-new {
   padding: 0 6px;
   border-radius: 8px;
-  background: #1a7f37;
-  color: #fff;
+  background: var(--app-nav-bg);
+  color: #006c66;
   font-size: 11px;
   font-weight: 700;
   line-height: 1.6;

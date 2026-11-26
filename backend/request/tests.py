@@ -1,13 +1,16 @@
 import io
 import json
+import os
+import re
 import tempfile
 import zipfile
-from datetime import timedelta
+from datetime import date, timedelta
 from unittest.mock import patch
 
 from common.models import Organization, PrincipalInvestigator
 from common.tests import BaseTestCase
 from common.utils import get_random_name
+from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.contrib.staticfiles.finders import find as find_static
 from django.core import mail
@@ -21,10 +24,11 @@ from library.tests import create_library
 from sample.tests import create_sample
 
 from .models import FileRequest, Request, is_valid_file_type
-from .views import (
+from .submission_forms import (
     SUBMISSION_FORMS,
-    _submission_form_date,
-    _submission_form_is_new,
+    normalize_submission_form_name,
+    submission_form_date,
+    submission_form_is_new,
 )
 
 User = get_user_model()
@@ -1489,13 +1493,41 @@ class TestRequestDownloadEndpoints(BaseTestCase):
         self.assertIn("relacs", ids)
         self.assertEqual(len(ids), len(SUBMISSION_FORMS))
 
-    def test_every_listed_submission_form_file_exists_and_is_dated(self):
+    def test_every_listed_submission_form_file_follows_naming_rule(self):
         for form_id, (_label, path) in SUBMISSION_FORMS.items():
             self.assertTrue(find_static(path), f"{form_id}: {path} not found")
+            name = os.path.basename(path)
             self.assertIsNotNone(
-                _submission_form_date(path),
-                f"{form_id}: {path} has no YYYYMMDD_ prefix",
+                submission_form_date(path),
+                f"{form_id}: {name} has no valid YYYYMMDD_ prefix",
             )
+            self.assertIsNone(
+                re.search(r"\s", name), f"{form_id}: {name} contains whitespace"
+            )
+
+    def test_no_unregistered_dated_files_in_docs(self):
+        """A dated file nobody lists is an old version that should be deleted."""
+        docs = os.path.join(settings.BASE_DIR, "static", "docs")
+        registered = {os.path.basename(p) for _l, p in SUBMISSION_FORMS.values()}
+        dated = {f for f in os.listdir(docs) if submission_form_date(f)}
+        self.assertEqual(dated - registered, set())
+
+    def test_normalize_submission_form_name(self):
+        day = date(2026, 11, 25)
+        self.assertEqual(
+            normalize_submission_form_name("My form (v2).XLSX", day),
+            "20261125_My_form_v2.xlsx",
+        )
+        self.assertEqual(
+            normalize_submission_form_name("/x/20200101_Old  name.pdf", day),
+            "20261125_Old_name.pdf",
+        )
+        self.assertEqual(
+            normalize_submission_form_name("Cut&Tag form.xlsx", day),
+            "20261125_Cut&Tag_form.xlsx",
+        )
+        with self.assertRaises(ValueError):
+            normalize_submission_form_name("().xlsx", day)
 
     def test_submission_forms_list_has_dates_and_new_flag(self):
         self.login()
@@ -1510,21 +1542,19 @@ class TestRequestDownloadEndpoints(BaseTestCase):
         self.assertIsInstance(forms["relacs"]["is_new"], bool)
 
     def test_submission_form_is_new_window(self):
-        from datetime import date, timedelta
-
         today = date(2026, 12, 1)
-        self.assertTrue(_submission_form_is_new(today, today))
-        self.assertTrue(_submission_form_is_new(today - timedelta(days=15), today))
-        self.assertFalse(_submission_form_is_new(today - timedelta(days=16), today))
-        self.assertFalse(_submission_form_is_new(today + timedelta(days=1), today))
-        self.assertFalse(_submission_form_is_new(None, today))
+        self.assertTrue(submission_form_is_new(today, today))
+        self.assertTrue(submission_form_is_new(today - timedelta(days=15), today))
+        self.assertFalse(submission_form_is_new(today - timedelta(days=16), today))
+        self.assertFalse(submission_form_is_new(today + timedelta(days=1), today))
+        self.assertFalse(submission_form_is_new(None, today))
 
     def test_submission_form_date_parsing(self):
         self.assertEqual(
-            _submission_form_date("docs/20261125_X.xlsx").isoformat(), "2026-11-25"
+            submission_form_date("docs/20261125_X.xlsx").isoformat(), "2026-11-25"
         )
-        self.assertIsNone(_submission_form_date("docs/X.xlsx"))
-        self.assertIsNone(_submission_form_date("docs/20261340_X.xlsx"))
+        self.assertIsNone(submission_form_date("docs/X.xlsx"))
+        self.assertIsNone(submission_form_date("docs/20261340_X.xlsx"))
 
     def test_download_single_submission_form(self):
         self.login()

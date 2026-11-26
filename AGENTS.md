@@ -106,6 +106,25 @@ Prevent recurring regressions. No deviate without explicit ask.
   fragment>" -i` or `git log origin/develop --oneline -S"<code fragment>" --
   <file>` — then correct the bullet, don't just drop the reference.
 
+## Submission forms (Add Request dialog)
+
+- Downloadable documents shown in the "Submission forms" checklist live in
+  `backend/static/docs/` and are listed in `SUBMISSION_FORMS` in
+  `backend/request/submission_forms.py`.
+- File naming is mandatory: `YYYYMMDD_Name_with_underscores.ext` (version date
+  first, no spaces, no other special characters). The date is shown to users and
+  drives the "New!" badge (15 days). Tests fail on a registered file that breaks
+  the rule, and on a dated file in `docs/` that is not registered.
+- NEVER rename or copy such a file by hand. When the user hands over a new or
+  updated form, run from `backend/`
+  `python manage.py add_submission_form "<path>" --date YYYYMMDD` (date defaults
+  to today; use the date the user gives, or ask). It cleans the name, copies the
+  file into `docs/` and prints the `SUBMISSION_FORMS` line to add. Then add that
+  line (id, label, path), add a changelog bullet, and run
+  `python manage.py test request.tests.TestRequestDownloadEndpoints`.
+- A new version of an existing form: point the existing entry at the new file and
+  delete the old file (`git rm`). Keep the entry id stable.
+
 ## Commands
 
 - Run backend tests: Makefile rule `djtest`.
