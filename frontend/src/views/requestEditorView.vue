@@ -596,10 +596,7 @@
               class="request-form-panel"
               :class="{ collapsed: isFormPanelCollapsed }"
             >
-              <div
-                v-if="!isEditMode"
-                class="request-form-actions"
-              >
+              <div v-if="!isEditMode" class="request-form-actions">
                 <div class="request-form-actions-title">Submission forms</div>
                 <div class="submission-forms">
                   <p class="submission-forms-hint">
@@ -1713,7 +1710,8 @@ export default {
     allSubmissionFormsSelected() {
       return (
         this.visibleSubmissionForms.length > 0 &&
-        this.selectedSubmissionForms.length === this.visibleSubmissionForms.length
+        this.selectedSubmissionForms.length ===
+          this.visibleSubmissionForms.length
       );
     },
     someSubmissionFormsSelected() {
@@ -4407,7 +4405,8 @@ export default {
         );
         const single = ids.length === 1;
         const filename = single
-          ? this.visibleSubmissionForms.find((form) => form.id === ids[0])?.filename
+          ? this.visibleSubmissionForms.find((form) => form.id === ids[0])
+              ?.filename
           : "submission_forms.zip";
         const objectUrl = URL.createObjectURL(response.data);
         const link = document.createElement("a");
