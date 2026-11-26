@@ -100,6 +100,17 @@
 
         <div class="button-popup-wrapper">
           <button
+            id="toggleAllFlowcellsButton"
+            class="header-button"
+            @click="toggleAllFlowcells"
+          >
+            <font-awesome-icon icon="fa-solid fa-folder-open" />
+            <span>{{ allFlowcellsOpen ? "Collapse all" : "Expand all" }}</span>
+          </button>
+        </div>
+
+        <div class="button-popup-wrapper">
+          <button
             id="toggleSelectColumnsButton"
             class="header-button"
             @click="toggleSelectColumns"
@@ -526,6 +537,7 @@ export default {
   },
   setup() {
     const tableRef = ref(null);
+    const allFlowcellsOpen = ref(false);
     const loading = ref(true);
     const fakeLoading = ref(false);
     const rows = ref([]);
@@ -767,6 +779,16 @@ export default {
     function toggleAdvancedFilters() {
       showAdvancedFilters.value = !showAdvancedFilters.value;
       if (showAdvancedFilters.value) showSelectColumns.value = false;
+    }
+
+    function toggleAllFlowcells() {
+      const table = tableRef.value?.getTable?.();
+      if (!table) return;
+      const open = !allFlowcellsOpen.value;
+      table.blockRedraw();
+      table.getGroups().forEach((group) => (open ? group.show() : group.hide()));
+      table.restoreRedraw();
+      allFlowcellsOpen.value = open;
     }
 
     function toggleSelectColumns() {
@@ -1079,6 +1101,8 @@ export default {
       columnVisibility,
       toggleAdvancedFilters,
       toggleSelectColumns,
+      allFlowcellsOpen,
+      toggleAllFlowcells,
       resetAdvancedFilters,
       handleDateChange,
       handleExportClick,
