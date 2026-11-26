@@ -2,7 +2,7 @@
 
 Unreleased
 ==========
-- Request editor: the "Sample Forms" buttons in the Add Request dialog (Samples) are now a "Submission forms" checklist with a Download button; tick one form to download it, or several to get them in one zip. New in the list: the 2026 submission guidelines (PDF), and the Cut&Tag and GEM-X Universal 3' v4 4-plex OCM submission forms.
+- Request editor: the "Sample Forms" buttons in the Add Request dialog (Samples) are now a "Submission forms" checklist with a Download button; tick one form to download it, or several to get them in one zip. New in the list: the 2026 submission guidelines (PDF), and the Cut&Tag and GEM-X Universal 3' v4 4-plex OCM submission forms. (PR #404)
 - Top navigation bar: it now switches between full-text buttons and icon-only buttons as the window is resized, instead of only when the page loads. Icon-only buttons show a tooltip and have an accessible name. New browser tests cover wide, narrow, resize and reload cases. (PR #402)
 - Request approval: the approval link no longer approves a request that was never sent to the PI for approval, or when the token is missing from the link. (PR #396)
 - Sequences Statistics: the Excel export now leaves out RELACS libraries, which hold one value per demultiplexed sample for some metrics, and shows a warning with the number of skipped rows instead of exporting them with empty cells. (PR #392)
