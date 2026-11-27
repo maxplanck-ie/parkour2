@@ -1,5 +1,9 @@
 > Versioning is by dates (in `yy.mm.dd` format).
 
+Unreleased
+==========
+- Run Statistics: a new "Expand all" button opens every flowcell at once; the same button collapses them again.
+
 26.11.26
 ========
 - Request editor: the "Sample Forms" buttons in the Add Request dialog are now a "Submission forms" checklist with a Download button; tick one form to download it, or several to get them in one zip. Every form shows its version date (also part of the file name) so outdated templates are easy to spot, and forms from the last 15 days are marked "New!". In Libraries mode the dialog offers the submission guidelines. New in the list: the 2026 submission guidelines (PDF), and the Cut&Tag and GEM-X Universal 3' v4 4-plex OCM submission forms. (PR #404)
