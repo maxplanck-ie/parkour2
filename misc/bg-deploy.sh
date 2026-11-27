@@ -203,6 +203,16 @@ cmd_deploy() {
 	fi
 
 	log "backup before touching anything"
+
+	# env parity: the idle color is created with compose env_file misc/parkour.env, which may be a
+	# template on dev hosts (the running legacy container holds the real secrets). Sessions would
+	# break across the flip if SECRET_KEY differs, so compare against the live container, not the file.
+	local key live_val idle_val
+	for key in SECRET_KEY DATABASE_URL; do
+		live_val=$(docker exec "$old" sh -c "printf %s \"\$$key\"")
+		idle_val=$(docker exec "$idle" sh -c "printf %s \"\$$key\"")
+		[[ $live_val == "$idle_val" ]] || die "$key differs between $old and $idle (parkour.env is stale?): sessions would be invalidated on the flip"
+	done
 	make --no-print-directory save-postgres
 	docker exec "$RSNAPSHOT" rsnapshot halfy || log "WARN: rsnapshot halfy failed"
 

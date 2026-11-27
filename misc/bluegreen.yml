@@ -31,7 +31,7 @@ x-django: &django
   extra_hosts:
     - "host.docker.internal:host-gateway"
   healthcheck:
-    test: ["CMD", "python", "manage.py", "check", "--database", "default"]
+    test: ["CMD", "python", "manage.py", "check", "--deploy", "--database", "default"]
     interval: 30s
     timeout: 25s
     retries: 3
