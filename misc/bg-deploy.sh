@@ -249,7 +249,7 @@ cmd_rollback() {
 	local cur prev
 	cur=$(active_container)
 	prev=$(idle_of "$cur")
-	exists "$prev" && [[ $prev != "$LEGACY" ]] || die "no previous color ($prev) to roll back to"
+	if ! exists "$prev" || [[ $prev == "$LEGACY" ]]; then die "no previous color ($prev) to roll back to"; fi
 	log "rolling back $cur -> $prev (database migrations are NOT reverted)"
 	docker start "$prev" >/dev/null
 	wait_healthy "$prev"
