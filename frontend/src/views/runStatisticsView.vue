@@ -786,7 +786,9 @@ export default {
       if (!table) return;
       const open = !allFlowcellsOpen.value;
       table.blockRedraw();
-      table.getGroups().forEach((group) => (open ? group.show() : group.hide()));
+      table
+        .getGroups()
+        .forEach((group) => (open ? group.show() : group.hide()));
       table.restoreRedraw();
       allFlowcellsOpen.value = open;
     }
