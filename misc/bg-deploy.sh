@@ -198,11 +198,17 @@ cmd_deploy() {
 	running "$old" || die "live backend $old is not running; fix that first (or 'make bg-rollback')"
 	log "live: $old ($(color_of "$old")); deploying $version to $idle"
 	if running "$idle"; then
-		log "$idle is running but not live (previous attempt?): stopping it"
-		docker stop -t 180 "$idle" >/dev/null
+		log "$idle is running but not live (previous attempt?): it gets replaced below"
 	fi
 
 	log "backup before touching anything"
+	make --no-print-directory save-postgres
+	docker exec "$RSNAPSHOT" rsnapshot halfy || log "WARN: rsnapshot halfy failed"
+
+	export PK2_VERSION=$version
+	"${COMPOSE[@]}" build "$idle"
+	"${COMPOSE[@]}" up -d --no-deps --force-recreate "$idle"
+	wait_healthy "$idle"
 
 	# env parity: the idle color is created with compose env_file misc/parkour.env, which may be a
 	# template on dev hosts (the running legacy container holds the real secrets). Sessions would
@@ -213,13 +219,6 @@ cmd_deploy() {
 		idle_val=$(docker exec "$idle" sh -c "printf %s \"\$$key\"")
 		[[ $live_val == "$idle_val" ]] || die "$key differs between $old and $idle (parkour.env is stale?): sessions would be invalidated on the flip"
 	done
-	make --no-print-directory save-postgres
-	docker exec "$RSNAPSHOT" rsnapshot halfy || log "WARN: rsnapshot halfy failed"
-
-	export PK2_VERSION=$version
-	"${COMPOSE[@]}" build "$idle"
-	"${COMPOSE[@]}" up -d --no-deps --force-recreate "$idle"
-	wait_healthy "$idle"
 
 	plan=$(docker exec "$idle" python manage.py migrate --plan)
 	echo "$plan"
