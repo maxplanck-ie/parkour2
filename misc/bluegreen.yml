@@ -1,0 +1,62 @@
+## Blue/green backend for production. Driven by misc/bg-deploy.sh (see `make bg-deploy`).
+##
+## Two identical containers, `parkour2-django-blue` and `parkour2-django-green`. Only one of them is
+## named in misc/active/backend.conf (the nginx upstream); the other is stopped, and keeps the previous
+## release available for `make bg-rollback`.
+##
+## Differences with docker-compose.yml's parkour2-django:
+##   - code comes from the image (target pk2_prod), NOT from a ./backend bind mount, so two releases
+##     can run side by side and a `git checkout` on the host cannot change a running backend;
+##   - `restart: unless-stopped`: the live color comes back after a reboot, a color that was stopped
+##     by a deploy stays stopped.
+## Sessions live in Postgres (django_session) and SECRET_KEY comes from the same parkour.env, so a
+## session cookie issued by one color is valid on the other.
+
+x-django: &django
+  image: parkour2-django:${PK2_VERSION:?PK2_VERSION must be set (misc/bg-deploy.sh does it)}
+  build:
+    context: ..
+    dockerfile: backend.Dockerfile
+    target: pk2_prod
+  env_file:
+    - ./parkour.env
+  environment:
+    INSTANCE_VERSION: ${PK2_VERSION}
+  restart: unless-stopped
+  stop_grace_period: 180s
+  volumes:
+    - ../media:/usr/src/app/media
+    - staticfiles:/usr/src/app/staticfiles
+    - logs:/usr/src/app/logs
+  extra_hosts:
+    - "host.docker.internal:host-gateway"
+  healthcheck:
+    test: ["CMD", "python", "manage.py", "check", "--database", "default"]
+    interval: 30s
+    timeout: 25s
+    retries: 3
+    start_period: 60s
+  networks:
+    - parkour2_default
+
+services:
+  parkour2-django-blue:
+    <<: *django
+    container_name: parkour2-django-blue
+    hostname: parkour2-django-blue
+
+  parkour2-django-green:
+    <<: *django
+    container_name: parkour2-django-green
+    hostname: parkour2-django-green
+
+volumes:
+  staticfiles:
+    external: true
+    name: parkour2_staticfiles
+  logs:
+    name: parkour2_bg_logs
+
+networks:
+  parkour2_default:
+    external: true

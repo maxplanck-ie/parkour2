@@ -4,6 +4,7 @@ misc/*.tar.gz
 misc/*-dump.json
 misc/*.sqldump
 misc/ollama/
+misc/active/
 *_dump/
 *_dumps/
 rsnapshot/

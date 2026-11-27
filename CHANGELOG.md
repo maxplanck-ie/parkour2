@@ -2,6 +2,7 @@
 
 Unreleased
 ==========
+- Deployments: production releases of the backend can now be swapped without downtime and without logging anyone out: the new version starts next to the old one, is migrated and checked, and only then receives traffic; the old one finishes its running requests and is stopped. Releases with schema-breaking migrations are refused unless a maintenance window is requested, and the previous version can be restored with one command. Admins find the steps in the wiki ("Blue/green deployment").
 - Request editor: the "Sample Forms" buttons in the Add Request dialog are now a "Submission forms" checklist with a Download button; tick one form to download it, or several to get them in one zip. Every form shows its version date (also part of the file name) so outdated templates are easy to spot, and forms from the last 15 days are marked "New!". In Libraries mode the dialog offers the submission guidelines. New in the list: the 2026 submission guidelines (PDF), and the Cut&Tag and GEM-X Universal 3' v4 4-plex OCM submission forms. (PR #404)
 - Top navigation bar: it now switches between full-text buttons and icon-only buttons as the window is resized, instead of only when the page loads. Icon-only buttons show a tooltip and have an accessible name. New browser tests cover wide, narrow, resize and reload cases. (PR #402)
 - Request approval: the approval link no longer approves a request that was never sent to the PI for approval, or when the token is missing from the link. (PR #396)

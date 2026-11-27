@@ -94,6 +94,16 @@ CMD ["gunicorn", "config.wsgi:application", "--bind=0.0.0.0:8000", "--name=pk2",
     "--worker-class=gthread", "--worker-tmp-dir=/dev/shm", "--workers=4", "--threads=6"]
 
 # ----------------------
+FROM pk2_base AS pk2_prod
+## Blue/green production (misc/bluegreen.yml). Everything the running backend needs lives in the
+## image: docker-compose.yml's `./shared:/usr/src/shared:ro` bind mount is baked in, so a release
+## does not depend on the host checkout after the build. --graceful-timeout lets in-flight requests
+## finish when `docker stop -t 180` drains the old color (gunicorn's default is 30s).
+COPY ./shared /usr/src/shared
+CMD ["gunicorn", "config.wsgi:application", "--bind=0.0.0.0:8000", "--name=pk2", "--timeout=600", \
+    "--graceful-timeout=170", "--worker-class=gthread", "--worker-tmp-dir=/dev/shm", "--workers=4", "--threads=6"]
+
+# ----------------------
 FROM pk2_base AS pk2_demo
 ## Public demo: gunicorn (not the Werkzeug dev server) since this is meant to be
 ## reachable from the internet -- same serving posture as pk2_base/prod, just with

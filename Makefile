@@ -209,10 +209,27 @@ hardreset-envfile:
 deploy-caddy: ensure-media-dir
 	@docker compose -f misc/caddy.yml --project-name=parkour2 up -d
 
-deploy-nginx: ensure-media-dir
+deploy-nginx: ensure-media-dir  ## (Re)create nginx; creates misc/active/backend.conf (blue/green upstream) if missing
 	@test -e ./misc/key.pem && test -e ./misc/cert.pem || \
 		{ echo "ERROR: TLS certificates not found!"; exit 1; }
+	@misc/bg-deploy.sh ensure-conf
 	@docker compose -f misc/nginx.yml --project-name=parkour2 up -d
+
+bg-init: deploy-nginx  ## One-time: make nginx read its backend from misc/active/ (recreates nginx, seconds of downtime)
+	@misc/bg-deploy.sh status
+
+bg-deploy:  ## Zero-downtime backend release. ARGS="[VERSION] [--yes] [--compatible] [--breaking]"
+	@misc/bg-deploy.sh deploy $(ARGS)
+
+bg-rollback:  ## Flip back to the previous (stopped) backend color
+	@misc/bg-deploy.sh rollback
+
+bg-status:  ## Show the live backend color, containers and what nginx serves
+	@misc/bg-deploy.sh status
+
+manage:  ## Run manage.py in the live backend (blue/green hosts; for cron). CMD="clearsessions"
+	@test -n "$(CMD)" || { echo 'usage: make manage CMD="clearsessions"'; exit 1; }
+	@docker exec $$(misc/bg-deploy.sh active) python manage.py $(CMD)
 
 convert-backup:  ## Convert xxxly.0's pgdb to ./misc/*.sqldump (updating symlink too)
 	@docker compose -f misc/convert-backup.yml --project-name=parkour2 up -d && sleep 1m && \

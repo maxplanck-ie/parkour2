@@ -9,6 +9,7 @@ services:
     volumes:
       - ./nginx-daemon.conf:/etc/nginx/nginx.conf
       - ./nginx-server.conf:/etc/nginx/conf.d/default.conf
+      - ./active:/etc/nginx/active:ro
       - ./cert.pem:/etc/ssl/cert.pem
       - ./key.pem:/etc/ssl/key.pem
       - ../media:/parkour2/media
