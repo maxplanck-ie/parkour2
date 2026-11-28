@@ -178,7 +178,11 @@ migration_gate() { # reads `migrate --plan` output on stdin; prints findings; re
 
 final_backup() {
 	make --no-print-directory save-postgres tar-old-migras
-	docker exec "$RSNAPSHOT" rsnapshot halfy || log "WARN: rsnapshot halfy failed"
+	if exists "$RSNAPSHOT"; then
+		docker exec "$RSNAPSHOT" rsnapshot halfy || log "WARN: rsnapshot halfy failed"
+	else
+		log "no $RSNAPSHOT container: skipping rsnapshot (not deployed on this host)"
+	fi
 }
 
 cmd_deploy() {
@@ -214,7 +218,11 @@ cmd_deploy() {
 
 	log "backup before touching anything"
 	make --no-print-directory save-postgres
-	docker exec "$RSNAPSHOT" rsnapshot halfy || log "WARN: rsnapshot halfy failed"
+	if exists "$RSNAPSHOT"; then
+		docker exec "$RSNAPSHOT" rsnapshot halfy || log "WARN: rsnapshot halfy failed"
+	else
+		log "no $RSNAPSHOT container: skipping rsnapshot (not deployed on this host)"
+	fi
 
 	export PK2_VERSION=$version
 	"${COMPOSE[@]}" build "$idle"
