@@ -77,14 +77,25 @@ sys.exit(0 if urllib.request.urlopen("http://127.0.0.1:8000/login/", timeout=30)
 PY
 }
 
+probe_color() { # prints "<http status> <color>" for one request through nginx
+	local out
+	out=$(curl -sk -o /dev/null -D - --max-time 20 https://127.0.0.1/login/ | tr -d '\r' || true)
+	echo "$(awk 'NR==1{print $2}' <<<"$out") $(awk -F': ' 'tolower($1)=="x-pk2-color"{print $2}' <<<"$out")"
+}
+
 verify_via_nginx() { # color
-	local want=$1 i out status got
+	# `nginx -s reload` only signals the master: until the new workers are up, the old ones still
+	# answer with the old color. So first wait (max 30s) for the new color, then every one of
+	# SMOKE_REQUESTS requests must be 200 with that color.
+	local want=$1 i got deadline=$((SECONDS + 30))
+	until [[ $(probe_color) == "200 $want" ]]; do
+		((SECONDS < deadline)) || { log "nginx still not serving color '$want' after 30s"; return 1; }
+		sleep 1
+	done
 	for ((i = 1; i <= SMOKE_REQUESTS; i++)); do
-		out=$(curl -sk -o /dev/null -D - --max-time 20 https://127.0.0.1/login/ | tr -d '\r' || true)
-		status=$(awk 'NR==1{print $2}' <<<"$out")
-		got=$(awk -F': ' 'tolower($1)=="x-pk2-color"{print $2}' <<<"$out")
-		if [[ $status != 200 || $got != "$want" ]]; then
-			log "request $i via nginx: HTTP '${status:-none}', color '${got:-none}' (wanted 200, '$want')"
+		got=$(probe_color)
+		if [[ $got != "200 $want" ]]; then
+			log "request $i via nginx: got '$got' (wanted '200 $want')"
 			return 1
 		fi
 	done
