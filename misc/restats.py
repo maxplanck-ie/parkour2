@@ -610,7 +610,7 @@ def seqStats(runDir, roots, labels=None):
                 for col in ("total_passed", "duplicates_passed"):
                     df[col] = pd.to_numeric(df[col], errors="coerce")
                 dup = firstByKey(
-                    df["Sample"].astype(str),
+                    df["Sample"].astype(str).str.removesuffix(".markdup"),
                     df["duplicates_passed"] / df["total_passed"] * 100,
                 )
         # DNA
@@ -652,7 +652,10 @@ def seqStats(runDir, roots, labels=None):
                 rdf["read1_passed"] = pd.to_numeric(
                     rdf["read1_passed"], errors="coerce"
                 )
-                r1 = firstByKey(rdf["Sample"].astype(str), rdf["read1_passed"])
+                r1 = firstByKey(
+                    rdf["Sample"].astype(str).str.removesuffix(".markdup"),
+                    rdf["read1_passed"],
+                )
             for sample, bc in s2l.items():
                 if sample in r1:
                     with salvage(f"{sample} fragments_total"):
@@ -754,7 +757,8 @@ def seqStats(runDir, roots, labels=None):
                 usecols=["Sample", "Total", "Assigned"],
             )
             assigned = firstByKey(
-                adf["Sample"].astype(str), adf["Assigned"] / adf["Total"] * 100
+                adf["Sample"].astype(str).str.removesuffix(".markdup"),
+                adf["Assigned"] / adf["Total"] * 100,
             )
         for f in adir.glob("STAR/*/*.Log.final.out"):
             sample = f.name.split(".")[0]
