@@ -135,7 +135,7 @@ retire() { # old container
 }
 
 preflight() {
-	[[ -f misc/parkour.env ]] || die "misc/parkour.env missing"
+	[[ -f misc/parkour.env.ignore ]] || die "misc/parkour.env.ignore missing: it holds the real secrets (misc/parkour.env is only a template)"
 	[[ -f $CONF ]] || die "$CONF missing: run 'make bg-init' first"
 	running "$NGINX" || die "$NGINX is not running"
 	docker inspect -f '{{range .Mounts}}{{.Destination}} {{end}}' "$NGINX" | grep -q '/etc/nginx/active' ||
@@ -210,14 +210,14 @@ cmd_deploy() {
 	"${COMPOSE[@]}" up -d --no-deps --force-recreate "$idle"
 	wait_healthy "$idle"
 
-	# env parity: the idle color is created with compose env_file misc/parkour.env, which may be a
-	# template on dev hosts (the running legacy container holds the real secrets). Sessions would
-	# break across the flip if SECRET_KEY differs, so compare against the live container, not the file.
+	# env parity: compose reads misc/parkour.env.ignore when it creates the idle color. The live color
+	# was created from the same file (or, for legacy, copied from it by the Makefile), so these must
+	# match; if not, the file changed since or is wrong, and sessions or the DB login would break on the flip.
 	local key live_val idle_val
-	for key in SECRET_KEY DATABASE_URL; do
+	for key in SECRET_KEY DATABASE_URL READONLY_DATABASE_URL; do
 		live_val=$(docker exec "$old" sh -c "printf %s \"\$$key\"")
 		idle_val=$(docker exec "$idle" sh -c "printf %s \"\$$key\"")
-		[[ $live_val == "$idle_val" ]] || die "$key differs between $old and $idle (parkour.env is stale?): sessions would be invalidated on the flip"
+		[[ $live_val == "$idle_val" ]] || die "$key differs between $old and $idle: misc/parkour.env.ignore is not what the live backend runs with"
 	done
 
 	plan=$(docker exec "$idle" python manage.py migrate --plan)

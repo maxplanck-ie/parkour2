@@ -9,8 +9,9 @@
 ##     can run side by side and a `git checkout` on the host cannot change a running backend;
 ##   - `restart: unless-stopped`: the live color comes back after a reboot, a color that was stopped
 ##     by a deploy stays stopped.
-## Sessions live in Postgres (django_session) and SECRET_KEY comes from the same parkour.env, so a
-## session cookie issued by one color is valid on the other.
+## Sessions live in Postgres (django_session) and SECRET_KEY comes from misc/parkour.env.ignore (the
+## real, untracked env file; the tracked misc/parkour.env is only a template that `make clean`
+## restores), so a session cookie issued by one color is valid on the other.
 
 x-django: &django
   image: parkour2-django:${PK2_VERSION:?PK2_VERSION must be set (misc/bg-deploy.sh does it)}
@@ -19,7 +20,7 @@ x-django: &django
     dockerfile: backend.Dockerfile
     target: pk2_prod
   env_file:
-    - ./parkour.env
+    - ./parkour.env.ignore
   environment:
     INSTANCE_VERSION: ${PK2_VERSION}
   restart: unless-stopped
